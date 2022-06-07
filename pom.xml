@@ -5,7 +5,7 @@
   <name>Accessible Equation Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <build>
@@ -61,7 +61,7 @@
             </goals>
             <configuration>
               <target>
-                <unzip src="version/mathex-aee-${version}.zip" dest="docs/"/>
+                <unzip src="version/mathex-aee-${project.version}.zip" dest="docs/"/>
               </target>
             </configuration>
           </execution>
@@ -76,7 +76,16 @@
           <basedir>${basedir}</basedir>
           <includes>version/*,docs/**/*</includes>
           <excludes>docs/lib/mathjax*/**/*</excludes>
-          <message>Deploy mathex-aee-${version}</message>
+          <message>Deploy mathex-aee-${project.version}</message>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <preparationGoals>clean process-resources scm:add</preparationGoals>
         </configuration>
       </plugin>
     </plugins>
@@ -84,7 +93,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version>0.0.3</version>
   </properties>
 
   <scm>
