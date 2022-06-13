@@ -75,7 +75,7 @@
         <configuration>
           <basedir>${basedir}</basedir>
           <includes>version/*,docs/**/*</includes>
-          <excludes>docs/lib/mathjax*/**/*</excludes>
+          <excludes>docs/mathex/lib/mathjax*/**/*</excludes>
           <message>Deploy mathex-aee-${project.version}</message>
         </configuration>
       </plugin>
