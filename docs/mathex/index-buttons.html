@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEE - Palette Button Preview (Braille)</title>
+  <link rel="icon" type="image/x-icon" href="index.png">
+  <link rel="stylesheet" type="text/css" href="index.css"/>
+  <script type="text/javascript">
+    EquationEditorOptions = {
+      "styleBase" : "deploy/equationeditor/styles",
+      "scriptBase" : "lib",
+      "models" : [{
+        "identifier" : "RESPONSE",
+        "styles" : "ee-full ee-braille braille aee-buttons aee-braille",
+        "width" : 700,
+        "height" : 600
+      }],
+      callback : function() {
+        var version = EquationEditorAPI.version;
+        version = version.replace( "-SNAPSHOT", "" );
+        $( "#version" ).text( version );
+      }
+    };
+  </script>
+  <script src="deploy/equationeditor/equationeditor-lib.js"></script>
+</head>
+<body>
+
+<h1>AEE Palette Button Preview (Braille)</h1>
+
+<p>
+This page previews an extended set of palettes and buttons
+for the AEE.  Quite a few of these buttons are not yet functional.
+Each button should have an appropriate button label with Braille
+tooltips.  The <a href="index-spanish.html">Spanish</a> demo page
+shows a preview of the Spanish tooltips.
+</p>
+
+<p>
+Please see the <a href="index.html">Nemeth Braille Math</a> demo page to try
+the Nemeth Braille Math input mode.
+</p>
+
+<div id="RESPONSE"></div>
+
+<p class="ee-version">
+<span id="version"></span>
+</p>
+
+</body>
+</html>

@@ -1,5 +1,9 @@
 <catalog>
 
+<style name="aee-buttons" href="mxc/aee-buttons.mxc"/>
+<style name="aee-spanish" href="mxc/aee-spanish.mxc"/>
+<style name="aee-braille" href="mxc/aee-braille.mxc"/>
+
 <!-- These entries define a style as a reference to a specific file -->
 
 <style name="basic" href="mxc/basic.mxc"/>
@@ -51,7 +55,7 @@
 
 <style name="grade-3-5" refs="ee-basic _grade-3-5"/>
 <style name="grade-6-8" refs="ee-basic _grade-6-8"/>
-<style name="grade-9-12" refs="ee-basic _grade-9-12"/>
+V<style name="grade-9-12" refs="ee-basic _grade-9-12"/>
 
 <style name="units-3-5" refs="_units-3-5"/>
 <style name="units-6-8" refs="_units-6-8"/>
