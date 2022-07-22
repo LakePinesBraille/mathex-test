@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEE - Text Entry Mode</title>
+  <link rel="icon" type="image/x-icon" href="index.png">
+  <link rel="stylesheet" type="text/css" href="index.css"/>
+  <script type="text/javascript">
+    EquationEditorOptions = {
+      "styleBase" : "mathex/deploy/equationeditor/styles",
+      "scriptBase" : "mathex/lib",
+      "models" : [],
+      callback : function() {
+        brCtrl = EquationEditorAPI.BrCtrl.create( vtext, btext );
+      }
+    };
+  </script>
+  <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
+</head>
+<body>
+
+<h3>Text Entry Mode</h3>
+
+<p>
+<label for="vtext">Visual Text</label>
+<br>
+<input type="text" id="vtext" size="80" placeholder="Enter visual text"></input>
+</p>
+
+<p>
+<label for="btext">Braille Text</label>
+<br>
+<input type="text" id="btext" size="80" placeholder="Enter braille text"></input>
+</p>
+
+</body>
+</html>
