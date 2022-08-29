@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AEE - Text Entry Mode</title>
+  <title>AEE - Braille Translator</title>
   <link rel="icon" type="image/x-icon" href="index.png">
   <link rel="stylesheet" type="text/css" href="index.css"/>
   <script type="text/javascript">
@@ -14,17 +14,36 @@
         brCtrl = EquationEditorAPI.BrCtrl.create( vtext, btext );
       }
     };
+    function clearAll() {
+        brCtrl.reset();
+    };
+    function toBraille() {
+        value = brCtrl.doc.getVisualText();
+        brCtrl.reset();
+        brCtrl.doc.setVisualText( value );
+        brCtrl.doc.setVisualPoint( value.length );
+        brCtrl.update();
+    };
+    function toLiterary() {
+        value = brCtrl.doc.getBrailleText();
+        brCtrl.reset();
+        brCtrl.doc.setBrailleText( value );
+        brCtrl.doc.setVisualPoint( value.length );
+        brCtrl.update();
+    };
   </script>
   <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
 </head>
 <body>
 
-<h3>Text Entry Mode</h3>
+<h3>Try the AEE Braille Translator!</h3>
+
+<p>This page can be used to translate between literary text and UEB contracted braille.</p>
 
 <p>
-<label for="vtext">Visual Text</label>
+<label for="vtext">Literary Text</label>
 <br>
-<input type="text" id="vtext" size="80" placeholder="Enter visual text"></input>
+<input type="text" id="vtext" size="80" placeholder="Enter literary text"></input>
 </p>
 
 <p>
@@ -32,6 +51,10 @@
 <br>
 <input type="text" id="btext" size="80" placeholder="Enter braille text"></input>
 </p>
+
+<button type="button" id="toBraille" onclick="toBraille()">Translate to Braille</button>
+<button type="button" id="toLiterary" onclick="toLiterary()">Translate to Literary</button>
+<button type="button" id="clear" onclick="clearAll()">Clear All Input</button>
 
 </body>
 </html>
