@@ -11,25 +11,25 @@
       "scriptBase" : "mathex/lib",
       "models" : [],
       callback : function() {
-        brCtrl = EquationEditorAPI.BrCtrl.create( vtext, btext );
+        brlCtrl = EquationEditorAPI.BrlCtrl.create( vtext, btext );
       }
     };
     function clearAll() {
-        brCtrl.reset();
+        brlCtrl.reset();
     };
     function toBraille() {
-        value = brCtrl.doc.getVisualText();
-        brCtrl.reset();
-        brCtrl.doc.setVisualText( value );
-        brCtrl.doc.setVisualPoint( value.length );
-        brCtrl.update();
+        value = brlCtrl.doc.getVisualText();
+        brlCtrl.reset();
+        brlCtrl.doc.setVisualText( value );
+        brlCtrl.doc.setVisualPoint( value.length );
+        brlCtrl.update();
     };
     function toLiterary() {
-        value = brCtrl.doc.getBrailleText();
-        brCtrl.reset();
-        brCtrl.doc.setBrailleText( value );
-        brCtrl.doc.setBraillePoint( value.length );
-        brCtrl.update();
+        value = brlCtrl.doc.getBrailleText();
+        brlCtrl.reset();
+        brlCtrl.doc.setBrailleText( value );
+        brlCtrl.doc.setBraillePoint( value.length );
+        brlCtrl.update();
     };
   </script>
   <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
