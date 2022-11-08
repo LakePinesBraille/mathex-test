@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEE - Accessible Equation Editor</title>
+  <link rel="icon" type="image/x-icon" href="aee.png">
+  <link rel="stylesheet" type="text/css" href="aee.css"/>
+  <script src="aee.js"></script>
+  <script type="text/javascript">
+    EquationEditorOptions = {
+      "styleBase" : "../mathex/deploy/equationeditor/styles",
+      "scriptBase" : "../mathex/lib",
+      "models" : [{
+        "identifier" : "RESPONSE",
+        "styles" : "ee-full ee-braille braille",
+        "width" : 700,
+        "height" : 600
+      }],
+      callback : function() {
+        init();
+      }
+    };
+  </script>
+  <script src="../mathex/deploy/equationeditor/equationeditor-lib.js"></script>
+</head>
+<body>
+<button id="load" class="btn">Load</button>
+<button id="save" class="btn">Save</button>
+</body>
+</html>

@@ -1,0 +1,8 @@
+@import url( "../mathex/css/bootstrap-3.3.7.min.css" );
+@import url( "../mathex/css/equationeditor.css" );
+
+body
+{
+    font-size: 150%;
+    padding: 30px;
+}
