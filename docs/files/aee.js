@@ -68,24 +68,28 @@ const init = function() {
     }
   };
 
-  addClick( "#open", async () => {
+  addClick( "#open", async ( event ) => {
     try {
+      event.preventDefault();
+
       const options = getOpenOptions();
       [ handle ] = await window.showOpenFilePicker( options );
       const file = await handle.getFile();
       const markup = await file.text();
 
       editor.setContent( markup );
+      editor.processTemplate( "ctrl-end" );
       editor.setFocus();
-      editor.requestDone();
     }
     catch ( e )
     {
     }
   } );
 
-  addClick( "#save", async () => {
+  addClick( "#save", async ( event ) => {
     try {
+      event.preventDefault();
+
       const options = getOpenOptions();
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
@@ -99,8 +103,10 @@ const init = function() {
     }
   } );
 
-  addClick( "#export", async () => {
+  addClick( "#export", async ( event ) => {
     try {
+      event.preventDefault();
+
       const options = getExportOptions();
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
@@ -114,8 +120,10 @@ const init = function() {
     }
   } );
 
-  addClick( "#mathjax", async () => {
+  addClick( "#mathjax", async ( event ) => {
     try {
+      event.preventDefault();
+
       const options = getMathJaxOptions();
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
@@ -123,6 +131,61 @@ const init = function() {
 
       await file.write( markup );
       await file.close();
+    }
+    catch ( e )
+    {
+    }
+  } );
+
+  addClick( "#copy", async ( event ) => {
+    try {
+      event.preventDefault();
+
+      const markup = editor.copy();
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  } );
+
+  addClick( "#paste", async ( event ) => {
+    try {
+      event.preventDefault();
+
+      navigator.clipboard.readText().then(
+        ( markup ) => {
+            editor.paste( markup );
+            editor.setFocus();
+        } );
+    }
+    catch ( e )
+    {
+    }
+  } );
+
+  addClick( "#copyAll", async ( event ) => {
+    try {
+      event.preventDefault();
+
+      const markup = editor.getContent();
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  } );
+
+  addClick( "#pasteAll", async ( event ) => {
+    try {
+      event.preventDefault();
+
+      navigator.clipboard.readText().then(
+        ( markup ) => {
+            editor.setContent( markup );
+            editor.processTemplate( "ctrl-end" );
+            editor.setFocus();
+        } );
     }
     catch ( e )
     {
