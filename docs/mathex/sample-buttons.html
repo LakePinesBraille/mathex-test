@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AEE - Palette Button Preview (Braille)</title>
-  <link rel="icon" type="image/x-icon" href="index.png">
+  <title>AEE - Button Preview (Braille)</title>
+  <link rel="icon" type="image/x-icon" href="sample.png">
   <link rel="stylesheet" type="text/css" href="sample.css"/>
   <script type="text/javascript">
     EquationEditorOptions = {
@@ -14,12 +14,7 @@
         "styles" : "ee-full ee-braille braille aee-buttons",
         "width" : 700,
         "height" : 600
-      }],
-      callback : function() {
-        var version = EquationEditorAPI.version;
-        version = version.replace( "-SNAPSHOT", "" );
-        $( "#version" ).text( version );
-      }
+      }]
     };
   </script>
   <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
@@ -37,14 +32,8 @@ shows a preview of the Spanish tooltips.
 </p>
 
 <p>
-Please see the <a href="sample.html">Nemeth Braille Math</a> demo page to try
-the Nemeth Braille Math input mode.
-</p>
-
-<div id="RESPONSE"></div>
-
-<p class="ee-version">
-<span id="version"></span>
+Please see the <a href="sample-text.html">Braille Text Entry</a> demo page
+to try the Braille Text plus Nemeth Braille Math input mode.
 </p>
 
 </body>

@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AEE - Palette Button Preview (Spanish)</title>
-  <link rel="icon" type="image/x-icon" href="index.png">
-  <link rel="stylesheet" type="text/css" href="index.css"/>
+  <title>AEE - Button Preview (Spanish)</title>
+  <link rel="icon" type="image/x-icon" href="aee.png">
+  <link rel="stylesheet" type="text/css" href="aee.css"/>
   <script type="text/javascript">
     EquationEditorOptions = {
       "styleBase" : "deploy/equationeditor/styles",
@@ -17,9 +17,7 @@
         "height" : 600
       }],
       callback : function() {
-        var version = EquationEditorAPI.version;
-        version = version.replace( "-SNAPSHOT", "" );
-        $( "#version" ).text( version );
+        $( ".ee-version" ).text( EquationEditorAPI.version );
       }
     };
   </script>
@@ -33,20 +31,16 @@
 This page previews an extended set of palettes and buttons
 for the AEE.  Quite a few of these buttons are not yet functional.
 Each button should have an appropriate button label with Spanish
-tooltips.  The <a href="index-buttons.html">Braille</a> demo page
+tooltips.  The <a href="aee-buttons.html">Braille</a> demo page
 shows a preview of the Braille tooltips.
 </p>
 
 <p>
-Please see the <a href="index.html">Nemeth Braille Math</a> demo page to try
-the Nemeth Braille Math input mode.
+Please see the <a href="aee-text.html">Braille Text Entry</a> demo page
+to try the Braille Text plus Nemeth Braille Math input mode.
 </p>
 
-<div id="RESPONSE"></div>
-
-<p class="ee-version">
-<span id="version"></span>
-</p>
+<p class="ee-version"/>
 
 </body>
 </html>

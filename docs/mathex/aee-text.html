@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>AEE - Braille Text Entry</title>
-  <link rel="icon" type="image/x-icon" href="index.png">
-  <link rel="stylesheet" type="text/css" href="index.css"/>
+  <link rel="icon" type="image/x-icon" href="aee.png">
+  <link rel="stylesheet" type="text/css" href="aee.css"/>
   <script type="text/javascript">
     EquationEditorOptions = {
       "styleBase" : "deploy/equationeditor/styles",
@@ -16,9 +16,7 @@
         "height" : 600
       }],
       callback : function() {
-        var version = EquationEditorAPI.version;
-        version = version.replace( "-SNAPSHOT", "" );
-        $( "#version" ).text( version );
+        $( ".ee-version" ).text( EquationEditorAPI.version );
       }
     };
   </script>
@@ -45,17 +43,13 @@ keyboard.  Press Ctrl+q a third time to switch back to Braille entry mode.
 </p>
 
 <p>
-Please see the <a href="index.html">Nemeth Braille Math</a> demo page
+Please see the <a href="aee-math.html">Nemeth Braille Math</a> demo page
 to try the Nemeth Braille Math input mode, or the
-<a href="index-buttons.html">Palette Button Preview</a>
+<a href="aee-buttons.html">Palette Button Preview</a>
 to see a preview of an extended set of AEE buttons.
 </p>
 
-<div id="RESPONSE"></div>
-
-<p class="ee-version">
-<span id="version"></span>
-</p>
+<p class="ee-version"/>
 
 </body>
 </html>

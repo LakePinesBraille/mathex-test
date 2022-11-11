@@ -5,12 +5,7 @@ body
 {
     font-size: 150%;
     margin: 10px;
-}
-
-table, th, td
-{
-    border: solid;
-    padding: 10px;
+    margin-top: 30px;
 }
 
 .ee-parent-panel
@@ -18,23 +13,12 @@ table, th, td
     padding-bottom: 10px;
 }
 
-.visuallyhidden
-{
-    position: fixed;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px);
-    height: 1px;
-    width: 1px;
-    border: 0; 
-    margin: -1px;
-}
-
 .ee-version
 {
+    color: gray;
     font-size: small;
     text-align: right;
     position: fixed;
     top: 95%;
-    right: 9%;
-    color: gray;
+    right: 5%;
 }
