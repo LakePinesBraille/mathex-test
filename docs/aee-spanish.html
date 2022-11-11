@@ -17,15 +17,30 @@
         "height" : 600
       }],
       callback : function() {
-        var version = EquationEditorAPI.version;
-        version = version.replace( "-SNAPSHOT", "" );
-        $( ".ee-version" ).text( version );
+        $( ".ee-version" ).text( EquationEditorAPI.version );
       }
     };
   </script>
   <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
 </head>
 <body>
+
+<h1>AEE Palette Button Preview (Spanish)</h1>
+
+<p>
+This page previews an extended set of palettes and buttons
+for the AEE.  Quite a few of these buttons are not yet functional.
+Each button should have an appropriate button label with Spanish
+tooltips.  The <a href="aee-buttons.html">Braille</a> demo page
+shows a preview of the Braille tooltips.
+</p>
+
+<p>
+Please see the <a href="aee-text.html">Braille Text Entry</a> demo page
+to try the Braille Text plus Nemeth Braille Math input mode.
+</p>
+
 <p class="ee-version"/>
+
 </body>
 </html>
