@@ -1,10 +1,26 @@
-@import url( "../mathex/css/bootstrap-3.3.7.min.css" );
-@import url( "../mathex/css/equationeditor.css" );
+@import url( "mathex/css/bootstrap-3.3.7.min.css" );
+@import url( "mathex/css/equationeditor.css" );
 
 body
 {
     font-size: 150%;
-    padding: 30px;
+    margin: 10px;
+    margin-top: 30px;
+}
+
+.ee-parent-panel
+{
+    padding-bottom: 10px;
+}
+
+.ee-version
+{
+    color: gray;
+	font-size: small;
+    text-align: right;
+    position: fixed;
+    top: 95%;
+    right: 5%;
 }
 
 .navbar { margin-bottom: 0px; }
@@ -14,7 +30,7 @@ body
 .dropdown-toggle
 {
     color: #333333 !important;
-	background-color: #e6e6e6 !important;
+    background-color: #e6e6e6 !important;
     border-color: #e6e6e6 #e6e6e6 #bfbfbf !important;
     border-width: 2px !important;
     border-style: solid !important;
