@@ -5,7 +5,6 @@ body
 {
     font-size: 150%;
     margin: 10px;
-    margin-top: 30px;
 }
 
 .ee-parent-panel
@@ -16,7 +15,7 @@ body
 .ee-version
 {
     color: gray;
-	font-size: small;
+    font-size: small;
     text-align: right;
     position: fixed;
     top: 95%;
