@@ -5,6 +5,10 @@ const aee_init = function() {
     return EquationEditorAPI.version.replace( "-SNAPSHOT", "" );
   };
 
+  const getTimestamp = function() {
+    return EquationEditorAPI.timeStamp;
+  };
+
   const addMarkup = function( selector, markup ) {
     const elt = document.querySelector( selector );
     if ( elt )
@@ -53,7 +57,7 @@ const aee_init = function() {
   } ] };
 
   const isMath = function() {
-    return /math/.test( editor._initial );
+    return editor && /math/.test( editor._initial );
   };
 
   const getOpenOptions = function() {
@@ -80,13 +84,57 @@ const aee_init = function() {
     return markup.replace( body_tag, head_tag + body_tag );
   };
 
+  const openFile = async ( options ) => {
+    if ( window.showOpenFilePicker )
+    {
+      [ handle ] = await window.showOpenFilePicker( options );
+      const file = await handle.getFile();
+      return file;
+    }
+    else
+    {
+      return new Promise( ( resolve ) => {
+        const input = document.createElement( "input" );
+        input.type = "file";
+        input.addEventListener( "change", () => {
+          const file = input.files[ 0 ];
+          resolve( file );
+        } );
+        input.click();
+      } );
+    }
+  };
+
+  const saveFile = async ( options, markup ) => {
+    if ( window.showSaveFilePicker )
+    {
+      const handle = await window.showSaveFilePicker( options );
+      const file = await handle.createWritable();
+
+      await file.write( markup );
+      await file.close();
+    }
+    else
+    {
+      const name = options.suggestedName + ( isMath() ? ".mml" : ".html" );
+      const type = isMath() ? "application/mathml+xml" : "application/html";
+      const blob = new Blob( [ markup ], { type: type } );
+      const a = document.createElement( "a" );
+      a.download = name;
+      a.href = URL.createObjectURL( blob );
+      a.addEventListener( "click", () => {
+        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
+      } );
+      a.click();
+    }
+  };
+
   const do_open = async function( event ) {
     try {
       event.preventDefault();
 
       const options = getOpenOptions();
-      [ handle ] = await window.showOpenFilePicker( options );
-      const file = await handle.getFile();
+      const file = await openFile( options );
       const markup = await file.text();
 
       editor.setContent( markup );
@@ -103,12 +151,8 @@ const aee_init = function() {
       event.preventDefault();
 
       const options = getOpenOptions();
-      const handle = await window.showSaveFilePicker( options );
-      const file = await handle.createWritable();
       const markup = editor.getContent();
-
-      await file.write( markup );
-      await file.close();
+      await saveFile( options, markup );
     }
     catch ( e )
     {
@@ -120,12 +164,8 @@ const aee_init = function() {
       event.preventDefault();
 
       const options = getExportOptions();
-      const handle = await window.showSaveFilePicker( options );
-      const file = await handle.createWritable();
       const markup = editor.getPresent();
-
-      await file.write( markup );
-      await file.close();
+      await saveFile( options, markup );
     }
     catch ( e )
     {
@@ -137,12 +177,8 @@ const aee_init = function() {
       event.preventDefault();
 
       const options = getMathJaxOptions();
-      const handle = await window.showSaveFilePicker( options );
-      const file = await handle.createWritable();
       const markup = addMathJax( editor.getPresent() );
-
-      await file.write( markup );
-      await file.close();
+      await saveFile( options, markup );
     }
     catch ( e )
     {
@@ -213,7 +249,7 @@ const aee_init = function() {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="open">Open</a></li>' +
 '            <li><a href="#" id="save">Save</a></li>' +
-'            <li><a href="#" id="export">Save As Presentation</a></li>' +
+'            <li><a href="#" id="export">Save As Web Page</a></li>' +
 ( isMath() ? '' :
 '            <li><a href="#" id="mathjax">Save As MathJax</a></li>' ) +
 '          </ul>' +
@@ -230,7 +266,9 @@ const aee_init = function() {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="aee-help.html">Getting Started</a></li>' +
+'            <li><a target="_blank" href="aee-help.html">Getting Started</a></li>' +
+'            <li><a target="_blank" href="aee-guide.html">Users Guide</a></li>' +
+'            <li><a target="_blank" href="aee-about.html">About the AEE</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -239,6 +277,7 @@ const aee_init = function() {
 
   addMarkup( ".ee-menu", menu_markup );
   addMarkup( ".ee-version", getVersion() );
+  addMarkup( ".ee-timestamp", getTimestamp() );
 
   addClick( "#open", do_open );
   addClick( "#save", do_save );

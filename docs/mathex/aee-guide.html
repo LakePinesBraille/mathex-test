@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEE - Users Guide</title>
+  <link rel="icon" type="image/x-icon" href="aee.png">
+  <link rel="stylesheet" type="text/css" href="aee.css"/>
+  <style>h4, h5 { font-weight: bold; }</style>
+</head>
+<body style="font-size: 15pt">
+<h1>Accessible Equation Editor Users Guide</h1>
+
+<h2 id="app-menu">Application Menu</h2>
+<p>The Application Menu provides File, Edit, and Help menus.</p>
+
+<h3 id="app-menu-file">File Menu</h3>
+<p
+The File Menu provides items to load and store documents in the local file system.
+</p>
+
+<h4 id="menu-file-open">Open</h4>
+<p>Load a document from a file in the local file system.</p>
+
+<p>
+The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+</p>
+
+<h4 id="menu-file-save">Save</h4>
+<p>Store a document to a file in the local file system.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<h4 id="menu-file-save-as-web">Save As Web Page</h4>
+<p>Save a document that can be viewed in a web browser.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
+</p>
+
+<h4 id="menu-file-save-as-mathjax">Save As MathJax</h4>
+<p>Save a document that can be displayed by the <a href="#ff-mjax">MathJax</a> library.</p>
+
+<p>
+The AEE stores the document using HTML headers to allow the <a href="#ff-mjax">MathJax</a> library to display the document in browsers that do not <a href="#web-mmlp">support Presentation MathML</a>.
+</p>
+
+<p>
+The AEE includes the following header in documents it saves for display by MathJax:
+</p>
+<pre>
+&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML"></script>
+</pre>
+
+<p>
+The Save As MathJax menu item can be used to work around an existing limitation in <a href="#web-mmlp-chromium">Chromium browsers</a> that support Presentation MathML, but do not support Presentation MathML in the Save As PDF destination on the Print dialog box.
+</p>
+
+<h3 id="app-menu-edit">Edit Menu</h3>
+<p>The Edit Menu provides operations to copy and paste from the system clipboard.</p>
+
+<h4>Copy</h4>
+<p>Copy the current selection to the system clipboard.</p>
+
+<h4>Paste</h4>
+<p>Replace the current selection from the system clipboard.</p>
+
+<h4>Copy All</h4>
+<p>Copy the entire document to the system clipboard.</p>
+
+<h4>Paste All</h4>
+<p>Replace the entire document from the system clipboard.</p>
+
+<h3 id="app-menu-help">Help Menu</h3>
+<p>The Help Menu provides access to the documentation.</p>
+
+<h4>Getting Started</h4>
+<p>Open the AEE Getting Started document.</p>
+
+<h4>Users Guide</h4>
+<p>Open the AEE Users Guide (this document).</p>
+
+<h4>About the AEE</h4>
+<p>Display version information about the AEE.</p>
+
+<h2>Appendix</h2>
+<p>This appendix provides additional details on technical aspects of the AEE.</p>
+
+<h3 id="file-formats">File Formats</h3>
+
+<p>
+The AEE uses several standard file formats to represent the text and math portions of a document.
+</p>
+
+<h4 id="ff-html">HTML</h4>
+
+<p>
+The Hypertext Markup Language (HTML) is a format used to represent rich text documents intended for display by a web browser.  The <a href="https://html.spec.whatwg.org/multipage/">HTML Living Standard</a> that defines HTML is developed principally by the Web Hypertext Application Technology Working Group (WHATWG) with endorsement by the World Wide Web Consortium (W3C).
+</p>
+
+<h4 id="ff-mml">MathML</h4>
+
+<p>
+The Mathematical Markup Language (MathML) is a format used to represent mathematical expressions intended for inclusion in web documents.  The <a href="https://www.w3.org/TR/MathML/Overview.html">MathML Recommendation</a> that defines MathML is maintained by the World Wide Web Consortium (W3C).
+</p>
+
+<h4 id="ff-mmlc">Content MathML</h4>
+
+<p>
+Content MathML is a subset of MathML used to represent the functional structure of mathematical expressions, rather than the arrangement of symbols used to communicate them.  It allows mathematical software to exchange formulas in an unambiguous manner.
+</p>
+
+<h4 id="ff-mmlp">Presentation MathML</h4>
+
+<p>
+Presentation MathML is a subset of MathML used to represent the visual notation of mathematical expressions, rather than the operations used to construct them.  It allows mathematical software to display formulas in a manner that can be understood by human users.
+</p>
+
+<h4 id="ff-mjax">MathJax</h4>
+
+<p>
+MathJax is a JavaScript library that can be used to support Presentation MathML within browsers that do not provide native support for math, allowing Presentation MathML to be used in a portable fashion within HTML web pages.
+</p>
+
+<p>
+MathJax is typically used within a web page by providing special elements in the document header to load and/or configure the MathJax library.  See the <a href="https://docs.mathjax.org/en/latest/">MathJax Documentation</a> for more details.
+</p>
+
+<h3 id="web-browsers">Web Browsers</h3>
+
+<h4 id="web-mmlp">Presentation MathML</h4>
+<p>
+The following paragraphs describe web browser support for Presentation MathML on Windows.
+</h4>
+
+<h5 id="web-mmlp-chromium">Chromium</h5>
+
+<p>
+The Chromium browser engine is used in several popular browsers, including Chrome, Edge, and Opera.  Chromium provides native support for Presentation MathML using the built-in MathML Feature, which is working its way into the stable releases of these browsers.
+</p>
+
+<p>
+The <a href="https://chromestatus.com/feature/5240822173794304">implementation status</a> of Presentation MathML support in Chromium is that the MathML Feature is available behind a developer flag since version 103, with intent to ship announced for version 109.
+</p>
+
+<p>
+The Chromium <a href="https://chromiumdash.appspot.com/schedule">release schedule</a> lists the Chrome 109 Stable Release date as January 2023.
+</p>
+
+<p>
+In the meantime, the #enable-experimental-web-platform-features flag may be used to enable Presentation MathML support in Chromium browsers.
+</p>
+
+<p>
+The Save As PDF destination on the Print dialog box in Chromium does not currently support Presentation MathML, work in progress.
+</p>
+
+<h5 id="web-mmlp-chrome">Chrome</h5>
+
+<p>
+Chrome provides native support for Presentation MathML using the built-in MathML Feature in Chromium, which is working its way into the Chrome Stable Release.
+</p>
+
+<p>
+In the meantime, enabling chrome://flags/#enable-experimental-web-platform-features provides Presentation MathML support in Chrome.
+</p>
+
+<p>
+The <a href="#menu-file-save-as-mathjax">Save as MathJax</a> menu item may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+</p>
+
+<h5 id="web-mmlp-edge">Edge</h5>
+
+<p>
+Edge provides native support for Presentation MathML using the built-in MathML Feature in Chromium, which is working its way into the Edge Stable Release.
+</p>
+
+<p>
+In the meantime, enabling edge://flags/#enable-experimental-web-platform-features provides Presentation MathML support in Edge.
+</p>
+
+<p>
+The <a href="#menu-file-save-as-mathjax">Save as MathJax</a> menu item may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+</p>
+
+<h5 id="web-mmlp-safari">Safari</h5>
+
+<p>
+Safari provides native support for Presentation MathML using the built-in MathML support in Webkit, which has been available since Safari 5.1, released in 2011.
+</p>
+
+<h5 id="web-mmlp-firefox">Firefox</h5>
+
+<p>
+Firefox provides native support for Presentation MathML using the built-in MathML support in Gecko, which has been available since Firefox 3, released in 2008.
+</p>
+
+<p>
+The Firefox-specific Save as PDF option may be used to save native Presentation MathML into a PDF document.
+</p>
+
+<h5 id="web-mmlp-opera">Opera</h5>
+
+<p>
+Opera provides native support for Presentation MathML using the built-in MathML Feature in Chromium, which is working its way into the Opera Stable Release.
+</p>
+
+<p>
+In the meantime, enabling chrome://flags/#enable-experimental-web-platform-features provides Presentation MathML support in Opera.
+</p>
+
+<p>
+The Opera-specific Save as PDF option may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+</p>
+
+<h4 id="web-fsa">File System Access</h4>
+
+<p>
+The <a href="#app-menu-file">File Menu</a> operations use the File System Access API for those browsers that support it.  Specifically, the AEE looks for the methods showOpenFilePicker and showSaveFilePicker on the browser window object.
+</p>
+
+<p>
+The AEE implements fallback methods for File System Access for those browsers that do not support it.  The fallback method for File Open is to use an internal <code>&lt;input type="file"></code> element to prompt the user to select the file to upload into the editor document.  The fallback method for File Save is to use an internal <code>&lt;a download="name"></code> element to prompt the user to select the file to download from the editor document.
+</p>
+
+<p>
+The Chromium browsers (Chrome, Edge, Opera) support the File System Access API, Firefox does not.
+</p>
+
+<p>
+For all browsers, it is usually a good idea to specify the browser downloads folder, and to specify that the browser should always ask where to save files.  These settings will help make the File System Access from the browser more predictable for the user.  See the browser settings documentation for details on how to use these settings.
+</p>
+
+</body>
+</html>

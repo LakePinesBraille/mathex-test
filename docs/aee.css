@@ -1,5 +1,5 @@
-@import url( "mathex/css/bootstrap-3.3.7.min.css" );
-@import url( "mathex/css/equationeditor.css" );
+@import url( "css/bootstrap-3.3.7.min.css" );
+@import url( "css/equationeditor.css" );
 
 body
 {
@@ -10,16 +10,6 @@ body
 .ee-parent-panel
 {
     padding-bottom: 10px;
-}
-
-.ee-version
-{
-    color: gray;
-    font-size: small;
-    text-align: right;
-    position: fixed;
-    top: 95%;
-    right: 5%;
 }
 
 .navbar { margin-bottom: 0px; }
