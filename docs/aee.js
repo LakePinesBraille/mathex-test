@@ -1,12 +1,22 @@
 const aee_init = function() {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
 
+  const getSource = function() {
+    const elt = document.querySelector( "script" );
+    const att = elt && elt.getAttribute( "src" ) || "";
+    return ( /aee\.js$/.test( att ) ) ? att.replace( "aee.js", "" ) : "";
+  };
+
   const getVersion = function() {
     return EquationEditorAPI.version.replace( "-SNAPSHOT", "" );
   };
 
   const getTimestamp = function() {
     return EquationEditorAPI.timeStamp;
+  };
+
+  const isMath = function() {
+    return editor && /math/.test( editor._initial );
   };
 
   const addMarkup = function( selector, markup ) {
@@ -55,10 +65,6 @@ const aee_init = function() {
     description : "HTML + MathJax + MathML Presentation",
     accept : { "application/html" : [ ".html" ] }
   } ] };
-
-  const isMath = function() {
-    return editor && /math/.test( editor._initial );
-  };
 
   const getOpenOptions = function() {
     return Object.assign( {}, file_options,
@@ -266,9 +272,9 @@ const aee_init = function() {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a target="_blank" href="aee-help.html">Getting Started</a></li>' +
-'            <li><a target="_blank" href="aee-guide.html">Users Guide</a></li>' +
-'            <li><a target="_blank" href="aee-about.html">About the AEE</a></li>' +
+'            <li><a href="' + getSource() + 'aee-start.html">Getting Started</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html">AEE Users Guide</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-about.html">About the AEE</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
