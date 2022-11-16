@@ -57,6 +57,9 @@ The AEE includes the following header in documents it saves for display by MathJ
 The Save As MathJax menu item can be used to work around an existing limitation in <a href="#web-mmlp-chromium">Chromium browsers</a> that support Presentation MathML, but do not support Presentation MathML in the Save As PDF destination on the Print dialog box.
 </p>
 
+<h4 id="menu-file-close">Close</h4>
+<p>Clear the contents of the current document.  This menu item does not modify the filesystem.</p>
+
 <h3 id="app-menu-edit">Edit Menu</h3>
 <p>The Edit Menu provides operations to copy and paste from the system clipboard.</p>
 
@@ -167,7 +170,7 @@ In the meantime, enabling chrome://flags/#enable-experimental-web-platform-featu
 </p>
 
 <p>
-The <a href="#menu-file-save-as-mathjax">Save as MathJax</a> menu item may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+The <a href="#menu-file-save-as-mathjax">Save As MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
 </p>
 
 <h5 id="web-mmlp-edge">Edge</h5>
@@ -181,7 +184,7 @@ In the meantime, enabling edge://flags/#enable-experimental-web-platform-feature
 </p>
 
 <p>
-The <a href="#menu-file-save-as-mathjax">Save as MathJax</a> menu item may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+The <a href="#menu-file-save-as-mathjax">Save As MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
 </p>
 
 <h5 id="web-mmlp-safari">Safari</h5>
@@ -197,7 +200,7 @@ Firefox provides native support for Presentation MathML using the built-in MathM
 </p>
 
 <p>
-The Firefox-specific Save as PDF option may be used to save native Presentation MathML into a PDF document.
+The Firefox-specific Save As PDF option may be used to save native Presentation MathML into a PDF document.
 </p>
 
 <h5 id="web-mmlp-opera">Opera</h5>
@@ -211,7 +214,7 @@ In the meantime, enabling chrome://flags/#enable-experimental-web-platform-featu
 </p>
 
 <p>
-The Opera-specific Save as PDF option may be used to work around the Chromium Save as PDF issue with native Presentation MathML.
+The Opera-specific Save As PDF option may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
 </p>
 
 <h4 id="web-fsa">File System Access</h4>
@@ -230,6 +233,32 @@ The Chromium browsers (Chrome, Edge, Opera) support the File System Access API, 
 
 <p>
 As a browser user, it is usually a good idea to specify a preferred folder for browser downloads, and to specify that the browser should always ask the user where to save files.  These settings will help make the File System Access from the browser more understandable.  See the browser settings documentation for details on how to use these settings.
+</p>
+
+<h4 id="web-pdf">Save As PDF</h4>
+
+<p>
+The AEE does not provide a Save As PDF menu item, but it can be used in cooperation with browser Save As PDF support to create PDF files that include both text and math markup.
+</p>
+
+<p>
+A file saved by the <a href="#menu-file-save-as-web">Save As Web Page</a> or <a href="#menu-file-save-as-mathjax">Save As MathJax</a> menu item can be loaded directly into a browser as an HTML file.  With some limitations, these files may be saved as PDF, either using a browser-specific menu item, or by printing the file to a PDF file destination, rather than to a connected printer.
+</p>
+
+<p>
+The Save As PDF destination on the Print dialog box in Chromium does not currently support Presentation MathML, work in progress.
+</p>
+
+<p>
+In the meantime, the <a href="#menu-file-save-as-mathjax">Save As MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.  By using the MathJax library to display the MathML, the Chromium Save As PDF support will display the MathML within the saved PDF file.
+</p>
+
+<p>
+This issue affects Chrome and Edge.  In Opera, the Opera-specific Save As PDF menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.  That is, Opera is able to generate a PDF file that includes the native-rendered MathML without the need for MathJax.
+</p>
+
+<p>
+The Firefox-specific Save As PDF option may be used to save native Presentation MathML into a PDF document without the need for MathJax.
 </p>
 
 </body>

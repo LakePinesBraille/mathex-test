@@ -135,6 +135,25 @@ const aee_init = function() {
     }
   };
 
+  const moveToEnd = function() {
+    setTimeout( () => {
+      editor.processTemplate( "ctrl-end" );
+    }, 200 );
+  };
+
+  const do_close = async function( event ) {
+    try {
+      event.preventDefault();
+
+      editor.processTemplate( "clear" );
+      editor.setFocus();
+      moveToEnd();
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_open = async function( event ) {
     try {
       event.preventDefault();
@@ -144,8 +163,8 @@ const aee_init = function() {
       const markup = await file.text();
 
       editor.setContent( markup );
-      editor.processTemplate( "ctrl-end" );
       editor.setFocus();
+      moveToEnd();
     }
     catch ( e )
     {
@@ -237,8 +256,8 @@ const aee_init = function() {
       navigator.clipboard.readText().then(
         ( markup ) => {
             editor.setContent( markup );
-            editor.processTemplate( "ctrl-end" );
             editor.setFocus();
+            moveToEnd();
         } );
     }
     catch ( e )
@@ -258,6 +277,7 @@ const aee_init = function() {
 '            <li><a href="#" id="export">Save As Web Page</a></li>' +
 ( isMath() ? '' :
 '            <li><a href="#" id="mathjax">Save As MathJax</a></li>' ) +
+'            <li><a href="#" id="close">Close</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -289,6 +309,7 @@ const aee_init = function() {
   addClick( "#save", do_save );
   addClick( "#export", do_export );
   addClick( "#mathjax", do_mathjax );
+  addClick( "#close", do_close );
 
   addClick( "#copy", do_copy );
   addClick( "#paste", do_paste );
