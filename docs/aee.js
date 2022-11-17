@@ -1,7 +1,10 @@
 const aee_init = function() {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
-  editor.model().setSystemClipboard( true );
-  editor.setFocus();
+  if ( editor )
+  {
+    editor.model().setSystemClipboard( true );
+    editor.setFocus();
+  }
 
   const getSource = function() {
     const elt = document.querySelector( "script" );
