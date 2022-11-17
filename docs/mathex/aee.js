@@ -1,5 +1,7 @@
 const aee_init = function() {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
+  editor.model().setSystemClipboard( true );
+  editor.setFocus();
 
   const getSource = function() {
     const elt = document.querySelector( "script" );
@@ -8,7 +10,7 @@ const aee_init = function() {
   };
 
   const getVersion = function() {
-    return EquationEditorAPI.version.replace( "-SNAPSHOT", "" );
+    return EquationEditorAPI.version;
   };
 
   const getTimestamp = function() {
@@ -213,9 +215,7 @@ const aee_init = function() {
   const do_copy = async function( event ) {
     try {
       event.preventDefault();
-
-      const markup = editor.copy();
-      navigator.clipboard.writeText( markup );
+      editor.copy();
     }
     catch ( e )
     {
@@ -225,12 +225,7 @@ const aee_init = function() {
   const do_paste = async function( event ) {
     try {
       event.preventDefault();
-
-      navigator.clipboard.readText().then(
-        ( markup ) => {
-            editor.paste( markup );
-            editor.setFocus();
-        } );
+      editor.paste();
     }
     catch ( e )
     {
@@ -293,7 +288,7 @@ const aee_init = function() {
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="' + getSource() + 'aee-start.html">Getting Started</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html">AEE Users Guide</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html">Users Guide</a></li>' +
 '            <li><a target="_blank" href="' + getSource() + 'aee-about.html">About the AEE</a></li>' +
 '          </ul>' +
 '        </li>' +
