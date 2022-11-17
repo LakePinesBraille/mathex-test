@@ -1,5 +1,7 @@
 const aee_init = function() {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
+  editor.model().setSystemClipboard( true );
+  editor.setFocus();
 
   const getSource = function() {
     const elt = document.querySelector( "script" );
@@ -213,9 +215,7 @@ const aee_init = function() {
   const do_copy = async function( event ) {
     try {
       event.preventDefault();
-
-      const markup = editor.copy();
-      navigator.clipboard.writeText( markup );
+      editor.copy();
     }
     catch ( e )
     {
@@ -225,12 +225,7 @@ const aee_init = function() {
   const do_paste = async function( event ) {
     try {
       event.preventDefault();
-
-      navigator.clipboard.readText().then(
-        ( markup ) => {
-            editor.paste( markup );
-            editor.setFocus();
-        } );
+      editor.paste();
     }
     catch ( e )
     {

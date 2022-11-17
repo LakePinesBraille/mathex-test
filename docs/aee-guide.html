@@ -241,12 +241,22 @@ As a browser user, it is usually a good idea to specify a preferred folder for b
 The <a href="#app-menu-edit">Edit Menu</a> operations use the Clipboard API for those browsers that support it.  Specifically, the AEE uses the methods <code>navigator.clipboard.writeText</code> for the copy operations, and <code>navigator.clipboard.readText</code> for the paste operations.
 </p>
 
+<h5 id="web-clip-chromium">Chromium</h5>
 <p>
-The Chromium browsers (Chrome, Edge, Opera) support the Clipboard API.  Firefox supports <code>navigator.clipboard.writeText</code> (for copy) by default, but <code>navigator.clipboard.readText</code> (for paste) is only available if <code>dom.events.asyncClipboard.readText</code> is set to true from the Firefox <code>about:config</code> page.
+The Chromium browsers (Chrome, Edge, Opera) support the Clipboard API.  When a paste operation is invoked from the menu, the browser displays a confirmation dialog box
+<pre>
+This file wants to see text and images copied to the clipboard.
+</pre>
+and the paste operation will continue after the user selects the <code>Allow</code> button on the dialog.
+</p>
+
+<h5 id="web-clip-firefox">Firefox</h5>
+<p>
+Firefox supports <code>navigator.clipboard.writeText</code> (for copy) by default, but <code>navigator.clipboard.readText</code> (for paste) is only available if <code>dom.events.asyncClipboard.readText</code> is set to true from the Firefox <code>about:config</code> page.
 </p>
 
 <p>
-When this flag is enabled, the paste operation is allowed to proceed, but only after the user selects a special "Paste" link presented by Firefox.  The special "Paste" link may be selected using the mouse, or by pressing the 'P' key.
+When this flag is enabled, and a paste operation is invoked from the menu, Firefox displays a confirmation dialog box containing the single word <code>Paste</code>, and the paste operation will continue after the user selects the <code>Paste</code> button on the dialog.  The <code>Paste</code> button may be selected using the mouse, or by pressing the <code>P</code> key.
 </p>
 
 <h4 id="web-pdf">Save As PDF</h4>
