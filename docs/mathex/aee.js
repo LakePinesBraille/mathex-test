@@ -1,7 +1,10 @@
 const aee_init = function() {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
-  editor.model().setSystemClipboard( true );
-  editor.setFocus();
+  if ( editor )
+  {
+    editor.model().setSystemClipboard( true );
+    editor.setFocus();
+  }
 
   const getSource = function() {
     const elt = document.querySelector( "script" );
@@ -53,6 +56,11 @@ const aee_init = function() {
     accept : { "application/mathml-presentation+xml" : [ ".mml" ] }
   } ] };
 
+  const brf_export = { types : [ {
+    description : "Braille Ready File",
+    accept : { "application/brf" : [ ".brf" ] }
+  } ] };
+
   const text_types = { types : [ {
     description : "HTML + MathML Content",
     accept : { "application/html" : [ ".html" ] }
@@ -80,6 +88,10 @@ const aee_init = function() {
 
   const getMathJaxOptions = function() {
     return Object.assign( {}, file_options, text_mathjax );
+  };
+
+  const getBRFOptions = function() {
+    return Object.assign( {}, file_options, brf_export );
   };
 
   const script_tag = '    <script type="text/javascript" ' +
@@ -186,6 +198,19 @@ const aee_init = function() {
     }
   };
 
+  const do_saveBRF = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const options = getBRFOptions();
+      const markup = editor.getAsciiBraille();
+      await saveFile( options, markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_export = async function( event ) {
     try {
       event.preventDefault();
@@ -216,6 +241,7 @@ const aee_init = function() {
     try {
       event.preventDefault();
       editor.copy();
+      editor.setFocus();
     }
     catch ( e )
     {
@@ -226,6 +252,7 @@ const aee_init = function() {
     try {
       event.preventDefault();
       editor.paste();
+      editor.setFocus();
     }
     catch ( e )
     {
@@ -260,6 +287,30 @@ const aee_init = function() {
     }
   };
 
+  const do_copyPrint = async function( event ) {
+    try {
+      event.preventDefault();
+      editor.copyPresent();
+      editor.setFocus();
+    }
+    catch ( e )
+    {
+      console.log( e );
+    }
+  };
+
+  const do_copyPrintAll = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = editor.getPresent();
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
@@ -269,9 +320,10 @@ const aee_init = function() {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="open">Open</a></li>' +
 '            <li><a href="#" id="save">Save</a></li>' +
-'            <li><a href="#" id="export">Save As Web Page</a></li>' +
+'            <li><a href="#" id="saveBRF">Export To BRF</a></li>' +
+'            <li><a href="#" id="export">Export To Browser</a></li>' +
 ( isMath() ? '' :
-'            <li><a href="#" id="mathjax">Save As MathJax</a></li>' ) +
+'            <li><a href="#" id="mathjax">Export To MathJax</a></li>' ) +
 '            <li><a href="#" id="close">Close</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -282,6 +334,8 @@ const aee_init = function() {
 '            <li><a href="#" id="paste">Paste</a></li>' +
 '            <li><a href="#" id="copyAll">Copy All</a></li>' +
 '            <li><a href="#" id="pasteAll">Paste All</a></li>' +
+'            <li><a href="#" id="copyPrint">Copy Print</a></li>' +
+'            <li><a href="#" id="copyPrintAll">Copy Print All</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -302,6 +356,7 @@ const aee_init = function() {
 
   addClick( "#open", do_open );
   addClick( "#save", do_save );
+  addClick( "#saveBRF", do_saveBRF );
   addClick( "#export", do_export );
   addClick( "#mathjax", do_mathjax );
   addClick( "#close", do_close );
@@ -310,4 +365,6 @@ const aee_init = function() {
   addClick( "#paste", do_paste );
   addClick( "#copyAll", do_copyAll );
   addClick( "#pasteAll", do_pasteAll );
+  addClick( "#copyPrint", do_copyPrint );
+  addClick( "#copyPrintAll", do_copyPrintAll );
 };
