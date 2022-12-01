@@ -12,6 +12,13 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
+<li><a href="#nemeth-math">Math Equations</a></li>
+<ul>
+<li><a href="#nemeth-math-inline">Inline Math</a></li>
+<li><a href="#nemeth-math-display">Display Math</a></li>
+<li><a href="#nemeth-math-multi">Multi-Line Math</a></li>
+<li><a href="#nemeth-math-term">Termination</a></li>
+</ul>
 <li><a href="#app-menu">Application Menu</a></li>
 <ul>
 <li><a href="#app-menu-file">File Menu</a></li>
@@ -20,21 +27,68 @@
 </ul>
 <li><a href="#appendix">Appendix</a></li>
 <ul>
+<li><a href="#braille-input">Braille Input</a></li>
+<ul>
+<li><a href="#bi-focus-word">Focus Word</a></li>
+</ul>
 <li><a href="#file-formats">File Formats</a></li>
+<ul>
+<li><a href="#ff-html">HTML</a></li>
+<li><a href="#ff-mml">MathML</a></li>
+<li><a href="#ff-mmlc">Content MathML</a></li>
+<li><a href="#ff-mmlp">Presentation MathML</a></li>
+<li><a href="#ff-mjax">MathJax</a></li>
+</ul>
 <li><a href="#web-browsers">Web Browsers</a></li>
 <ul>
+<li><a href="#web-mmlp">Presentation MathML</a></li>
 <li><a href="#web-fsa">File System Access</a></li>
 <li><a href="#web-clip">Clipboard Access</a></li>
 <li><a href="#web-pdf">Save As PDF</a></li>
 </ul>
 <li><a href="#nemeth-braille">Nemeth Braille</a></li>
 <ul>
-<li><a href="#nemeth-math">Math Equations</a></li>
 <li><a href="#nemeth-short-under">Underbar Short Form</a></li>
 <li><a href="#nemeth-per-mille">Per Mille Symbol</a></li>
 </ul>
 </ul>
 </ul>
+
+<h2 id="nemeth-math">Math Equations</h2>
+
+<p>The AEE supports entering equations using Nemeth code.  Typical printed math typography uses three main forms to arrange math within text documents.</p>
+
+<h3 id="nemeth-math-inline">Inline Math</h3>
+
+<p>An <i>inline math</i> expression is one that stands within the text of a paragraph, typeset along the existing baseline for the surrounding text.</p>
+
+<p>A user can create an inline math expression within paragraph text by typing <code>Ctrl-m</code> to begin the math expression, and <code>Ctrl-Shift-m</code> to end the expression.  The open Nemeth indicator <code>dots-456 dots-146</code> can likewise be used to begin an inline math expression, and the close Nemeth indicator <code>dots-456 dots-156</code> can be used to end the expression.</p>
+
+<p>An inline math expression does not supply space characters before or after the expression, but they can be typed before or after the inline math expression as usual to create spaces in the braille output.</p>
+
+<h3 id="nemeth-math-display">Display Math</h3>
+
+<p>A <i>display math</i> expression is one that stands between paragraphs in a document, typeset along its own baseline, and separated from the surrounding text by blank space.  It is also often centered within the margins of the document.</p>
+
+<p>A user can create a display math expression between paragraphs by typing <code>Ctrl-Alt-m</code> to begin the math expression, and <code>Ctrl-Shift-m</code> to end the expression.  The open Nemeth indicator, preceded by a capital letter indicator <code>dots-6 dots-456 dots-146</code> can likewise be used to begin a display math expression, and the close Nemeth indicator after a capital letter indicator <code>dots-6 dots-456 dots-156</code> can be used to end the expression.</p>
+
+<p>A display math expression does not supply newline characters before or after the expression, but they can be typed before or after the display math expression as usual to create new lines in the braille output.</p>
+
+<h3 id="nemeth-math-multi">Multi-Line Math</h3>
+
+<p>A <i>multi-line math</i> expression is one that includes a sequence of math expressions taken as a group, each with its own baseline, separated from the surrounding text by blank space, with the expressions aligned in a meaningful way with respect to each other.</p>
+
+<p>A user can type <code>Ctrl-m</code> or the open Nemeth indicator <code>dots-456 dots-146</code> to create an inline math expression, then press <code>Enter</code> to convert the inline math expression into a multi-line math expression, which will be a vertical list containing inline math expressions.</p>
+
+<p>A user can type <code>Ctrl-Alt-m</code> or the open Nemeth indicator <code>dots-6 dots-456 dots-146</code> to create a display math expression, then press <code>Enter</code> to convert the display math expression into a multi-line math expression, which will be a vertical list containing display math expressions.</p>
+
+<p>Typing <code>Enter</code> after each math expression creates a new math expression in the list.  Typing <code>Ctrl-Shift-m</code> or the close Nemeth indicator <code>dots-456 dots-156</code> is used to move to the end of the multi-line math expression.</p>
+
+<p>A multi-line math expression does not supply spaces or newlines before or after the expression, but they can be typed before or after the multi-line math expression as usual to create spaces or new lines in the braille output.</p>
+
+<h3 id="nemeth-math-term">Termination</h3>
+
+<p>A user may indicate the end of a math expression of any form by terminating the expression using <code>Ctrl-Shift-m</code>, or by using the close Nemeth indicator <code>dots-456 dots-156</code>.  Typing the <code>Space</code> key within an expression can also be used to move to the end of the expression, and to insert a space after the expression.</p>
 
 <h2 id="app-menu">Application Menu</h2>
 <p>The Application Menu provides File, Edit, and Help menus.</p>
@@ -162,6 +216,26 @@ The Export To MathJax menu item can be used to work around an existing limitatio
 
 <h2 id="appendix">Appendix</h2>
 <p>This appendix provides additional details on technical aspects of the AEE.</p>
+
+<h3 id="braille-input">Braille Input</h3>
+
+<h4 id="bi-focus-word">Focus Word</h4>
+
+<p>
+The AEE keeps track of the current <i>focus word</i>, that is, the literary word that contains the insertion point.  The Unicode word separators are space <code>U+0020</code>, hyphen <code>U+002D</code>, and dash <code>U+2013</code>, and variations of these characters <code>U+2010-U+2015</code>.  These word separators define the boundaries between words used to determine which word is the focus word.
+</p>
+
+<p>
+The focus word changes as the user enters text or moves the insertion point.  When a word gains the input focus, the AEE displays the uncontracted braille for the word, which the user may modify.  When a word loses the input focus, the AEE translates the word back into contracted form.
+</p>
+
+<p>
+When a word gains the input focus, the AEE will insert the uncontracted braille into the visual document as needed to allow the user to modify the focus word in uncontracted form.  When a word loses the input focus, the AEE will process contracted and/or uncontracted braille input as needed to construct the contracted form of the input word.
+</p>
+
+<p>
+The focus word is only used for literary text, not for math expressions.
+</p>
 
 <h3 id="file-formats">File Formats</h3>
 
@@ -366,21 +440,14 @@ The Firefox-specific Save As PDF option may be used to save native Presentation 
 
 <p>The following sections describe support for certain specific Nemeth Braille forms in the AEE.</p>
 
-<h4 id="nemeth-math">Math Equations</h4>
-
-<p>The AEE supports entering equations within text using Nemeth Code.  A user can create math expressions standing inline within paragraph text by typing <code>Ctrl-m</code> to begin the inline math expression, and <code>Space</code> to end the expression.  The open Nemeth indicator <code>dots-456 dots-146</code> can likewise be used to begin an inline math expression, and the close Nemeth indicator <code>dots-456 dots-156</code> can be used to end the expression.</p>
-
-<p>A user can create equations standing between paragraphs in display mode by typing <code>Ctrl-Alt-m</code> to begin the display math expression, and <code>Space</code> to end the expression.  The open Nemeth indicator, preceded by a capital letter indicator <code>dots-6 dots-456 dots-146</code> can likewise be used to begin a display math expression, and the close Nemeth indicator after a capital letter indicator <code>dots-6 dots-456 dots-156</code> can be used to end the expression.</p>
-
-<p>A user can create multi-line equations by creating an empty math expression on a new line (either inline or display), then typing <code>Enter</code> to create the empty equation list.  After entering each equation, the <code>Enter</code> key can be used to create the next equation in the list.  The <code>Space</code> key or the close Nemeth indicator can be used to end the expression list.</p>
-
 <h4 id="nemeth-short-under">Underbar Short Form</h4>
 
 <p>Following a single letter or digit, the AEE outputs the short form for both the overbar modifier, as described in <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf">Nemeth Braille Code: Rule XIV §86b</a>, and the underbar modifier, as described in <a href="https://www.brailleauthority.org/nemethupdates2013/rule-xiv86c.pdf">Nemeth Update: Rule XIV §86c</a>.</p>
 
 <h4 id="nemeth-per-mille">Per Mille Symbol</h4>
 
-<p>The AEE supports the per-mille symbol, as described in <a href="https://www.brailleauthority.org/nemethupdates2014/rule-xxii-section-162.pdf">Nemeth Update: Rule XXII §162</a>.</p>
+<p>The AEE supports the per mille symbol &#x2030; as <code>dots-4 dots-356 dots-356</code>, as described in <a href="https://www.brailleauthority.org/nemethupdates2014/rule-xxii-section-162.pdf">Nemeth Update: Rule XXII §162</a>,
+and the per myriad symbol &#x2031; as <code>dots-4 dots-356 dots-356 dots-356</code>.</p>
 
 </body>
 </html>
