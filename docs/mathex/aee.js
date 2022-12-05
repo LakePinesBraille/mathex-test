@@ -343,7 +343,8 @@ const aee_init = function() {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="' + getSource() + 'aee-start.html">Getting Started</a></li>' +
 '            <li><a target="_blank" href="' + getSource() + 'aee-guide.html">Users Guide</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-about.html">About the AEE</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-settings.html">Settings</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-about.html">About</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +

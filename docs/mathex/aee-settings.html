@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEE - Settings</title>
+  <link rel="icon" type="image/x-icon" href="aee.png">
+  <link rel="stylesheet" type="text/css" href="aee.css"/>
+  <script>
+const settings = {
+  "aee-screen-line-width" : 20,
+  "aee-screen-indent-first" : 1,
+  "aee-screen-indent-runover" : 1,
+  "aee-device-line-width" : 40,
+  "aee-device-indent-first" : 1,
+  "aee-device-indent-runover" : 1,
+  "aee-file-line-width" : 40,
+  "aee-file-indent-first" : 3,
+  "aee-file-indent-runover" : 1,
+  "aee-math-indent-first" : 3,
+  "aee-math-indent-runover" : 5
+};
+const load = function() {
+  for ( var k in settings )
+  {
+    var v = localStorage[ k ] || settings[ k ] || "";
+    document.querySelector( "#" + k ).value = v;
+  }
+};
+const save = function() {
+  localStorage.clear();
+  for ( var k in settings )
+  {
+    var v = document.querySelector( "#" + k ).value;
+    localStorage[ k ] = v;
+  }
+};
+const reset = function() {
+  localStorage.clear();
+  for ( var k in settings )
+  {
+    localStorage[ k ] = settings[ k ];
+  }
+};
+const done = function() {
+  window.close();
+};
+  </script>
+  <style>
+body { font-size: 15pt }
+label { width: 1.5in }
+input { width: 0.5in }
+  </style>
+</head>
+<body onload="load()">
+<h1>Accessible Equation Editor Settings</h1>
+
+<button type="button" id="ok" onclick="save(); done()"
+    title="Save your changes and close the settings">OK</button>
+<button type="button" id="apply" onclick="save()"
+    title="Save your changes without closing the settings">Apply</button>
+<button type="button" id="reset" onclick="reset(); load()"
+    title="Discard your changes and load the default settings">Reset</button>
+<button type="button" id="cancel" onclick="done()"
+    title="Discard your changes and close the settings">Cancel</button>
+
+<h2>Braille Format Settings</h2>
+
+<h3>On Screen</h3>
+<div>
+<label for="aee-screen-line-width">Line width</label>
+<input id="aee-screen-line-width" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="aee-screen-indent-first">First line</label>
+<input id="aee-screen-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-screen-indent-runover">Run over</label>
+<input id="aee-screen-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h3>On Device</h3>
+<div>
+<label for="aee-device-line-width">Line width</label>
+<input id="aee-device-line-width" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="aee-device-indent-first">First line</label>
+<input id="aee-device-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-device-indent-runover">Run over</label>
+<input id="aee-device-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h3>Braille Files</h3>
+<div>
+<label for="aee-file-line-width">Line width</label>
+<input id="aee-file-line-width" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="aee-file-indent-first">First line</label>
+<input id="aee-file-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-file-indent-runover">Run over</label>
+<input id="aee-file-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h3>Display Math</h3>
+<div>
+<label for="aee-math-indent-first">First line</label>
+<input id="aee-math-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-math-indent-runover">Run over</label>
+<input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+</body>
+</html>
