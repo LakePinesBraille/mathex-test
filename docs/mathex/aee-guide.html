@@ -25,6 +25,11 @@
 <li><a href="#app-menu-edit">Edit Menu</a></li>
 <li><a href="#app-menu-help">Help Menu</a></li>
 </ul>
+<li><a href="#app-settings">Application Settings</a></li>
+<ul>
+<li><a href="#app-settings-markup">Math Markup Settings</a></li>
+<li><a href="#app-settings-format">Braille Format Settings</a></li>
+</ul>
 <li><a href="#screen-readers">Screen Readers</a></li>
 <ul>
 <li><a href="#sr-jaws">JAWS</a></li>
@@ -52,7 +57,7 @@
 <li><a href="#web-mmlp">Presentation MathML</a></li>
 <li><a href="#web-fsa">File System Access</a></li>
 <li><a href="#web-clip">Clipboard Access</a></li>
-<li><a href="#web-pdf">Save As PDF</a></li>
+<li><a href="#web-print">Export, Print, and PDF</a></li>
 </ul>
 <li><a href="#nemeth-braille">Nemeth Braille</a></li>
 <ul>
@@ -120,36 +125,32 @@ The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mm
 The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
-<h4 id="menu-file-save-as-brf">Export To BRF</h4>
+<h4 id="menu-file-save-brf">Save BRF</h4>
 <p>Save a document as a BRF Braille Ready File.</p>
 
 <p>
 The AEE stores the document using the ASCII braille encoding for import into tools that can use it.
 </p>
 
-<h4 id="menu-file-save-as-web">Export To Browser</h4>
+<h4 id="menu-file-save-print">Save Print</h4>
 <p>Save a document that can be viewed in a web browser.</p>
 
 <p>
 The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
 </p>
 
-<h4 id="menu-file-save-as-mathjax">Export To MathJax</h4>
-<p>Save a document that can be displayed by the <a href="#ff-mjax">MathJax</a> library.</p>
+<h4 id="menu-file-export">Export</h4>
+<p>Open a browser web page to display the document.</p>
 
 <p>
-The AEE stores the document using HTML headers to allow the <a href="#ff-mjax">MathJax</a> library to display the document in browsers that do not <a href="#web-mmlp">support Presentation MathML</a>.
+The AEE opens a browser web page in a new tab and places the contents of the document in the web page.  The AEE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
 </p>
 
-<p>
-The AEE includes the following header in documents it saves for display by MathJax:
-</p>
-<pre>
-&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML"></script>
-</pre>
+<h4 id="menu-file-print">Print</h4>
+<p>Open a browser web page to print the document.</p>
 
 <p>
-The Export To MathJax menu item can be used to work around an existing limitation in <a href="#web-mmlp-chromium">Chromium browsers</a> that support Presentation MathML, but do not support Presentation MathML in the Save As PDF destination on the Print dialog box.
+The AEE opens a browser web page in a new tab and places the contents of the document in the web page.  The AEE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a>, then invokes the browser print dialog to print the page.
 </p>
 
 <h4 id="menu-file-close">Close</h4>
@@ -168,47 +169,54 @@ The Export To MathJax menu item can be used to work around an existing limitatio
 <li><p>The Copy Print operations can be used to export math expressions into Microsoft Word.</p></li>
 </ul>
 
-<h4>Copy</h4>
+<h4 id="menu-edit-copy">Copy</h4>
 <p>Copy the current selection to the system clipboard.</p>
 
 <p>The AEE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.</p>
 
 <p>The Copy operation may also be invoked using <code>Ctrl-c</code>.</p>
 
-<h4>Paste</h4>
+<h4 id="menu-edit-paste">Paste</h4>
 <p>Replace the current selection from the system clipboard.</p>
 
 <p>The AEE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the current selection in the document.</p>
 
 <p>The Paste operation may also be invoked using <code>Ctrl-v</code>.</p>
 
-<h4>Copy All</h4>
+<h4 id="menu-edit-copy-all">Copy All</h4>
 <p>Copy the entire document to the system clipboard.</p>
 
 <p>The AEE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.</p>
 
 <p>The Copy All operation may also be invoked using <code>Ctrl-a Ctrl-c</code>.</p>
 
-<h4>Paste All</h4>
+<h4 id="menu-edit-paste-all">Paste All</h4>
 <p>Replace the entire document from the system clipboard.</p>
 
 <p>The AEE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the entire document.</p>
 
 <p>The Paste All operation may also be invoked using <code>Ctrl-a Ctrl-v</code>.</p>
 
-<h4>Copy Print</h4>
+<h4 id="menu-edit-copy-print">Copy Print</h4>
 <p>Copy presentation markup for the current selection to the system clipboard.</p>
 
 <p>The AEE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.</p>
 
 <p>The Copy Print operation may also be invoked using <code>Ctrl-p</code>.</p>
 
-<h4>Copy Print All</h4>
-<p>Replace presentation markup for the entire document from the system clipboard.</p>
+<h4 id="menu-edit-copy-print-all">Copy Print All</h4>
+<p>Copy presentation markup for the entire document to the system clipboard.</p>
 
 <p>The AEE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.</p>
 
 <p>The Copy Print All operation may also be invoked using <code>Ctrl-a Ctrl-p</code>.</p>
+
+<h4 id="menu-edit-copy-all-math">Copy All Math</h4>
+<p>Copy presentation markup all of the math in the entire document to the system clipboard.</p>
+
+<p>The AEE copies the <a href="#ff-mmlp">Presentation MathML</a> for each of the math elements in the entire document to the system clipboard.  The math markup is assembled into a single multi-line math expression.</p>
+
+<p>The Copy All Math operation can be used to export math expressions into Microsoft Word.</p>
 
 <h3 id="app-menu-help">Help Menu</h3>
 <p>The Help Menu provides access to the documentation.</p>
@@ -221,6 +229,40 @@ The Export To MathJax menu item can be used to work around an existing limitatio
 
 <h4>About the AEE</h4>
 <p>Display version information about the AEE.</p>
+
+<h2 id="app-settings">Application Settings</h2>
+<p>The Settings page provides options that customize the AEE.</p>
+
+<h3 id="app-settings-markup">Math Markup Settings</h3>
+
+<p>
+The Math Markup Settings control the use of the <a href="#ff-mjax">MathJax</a> library header in HTML markup generated by the AEE.  The MathJax library may be included in files saved using the <a href="#menu-file-save-print">Save Print</a> option, and in web pages created using the <a href="#menu-file-export">Export</a> and <a href="#menu-file-print">Print</a> options.
+</p>
+
+<p>
+The AEE creates the markup using HTML headers to allow the <a href="#ff-mjax">MathJax</a> library to display the document in browsers that do not <a href="#web-mmlp">support Presentation MathML</a>.  These settings can also be used to work around known issues with native MathML support in any particular browser.
+</p>
+
+<p>
+The AEE includes the following HTML header markup it creates for display by MathJax:
+</p>
+<pre>
+&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML"></script>
+</pre>
+
+<h3 id="app-settings-format">Braille Format Settings</h3>
+
+<p>
+The Braille Format Settings control the use of indentation within Braille markup created by the AEE.  These settings can be used to affect Braille displayed on screen within the AEE web application, Braille displayed on an attached Braille terminal, and Braille saved in BRF Braille Ready Files using the <a href="#menu-file-save-brf">Save BRF</a> menu item.
+</p>
+
+<p>
+Additional options are provided that affect the use of indentation within displayed math equations contained in the document.
+</p>
+
+<p>
+These options include specification of the overall line width, the indentation of the first line within a paragraph or a math equation, and the indentation of runover lines within a paragraph or math equation.
+</p>
 
 <h2 id="screen-readers">Screen Readers</h2>
 
@@ -329,7 +371,11 @@ MathJax is typically used within a web page by providing special elements in the
 <h4 id="web-mmlp">Presentation MathML</h4>
 <p>
 The following paragraphs describe web browser support for Presentation MathML on Windows.
-</h4>
+</p>
+
+<p>
+The <a href="#settings-markup">Math Markup Settings</a> can be used to work around any issues with web browser support for Presentation MathML in any browser.
+</p>
 
 <h5 id="web-mmlp-chromium">Chromium</h5>
 
@@ -350,8 +396,8 @@ In the meantime, the <code>#enable-experimental-web-platform-features</code> fla
 </p>
 
 <p>
-The Save As PDF destination on the Print dialog box in Chromium does not currently support Presentation MathML, work in progress.
-</p>
+As of version 108, the Chromium browser engine supports Presentation MathML in its Save as PDF option.
+<p>
 
 <h5 id="web-mmlp-chrome">Chrome</h5>
 
@@ -363,10 +409,6 @@ Chrome provides native support for Presentation MathML using the built-in MathML
 In the meantime, enabling <code>chrome://flags/#enable-experimental-web-platform-features</code> provides Presentation MathML support in Chrome.
 </p>
 
-<p>
-The <a href="#menu-file-save-as-mathjax">Export To MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
-</p>
-
 <h5 id="web-mmlp-edge">Edge</h5>
 
 <p>
@@ -375,10 +417,6 @@ Edge provides native support for Presentation MathML using the built-in MathML F
 
 <p>
 In the meantime, enabling <code>edge://flags/#enable-experimental-web-platform-features</code> provides Presentation MathML support in Edge.
-</p>
-
-<p>
-The <a href="#menu-file-save-as-mathjax">Export To MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
 </p>
 
 <h5 id="web-mmlp-safari">Safari</h5>
@@ -408,7 +446,7 @@ In the meantime, enabling <code>chrome://flags/#enable-experimental-web-platform
 </p>
 
 <p>
-The Opera-specific Save As PDF option may be used to work around the Chromium Save As PDF issue with native Presentation MathML.
+The Opera-specific Save As PDF option may be used to save native Presentation MathML into a PDF document.
 </p>
 
 <h4 id="web-fsa">File System Access</h4>
@@ -453,30 +491,22 @@ Firefox supports <code>navigator.clipboard.writeText</code> (for copy) by defaul
 When this flag is enabled, and a paste operation is invoked from the menu, Firefox displays a confirmation dialog box containing the single word <code>Paste</code>, and the paste operation will continue after the user selects the <code>Paste</code> button on the dialog.  The <code>Paste</code> button may be selected using the mouse, or by pressing the <code>P</code> key.
 </p>
 
-<h4 id="web-pdf">Save As PDF</h4>
+<h4 id="web-print">Export, Print, and PDF</h4>
 
 <p>
-The AEE does not provide a Save As PDF menu item, but it can be used in cooperation with browser Save As PDF support to create PDF files that include both text and math markup.
+The AEE provides an <a href="#menu-file-export">Export</a> menu item that opens a new browser page and places the contents of the document in the page.  This new page can be printed or saved to a PDF file in the usual ways supported by the browser.
 </p>
 
 <p>
-A file saved by the <a href="#menu-file-save-as-web">Export To Browser</a> or <a href="#menu-file-save-as-mathjax">Export To MathJax</a> menu item can be loaded directly into a browser as an HTML file.  With some limitations, these files may be saved as PDF, either using a browser-specific menu item, or by printing the file to a PDF file destination, rather than to a connected printer.
+The AEE provides a <a href="#menu-file-print">Print</a> menu item to print files.  It exports the document to a new browser page, as described above, and invokes the browser print support directly.
 </p>
 
 <p>
-The Save As PDF destination on the Print dialog box in Chromium does not currently support Presentation MathML, work in progress.
+The AEE does not provide a separate <code>Save as PDF</code> menu item, but the <a href="#menu-file-print">Print</a> menu item can be used to invoke the browser <code>Save as PDF</code> support to create PDF files that include both text and math markup.
 </p>
 
 <p>
-In the meantime, the <a href="#menu-file-save-as-mathjax">Export To MathJax</a> menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.  By using the MathJax library to display the MathML, the Chromium Save As PDF support will display the MathML within the saved PDF file.
-</p>
-
-<p>
-This issue affects Chrome and Edge.  In Opera, the Opera-specific Save As PDF menu item may be used to work around the Chromium Save As PDF issue with native Presentation MathML.  That is, Opera is able to generate a PDF file that includes the native-rendered MathML without the need for MathJax.
-</p>
-
-<p>
-The Firefox-specific Save As PDF option may be used to save native Presentation MathML into a PDF document without the need for MathJax.
+A file created by the <a href="#menu-file-save-print">Save Print</a> menu item can be loaded directly into a browser as an HTML file, and printed or saved to a PDF file in the usual ways supported by the browser.
 </p>
 
 <h3 id="nemeth-braille">Nemeth Braille</h3>

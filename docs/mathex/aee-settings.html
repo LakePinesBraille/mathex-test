@@ -7,6 +7,9 @@
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <script>
 const settings = {
+  "aee-mathjax-on-save" : "false",
+  "aee-mathjax-on-export" : "true",
+  "aee-mathjax-on-print" : "true",
   "aee-screen-line-width" : 20,
   "aee-screen-indent-first" : 1,
   "aee-screen-indent-runover" : 1,
@@ -23,14 +26,23 @@ const load = function() {
   for ( var k in settings )
   {
     var v = localStorage[ k ] || settings[ k ] || "";
-    document.querySelector( "#" + k ).value = v;
+    var elt = document.querySelector( "#" + k );
+    if ( elt.type === "checkbox" )
+    {
+      elt.checked = ( v === "true" );
+    }
+    else
+    {
+      elt.value = v;
+    }
   }
 };
 const save = function() {
   localStorage.clear();
   for ( var k in settings )
   {
-    var v = document.querySelector( "#" + k ).value;
+    var elt = document.querySelector( "#" + k );
+    var v = elt.type === "checkbox" ? elt.checked : elt.value;
     localStorage[ k ] = v;
   }
 };
@@ -62,6 +74,22 @@ input { width: 0.5in }
     title="Discard your changes and load the default settings">Reset</button>
 <button type="button" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
+
+<h2>Math Markup Settings</h2>
+
+<h3>Use MathJax</h3>
+<div>
+<label for="aee-mathjax-on-save">On Save</label>
+<input id="aee-mathjax-on-save" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-mathjax-on-export">On Export</label>
+<input id="aee-mathjax-on-export" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-mathjax-on-print">On Print</label>
+<input id="aee-mathjax-on-print" type="checkbox"></input>
+</div>
 
 <h2>Braille Format Settings</h2>
 
