@@ -71,27 +71,20 @@ const aee_init = function() {
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
-  const text_mathjax = { types : [ {
-    description : "HTML + MathJax + MathML Presentation",
-    accept : { "application/html" : [ ".html" ] }
-  } ] };
+  var last_file_handle;
 
   const getOpenOptions = function() {
-    return Object.assign( {}, file_options,
+    return Object.assign( { startIn: last_file_handle }, file_options,
       isMath() ? math_types : text_types );
   };
 
   const getExportOptions = function() {
-    return Object.assign( {}, file_options,
+    return Object.assign( { startIn: last_file_handle }, file_options,
       isMath() ? math_export : text_export );
   };
 
-  const getMathJaxOptions = function() {
-    return Object.assign( {}, file_options, text_mathjax );
-  };
-
   const getBRFOptions = function() {
-    return Object.assign( {}, file_options, brf_export );
+    return Object.assign( { startIn: last_file_handle }, file_options, brf_export );
   };
 
   const script_tag = '    <script type="text/javascript" ' +
@@ -100,8 +93,70 @@ const aee_init = function() {
   const body_tag = '  <body>\r\n';
   const head_tag = '  <head>\r\n' + script_tag + '  </head>\r\n';
 
-  const addMathJax = function( markup ) {
-    return markup.replace( body_tag, head_tag + body_tag );
+  const getLocalSetting = function( key ) {
+    return ( localStorage && localStorage[ key ] === "true" ) || false;
+  };
+
+  const addMathJax = function( markup, mathjax ) {
+    var result = markup;
+    if ( mathjax )
+    {
+        if ( isMath() )
+        {
+            result = '<html>' + head_tag + body_tag + result + '  </body>\r\n</html>';
+        }
+        else
+        {
+            result = result.replace( body_tag, head_tag + body_tag );
+        }
+    }
+    return result;
+  };
+
+  const getMathBits = function( value ) {
+    var result = [];
+    var index = 0;
+    var start = 0;
+    var limit = 0;
+    var data;
+
+    while ( ( index = value.indexOf( "<math ", index ) ) != -1 )
+    {
+        // Remove the outer <math> tags
+        start = value.indexOf( ">", index );
+        limit = value.indexOf( "</math>", index );
+
+        if ( start === -1 || limit === -1 )
+        {
+            break;
+        }
+
+        data = value.substring( start + 1, limit );
+        index = limit;
+
+        // Remove the outer <mtable> tags
+        start = data.indexOf( "<mtable>" );
+        limit = data.indexOf( "</mtable>" );
+
+        if ( !( start === -1 || limit === -1 ) )
+        {
+            data = data.substring( start + 8, limit );
+        }
+
+        // Supply the outer <mtr> <mtd> tags
+        start = data.indexOf( "<mtr>" );
+        limit = data.indexOf( "</mtr>" );
+
+        if ( start === -1 || limit === -1 )
+        {
+            data = "<mtr><mtd>" + data + "</mtd></mtr>";
+        }
+ 
+        result.push( data );
+    }
+
+    return '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtable>'
+        + result.join() + '</mtable></math>';
   };
 
   const openFile = async ( options ) => {
@@ -109,6 +164,7 @@ const aee_init = function() {
     {
       [ handle ] = await window.showOpenFilePicker( options );
       const file = await handle.getFile();
+      last_file_handle = handle;
       return file;
     }
     else
@@ -130,6 +186,7 @@ const aee_init = function() {
     {
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
+      last_file_handle = handle;
 
       await file.write( markup );
       await file.close();
@@ -150,9 +207,7 @@ const aee_init = function() {
   };
 
   const moveToEnd = function() {
-    setTimeout( () => {
-      editor.processTemplate( "ctrl-end" );
-    }, 200 );
+    setTimeout( () => editor.processTemplate( "ctrl-end" ), 200 );
   };
 
   const do_close = async function( event ) {
@@ -211,12 +266,13 @@ const aee_init = function() {
     }
   };
 
-  const do_export = async function( event ) {
+  const do_savePrint = async function( event ) {
     try {
       event.preventDefault();
 
       const options = getExportOptions();
-      const markup = editor.getPresent();
+      const mathjax = getLocalSetting( "aee-mathjax-on-save" );
+      const markup = addMathJax( editor.getPresent(), mathjax );
       await saveFile( options, markup );
     }
     catch ( e )
@@ -224,13 +280,49 @@ const aee_init = function() {
     }
   };
 
-  const do_mathjax = async function( event ) {
+  const do_export = async function( event ) {
     try {
       event.preventDefault();
 
-      const options = getMathJaxOptions();
-      const markup = addMathJax( editor.getPresent() );
-      await saveFile( options, markup );
+      const mathjax = getLocalSetting( "aee-mathjax-on-export" );
+      const markup = addMathJax( editor.getPresent(), mathjax );
+      const nwindow = window.open( "" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = "AEE - Export";
+
+      if ( mathjax )
+      {
+        setTimeout( () => nwindow.MathJax.Hub.Startup.onload(), 100 );
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_print = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const mathjax = getLocalSetting( "aee-mathjax-on-print" );
+      const markup = addMathJax( editor.getPresent(), mathjax );
+      const nwindow = window.open( "" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = "AEE - Print";
+
+      if ( mathjax )
+      {
+        setTimeout( () => {
+          nwindow.MathJax.Hub.Startup.onload();
+          nwindow.MathJax.Hub.Queue( () => nwindow.print() );
+        }, 100 );
+      }
+      else
+      {
+        nwindow.print();
+      }
     }
     catch ( e )
     {
@@ -311,6 +403,18 @@ const aee_init = function() {
     }
   };
 
+  const do_copyAllMath = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = getMathBits( editor.getPresent() );
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
@@ -320,10 +424,10 @@ const aee_init = function() {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="open">Open</a></li>' +
 '            <li><a href="#" id="save">Save</a></li>' +
-'            <li><a href="#" id="saveBRF">Export To BRF</a></li>' +
-'            <li><a href="#" id="export">Export To Browser</a></li>' +
-( isMath() ? '' :
-'            <li><a href="#" id="mathjax">Export To MathJax</a></li>' ) +
+'            <li><a href="#" id="saveBRF">Save BRF</a></li>' +
+'            <li><a href="#" id="savePrint">Save Print</a></li>' +
+'            <li><a href="#" id="export">Export</a></li>' +
+'            <li><a href="#" id="print">Print</a></li>' +
 '            <li><a href="#" id="close">Close</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -336,6 +440,7 @@ const aee_init = function() {
 '            <li><a href="#" id="pasteAll">Paste All</a></li>' +
 '            <li><a href="#" id="copyPrint">Copy Print</a></li>' +
 '            <li><a href="#" id="copyPrintAll">Copy Print All</a></li>' +
+'            <li><a href="#" id="copyAllMath">Copy All Math</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -358,8 +463,9 @@ const aee_init = function() {
   addClick( "#open", do_open );
   addClick( "#save", do_save );
   addClick( "#saveBRF", do_saveBRF );
+  addClick( "#savePrint", do_savePrint );
   addClick( "#export", do_export );
-  addClick( "#mathjax", do_mathjax );
+  addClick( "#print", do_print );
   addClick( "#close", do_close );
 
   addClick( "#copy", do_copy );
@@ -368,4 +474,5 @@ const aee_init = function() {
   addClick( "#pasteAll", do_pasteAll );
   addClick( "#copyPrint", do_copyPrint );
   addClick( "#copyPrintAll", do_copyPrintAll );
+  addClick( "#copyAllMath", do_copyAllMath );
 };
