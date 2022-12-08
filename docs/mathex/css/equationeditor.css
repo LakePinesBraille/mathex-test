@@ -160,15 +160,15 @@
 
 .ee-child-panel > .ee-input-proxy
 {
-    position: absolute;
+    position: relative;
     display: block;
 
-    margin: 0 -1000px -10px 0;
-    padding: 0px;
+    margin: 0 0 -10px 0;
+    padding: 4px;
     border: 0px !important;
 
     height: 10px;
-    width: 1000px;
+    width: auto;
 
     outline: none;
     overflow: hidden;
