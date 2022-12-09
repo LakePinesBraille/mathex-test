@@ -184,6 +184,10 @@ const aee_init = function() {
   const saveFile = async ( options, markup ) => {
     if ( window.showSaveFilePicker )
     {
+      if ( last_file_handle )
+      {
+        options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
+      }
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
       last_file_handle = handle;
@@ -420,19 +424,19 @@ const aee_init = function() {
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
 '      <ul class="nav navbar-nav">' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">File<span class="caret"></span></a>' +
+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="f">File<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="#" id="open">Open</a></li>' +
-'            <li><a href="#" id="save">Save</a></li>' +
-'            <li><a href="#" id="saveBRF">Save BRF</a></li>' +
-'            <li><a href="#" id="savePrint">Save Print</a></li>' +
-'            <li><a href="#" id="export">Export</a></li>' +
-'            <li><a href="#" id="print">Print</a></li>' +
-'            <li><a href="#" id="close">Close</a></li>' +
+'            <li><a href="#" id="open" accesskey="o">O&#x0332;pen</a></li>' +
+'            <li><a href="#" id="save" accesskey="s">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="saveBRF" accesskey="b">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="savePrint">Sav&#x0332;e Print</a></li>' +
+'            <li><a href="#" id="export" accesskey="x">Ex&#x0332;port</a></li>' +
+'            <li><a href="#" id="print" accesskey="p">P&#x0332;rint</a></li>' +
+'            <li><a href="#" id="close" accesskey="c">C&#x0332;lose</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Edit<span class="caret"></span></a>' +
+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="e">Edit<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="copy">Copy</a></li>' +
 '            <li><a href="#" id="paste">Paste</a></li>' +
@@ -444,12 +448,12 @@ const aee_init = function() {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Help<span class="caret"></span></a>' +
+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="' + getSource() + 'aee-start.html">Getting Started</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html">Users Guide</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-settings.html">Settings</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-about.html">About</a></li>' +
+'            <li><a href="' + getSource() + 'aee-start.html" id="start" accesskey="g">G&#x0332;etting Started</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html" id="guide" accesskey="u">U&#x0332;sers Guide</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-settings.html" id="settings" accesskey="z">Settings (z&#x0332;)</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-about.html" id="about" accesskey="a">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -475,4 +479,39 @@ const aee_init = function() {
   addClick( "#copyPrint", do_copyPrint );
   addClick( "#copyPrintAll", do_copyPrintAll );
   addClick( "#copyAllMath", do_copyAllMath );
+
+  const accel = {
+    f: {
+      o: "#open",
+      s: "#save",
+      b: "#saveBRF",
+      v: "#savePrint",
+      x: "#export",
+      p: "#print",
+      c: "#close" },
+    h: {
+      g: "#start",
+      u: "#guide",
+      z: "#settings",
+      a: "#about"
+    }
+  };
+
+  document.addEventListener( "keydown", ( e ) => {
+    if ( e.key === "Escape" )
+    {
+      editor.setFocus();
+    }
+    else
+    {
+      const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
+      const x2 = x1[ e.key ] || "";
+      const elt = x2 && document.querySelector( x2 ) || null;
+      if ( elt )
+      {
+        elt.click();
+        editor.setFocus();
+      }
+    }
+  } );
 };
