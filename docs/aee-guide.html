@@ -6,8 +6,11 @@
   <link rel="icon" type="image/x-icon" href="aee.png">
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <style>h4, h5 { font-weight: bold; }</style>
+  <script>const init = () =>
+    document.querySelector('#host').innerHTML = ( window.location.host || "localhost" ) + ".JCF"
+  </script>
 </head>
-<body style="font-size: 15pt">
+<body style="font-size: 15pt" onload="init()">
 <h1>Accessible Equation Editor Users Guide</h1>
 
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -36,6 +39,7 @@
 <ul>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
 <li><a href="#sr-jaws-domain">Domain Settings</a></li>
+<li><a href="#sr-jaws-forms">Forms Mode</a></li>
 <li><a href="#sr-jaws-flash">Flash Messages</a></li>
 <li><a href="#sr-jaws-output">Braille Output</a></li>
 <li><a href="#sr-jaws-input">Braille Input</a></li>
@@ -282,15 +286,16 @@ These options include specification of the overall line width, the indentation o
 <h4 id="sr-jaws-suggest">Suggested Settings</h4>
 
 <p>
-JAWS has a large number of settings that can be modified by the user.
+JAWS has a large number of settings that can be modified by the user.  Typing <code>JAWS + 6</code> opens the JAWS Settings Center, which provides access to these settings.
 </p>
 
 <p>
-These are the suggested settings for web pages that contain the AEE.
+The following settings are recommended for web pages that contain the AEE.
 </p>
 
 <ul>
-<li><code>Braille -> Flash Messages -> Enable Flash Messages (Off)</code></li>
+<li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
+<li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
 <li><code>Braille -> General -> Output -> Computer Braille</code></li>
 <li><code>Braille -> General -> Input -> Computer Braille</code></li>
 </ul>
@@ -310,23 +315,82 @@ In addition to specifying settings for on a per-application basis, settings may 
 </p>
 
 <p>
-See the JAWS documentation for details on how to set domain settings.
+The file <a href="aee.jcf">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply these recommended settings.  Use the following steps to install these settings in a Domain Settings file that will be used only for the AEE web site.
+</p>
+
+<ul>
+<li>Open the JAWS Script Manager <code>JAWS + F2 S Enter</code></li>
+<li>Open a New User Script File <code>Ctrl + N Enter</code></li>
+<li>Insert the contents of <a href="aee.jcf">aee.jcf</a> into the empty file</li>
+<li>Press <code>Ctrl + S</code> to save the new file</li>
+<li>Use <code id="host"></code> as the name of the settings file</li>
+<li>Press the <code>Save</code> button to save the settings file</li>
+</ul>
+
+<p>
+These steps need to be done once, for each web domain used to access the AEE.
+</p>
+
+<p>
+See the JAWS documentation for further details on how to set domain settings.
+</p>
+
+<h4 id="sr-jaws-forms">Forms Mode</h4>
+
+<code>Forms Mode -> Select Forms Mode -> Auto</code>
+
+<p>
+Forms Mode affects how JAWS navigates web content in a browser that uses interactive controls to input information, such as combo boxes, menu buttons, and text input areas.  The AEE uses such interactive controls for math entry, and so Forms Mode is used to interact with the editor.
+</p>
+
+<p>
+When JAWS navigates to an interactive control on a web page, Auto Forms Mode instructs JAWS to switch to Forms Mode to allow the user to interact directly with the control, simplifying the use of the control.
+</p>
+
+<p>
+In contrast, Manual Forms Mode instructs JAWS not to switch to forms mode on navigation to an interactive control until instructed to do so when the user types the <code>Enter</code> key.
+</p>
+
+<h5>Automatic AEE activation</h5>
+
+<p>
+Setting Forms Mode to <code>Auto</code> allows the AEE to pull application focus into the AEE edit box when the page loads, without the need for additional user action.  Loading the AEE web page pulls application focus into the AEE edit box, and activates Forms Mode to allow typing into the AEE.
+</p>
+
+<h5>Manual AEE activation</h5>
+
+<p>
+Normal JAWS usage may deactivate Forms Mode to allow navigation to other web content in a page.  If Forms Mode is deactivated, pressing <code>E</code> navigates back to the AEE edit box, and pressing <code>Enter</code> manually activates Forms Mode to allow typing into the AEE.
+</p>
+
+<h5>Return to the main browser window</h5>
+
+<p>
+If the screen reader cursor moves outside the main browser window, then <code>F6</code> moves the cursor to the browser address bar, and <code>Ctrl + F6</code> moves the cursor back to the main browser window.  Once the cursor is back in the main browser window, pressing <code>E Enter</code> activates the AEE manually as described above.
 </p>
 
 <h4 id="sr-jaws-flash">Flash Messages</h4>
 
-<code>Braille -> Flash Messages -> Enable Flash Messages (Off)</code>
+<code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code>
 
 <p>
-This setting controls whether or not ARIA live messages, that should be spoken aloud, are also displayed briefly on the braille device output.
+This setting controls whether or not ARIA live messages, which normally should be spoken aloud, are also displayed briefly on the braille device output.
 </p>
 
 <p>
-Setting this option on instructs JAWS to display the message on the braille device output for the specified amount of time, by default 5000ms, that is, five seconds.
+Setting this option <code>On</code> instructs JAWS to display the message on the braille device output for a specified amount of time, which by default is 5000ms, or five seconds.
 </p>
 
 <p>
-Setting this option Off instructs JAWS not to display these messages on the braille device output, but only to read them aloud.
+Setting this option <code>Off</code> instructs JAWS not to display these messages on the braille device output, but only to read them aloud.
+</p>
+
+<p>
+The AEE uses ARIA live messages to support self-voicing feedback during math expression entry.  Displaying such messages on the Braille display works well when these messages are occasional in nature, but not so well when they occur frequently, as they do in the AEE.
+</p>
+
+<p>
+For this reason, the recommended setting for the AEE is to disable (<code>Off</code>) Flash Messages, which allows convenient braille and speech feedback on each keystroke.
 </p>
 
 <h4 id="sr-jaws-output">Braille Output</h4>
@@ -334,11 +398,11 @@ Setting this option Off instructs JAWS not to display these messages on the brai
 <code>Braille -> General -> Output -> Computer Braille</code>
 
 <p>
-This setting controls the Braille code used to output to the braille device.
+This setting controls the Braille code used to output information to the braille device.
 </p>
 
 <p>
-Setting this option to Computer Braille instructs JAWS not to translate the braille output from the AEE.
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
 </p>
 
 <h4 id="sr-jaws-input">Braille Input</h4>
@@ -346,11 +410,11 @@ Setting this option to Computer Braille instructs JAWS not to translate the brai
 <code>Braille -> General -> Input -> Computer Braille</code>
 
 <p>
-This setting controls the Braille code used for input from the braille device.
+This setting controls the Braille code used to input information from the braille device.
 </p>
 
 <p>
-Setting this option to Computer Braille instructs JAWS not to translate the braille input sent to the AEE.
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
 </p>
 
 <h2 id="appendix">Appendix</h2>
