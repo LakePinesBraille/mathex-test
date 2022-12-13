@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <style>h4, h5 { font-weight: bold; }</style>
   <script>const init = () =>
-    document.querySelector('#host').innerHTML = ( window.location.host || "localhost" ) + ".JCF"
+    document.querySelector('#host').download = ( window.location.host || "localhost" ) + ".JCF"
   </script>
 </head>
 <body style="font-size: 15pt" onload="init()">
@@ -315,16 +315,39 @@ In addition to specifying settings for on a per-application basis, settings may 
 </p>
 
 <p>
-The file <a href="aee.jcf">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply these recommended settings.  Use the following steps to install these settings in a Domain Settings file that will be used only for the AEE web site.
+The file <a href="aee.jcf.txt">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply these recommended settings.  You can use the following steps to install these settings in a Domain Settings file in the JAWS Settings Folder, so they will be used only for the AEE web site.
+</p>
+
+<p>
+Use these steps to find the location of the JAWS Settings Folder using the JAWS Script Manager.
+<p>
+
+<ul>
+<li>Type <code>JAWS + F2 S Enter</code> to open the JAWS Script Manager</li>
+<li>Type <code>Ctrl + O</code> to open the Open User File dialog</li>
+<li>Use the <code>Tab</code> key to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the JAWS Settings Folder path</li>
+<li>Press <code>Ctrl + C</code> to copy the path to the clipboard</li>
+<li>Use the <code>Shift + Tab</code> key to navigate to the <code>Cancel</code> button</li>
+<li>Press <code>Space</code> to dismiss the Open User File dialog</li>
+</ul>
+
+<p>
+Once you have the location of the JAWS Settings Folder on the clipboard, use these steps to install the AEE configuration file in the JAWS Settings Folder.
 </p>
 
 <ul>
-<li>Open the JAWS Script Manager <code>JAWS + F2 S Enter</code></li>
-<li>Open a New User Script File <code>Ctrl + N Enter</code></li>
-<li>Insert the contents of <a href="aee.jcf">aee.jcf</a> into the empty file</li>
-<li>Press <code>Ctrl + S</code> to save the new file</li>
-<li>Use <code id="host"></code> as the name of the settings file</li>
-<li>Press the <code>Save</code> button to save the settings file</li>
+<li>Use <a id="host" href="aee.jcf.txt">this link</a> to open the Save As dialog
+<ul>
+<li>If your browser asks you where to save files, press <code>Enter</code> to activate the link.</li>
+<li>Otherwise, press the application menu key to activate the context menu, and arrow down to Save Link As.</li>
+</ul>
+<li>Use the <code>Tab</code> key to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the Download Folder path</li>
+<li>Press <code>Ctrl + V</code> to copy the path from the clipboard</li>
+<li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
+<li>Use the <code>Shift + Tab</code> key to navigate to the <code>Save</code> button</li>
+<li>Press <code>Enter</code> to save the configuration file</li>
 </ul>
 
 <p>
