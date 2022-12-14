@@ -4,3 +4,5 @@ BrailleMessages=0
 AutoFormsMode=1
 [Braille Profiles]
 enu=0|19|US_Unicode|US_Unicode|0
+[OutputModes]
+TUTOR=2|2|2|Tutor

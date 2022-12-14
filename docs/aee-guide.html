@@ -39,10 +39,11 @@
 <ul>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
 <li><a href="#sr-jaws-domain">Domain Settings</a></li>
-<li><a href="#sr-jaws-forms">Forms Mode</a></li>
-<li><a href="#sr-jaws-flash">Flash Messages</a></li>
 <li><a href="#sr-jaws-output">Braille Output</a></li>
 <li><a href="#sr-jaws-input">Braille Input</a></li>
+<li><a href="#sr-jaws-forms">Forms Mode</a></li>
+<li><a href="#sr-jaws-flash">Flash Messages</a></li>
+<li><a href="#sr-jaws-tutor">Tutor Messages</a></li>
 </ul>
 </ul>
 <li><a href="#appendix">Appendix</a></li>
@@ -294,10 +295,11 @@ The following settings are recommended for web pages that contain the AEE.
 </p>
 
 <ul>
-<li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
-<li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
 <li><code>Braille -> General -> Output -> Computer Braille</code></li>
 <li><code>Braille -> General -> Input -> Computer Braille</code></li>
+<li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
+<li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
+<li><code>Options -> Basics -> Tutor Messages -> Announce custom messages only</code></li>
 </ul>
 
 <p>
@@ -358,6 +360,30 @@ These steps need to be done once, for each web domain used to access the AEE.
 See the JAWS documentation for further details on how to set domain settings.
 </p>
 
+<h4 id="sr-jaws-output">Braille Output</h4>
+
+<code>Braille -> General -> Output -> Computer Braille</code>
+
+<p>
+This setting controls the Braille code used to output information to the braille device.
+</p>
+
+<p>
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
+</p>
+
+<h4 id="sr-jaws-input">Braille Input</h4>
+
+<code>Braille -> General -> Input -> Computer Braille</code>
+
+<p>
+This setting controls the Braille code used to input information from the braille device.
+</p>
+
+<p>
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
+</p>
+
 <h4 id="sr-jaws-forms">Forms Mode</h4>
 
 <code>Forms Mode -> Select Forms Mode -> Auto</code>
@@ -416,28 +442,22 @@ The AEE uses ARIA live messages to support self-voicing feedback during math exp
 For this reason, the recommended setting for the AEE is to disable (<code>Off</code>) Flash Messages, which allows convenient braille and speech feedback on each keystroke.
 </p>
 
-<h4 id="sr-jaws-output">Braille Output</h4>
+<h4 id="sr-jaws-tutor">Tutor Messages</h4>
 
-<code>Braille -> General -> Output -> Computer Braille</code>
+<code>Options -> Basics -> Tutor Messages -> Announce custom messages only</code>
 
 <p>
-This setting controls the Braille code used to output information to the braille device.
+JAWS announces short phrases to assist novice users with menu and control usage.  For example, JAWS announces the phrase "type in text" when a text area receives the input focus.  These messages can be controlled using <code>Options -> Basics -> Tutor Messages</code> from the JAWS window, but not through the JAWS Settings Center.  This setting has three options:
 </p>
 
-<p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
-</p>
-
-<h4 id="sr-jaws-input">Braille Input</h4>
-
-<code>Braille -> General -> Input -> Computer Braille</code>
+<ul>
+<li>Turn off menu and control help - this option disables the announcement of tutor messages, but they are still included in the speech history.</li>
+<li>Announce menu and control help (default) - this option announces the tutor messages, and they are included in the speech history.</li>
+<li>Announce custom messages only (suggested) - this option disables the announcement of tutor messages, and removes them from the speech history.</li>
+</ul>
 
 <p>
-This setting controls the Braille code used to input information from the braille device.
-</p>
-
-<p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
+While this setting cannot be controlled in the JAWS Settings Center, the configuration directives used by the setting can be placed in domain settings files.  The directive to announce custom messages only is included in the AEE domain settings file provided above.
 </p>
 
 <h2 id="appendix">Appendix</h2>

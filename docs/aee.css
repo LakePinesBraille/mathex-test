@@ -30,3 +30,21 @@ body
 {
     border-color: #bfbfbf !important;
 }
+
+.ee-init-panel {
+    background-color: transparent !important;
+    color: transparent !important;
+    border: 0px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+
+    position: relative;
+    display: block;
+    outline: none;
+    resize: none;
+
+    left: -100px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

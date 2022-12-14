@@ -1,4 +1,19 @@
-const aee_init = function() {
+const aee_onload = () => {
+  const body = document.body;
+
+  const div = document.createElement( "div" );
+  div.setAttribute( "class", "ee-menu" );
+  body.insertBefore( div, body.firstChild );
+
+  const elt = document.createElement( "textarea" );
+  elt.setAttribute( "class", "ee-init-panel" );
+  elt.setAttribute( "aria-label", "equation" );
+
+  body.insertBefore( elt, body.firstChild );
+  elt.focus();
+};
+
+const aee_init = () => {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
   if ( editor )
   {
