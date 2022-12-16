@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <style>h4, h5 { font-weight: bold; }</style>
   <script>const init = () =>
-    document.querySelector('#host').innerHTML = ( window.location.host || "localhost" ) + ".JCF"
+    document.querySelector('#host').download = ( window.location.host || "localhost" ) + ".JCF"
   </script>
 </head>
 <body style="font-size: 15pt" onload="init()">
@@ -37,12 +37,14 @@
 <ul>
 <li><a href="#sr-jaws">JAWS</a></li>
 <ul>
+<li><a href="#sr-jaws-settings">JAWS Settings</a></li>
+<li><a href="#sr-jaws-aee">AEE Settings</a></li>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
-<li><a href="#sr-jaws-domain">Domain Settings</a></li>
-<li><a href="#sr-jaws-forms">Forms Mode</a></li>
-<li><a href="#sr-jaws-flash">Flash Messages</a></li>
 <li><a href="#sr-jaws-output">Braille Output</a></li>
 <li><a href="#sr-jaws-input">Braille Input</a></li>
+<li><a href="#sr-jaws-forms">Forms Mode</a></li>
+<li><a href="#sr-jaws-flash">Flash Messages</a></li>
+<li><a href="#sr-jaws-tutor">Tutor Messages</a></li>
 </ul>
 </ul>
 <li><a href="#appendix">Appendix</a></li>
@@ -283,56 +285,120 @@ These options include specification of the overall line width, the indentation o
 
 <h3 id="sr-jaws">JAWS</h3>
 
-<h4 id="sr-jaws-suggest">Suggested Settings</h4>
+<h4 id="sr-jaws-settings">JAWS Settings</h4>
 
 <p>
-JAWS has a large number of settings that can be modified by the user.  Typing <code>JAWS + 6</code> opens the JAWS Settings Center, which provides access to these settings.
+JAWS has a large number of settings that can be modified by the user.  Typing <code>JAWS + 6</code> opens the JAWS Settings Center, which provides access to many of these settings.
 </p>
+
+<p>
+These settings may be specified for a specific application by choosing the application name on the Settings Center Application drop down, or they may be specified for all applications by choosing the <code>Default (All Applications)</code> selection.
+</p>
+
+<p>
+In addition to specifying settings on a per-application basis, settings may also be specified on a per-domain basis to control JAWS behavior when the browser visits web pages from a particular web domain.
+</p>
+
+<p>
+The JAWS Script Manager may be used to create domain settings files in the JAWS Settings Folder.  Typing <code>JAWS + 0</code> opens the JAWS Script Manager, which provides access to various types of configuration files in the JAWS Settings Folder.
+</p>
+
+<p>
+See the JAWS documentation for further details on how to use the JAWS Settings Center and the JAWS Script Manager.
+</p>
+
+<h4 id="sr-jaws-aee">AEE Settings</h4>
+
+<p>
+The AEE Configuration File <a href="aee.jcf">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply recommended settings for the AEE.  You can use the following steps to install these settings as a Domain Settings file in the JAWS Settings Folder, so they will be used for the AEE web site without affecting configuration settings for other applications.
+</p>
+
+<p>
+First, use these steps to find the location of the JAWS Settings Folder on your machine using the JAWS Script Manager, and copy its location to the clipboard.
+<p>
+
+<ul>
+<li>Type <code>JAWS + 0</code> to open the JAWS Script Manager</li>
+<li>Type <code>Ctrl + O</code> to open the Open User File dialog</li>
+<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the JAWS Settings Folder location</li>
+<li>Press <code>Ctrl + C</code> to copy the location to the clipboard</li>
+<li>Use <code>Shift + Tab</code> to navigate to the <code>Cancel</code> button</li>
+<li>Press <code>Space</code> to dismiss the Open User File dialog</li>
+</ul>
+
+<p>
+Next, use these steps to install the AEE Configuration File in the JAWS Settings Folder.
+</p>
+
+<ul>
+<li>Use <code>Tab</code> to navigate to <a id="host" href="aee.jcf">this link</a> to open the <code>Save Link As</code> dialog
+<li>Press the application menu key to activate the link context menu</li>
+<li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
+<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the Download Folder path</li>
+<li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
+<li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
+<li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
+<li>Press <code>Enter</code> to save the AEE configuration file</li>
+</ul>
+
+<p>
+These steps need to be done only once, for each web domain used to access the AEE.
+</p>
+
+<p>
+The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
+</p>
+
+<h4 id="sr-jaws-suggest">Suggested Settings</h4>
 
 <p>
 The following settings are recommended for web pages that contain the AEE.
 </p>
 
 <ul>
-<li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
-<li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
 <li><code>Braille -> General -> Output -> Computer Braille</code></li>
 <li><code>Braille -> General -> Input -> Computer Braille</code></li>
+<li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
+<li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
+<li><code>Options -> Basics -> Tutor Messages -> Announce custom messages only</code></li>
 </ul>
 
 <p>
 The effects of these settings are explained in more detail below.
 </p>
 
-<h4 id="sr-jaws-domain">Domain Settings</h4>
+<h4 id="sr-jaws-output">Braille Output</h4>
+
+<code>Braille -> General -> Output -> Computer Braille</code>
 
 <p>
-These settings may be specified for a specific application by choosing the application name on the Settings Center Application drop down, or they may be specified for all applications by choosing the "Default (All Applications)" selection.
+This setting controls the Braille code used to output information to the braille device.
 </p>
 
 <p>
-In addition to specifying settings for on a per-application basis, settings may also be specified on a per-domain basis to control JAWS behavior when the browser visits web pages from a given domain.
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
 </p>
 
 <p>
-The file <a href="aee.jcf">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply these recommended settings.  Use the following steps to install these settings in a Domain Settings file that will be used only for the AEE web site.
+The recommended setting for the AEE is to use <code>Computer Braille</code> output, so the braille device can receive and process the raw braille output produced by the AEE.
 </p>
 
-<ul>
-<li>Open the JAWS Script Manager <code>JAWS + F2 S Enter</code></li>
-<li>Open a New User Script File <code>Ctrl + N Enter</code></li>
-<li>Insert the contents of <a href="aee.jcf">aee.jcf</a> into the empty file</li>
-<li>Press <code>Ctrl + S</code> to save the new file</li>
-<li>Use <code id="host"></code> as the name of the settings file</li>
-<li>Press the <code>Save</code> button to save the settings file</li>
-</ul>
+<h4 id="sr-jaws-input">Braille Input</h4>
+
+<code>Braille -> General -> Input -> Computer Braille</code>
 
 <p>
-These steps need to be done once, for each web domain used to access the AEE.
+This setting controls the Braille code used to input information from the braille device.
 </p>
 
 <p>
-See the JAWS documentation for further details on how to set domain settings.
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
+</p>
+
+<p>
+The recommended setting for the AEE is to use <code>Computer Braille</code> input, so the AEE can receive and process the raw braille input collected by the braille device.
 </p>
 
 <h4 id="sr-jaws-forms">Forms Mode</h4>
@@ -349,6 +415,10 @@ When JAWS navigates to an interactive control on a web page, Auto Forms Mode ins
 
 <p>
 In contrast, Manual Forms Mode instructs JAWS not to switch to forms mode on navigation to an interactive control until instructed to do so when the user types the <code>Enter</code> key.
+</p>
+
+<p>
+While the recommended setting for the AEE is to use <code>Auto Forms Mode</code> to allow automatic AEE activation when the page loads, the AEE will operate properly with <code>Manual Forms Mode</code> as well.
 </p>
 
 <h5>Automatic AEE activation</h5>
@@ -393,28 +463,22 @@ The AEE uses ARIA live messages to support self-voicing feedback during math exp
 For this reason, the recommended setting for the AEE is to disable (<code>Off</code>) Flash Messages, which allows convenient braille and speech feedback on each keystroke.
 </p>
 
-<h4 id="sr-jaws-output">Braille Output</h4>
+<h4 id="sr-jaws-tutor">Tutor Messages</h4>
 
-<code>Braille -> General -> Output -> Computer Braille</code>
+<code>Options -> Basics -> Tutor Messages -> Announce custom messages only</code>
 
 <p>
-This setting controls the Braille code used to output information to the braille device.
+JAWS announces short phrases to assist novice users with menu and control usage.  For example, JAWS announces the phrase "type in text" when a text area receives the input focus.  These messages can be controlled using <code>Options -> Basics -> Tutor Messages</code> from the JAWS window, but not through the JAWS Settings Center.  This setting has three options:
 </p>
 
-<p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
-</p>
-
-<h4 id="sr-jaws-input">Braille Input</h4>
-
-<code>Braille -> General -> Input -> Computer Braille</code>
+<ul>
+<li>Turn off menu and control help - this option disables the announcement of tutor messages, but they are still included in the speech history.</li>
+<li>Announce menu and control help (default) - this option announces the tutor messages, and they are included in the speech history.</li>
+<li>Announce custom messages only (suggested) - this option disables the announcement of tutor messages, and removes them from the speech history.</li>
+</ul>
 
 <p>
-This setting controls the Braille code used to input information from the braille device.
-</p>
-
-<p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
+Since this setting cannot be controlled by the JAWS Settings Center, it also cannot be placed in domain settings files.  While the recommended setting for the AEE is to use <code>Announce custom messages only</code>, the AEE will operate properly with any setting.
 </p>
 
 <h2 id="appendix">Appendix</h2>
