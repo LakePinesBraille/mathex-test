@@ -37,8 +37,9 @@
 <ul>
 <li><a href="#sr-jaws">JAWS</a></li>
 <ul>
+<li><a href="#sr-jaws-settings">JAWS Settings</a></li>
+<li><a href="#sr-jaws-aee">AEE Settings</a></li>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
-<li><a href="#sr-jaws-domain">Domain Settings</a></li>
 <li><a href="#sr-jaws-output">Braille Output</a></li>
 <li><a href="#sr-jaws-input">Braille Input</a></li>
 <li><a href="#sr-jaws-forms">Forms Mode</a></li>
@@ -284,11 +285,73 @@ These options include specification of the overall line width, the indentation o
 
 <h3 id="sr-jaws">JAWS</h3>
 
-<h4 id="sr-jaws-suggest">Suggested Settings</h4>
+<h4 id="sr-jaws-settings">JAWS Settings</h4>
 
 <p>
-JAWS has a large number of settings that can be modified by the user.  Typing <code>JAWS + 6</code> opens the JAWS Settings Center, which provides access to these settings.
+JAWS has a large number of settings that can be modified by the user.  Typing <code>JAWS + 6</code> opens the JAWS Settings Center, which provides access to many of these settings.
 </p>
+
+<p>
+These settings may be specified for a specific application by choosing the application name on the Settings Center Application drop down, or they may be specified for all applications by choosing the <code>Default (All Applications)</code> selection.
+</p>
+
+<p>
+In addition to specifying settings on a per-application basis, settings may also be specified on a per-domain basis to control JAWS behavior when the browser visits web pages from a particular web domain.
+</p>
+
+<p>
+The JAWS Script Manager may be used to create domain settings files in the JAWS Settings Folder.  Typing <code>JAWS + 0</code> opens the JAWS Script Manager, which provides access to various types of configuration files in the JAWS Settings Folder.
+</p>
+
+<p>
+See the JAWS documentation for further details on how to use the JAWS Settings Center and the JAWS Script Manager.
+</p>
+
+<h4 id="sr-jaws-aee">AEE Settings</h4>
+
+<p>
+The AEE Configuration File <a href="aee.jcf">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply recommended settings for the AEE.  You can use the following steps to install these settings as a Domain Settings file in the JAWS Settings Folder, so they will be used for the AEE web site without affecting configuration settings for other applications.
+</p>
+
+<p>
+First, use these steps to find the location of the JAWS Settings Folder on your machine using the JAWS Script Manager, and copy its location to the clipboard.
+<p>
+
+<ul>
+<li>Type <code>JAWS + 0</code> to open the JAWS Script Manager</li>
+<li>Type <code>Ctrl + O</code> to open the Open User File dialog</li>
+<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the JAWS Settings Folder location</li>
+<li>Press <code>Ctrl + C</code> to copy the location to the clipboard</li>
+<li>Use <code>Shift + Tab</code> to navigate to the <code>Cancel</code> button</li>
+<li>Press <code>Space</code> to dismiss the Open User File dialog</li>
+</ul>
+
+<p>
+Next, use these steps to install the AEE Configuration File in the JAWS Settings Folder.
+</p>
+
+<ul>
+<li>Use <code>Tab</code> to navigate to <a id="host" href="aee.jcf">this link</a> to open the <code>Save Link As</code> dialog
+<li>Press the application menu key to activate the link context menu</li>
+<li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
+<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
+<li>Press <code>Space</code> to select the Download Folder path</li>
+<li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
+<li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
+<li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
+<li>Press <code>Enter</code> to save the AEE configuration file</li>
+</ul>
+
+<p>
+These steps need to be done only once, for each web domain used to access the AEE.
+</p>
+
+<p>
+The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
+</p>
+
+<h4 id="sr-jaws-suggest">Suggested Settings</h4>
 
 <p>
 The following settings are recommended for web pages that contain the AEE.
@@ -306,60 +369,6 @@ The following settings are recommended for web pages that contain the AEE.
 The effects of these settings are explained in more detail below.
 </p>
 
-<h4 id="sr-jaws-domain">Domain Settings</h4>
-
-<p>
-These settings may be specified for a specific application by choosing the application name on the Settings Center Application drop down, or they may be specified for all applications by choosing the "Default (All Applications)" selection.
-</p>
-
-<p>
-In addition to specifying settings for on a per-application basis, settings may also be specified on a per-domain basis to control JAWS behavior when the browser visits web pages from a given domain.
-</p>
-
-<p>
-The file <a href="aee.jcf.txt">aee.jcf</a> contains configuration directives for JAWS 2023 that can be used to apply these recommended settings.  You can use the following steps to install these settings in a Domain Settings file in the JAWS Settings Folder, so they will be used only for the AEE web site.
-</p>
-
-<p>
-Use these steps to find the location of the JAWS Settings Folder using the JAWS Script Manager.
-<p>
-
-<ul>
-<li>Type <code>JAWS + F2 S Enter</code> to open the JAWS Script Manager</li>
-<li>Type <code>Ctrl + O</code> to open the Open User File dialog</li>
-<li>Use the <code>Tab</code> key to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the JAWS Settings Folder path</li>
-<li>Press <code>Ctrl + C</code> to copy the path to the clipboard</li>
-<li>Use the <code>Shift + Tab</code> key to navigate to the <code>Cancel</code> button</li>
-<li>Press <code>Space</code> to dismiss the Open User File dialog</li>
-</ul>
-
-<p>
-Once you have the location of the JAWS Settings Folder on the clipboard, use these steps to install the AEE configuration file in the JAWS Settings Folder.
-</p>
-
-<ul>
-<li>Use <a id="host" href="aee.jcf.txt">this link</a> to open the Save As dialog
-<ul>
-<li>If your browser asks you where to save files, press <code>Enter</code> to activate the link.</li>
-<li>Otherwise, press the application menu key to activate the context menu, and arrow down to Save Link As.</li>
-</ul>
-<li>Use the <code>Tab</code> key to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the Download Folder path</li>
-<li>Press <code>Ctrl + V</code> to copy the path from the clipboard</li>
-<li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
-<li>Use the <code>Shift + Tab</code> key to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the configuration file</li>
-</ul>
-
-<p>
-These steps need to be done once, for each web domain used to access the AEE.
-</p>
-
-<p>
-See the JAWS documentation for further details on how to set domain settings.
-</p>
-
 <h4 id="sr-jaws-output">Braille Output</h4>
 
 <code>Braille -> General -> Output -> Computer Braille</code>
@@ -372,6 +381,10 @@ This setting controls the Braille code used to output information to the braille
 Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille output from the AEE.
 </p>
 
+<p>
+The recommended setting for the AEE is to use <code>Computer Braille</code> output, so the braille device can receive and process the raw braille output produced by the AEE.
+</p>
+
 <h4 id="sr-jaws-input">Braille Input</h4>
 
 <code>Braille -> General -> Input -> Computer Braille</code>
@@ -382,6 +395,10 @@ This setting controls the Braille code used to input information from the braill
 
 <p>
 Setting this option to <code>Computer Braille</code> instructs JAWS not to translate the braille input sent to the AEE.
+</p>
+
+<p>
+The recommended setting for the AEE is to use <code>Computer Braille</code> input, so the AEE can receive and process the raw braille input collected by the braille device.
 </p>
 
 <h4 id="sr-jaws-forms">Forms Mode</h4>
@@ -398,6 +415,10 @@ When JAWS navigates to an interactive control on a web page, Auto Forms Mode ins
 
 <p>
 In contrast, Manual Forms Mode instructs JAWS not to switch to forms mode on navigation to an interactive control until instructed to do so when the user types the <code>Enter</code> key.
+</p>
+
+<p>
+While the recommended setting for the AEE is to use <code>Auto Forms Mode</code> to allow automatic AEE activation when the page loads, the AEE will operate properly with <code>Manual Forms Mode</code> as well.
 </p>
 
 <h5>Automatic AEE activation</h5>
@@ -457,7 +478,7 @@ JAWS announces short phrases to assist novice users with menu and control usage.
 </ul>
 
 <p>
-While this setting cannot be controlled in the JAWS Settings Center, the configuration directives used by the setting can be placed in domain settings files.  The directive to announce custom messages only is included in the AEE domain settings file provided above.
+Since this setting cannot be controlled by the JAWS Settings Center, it also cannot be placed in domain settings files.  While the recommended setting for the AEE is to use <code>Announce custom messages only</code>, the AEE will operate properly with any setting.
 </p>
 
 <h2 id="appendix">Appendix</h2>

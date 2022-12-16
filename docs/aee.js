@@ -8,6 +8,11 @@ const aee_onload = () => {
   const elt = document.createElement( "textarea" );
   elt.setAttribute( "class", "ee-init-panel" );
   elt.setAttribute( "aria-label", "equation" );
+  elt.setAttribute( "tabindex", "-1" );
+
+  elt.addEventListener( "blur", () => {
+    body.removeChild( elt );
+  } );
 
   body.insertBefore( elt, body.firstChild );
   elt.focus();
