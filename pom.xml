@@ -5,7 +5,7 @@
   <name>Accessible Equation Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
-  <version>0.2.7-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <build>
