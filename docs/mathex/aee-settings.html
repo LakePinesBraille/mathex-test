@@ -20,8 +20,80 @@ const settings = {
   "aee-file-indent-first" : 3,
   "aee-file-indent-runover" : 1,
   "aee-math-indent-first" : 3,
-  "aee-math-indent-runover" : 5
+  "aee-math-indent-runover" : 5,
+  "brl-rules-all-rules" : "true",
+  "brl-rules-alphabetic-wordsigns" : "true",
+  "brl-rules-strong-wordsigns" : "true",
+  "brl-rules-strong-contractions" : "true",
+  "brl-rules-strong-groupsigns" : "true",
+  "brl-rules-lower-wordsigns" : "true",
+  "brl-rules-lower-groupsigns" : "true",
+  "brl-rules-initial-letter" : "true",
+  "brl-rules-initial-letter-45" : "true",
+  "brl-rules-initial-letter-456" : "true",
+  "brl-rules-initial-letter-5" : "true",
+  "brl-rules-final-letter" : "true",
+  "brl-rules-final-letter-46" : "true",
+  "brl-rules-final-letter-56" : "true",
+  "brl-rules-shortforms" : "true",
 };
+
+const click_grp = function( gelt, elts )
+{
+  for ( var k in elts ) {
+    var elt = document.querySelector( "#" + elts[ k ] );
+    elt.checked = gelt.checked;
+  }
+};
+
+const click_elt = function ( gelt, elts )
+{
+  var value = true;
+  for ( var k in elts ) {
+    var elt = document.querySelector( "#" + elts[ k ] );
+    value = value && elt.checked;
+  }
+  gelt.checked = value;
+};
+
+const rule = function( grp, elts ) {
+    var gelt = document.querySelector( "#" + grp );
+    gelt.addEventListener( "click", () => click_grp( gelt, elts ) );
+
+    for ( var k in elts )
+    {
+        var elt = document.querySelector( "#" + elts[ k ] );
+        elt.addEventListener( "click", () => click_elt( gelt, elts ) );
+    }
+};
+
+const init = function() {
+  rule( "brl-rules-initial-letter",
+    [ "brl-rules-initial-letter-45",
+      "brl-rules-initial-letter-456",
+      "brl-rules-initial-letter-5" ] );
+  rule( "brl-rules-final-letter",
+    [ "brl-rules-final-letter-46",
+      "brl-rules-final-letter-56" ] );
+  rule( "brl-rules-all-rules",
+    [
+      "brl-rules-alphabetic-wordsigns",
+      "brl-rules-strong-wordsigns",
+      "brl-rules-strong-contractions",
+      "brl-rules-strong-groupsigns",
+      "brl-rules-lower-wordsigns",
+      "brl-rules-lower-groupsigns",
+      "brl-rules-initial-letter",
+      "brl-rules-initial-letter-45",
+      "brl-rules-initial-letter-456",
+      "brl-rules-initial-letter-5",
+      "brl-rules-final-letter",
+      "brl-rules-final-letter-46",
+      "brl-rules-final-letter-56",
+      "brl-rules-shortforms",
+    ]);
+};
+
 const load = function() {
   for ( var k in settings )
   {
@@ -37,6 +109,7 @@ const load = function() {
     }
   }
 };
+
 const save = function() {
   localStorage.clear();
   for ( var k in settings )
@@ -46,6 +119,7 @@ const save = function() {
     localStorage[ k ] = v;
   }
 };
+
 const reset = function() {
   localStorage.clear();
   for ( var k in settings )
@@ -53,17 +127,19 @@ const reset = function() {
     localStorage[ k ] = settings[ k ];
   }
 };
+
 const done = function() {
   window.close();
 };
   </script>
   <style>
 body { font-size: 15pt }
-label { width: 1.5in }
+label { width: 3.5in }
 input { width: 0.5in }
+.indent { padding-left: 0.5in }
   </style>
 </head>
-<body onload="load()">
+<body onload="init(); load()">
 <h1>Accessible Equation Editor Settings</h1>
 
 <button type="button" id="ok" onclick="save(); done()"
@@ -89,6 +165,83 @@ input { width: 0.5in }
 <div>
 <label for="aee-mathjax-on-print">On Print</label>
 <input id="aee-mathjax-on-print" type="checkbox"></input>
+</div>
+
+<h2>Braille Rules Settings</h2>
+
+<div>
+<label for="brl-rules-all-rules">Contracted Braille (all rules)</label>
+<input id="brl-rules-all-rules" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-alphabetic-wordsigns">[10.1] Alphabetic wordsigns</label>
+<input id="brl-rules-alphabetic-wordsigns" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-strong-wordsigns">[10.2] Strong wordsigns</label>
+<input id="brl-rules-strong-wordsigns" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-strong-contractions">[10.3] Strong contractions</label>
+<input id="brl-rules-strong-contractions" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-strong-groupsigns">[10.4] Strong groupsigns</label>
+<input id="brl-rules-strong-groupsigns" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-lower-wordsigns">[10.5] Lower wordsigns</label>
+<input id="brl-rules-lower-wordsigns" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-lower-groupsigns">[10.6] Lower groupsigns</label>
+<input id="brl-rules-lower-groupsigns" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-initial-letter" class="group">[10.7] Initial-letter contractions</label>
+<input id="brl-rules-initial-letter" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-initial-letter-45" class="indent">Dots-45</label>
+<input id="brl-rules-initial-letter-45" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-initial-letter-456" class="indent">Dots-456</label>
+<input id="brl-rules-initial-letter-456" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-initial-letter-5" class="indent">Dots-5</label>
+<input id="brl-rules-initial-letter-5" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-final-letter" class="group">[10.8] Final-letter groupsigns</label>
+<input id="brl-rules-final-letter" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-final-letter-46" class="indent">Dots-46</label>
+<input id="brl-rules-final-letter-46" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-final-letter-56" class="indent">Dots-56</label>
+<input id="brl-rules-final-letter-56" type="checkbox"></input>
+</div>
+
+<div>
+<label for="brl-rules-shortforms">[10.9] Shortforms</label>
+<input id="brl-rules-shortforms" type="checkbox"></input>
 </div>
 
 <h2>Braille Format Settings</h2>

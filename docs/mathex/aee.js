@@ -411,7 +411,6 @@ const aee_init = () => {
     }
     catch ( e )
     {
-      console.log( e );
     }
   };
 
@@ -433,6 +432,23 @@ const aee_init = () => {
 
       const markup = getMathBits( editor.getPresent() );
       navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_settings = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const src = getSource() + "aee-settings.html";
+      const nwindow = window.open( src );
+
+      nwindow.addEventListener( "beforeunload", () => {
+        EquationEditorAPI.BrlAPI.updateBrailleRules();
+        editor.setFocus();
+      } )
     }
     catch ( e )
     {
@@ -472,7 +488,7 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="' + getSource() + 'aee-start.html" id="start" accesskey="g">G&#x0332;etting Started</a></li>' +
 '            <li><a target="_blank" href="' + getSource() + 'aee-guide.html" id="guide" accesskey="u">U&#x0332;sers Guide</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-settings.html" id="settings" accesskey="z">Settings (z&#x0332;)</a></li>' +
+'            <li><a href="#" id="settings" accesskey="z">Settings (z&#x0332;)</a></li>' +
 '            <li><a target="_blank" href="' + getSource() + 'aee-about.html" id="about" accesskey="a">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -499,6 +515,8 @@ const aee_init = () => {
   addClick( "#copyPrint", do_copyPrint );
   addClick( "#copyPrintAll", do_copyPrintAll );
   addClick( "#copyAllMath", do_copyAllMath );
+
+  addClick( "#settings", do_settings );
 
   const accel = {
     f: {
