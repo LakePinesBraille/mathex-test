@@ -447,6 +447,7 @@ const aee_init = () => {
 
       nwindow.addEventListener( "beforeunload", () => {
         EquationEditorAPI.BrlAPI.updateBrailleRules();
+        editor.setFocus();
       } )
     }
     catch ( e )
