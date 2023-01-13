@@ -462,13 +462,13 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="f">File<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="#" id="open" accesskey="o">O&#x0332;pen</a></li>' +
-'            <li><a href="#" id="save" accesskey="s">S&#x0332;ave</a></li>' +
-'            <li><a href="#" id="saveBRF" accesskey="b">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="savePrint">Sav&#x0332;e Print</a></li>' +
-'            <li><a href="#" id="export" accesskey="x">Ex&#x0332;port</a></li>' +
-'            <li><a href="#" id="print" accesskey="p">P&#x0332;rint</a></li>' +
-'            <li><a href="#" id="close" accesskey="c">C&#x0332;lose</a></li>' +
+'            <li><a href="#" id="open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
+'            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="saveBRF" accesskey="b" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="savePrint">Save Print</a></li>' +
+'            <li><a href="#" id="export" accesskey="x" aria-label="Export">Ex&#x0332;port</a></li>' +
+'            <li><a href="#" id="print" accesskey="p" aria-label="Print">P&#x0332;rint</a></li>' +
+'            <li><a href="#" id="close" accesskey="c" aria-label="Close">C&#x0332;lose</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -486,10 +486,10 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="' + getSource() + 'aee-start.html" id="start" accesskey="g">G&#x0332;etting Started</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html" id="guide" accesskey="u">U&#x0332;sers Guide</a></li>' +
-'            <li><a href="#" id="settings" accesskey="z">Settings (z&#x0332;)</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-about.html" id="about" accesskey="a">A&#x0332;bout</a></li>' +
+'            <li><a href="' + getSource() + 'aee-start.html" id="start" accesskey="g" aria-label="Getting Started">G&#x0332;etting Started</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="#" id="settings" accesskey="z" aria-label="Settings">Settings (z&#x0332;)</a></li>' +
+'            <li><a target="_blank" href="' + getSource() + 'aee-about.html" id="about" accesskey="a" aria-label="About">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
