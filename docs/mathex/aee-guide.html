@@ -44,6 +44,7 @@
 <li><a href="#sr-jaws-input">Braille Input</a></li>
 <li><a href="#sr-jaws-forms">Forms Mode</a></li>
 <li><a href="#sr-jaws-flash">Flash Messages</a></li>
+<li><a href="#sr-jaws-refresh">Page Refresh</a></li>
 <li><a href="#sr-jaws-tutor">Tutor Messages</a></li>
 </ul>
 </ul>
@@ -362,6 +363,7 @@ The following settings are recommended for web pages that contain the AEE.
 <li><code>Braille -> General -> Input -> Computer Braille</code></li>
 <li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
 <li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
+<li><code>Web / HTML / PDFs > Miscellaneous > Page Refresh Filter</code></li>
 <li><code>Options -> Basics -> Tutor Messages -> Announce custom messages only</code></li>
 </ul>
 
@@ -461,6 +463,30 @@ The AEE uses ARIA live messages to support self-voicing feedback during math exp
 
 <p>
 For this reason, the recommended setting for the AEE is to disable (<code>Off</code>) Flash Messages, which allows convenient braille and speech feedback on each keystroke.
+</p>
+
+<h4 id="sr-jaws-refresh">Page Refresh</h4>
+
+<code>Web / HTML / PDFs > Miscellaneous > Page Refresh Filter</code>
+
+<p>
+Dynamic web pages like the AEE web page require special techniques to control the JAWS page refresh behavior.
+</p>
+
+<p>
+JAWS provides the key combination <code>JAWS + Escape</code> to refresh the braille page manually.  This key combination can be used when JAWS fails to keep up with dynamic page changes used by the AEE.
+</p>
+
+<p>
+One such case is when the Braille display shows the message <code>App CTL equation btn</code> instead of the braille translation of the formula in the edit window.  Pressing <code>JAWS + Escape</code> will restore the Braille display to the correct state.
+</p>
+
+<p>
+The <code>Page Refresh Filter</code> setting may be used to control the JAWS page refresh behavior automatically.
+</p>
+
+<p>
+The recommended setting for the AEE is to disable the JAWS page refresh behavior by setting the <code>Page Refresh Filter</code> setting to <code>Suppress All Refreshes</code>.  It is recommended that this setting be used for the AEE web site without affecting other applications, as described above.
 </p>
 
 <h4 id="sr-jaws-tutor">Tutor Messages</h4>
