@@ -5,7 +5,7 @@
   <name>Accessible Equation Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
-  <version>0.3.4</version>
+  <version>0.3.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <build>
@@ -98,7 +98,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</connection>
     <developerConnection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</developerConnection>
-    <tag>mathex-test-0.3.4</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
