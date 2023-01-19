@@ -38,6 +38,67 @@ const settings = {
   "brl-rules-shortforms" : "true",
 };
 
+const palettes = {
+  "plt-palettes" : "All Palettes",
+  "plt-numbers" : "Numbers",
+  "plt-arithmetic" : "Arithmetic",
+  "plt-fractions" : "Fractions",
+  "plt-exponents" : "Exponents",
+  "plt-functions" : "Functions",
+  "plt-groups" : "Groups",
+  "plt-relations" : "Relations",
+  "plt-omissions" : "Omissions",
+  "plt-sets" : "Sets",
+  "plt-logic" : "Logic",
+  "plt-lines" : "Lines",
+  "plt-angles" : "Angles",
+  "plt-arrows" : "Arrows",
+  "plt-double-arrows" : "Double arrows",
+  "plt-trigonometry" : "Trigonometry",
+  "plt-hyperbolic" : "Hyperbolic",
+  "plt-scripts" : "Scripts",
+  "plt-symbols" : "Symbols",
+  "plt-greek-upper" : "Greek capital",
+  "plt-greek-lower" : "Greek small",
+  "plt-fraktur-upper" : "Fraktur capital",
+  "plt-fraktur-lower" : "Fraktur small",
+  "plt-script-upper" : "Script capital",
+  "plt-script-lower" : "Script small",
+  "plt-shapes" : "Shapes",
+  "plt-circled" : "Circled",
+  "plt-squared" : "Squared"
+};
+
+const plts = function()
+{
+  var active_keys = [];
+  var open_keys = [];
+  var rows = [];
+  for ( var k in palettes )
+  {
+    var ak = k + "-active";
+    var ok = k + "-open";
+    var v = palettes[ k ];
+    var tr = 
+"<tr>" +
+"<td><label for=\"" + ak + "\">" + v + "</label></td>" +
+"<td><input id=\"" + ak + "\" type=\"checkbox\"></input></td>" +
+"<td><input id=\"" + ok + "\" type=\"checkbox\"></input></td>" +
+"</tr>";
+    active_keys.push( ak );
+    open_keys.push( ok );
+    rows.push( tr );
+    settings[ ak ] = "true";
+    settings[ ok ] = "false";
+  };
+
+  const tbody = document.querySelector( "table tbody" );
+  tbody.innerHTML = rows.join( "" );
+
+  rule( active_keys.shift(), active_keys );
+  rule( open_keys.shift(), open_keys );
+};
+
 const click_grp = function( gelt, elts )
 {
   for ( var k in elts ) {
@@ -68,6 +129,7 @@ const rule = function( grp, elts ) {
 };
 
 const init = function() {
+  plts();
   rule( "brl-rules-initial-letter",
     [ "brl-rules-initial-letter-45",
       "brl-rules-initial-letter-456",
@@ -136,6 +198,7 @@ const done = function() {
 body { font-size: 15pt }
 label { width: 3.5in }
 input { width: 0.5in }
+td { width: 0.75in }
 .indent { padding-left: 0.5in }
   </style>
 </head>
@@ -166,6 +229,18 @@ input { width: 0.5in }
 <label for="aee-mathjax-on-print">On Print</label>
 <input id="aee-mathjax-on-print" type="checkbox"></input>
 </div>
+
+<h2>Symbol Palette Settings</h2>
+
+<table>
+<thead>
+<td>Name</td>
+<td>Active</td>
+<td>Open</td>
+</thead>
+<tbody>
+</tbody>
+</table>
 
 <h2>Braille Rules Settings</h2>
 

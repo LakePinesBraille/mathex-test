@@ -446,6 +446,7 @@ const aee_init = () => {
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "beforeunload", () => {
+        EquationEditorAPI.updatePalettes();
         EquationEditorAPI.BrlAPI.updateBrailleRules();
         editor.setFocus();
       } )
