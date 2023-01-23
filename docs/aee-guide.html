@@ -22,6 +22,7 @@
 <li><a href="#nemeth-math-multi">Multi-Line Math</a></li>
 <li><a href="#nemeth-math-term">Termination</a></li>
 </ul>
+<li><a href="#app-input-modes">Keyboard Input Modes</a></li>
 <li><a href="#app-ctrl-keys">Control Keys</a></li>
 <li><a href="#app-menu">Application Menu</a></li>
 <ul>
@@ -114,6 +115,66 @@
 
 <p>A user may indicate the end of a math expression of any form by terminating the expression using <code>Ctrl-Shift-m</code>, or by using the close Nemeth indicator <code>dots-456 dots-156</code>.  Typing the <code>Space</code> key within an expression can also be used to move to the end of the expression, and to insert a space after the expression.</p>
 
+<h2 id="app-input-modes">Keyboard Input Modes</h2>
+
+<p>
+The AEE uses keyboard input modes to enter text and math with both computer and braille keyboards.
+</p>
+
+<p>
+The <i>qwerty input mode</i> enters text and math using a standard computer keyboard.
+</p>
+
+<p>
+The <i>braille input mode</i> enters text and math using an external braille keyboard.
+</p>
+
+<p>
+The <i>six-key input mode</i> simulates an external braille keyboard using the home row keys of a standard computer keyboard.
+</p>
+
+<p>
+The AEE supports special keystrokes to change the keyboard input mode, from both computer and braille keyboards.
+</p>
+
+<p>
+These control characters may be used on a standard computer keyboard, or any braille keyboard that provides a way to type control characters.
+</p>
+
+<ul>
+<li>Use <code>C-q</code> to switch to qwerty input mode.</li>
+<li>Use <code>C-r</code> to switch to braille input mode.</li>
+<li>Use <code>C-6</code> to switch to six-key input mode.</li>
+</ul>
+
+<p>
+The AEE uses the sequence <code>==</code> to enter a control character, to support braille keyboards that may not provide a control key.
+</p>
+
+<ul>
+<li>Use <code>==q</code> to switch to qwerty input mode.</li>
+<li>Use <code>==r</code> to switch to braille input mode.</li>
+<li>Use <code>==6</code> to switch to six-key input mode.</li>
+</ul>
+
+<p>
+Typing <code>dots-123456</code> on a braille keyboard enters the <code>=</code> key, and so the AEE also uses <code>dots-123456 dots-123456</code> to enter a control character.
+</p>
+
+<ul>
+<li>Use <code>dots-123456 dots-123456 dots-12345</code> to switch to qwerty input mode.</li>
+<li>Use <code>dots-123456 dots-123456 dots-1235</code> to switch to braille input mode.</li>
+<li>Use <code>dots-123456 dots-123456 dots-235</code> to switch to six-key input mode.</li>
+</ul>
+
+<p>
+The AEE uses the sequence <code>===</code> to switch from braille input mode to qwerty input mode, or from any other input mode to braille input mode.  On a braille keyboard, typing <code>dots-123456</code> three times has the same effect.
+</p>
+
+<p>
+The braille input mode may be used on a standard computer keyboard by typing the computer braille symbols that correspond to the desired braille signs.
+</p>
+
 <h2 id="app-ctrl-keys">Control Keys</h2>
 
 <p>
@@ -132,6 +193,9 @@ Here are the control characters used by the AEE.
 <li><code>C-a</code> Select all</li>
 <li><code>C-c</code> Copy to clipboard</li>
 <li><code>C-k</code> Clear all</li>
+<li><code>C-q</code> Switch to qwerty input mode</li>
+<li><code>C-r</code> Switch to braille input mode</li>
+<li><code>C-6</code> Switch to six-key input mode</li>
 <li><code>C-t</code> Tab key</li>
 <li><code>C-v</code> Paste from clipboard</li>
 <li><code>C-x</code> Cut to clipboard</li>
