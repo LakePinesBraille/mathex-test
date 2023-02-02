@@ -2,27 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AEE About the AEE</title>
+  <title>AEE Web Application</title>
   <link rel="icon" type="image/x-icon" href="aee.png">
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <script src="aee.js"></script>
   <script type="text/javascript">
     EquationEditorOptions = {
+      "styleBase" : "deploy/equationeditor/styles",
       "scriptBase" : "lib",
-      "models" : [],
+      "models" : [{
+        "identifier" : "RESPONSE",
+        "styles" : "ee-text ee-full ee-braille br-text-gr2 braille"
+      }],
       callback : aee_init
     };
   </script>
   <script src="deploy/equationeditor/equationeditor-lib.js"></script>
 </head>
-<body>
-<div class="aee-about">
-<font size="+3">Accessible Equation Editor (AEE)</font><br/>
-Version <span class="ee-version"></span><br/>
-Build <span class="ee-timestamp"></span><br/>
-Copyright &copy; 2023, NCS Pearson, Inc.<br/>
-Licensed by Lake Pines Braille, LLC.<br/>
-</div>
-
+<body onload="aee_onload()">
 </body>
 </html>

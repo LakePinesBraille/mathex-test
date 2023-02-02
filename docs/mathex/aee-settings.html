@@ -2,11 +2,18 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AEE - Settings</title>
+  <title>AEE Settings</title>
   <link rel="icon" type="image/x-icon" href="aee.png">
   <link rel="stylesheet" type="text/css" href="aee.css"/>
+  <script src="aee.js"></script>
   <script>
 const settings = {
+  "aee-input-qwerty" : "false",
+  "aee-input-braille" : "true",
+  "aee-input-six-key" : "false",
+  "aee-panel-quick-bar" : "true",
+  "aee-panel-side-bar" : "true",
+  "aee-panel-braille-bar" : "true",
   "aee-mathjax-on-save" : "false",
   "aee-mathjax-on-export" : "true",
   "aee-mathjax-on-print" : "true",
@@ -69,6 +76,45 @@ const palettes = {
   "plt-squared" : "Squared"
 };
 
+const click_grp = function( gelt, elts )
+{
+  for ( var k in elts ) {
+    var elt = document.querySelector( "#" + elts[ k ] );
+    elt.checked = gelt.checked;
+  }
+};
+
+const click_all = function ( gelt, elts )
+{
+  var value = true;
+  for ( var k in elts ) {
+    var elt = document.querySelector( "#" + elts[ k ] );
+    value = value && elt.checked;
+  }
+  gelt.checked = value;
+};
+
+const click_any = function ( gelt, elts )
+{
+  var value = false;
+  for ( var k in elts ) {
+    var elt = document.querySelector( "#" + elts[ k ] );
+    value = value || elt.checked;
+  }
+  gelt.checked = value;
+};
+
+const rule = function( grp, elts, fn ) {
+    var gelt = document.querySelector( "#" + grp );
+    gelt.addEventListener( "click", () => click_grp( gelt, elts ) );
+
+    for ( var k in elts )
+    {
+        var elt = document.querySelector( "#" + elts[ k ] );
+        elt.addEventListener( "click", () => fn( gelt, elts ) );
+    }
+};
+
 const plts = function()
 {
   var active_keys = [];
@@ -95,37 +141,12 @@ const plts = function()
   const tbody = document.querySelector( "table tbody" );
   tbody.innerHTML = rows.join( "" );
 
-  rule( active_keys.shift(), active_keys );
-  rule( open_keys.shift(), open_keys );
-};
+  const side = active_keys.slice()
 
-const click_grp = function( gelt, elts )
-{
-  for ( var k in elts ) {
-    var elt = document.querySelector( "#" + elts[ k ] );
-    elt.checked = gelt.checked;
-  }
-};
+  rule( active_keys.shift(), active_keys, click_all );
+  rule( open_keys.shift(), open_keys, click_all );
 
-const click_elt = function ( gelt, elts )
-{
-  var value = true;
-  for ( var k in elts ) {
-    var elt = document.querySelector( "#" + elts[ k ] );
-    value = value && elt.checked;
-  }
-  gelt.checked = value;
-};
-
-const rule = function( grp, elts ) {
-    var gelt = document.querySelector( "#" + grp );
-    gelt.addEventListener( "click", () => click_grp( gelt, elts ) );
-
-    for ( var k in elts )
-    {
-        var elt = document.querySelector( "#" + elts[ k ] );
-        elt.addEventListener( "click", () => click_elt( gelt, elts ) );
-    }
+  rule( "aee-panel-side-bar", side, click_any );
 };
 
 const init = function() {
@@ -161,7 +182,7 @@ const load = function() {
   {
     var v = localStorage[ k ] || settings[ k ] || "";
     var elt = document.querySelector( "#" + k );
-    if ( elt.type === "checkbox" )
+    if ( elt.type === "checkbox" || elt.type === "radio" )
     {
       elt.checked = ( v === "true" );
     }
@@ -177,7 +198,7 @@ const save = function() {
   for ( var k in settings )
   {
     var elt = document.querySelector( "#" + k );
-    var v = elt.type === "checkbox" ? elt.checked : elt.value;
+    var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
     localStorage[ k ] = v;
   }
 };
@@ -194,27 +215,86 @@ const done = function() {
   window.close();
 };
   </script>
-  <style>
-body { font-size: 15pt }
-label { width: 3.5in }
-input { width: 0.5in }
-td { width: 0.75in }
-.indent { padding-left: 0.5in }
-  </style>
 </head>
-<body onload="init(); load()">
+<body class="aee-settings" onload="init(); load()">
 <h1>Accessible Equation Editor Settings</h1>
 
-<button type="button" id="ok" onclick="save(); done()"
+<div>
+<button type="button" class="aee-btn" id="ok" onclick="save(); done()"
     title="Save your changes and close the settings">OK</button>
-<button type="button" id="apply" onclick="save()"
+<button type="button" class="aee-btn" id="apply" onclick="save()"
     title="Save your changes without closing the settings">Apply</button>
-<button type="button" id="reset" onclick="reset(); load()"
+<button type="button" class="aee-btn" id="reset" onclick="reset(); load()"
     title="Discard your changes and load the default settings">Reset</button>
-<button type="button" id="cancel" onclick="done()"
+<button type="button" class="aee-btn" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
+</div>
 
-<h2>Math Markup Settings</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#set-application">Application Settings</a></li>
+<ul>
+<li><a href="#set-input">Keyboard Input</a></li>
+<li><a href="#set-panels">Editor Panels</a></li>
+<li><a href="#set-palettes">Symbol Palettes</a></li>
+</ul>
+<li><a href="#set-braille">Braille Settings</a></li>
+<ul>
+<li><a href="#set-braille-math">Math Output</a></li>
+<li><a href="#set-braille-rules">Braille Rules</a></li>
+<li><a href="#set-braille-formats">Braille Formats</a></li>
+</ul>
+</ul>
+
+<h2 id="set-application">Application Settings</h2>
+
+<h2 id="set-input">Keyboard Input</h2>
+
+<div>
+<label for="aee-input-qwerty">Qwerty input mode</label>
+<input id="aee-input-qwerty" type="radio" name="aee-input-type" value="qwerty"></input>
+</div>
+
+<div>
+<label for="aee-input-braille">Braille input mode</label>
+<input id="aee-input-braille" type="radio" name="aee-input-type" value="braille"></input>
+</div>
+
+<div>
+<label for="aee-input-six-key">Six-key input mode</label>
+<input id="aee-input-six-key" type="radio" name="aee-input-type" value="six-key"></input>
+</div>
+
+<h2 id="set-panels">Editor Panels</h2>
+
+<div>
+<label for="aee-panel-quick-bar">Quick Buttons</label>
+<input id="aee-panel-quick-bar" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-panel-side-bar">Side Palettes</label>
+<input id="aee-panel-side-bar" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-panel-braille-bar">Braille Bar</label>
+<input id="aee-panel-braille-bar" type="checkbox"></input>
+</div>
+
+<h2 id="set-palettes">Symbol Palettes</h2>
+
+<table>
+<thead>
+<td>Name</td>
+<td>Active</td>
+<td>Open</td>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<h2 id="set-braille">Braille Settings</h2>
+
+<h2 id="set-braille-math">Math Output</h2>
 
 <h3>Use MathJax</h3>
 <div>
@@ -230,19 +310,7 @@ td { width: 0.75in }
 <input id="aee-mathjax-on-print" type="checkbox"></input>
 </div>
 
-<h2>Symbol Palette Settings</h2>
-
-<table>
-<thead>
-<td>Name</td>
-<td>Active</td>
-<td>Open</td>
-</thead>
-<tbody>
-</tbody>
-</table>
-
-<h2>Braille Rules Settings</h2>
+<h2 id="set-braille-rules">Braille Rules</h2>
 
 <div>
 <label for="brl-rules-all-rules">Contracted Braille (all rules)</label>
@@ -319,7 +387,7 @@ td { width: 0.75in }
 <input id="brl-rules-shortforms" type="checkbox"></input>
 </div>
 
-<h2>Braille Format Settings</h2>
+<h2 id="set-braille-formats">Braille Formats</h2>
 
 <h3>On Screen</h3>
 <div>
