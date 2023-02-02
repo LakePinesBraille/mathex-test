@@ -438,16 +438,34 @@ const aee_init = () => {
     }
   };
 
+  const do_help = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const src = getSource() + event.target.getAttribute( "href" );
+      const nwindow = window.open( src );
+
+      nwindow.addEventListener( "unload", () => {
+        editor.setFocus();
+      } )
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_settings = async function( event ) {
     try {
       event.preventDefault();
 
-      const src = getSource() + "aee-settings.html";
+      const src = getSource() + event.target.getAttribute( "href" );
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "beforeunload", () => {
-        EquationEditorAPI.updatePalettes();
-        EquationEditorAPI.BrlAPI.updateBrailleRules();
+        EquationEditorAPI.updateSettings();
+      } )
+
+      nwindow.addEventListener( "unload", () => {
         editor.setFocus();
       } )
     }
@@ -487,10 +505,10 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="' + getSource() + 'aee-start.html" id="start" accesskey="g" aria-label="Getting Started">G&#x0332;etting Started</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
-'            <li><a href="#" id="settings" accesskey="z" aria-label="Settings">Settings (z&#x0332;)</a></li>' +
-'            <li><a target="_blank" href="' + getSource() + 'aee-about.html" id="about" accesskey="a" aria-label="About">A&#x0332;bout</a></li>' +
+'            <li><a href="aee-welcome.html" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
+'            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="aee-settings.html" id="settings" accesskey="z" aria-label="Settings">Settings (z&#x0332;)</a></li>' +
+'            <li><a href="aee-about.html" id="about" accesskey="a" aria-label="About">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -517,6 +535,10 @@ const aee_init = () => {
   addClick( "#copyPrintAll", do_copyPrintAll );
   addClick( "#copyAllMath", do_copyAllMath );
 
+  addClick( "#welcome", do_help );
+  addClick( "#guide", do_help );
+  addClick( "#about", do_help );
+
   addClick( "#settings", do_settings );
 
   const accel = {
@@ -529,7 +551,7 @@ const aee_init = () => {
       p: "#print",
       c: "#close" },
     h: {
-      g: "#start",
+      w: "#welcome",
       u: "#guide",
       z: "#settings",
       a: "#about"
@@ -537,20 +559,27 @@ const aee_init = () => {
   };
 
   document.addEventListener( "keydown", ( e ) => {
-    if ( e.key === "Escape" )
+    const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
+    const x2 = x1[ e.key ] || "";
+    const elt = x2 && document.querySelector( x2 ) || null;
+    if ( elt )
     {
+      elt.click();
       editor.setFocus();
-    }
-    else
-    {
-      const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
-      const x2 = x1[ e.key ] || "";
-      const elt = x2 && document.querySelector( x2 ) || null;
-      if ( elt )
-      {
-        elt.click();
-        editor.setFocus();
-      }
     }
   } );
 };
+
+document.addEventListener( "keydown", ( e ) => {
+  if ( e.key === "Escape" )
+  {
+    if ( window.editor )
+    {
+       window.editor.setFocus();
+    }
+    else
+    {
+      window.close();
+    }
+  }
+} );

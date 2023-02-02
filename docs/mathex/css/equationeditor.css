@@ -45,12 +45,6 @@
     display: none !important;
 }
 
-.ee-parent-panel .ui-resizable-se
-{
-    right: -4px;
-    bottom: -4px;
-}
-
 .ee-parent-panel > .ee-quick-bar
 {
     position: absolute;
@@ -272,7 +266,6 @@
 
 .ee-braille-panel textarea
 {
-    background: transparent;
     border: none;
     resize: none;
     width: 100%;
@@ -1044,6 +1037,7 @@ apply, mphantom
     color: #000000;
 }
 .ee-braille-panel {
+    background-color: #FFFFFF;
     border-color: #AAAAAA;
     color: #000000;
 }

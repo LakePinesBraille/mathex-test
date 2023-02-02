@@ -1,20 +1,36 @@
 @import url( "mathex/css/bootstrap-3.3.7.min.css" );
+@import url( "mathex/css/jquery-ui-1.12.1.min.css" );
 @import url( "mathex/css/equationeditor.css" );
+
+html
+{
+    height: 100%;
+    background-size: cover;
+    background-image: url( aee.jpg );
+}
 
 body
 {
     font-size: 150%;
     margin: 10px;
+    background-color: transparent;
 }
 
 .ee-parent-panel
 {
-    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
-.navbar { margin-bottom: 0px; }
+.navbar {
+    border: 0px;
+    margin-bottom: 0px;
+    background-color: transparent;
+}
 .navbar-collapse { padding: 0; }
 .navbar-default .navbar-nav > li > a { color: black; padding: 10px; }
+
+.navbar-nav li:first-of-type .dropdown-toggle { border-top-left-radius: 6px; }
+.navbar-nav li:last-of-type .dropdown-toggle { border-top-right-radius: 6px; }
 
 .dropdown-toggle
 {
@@ -47,4 +63,64 @@ body
 
     position: relative;
     left: -100px;
+}
+
+.aee-welcome {
+    font-size: 15pt;
+    background: white;
+    border-radius: 6px;
+    padding: 0.25in;
+}
+
+.aee-guide {
+    font-size: 15pt;
+    background: white;
+    border-radius: 6px;
+    padding: 0.25in;
+}
+
+.aee-guide h4, .aee-guide h5 {
+    font-weight: bold;
+}
+
+.aee-settings {
+    font-size: 15pt;
+    background: white;
+    border-radius: 6px;
+    padding: 0.25in;
+}
+
+.aee-settings label { width: 3.5in }
+.aee-settings input { width: 0.5in }
+.aee-settings td { width: 0.75in }
+.aee-settings .indent { padding-left: 0.5in }
+.aee-settings .aee-btn { padding: 0in 0.25in; margin-left: 0.25in }
+
+.aee-about {
+    font-size: 15pt;
+    background: white;
+    text-align: center;
+    border-radius: 6px;
+    margin: 1in 2in;
+}
+
+.aee-btn {
+    color: #333333;
+    background-color: #aaaaaa;
+    background-image: linear-gradient(to bottom, #cccccc, #aaaaaa);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+
+.aee-btn:hover, .aee-btn:focus, .aee-btn:active {
+    background-color: #dddddd !important;
+    background-image: none !important;
+}
+
+.aee-btn:focus {
+    border-color: #049CDB !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    outline: 1px solid transparent !important;
 }
