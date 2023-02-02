@@ -65,6 +65,24 @@
               </target>
             </configuration>
           </execution>
+          <execution>
+            <id>deploy-web</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <delete quiet="true" failonerror="false"
+                    dir="../public_html/mathex-old"/>
+                <move quiet="true" failonerror="false"
+                    file="../public_html/mathex"
+                    tofile="../public_html/mathex-old"/>
+                <unzip src="version/mathex-aee-${project.version}.zip"
+                    dest="../public_html/mathex" />
+              </target>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -88,6 +106,7 @@
           <preparationGoals>clean process-resources scm:add</preparationGoals>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 
