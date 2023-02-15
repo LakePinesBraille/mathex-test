@@ -65,6 +65,7 @@
               </target>
             </configuration>
           </execution>
+          <!--
           <execution>
             <id>deploy-web</id>
             <phase>generate-sources</phase>
@@ -83,6 +84,7 @@
               </target>
             </configuration>
           </execution>
+          -->
         </executions>
       </plugin>
 

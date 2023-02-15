@@ -32,6 +32,12 @@ body
 .navbar-nav li:first-of-type .dropdown-toggle { border-top-left-radius: 6px; }
 .navbar-nav li:last-of-type .dropdown-toggle { border-top-right-radius: 6px; }
 
+.dropdown hr
+{
+    border-color: black;
+    margin: 5px;
+}
+
 .dropdown-toggle
 {
     color: #333333 !important;
