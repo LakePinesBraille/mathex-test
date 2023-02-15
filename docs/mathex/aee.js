@@ -81,6 +81,11 @@ const aee_init = () => {
     accept : { "application/brf" : [ ".brf" ] }
   } ] };
 
+  const brl_export = { types : [ {
+    description : "Braille HTML File",
+    accept : { "application/html" : [ ".html" ] }
+  } ] };
+
   const text_types = { types : [ {
     description : "HTML + MathML Content",
     accept : { "application/html" : [ ".html" ] }
@@ -105,6 +110,25 @@ const aee_init = () => {
 
   const getBRFOptions = function() {
     return Object.assign( { startIn: last_file_handle }, file_options, brf_export );
+  };
+
+  const getBRLOptions = function() {
+    return Object.assign( { startIn: last_file_handle }, file_options, brl_export );
+  };
+
+  const html_otag = '<html>\r\n';
+  const html_ctag = '</html>\r\n';
+  const body_otag = '<body style="font-size: 24pt">\r\n';
+  const body_ctag = '</body>\r\n';
+  const p_otag = '<p>\r\n';
+  const p_ctag = '\r\n</p>\r\n';
+
+  const html_open = html_otag + body_otag + p_otag;
+  const html_close = p_ctag + body_ctag + html_ctag;
+
+  const addBRLMarkup = function( markup ) {
+    var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
+    return result;
   };
 
   const script_tag = '    <script type="text/javascript" ' +
@@ -201,13 +225,17 @@ const aee_init = () => {
     }
   };
 
-  const saveFile = async ( options, markup ) => {
+  const saveFile = async ( options, markup, type ) => {
+    if ( last_file_handle )
+    {
+      options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
+    }
+    if ( type )
+    {
+      options.suggestedName = options.suggestedName + type;
+    }
     if ( window.showSaveFilePicker )
     {
-      if ( last_file_handle )
-      {
-        options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
-      }
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
       last_file_handle = handle;
@@ -227,6 +255,17 @@ const aee_init = () => {
         setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
       } );
       a.click();
+    }
+  };
+
+  const exportFile = ( options, type ) => {
+    if ( last_file_handle )
+    {
+      options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
+    }
+    if ( type )
+    {
+      options.suggestedName = options.suggestedName + type;
     }
   };
 
@@ -277,6 +316,20 @@ const aee_init = () => {
     }
   };
 
+  const do_saveHTML = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const options = getExportOptions();
+      const mathjax = getLocalSetting( "aee-mathjax-on-save" );
+      const markup = addMathJax( editor.getPresent(), mathjax );
+      await saveFile( options, markup, "-p" );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_saveBRF = async function( event ) {
     try {
       event.preventDefault();
@@ -290,21 +343,20 @@ const aee_init = () => {
     }
   };
 
-  const do_savePrint = async function( event ) {
+  const do_saveBRL = async function( event ) {
     try {
       event.preventDefault();
 
-      const options = getExportOptions();
-      const mathjax = getLocalSetting( "aee-mathjax-on-save" );
-      const markup = addMathJax( editor.getPresent(), mathjax );
-      await saveFile( options, markup );
+      const options = getBRLOptions();
+      const markup = addBRLMarkup( editor.getContractedBraille() );
+      await saveFile( options, markup, "-brl" );
     }
     catch ( e )
     {
     }
   };
 
-  const do_export = async function( event ) {
+  const do_exportHTML = async function( event ) {
     try {
       event.preventDefault();
 
@@ -312,8 +364,11 @@ const aee_init = () => {
       const markup = addMathJax( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
+      const options = getExportOptions();
+      exportFile( options, "-p" );
+
       nwindow.document.write( markup );
-      nwindow.document.title = "AEE - Export";
+      nwindow.document.title = options.suggestedName;
 
       if ( mathjax )
       {
@@ -325,7 +380,25 @@ const aee_init = () => {
     }
   };
 
-  const do_print = async function( event ) {
+  const do_exportBRL = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addMathJax( addBRLMarkup( editor.getContractedBraille() ) );
+      const nwindow = window.open( "" );
+
+      const options = getExportOptions();
+      exportFile( options, "-brl" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_printHTML = async function( event ) {
     try {
       event.preventDefault();
 
@@ -333,8 +406,11 @@ const aee_init = () => {
       const markup = addMathJax( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
+      const options = getExportOptions();
+      exportFile( options, "-p" );
+
       nwindow.document.write( markup );
-      nwindow.document.title = "AEE - Print";
+      nwindow.document.title = options.suggestedName;
 
       if ( mathjax )
       {
@@ -347,6 +423,26 @@ const aee_init = () => {
       {
         nwindow.print();
       }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_printBRL = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addMathJax( addBRLMarkup( editor.getContractedBraille() ) );
+      const nwindow = window.open( "" );
+
+      const options = getExportOptions();
+      exportFile( options, "-brl" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+
+      nwindow.print();
     }
     catch ( e )
     {
@@ -483,10 +579,17 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="saveHTML" accesskey="v" aria-label="Save HTML">Sav&#x0332;e HTML</a></li>' +
+'            <li><a href="#" id="exportHTML" accesskey="x" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
+'            <li><a href="#" id="printHTML" accesskey="p" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
+'            <hr/>' +
 '            <li><a href="#" id="saveBRF" accesskey="b" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="savePrint">Save Print</a></li>' +
-'            <li><a href="#" id="export" accesskey="x" aria-label="Export">Ex&#x0332;port</a></li>' +
-'            <li><a href="#" id="print" accesskey="p" aria-label="Print">P&#x0332;rint</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="saveBRL" aria-label="Save BRL">Save BRL</a></li>' +
+'            <li><a href="#" id="exportBRL" aria-label="Export BRL">Export BRL</a></li>' +
+'            <li><a href="#" id="printBRL" aria-label="Print BRL">Print BRL</a></li>' +
+'            <hr/>' +
 '            <li><a href="#" id="close" accesskey="c" aria-label="Close">C&#x0332;lose</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -508,6 +611,9 @@ const aee_init = () => {
 '            <li><a href="aee-welcome.html" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
 '            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="aee-settings.html" id="settings" accesskey="z" aria-label="Settings">Settings (z&#x0332;)</a></li>' +
+'            <hr/>' +
+'            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
+'            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
 '            <li><a href="aee-about.html" id="about" accesskey="a" aria-label="About">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -521,10 +627,13 @@ const aee_init = () => {
 
   addClick( "#open", do_open );
   addClick( "#save", do_save );
+  addClick( "#saveHTML", do_saveHTML );
+  addClick( "#exportHTML", do_exportHTML );
+  addClick( "#printHTML", do_printHTML );
   addClick( "#saveBRF", do_saveBRF );
-  addClick( "#savePrint", do_savePrint );
-  addClick( "#export", do_export );
-  addClick( "#print", do_print );
+  addClick( "#saveBRL", do_saveBRL );
+  addClick( "#exportBRL", do_exportBRL );
+  addClick( "#printBRL", do_printBRL );
   addClick( "#close", do_close );
 
   addClick( "#copy", do_copy );
@@ -545,10 +654,10 @@ const aee_init = () => {
     f: {
       o: "#open",
       s: "#save",
+      v: "#saveHTML",
+      x: "#exportHTML",
+      p: "#printHTML",
       b: "#saveBRF",
-      v: "#savePrint",
-      x: "#export",
-      p: "#print",
       c: "#close" },
     h: {
       w: "#welcome",
