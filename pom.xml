@@ -5,7 +5,7 @@
   <name>Accessible Equation Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
-  <version>0.3.9</version>
+  <version>0.3.10-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <build>
@@ -75,8 +75,7 @@
             <configuration>
               <target>
                 <delete quiet="true" failonerror="false" dir="../public_html/mathex-old"/>
-                <move quiet="true" failonerror="false" file="../public_html/mathex"
-                    tofile="../public_html/mathex-old"/>
+                <move quiet="true" failonerror="false" file="../public_html/mathex" tofile="../public_html/mathex-old"/>
                 <unzip src="version/mathex-aee-${project.version}.zip" dest="../public_html/mathex" />
               </target>
             </configuration>
@@ -116,7 +115,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</connection>
     <developerConnection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</developerConnection>
-    <tag>mathex-test-0.3.9</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
