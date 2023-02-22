@@ -118,18 +118,18 @@ const aee_init = () => {
 
   const html_otag = '<html>\r\n';
   const html_ctag = '</html>\r\n';
-  const body_otag = '<body style="font-size: 24pt">\r\n';
+  const body_otag = '<body>\r\n';
   const body_ctag = '</body>\r\n';
   const p_otag = '<p>\r\n';
   const p_ctag = '\r\n</p>\r\n';
+  const pre_otag = '<pre>\r\n';
+  const pre_ctag = '\r\n</pre>\r\n';
 
   const html_open = html_otag + body_otag + p_otag;
   const html_close = p_ctag + body_ctag + html_ctag;
 
-  const addBRLMarkup = function( markup ) {
-    var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
-    return result;
-  };
+  const view_open = html_otag + body_otag + pre_otag;
+  const view_close = pre_ctag + body_ctag + html_ctag;
 
   const script_tag = '    <script type="text/javascript" ' +
 'src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js' +
@@ -139,6 +139,39 @@ const aee_init = () => {
 
   const getLocalSetting = function( key ) {
     return ( localStorage && localStorage[ key ] === "true" ) || false;
+  };
+
+  const getLocalSettingNumber = function( key ) {
+    return ( localStorage && localStorage[ key ] ) || "";
+  };
+
+  const addBRLMarkup = function( markup ) {
+    var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
+
+    var sz = getLocalSettingNumber( "aee-brl-font-size" );
+    if ( sz )
+    {
+        result = result.replace( "<body>",
+            "<body style=\"font-size: " + sz + "pt\">" );
+    }
+
+    return result;
+  };
+
+  const addViewMarkup = function( markup ) {
+    markup = markup.replaceAll( "&", "&amp;" );
+    markup = markup.replaceAll( "<", "&lt;" );
+
+    var result = view_open + markup + view_close;
+
+    var sz = getLocalSettingNumber( "aee-html-font-size" );
+    if ( sz )
+    {
+        result = result.replace( "<body>",
+            "<body style=\"font-size: " + sz + "pt\">" );
+    }
+
+    return result;
   };
 
   const addMathJax = function( markup, mathjax ) {
@@ -154,6 +187,14 @@ const aee_init = () => {
             result = result.replace( body_tag, head_tag + body_tag );
         }
     }
+
+    var sz = getLocalSettingNumber( "aee-html-font-size" );
+    if ( sz )
+    {
+        result = result.replace( "<body>",
+            "<body style=\"font-size: " + sz + "pt\">" );
+    }
+
     return result;
   };
 
@@ -225,15 +266,21 @@ const aee_init = () => {
     }
   };
 
-  const saveFile = async ( options, markup, type ) => {
+  const exportFile = ( options, type ) => {
     if ( last_file_handle )
     {
-      options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
+      options.suggestedName =
+        last_file_handle.name.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
     }
     if ( type )
     {
       options.suggestedName = options.suggestedName + type;
     }
+  };
+
+  const saveFile = async ( options, markup, type ) => {
+    exportFile( options, type );
+
     if ( window.showSaveFilePicker )
     {
       const handle = await window.showSaveFilePicker( options );
@@ -255,17 +302,6 @@ const aee_init = () => {
         setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
       } );
       a.click();
-    }
-  };
-
-  const exportFile = ( options, type ) => {
-    if ( last_file_handle )
-    {
-      options.suggestedName = last_file_handle.name.replace( /\.[^.]*$/, "" );
-    }
-    if ( type )
-    {
-      options.suggestedName = options.suggestedName + type;
     }
   };
 
@@ -384,7 +420,7 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const markup = addMathJax( addBRLMarkup( editor.getContractedBraille() ) );
+      const markup = addBRLMarkup( editor.getContractedBraille() );
       const nwindow = window.open( "" );
 
       const options = getExportOptions();
@@ -433,7 +469,7 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const markup = addMathJax( addBRLMarkup( editor.getContractedBraille() ) );
+      const markup = addBRLMarkup( editor.getContractedBraille() );
       const nwindow = window.open( "" );
 
       const options = getExportOptions();
@@ -443,6 +479,60 @@ const aee_init = () => {
       nwindow.document.title = options.suggestedName;
 
       nwindow.print();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_view = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addViewMarkup( editor.getContent() );
+      const nwindow = window.open( "" );
+
+      const options = getExportOptions();
+      exportFile( options );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_viewHTML = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addViewMarkup( editor.getPresent() );
+      const nwindow = window.open( "" );
+
+      const options = getExportOptions();
+      exportFile( options, "-p" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_viewBRF = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addViewMarkup( editor.getAsciiBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getBRFOptions();
+      exportFile( options );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
     }
     catch ( e )
     {
@@ -499,7 +589,7 @@ const aee_init = () => {
     }
   };
 
-  const do_copyPrint = async function( event ) {
+  const do_copyHTML = async function( event ) {
     try {
       event.preventDefault();
       editor.copyPresent();
@@ -510,7 +600,7 @@ const aee_init = () => {
     }
   };
 
-  const do_copyPrintAll = async function( event ) {
+  const do_copyAllHTML = async function( event ) {
     try {
       event.preventDefault();
 
@@ -579,12 +669,15 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="view" accesskey="v" aria-label="View Source">V&#x0332;iew Source</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveHTML" accesskey="v" aria-label="Save HTML">Sav&#x0332;e HTML</a></li>' +
+'            <li><a href="#" id="saveHTML" accesskey="h" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
 '            <li><a href="#" id="exportHTML" accesskey="x" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
 '            <li><a href="#" id="printHTML" accesskey="p" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
+'            <li><a href="#" id="viewHTML" aria-label="View HTML">View HTML</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRF" accesskey="b" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="viewBRF" aria-label="View BRF">View BRF</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRL" aria-label="Save BRL">Save BRL</a></li>' +
 '            <li><a href="#" id="exportBRL" aria-label="Export BRL">Export BRL</a></li>' +
@@ -598,10 +691,13 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="copy">Copy</a></li>' +
 '            <li><a href="#" id="paste">Paste</a></li>' +
+'            <hr/>' +
 '            <li><a href="#" id="copyAll">Copy All</a></li>' +
 '            <li><a href="#" id="pasteAll">Paste All</a></li>' +
-'            <li><a href="#" id="copyPrint">Copy Print</a></li>' +
-'            <li><a href="#" id="copyPrintAll">Copy Print All</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="copyHTML">Copy HTML</a></li>' +
+'            <li><a href="#" id="copyAllHTML">Copy All HTML</a></li>' +
+'            <hr/>' +
 '            <li><a href="#" id="copyAllMath">Copy All Math</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -610,7 +706,7 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="aee-welcome.html" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
 '            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
-'            <li><a href="aee-settings.html" id="settings" accesskey="z" aria-label="Settings">Settings (z&#x0332;)</a></li>' +
+'            <li><a href="aee-settings.html" id="settings" accesskey="g" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
 '            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
 '            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
@@ -627,10 +723,13 @@ const aee_init = () => {
 
   addClick( "#open", do_open );
   addClick( "#save", do_save );
+  addClick( "#view", do_view );
   addClick( "#saveHTML", do_saveHTML );
   addClick( "#exportHTML", do_exportHTML );
   addClick( "#printHTML", do_printHTML );
+  addClick( "#viewHTML", do_viewHTML );
   addClick( "#saveBRF", do_saveBRF );
+  addClick( "#viewBRF", do_viewBRF );
   addClick( "#saveBRL", do_saveBRL );
   addClick( "#exportBRL", do_exportBRL );
   addClick( "#printBRL", do_printBRL );
@@ -640,8 +739,8 @@ const aee_init = () => {
   addClick( "#paste", do_paste );
   addClick( "#copyAll", do_copyAll );
   addClick( "#pasteAll", do_pasteAll );
-  addClick( "#copyPrint", do_copyPrint );
-  addClick( "#copyPrintAll", do_copyPrintAll );
+  addClick( "#copyHTML", do_copyHTML );
+  addClick( "#copyAllHTML", do_copyAllHTML );
   addClick( "#copyAllMath", do_copyAllMath );
 
   addClick( "#welcome", do_help );
@@ -654,7 +753,8 @@ const aee_init = () => {
     f: {
       o: "#open",
       s: "#save",
-      v: "#saveHTML",
+      v: "#view",
+      h: "#saveHTML",
       x: "#exportHTML",
       p: "#printHTML",
       b: "#saveBRF",
@@ -662,7 +762,7 @@ const aee_init = () => {
     h: {
       w: "#welcome",
       u: "#guide",
-      z: "#settings",
+      g: "#settings",
       a: "#about"
     }
   };
@@ -680,11 +780,24 @@ const aee_init = () => {
 };
 
 document.addEventListener( "keydown", ( e ) => {
+  if ( e.key === "Enter" )
+  {
+    const btn = document.querySelector( "#ok" );
+    if ( btn )
+    {
+      save();
+      done();
+    }
+    else if ( !window.editor )
+    {
+      window.close();
+    }
+  }
   if ( e.key === "Escape" )
   {
     if ( window.editor )
     {
-       window.editor.setFocus();
+      window.editor.setFocus();
     }
     else
     {

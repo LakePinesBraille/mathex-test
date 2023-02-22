@@ -28,6 +28,8 @@ const settings = {
   "aee-file-indent-runover" : 1,
   "aee-math-indent-first" : 3,
   "aee-math-indent-runover" : 5,
+  "aee-html-font-size" : 18,
+  "aee-brl-font-size" : 24,
   "brl-rules-all-rules" : "true",
   "brl-rules-alphabetic-wordsigns" : "true",
   "brl-rules-strong-wordsigns" : "true",
@@ -105,6 +107,8 @@ const click_any = function ( gelt, elts )
 };
 
 const rule = function( grp, elts, fn ) {
+    fn = fn || click_all;
+
     var gelt = document.querySelector( "#" + grp );
     gelt.addEventListener( "click", () => click_grp( gelt, elts ) );
 
@@ -143,8 +147,8 @@ const plts = function()
 
   const side = active_keys.slice()
 
-  rule( active_keys.shift(), active_keys, click_all );
-  rule( open_keys.shift(), open_keys, click_all );
+  rule( active_keys.shift(), active_keys );
+  rule( open_keys.shift(), open_keys );
 
   rule( "aee-panel-side-bar", side, click_any );
 };
@@ -244,6 +248,10 @@ const done = function() {
 <li><a href="#set-braille-rules">Braille Rules</a></li>
 <li><a href="#set-braille-formats">Braille Formats</a></li>
 </ul>
+<li><a href="#set-font">Font Settings</a></li>
+<ul>
+<li><a href="#set-font-size">Font Size</a></li>
+</ul>
 </ul>
 
 <h2 id="set-application">Application Settings</h2>
@@ -298,15 +306,15 @@ const done = function() {
 
 <h3>Use MathJax</h3>
 <div>
-<label for="aee-mathjax-on-save">On Save</label>
+<label for="aee-mathjax-on-save">Save HTML</label>
 <input id="aee-mathjax-on-save" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-mathjax-on-export">On Export</label>
+<label for="aee-mathjax-on-export">Export HTML</label>
 <input id="aee-mathjax-on-export" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-mathjax-on-print">On Print</label>
+<label for="aee-mathjax-on-print">Print HTML</label>
 <input id="aee-mathjax-on-print" type="checkbox"></input>
 </div>
 
@@ -439,6 +447,18 @@ const done = function() {
 <div>
 <label for="aee-math-indent-runover">Run over</label>
 <input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h2 id="set-font">Font Settings</h2>
+
+<h3 id="set-font-size">Font Size</h3>
+<div>
+<label for="aee-html-font-size">HTML format</label>
+<input id="aee-html-font-size" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="aee-brl-font-size">BRL format</label>
+<input id="aee-brl-font-size" type="number" min="1" max="99"></input>
 </div>
 
 </body>
