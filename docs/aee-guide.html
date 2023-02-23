@@ -49,6 +49,8 @@
 <li><a href="#ff-mml">MathML</a></li>
 <li><a href="#ff-mmlc">Content MathML</a></li>
 <li><a href="#ff-mmlp">Presentation MathML</a></li>
+<li><a href="#ff-ubrl">Unicode Braille</a></li>
+<li><a href="#ff-brf">BRF</a></li>
 <li><a href="#ff-mjax">MathJax</a></li>
 </ul>
 <li><a href="#menu-items">Menu Items</a></li>
@@ -170,7 +172,7 @@ This mode simulates a refreshable braille keyboard using the home row keys of a 
 </ul>
 
 <p>
-Special keystrokes change the keyboard input mode.  They may be entered from either a computer or braille keyboard, and are examples of <i>control characters</i> supported by the AEE.
+Special keystrokes change the keyboard input mode.  They may be entered from either a computer or braille keyboard, and are examples of <a href="#key-ctrl">control characters</a> supported by the AEE.
 </p>
 
 <p>
@@ -211,6 +213,10 @@ The AEE supports the sequence <code>===</code> to switch from Braille input mode
 Switching to <i>Braille input mode</i> on a standard computer keyboard simulates a refreshable braille keyboard, by typing computer braille symbols that correspond to the desired braille signs.
 </p>
 
+<p>
+The current keyboard input mode may also be changed on the <a href="aee-settings.html#set-input" target="_blank">Settings Page</a>, and persists when you revisit the AEE web application.
+</p>
+
 <h3 id="key-ctrl">Control Keys</h3>
 
 <p>
@@ -222,7 +228,7 @@ To make these operations easier to type from a braille keyboard, the AEE treats 
 </p>
 
 <p>
-Here are the control characters supported by the AEE.
+Here are the <i>control characters</i> supported by the AEE.
 </p>
 
 <ul>
@@ -242,15 +248,15 @@ Here are the control characters supported by the AEE.
 <h3 id="key-menu">Menu Keys</h3>
 
 <p>
-The AEE application menus support access keys for keyboard menu navigation.
+The AEE application menus support <i>access keys</i> for keyboard menu navigation.
 </p>
 
 <p>
-The File Menu, Edit Menu, and Help Menu may be accessed using the access keys <code>Alt Shift F</code>, <code>Alt Shift E</code>, and <code>Alt Shift H</code>, respectively.  Accessing a menu opens a drop-down list of the menu items for that menu.  These menu items may be navigated using the <code>Up</code> and <code>Down</code> arrow keys, or using the access keys for menu items that define them.  Menu items that define access keys may also be activated using <code>Alt Shift</code> plus the access key, without having to access the parent menu.
+The <a href="#menu-file">File Menu</a>, <a href="#menu-edit">Edit Menu</a>, and <a href="#menu-help">Help Menu</a> may be accessed using the access keys <code>Alt Shift F</code>, <code>Alt Shift E</code>, and <code>Alt Shift H</code>, respectively.  Accessing a menu opens a drop-down list of the menu items for that menu.  These menu items may be navigated using the <code>Up</code> and <code>Down</code> arrow keys, or using the access keys for menu items that define them.  Menu items that define access keys may also be activated using <code>Alt Shift</code> plus the access key, without having to access the parent menu.
 </p>
 
 <p>
-Here are the access keys defined by the AEE application menus.
+Here are the <i>access keys</i> defined by the AEE application menus.
 </p>
 
 <ul>
@@ -292,7 +298,7 @@ The focus word is only used in this way for literary text, not for math expressi
 <h2 id="brl-input">Braille Input</h2>
 
 <p>
-The AEE supports braille input according to the rules of the UEB literary code.  The following sections provide additional information for special kinds of braille symbols and Unicode characters, and how they are handled in the AEE.
+The AEE supports braille input according to the <a href="https://iceb.org/Rules%20of%20Unified%20English%20Braille%202013.pdf" target="_blank">Rules of UEB, Second Edition, 2013</a>.  The following sections provide additional information for special kinds of braille symbols and Unicode characters, and how they are handled in the AEE.
 </p>
 
 <h3 id="brl-dash">Hyphens/Dashes</h3>
@@ -325,7 +331,7 @@ The AEE translates hyphens (<code>U+002D</code>, <code>U+2010</code>, and <code>
 <h3 id="brl-num">Numeric Mode</h3>
 
 <p>
-The AEE supports the numeric indicators (digits, decimal point, numeric comma) in numeric mode within literary text.
+The AEE supports the <i>numeric indicators</i> (digits, decimal point, numeric comma) in <i>numeric mode</i> within literary text.
 </p>
 
 <p>
@@ -337,7 +343,7 @@ The AEE recognizes a numeric fraction line as a continuation of numeric mode in 
 </p>
 
 <p>
-The AEE back-translates a simple fraction to the corresponding single-character Unicode vulgar fraction symbol when it is available.  The AEE translates a numeric mode sequence that contains more than one numeric fraction line as separate numeric instances, and translates each numeric fraction line into a textual fraction line.
+The AEE back-translates a simple fraction to the corresponding single-character Unicode <i>vulgar fraction</i> symbol when it is available.  The AEE translates a numeric mode sequence that contains more than one numeric fraction line as separate numeric instances, and translates each numeric fraction line into a textual fraction line.
 </p>
 
 <p>
@@ -351,7 +357,7 @@ The AEE includes a decimal point or numeric comma within the numeric mode indica
 <h3 id="brl-vul">Vulgar Fractions</h3>
 
 <p>
-The AEE recognizes Unicode characters used to represent vulgar fractions, that is, single characters that include both a single-digit numerator and a single-digit denominator separated by a short diagonal slash.
+The AEE recognizes Unicode characters used to represent a <i>vulgar fraction</i>, that is, a single character that includes both a single-digit numerator and a single-digit denominator separated by a short diagonal slash.
 </p>
 
 <p>
@@ -359,7 +365,7 @@ The AEE supports the translation of Unicode vulgar fraction characters into Brai
 </p>
 
 <p>
-The following vulgar fraction characters are supported by the AEE:
+The following <i>vulgar fraction</i> characters are supported by the AEE:
 </p>
 
 <ul>
@@ -386,7 +392,7 @@ The following vulgar fraction characters are supported by the AEE:
 <h3 id="brl-quot">Quotation Marks</h3>
 
 <p>
-The AEE recognizes the one-cell quotation marks (<code>dots-236</code> and <code>dots-356</code>), as well as the following collection of quotation mark characters used in literary text:
+The AEE recognizes the one-cell quotation marks (<code>dots-236</code> and <code>dots-356</code>), as well as the following collection of <i>quotation mark</i> characters used in literary text:
 </p>
 
 <ul>
@@ -413,7 +419,7 @@ On back translation, the AEE translates the one-cell quotation marks into the no
 <h3 id="brl-mod">Letter Modifiers</h3>
 
 <p>
-The AEE supports the following combining characters as braille modifiers.
+The AEE supports the following <i>combining characters</i> as braille <i>letter modifiers</i>.
 </p>
 
 <ul>
@@ -432,7 +438,7 @@ The AEE supports the following combining characters as braille modifiers.
 </ul>
 
 <p>
-The AEE supports the following combining characters as additional braille modifiers.
+The AEE supports the following <i>combining characters</i> as additional braille <i>letter modifiers</i>.
 </p>
 
 <ul>
@@ -453,7 +459,7 @@ The AEE supports the use of these braille modifiers in combination with a base c
 <h3 id="brl-spc">Spacing Modifiers</h3>
 
 <p>
-The AEE supports spacing equivalent characters for combining characters where one is defined.
+The AEE supports <i>spacing characters</i> equivalent to <i>combining characters</i> where they are defined.
 </p>
 
 <ul>
@@ -488,7 +494,7 @@ The AEE back-translates acute (<code>dots-45 dots-34</code>) as <code>U+00B4 ACU
 <h2 id="math-eqns">Math Equations</h2>
 
 <p>
-The AEE supports entering equations using Nemeth code.  Typical printed math typography uses three main forms to arrange math within text documents.
+The AEE supports entering equations using the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.  Typical printed math typography uses three main forms to arrange math within text documents.
 </p>
 
 <h3 id="math-inline">Inline Math</h3>
@@ -554,10 +560,10 @@ The AEE creates text and math compound documents using four user-facing file for
 </p>
 
 <ul>
-<li><i>AEE Format</i> - HTML file format with included Content MathML</li>
-<li><i>HTML Format</i> - HTML file format with included Presentation MathML</li>
-<li><i>BRF Format</i> - Braille Ready File in computer braille format</li>
-<li><i>BRL Format</i> - HTML file format with included Unicode braille</li>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
+<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
+<li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
+<li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
 </ul>
 
 <p>
@@ -569,6 +575,8 @@ These user-facing file formats employ several standard file formats to represent
 <li><i>MathML</i> - the Mathematical Markup Language (MathML)</li>
 <li><i>Content MathML</i> - a subset of MathML for functional structure</li>
 <li><i>Presentation MathML</i> - a subset of MathML for visual notation</li>
+<li><i>Unicode Braille</i> - Unicode characters for Braille dot patterns</li>
+<li><i>BRF</i> - Braille Ready File (BRF) in computer braille format</li>
 <li><i>MathJax</i> - a JavaScript library to support Presentation MathML</li>
 </ul>
 
@@ -595,7 +603,7 @@ The HTML format is used to export and print documents for display within a web b
 <h3 id="file-brf">BRF Format</h3>
 
 <p>
-The <i>BRF format</i> for a document is the Braille Ready Format for a document, encoded using the ASCII braille encoding, for import into tools that can use it.
+The <i>BRF format</i> for a document is the Braille Ready Format for a document, encoded using the computer braille encoding, for import into tools that can use it.
 </p>
 
 <p>
@@ -605,7 +613,7 @@ The BRF format may be imported by software commonly available on electronic brai
 <h3 id="file-brl">BRL Format</h3>
 
 <p>
-The <i>BRL format</i> for a document an external form used to display the Unicode braille encoding of a document.  It consists of <a href="#ff-html">HTML</a> elements that contain Unicode braille characters to be viewed by a suitable Braille font.
+The <i>BRL format</i> for a document an external form used to display the <a href="#ff-ubrl">Unicode Braille</a> encoding of a document.  It consists of <a href="#ff-html">HTML</a> elements that contain <a href="#ff-ubrl">Unicode Braille</a> characters to be viewed by a suitable Braille font.
 </p>
 
 <p>
@@ -615,26 +623,38 @@ The BRL format may be used to produce visual representations of the braille sign
 <h3 id="ff-html">HTML</h3>
 
 <p>
-The Hypertext Markup Language (HTML) is a format used to represent rich text documents intended for display by a web browser.  The <a href="https://html.spec.whatwg.org/multipage/">HTML Living Standard</a> that defines HTML is developed principally by the Web Hypertext Application Technology Working Group (WHATWG) with endorsement by the World Wide Web Consortium (W3C).
+The Hypertext Markup Language (HTML) is a format used to represent rich text documents intended for display by a web browser.  The <a href="https://html.spec.whatwg.org/multipage/" target="_blank">HTML Living Standard</a> that defines HTML is developed principally by the Web Hypertext Application Technology Working Group (WHATWG) with endorsement by the World Wide Web Consortium (W3C).
 </p>
 
 <h3 id="ff-mml">MathML</h3>
 
 <p>
-The Mathematical Markup Language (MathML) is a format used to represent mathematical expressions intended for inclusion in web documents.  The <a href="https://www.w3.org/TR/MathML/Overview.html">MathML Recommendation</a> that defines MathML is maintained by the World Wide Web Consortium (W3C).
+The Mathematical Markup Language (MathML) is a format used to represent mathematical expressions intended for inclusion in web documents.  The <a href="https://www.w3.org/TR/MathML/Overview.html" target="_blank">MathML Recommendation</a> that defines MathML is maintained by the World Wide Web Consortium (W3C).
 </p>
 
 <h3 id="ff-mmlc">Content MathML</h3>
 
 <p>
-Content MathML is a subset of MathML used to represent the functional structure of mathematical expressions, rather than the arrangement of symbols used to communicate them.  It allows mathematical software to exchange formulas in an unambiguous manner.
+<a href="https://www.w3.org/TR/MathML/chapter4.html" target="_blank">Content MathML</a> is a subset of MathML used to represent the functional structure of mathematical expressions, rather than the arrangement of symbols used to communicate them.  It allows mathematical software to exchange formulas in an unambiguous manner.
 </p>
 
 <h3 id="ff-mmlp">Presentation MathML</h3>
 
 <p>
-Presentation MathML is a subset of MathML used to represent the visual notation of mathematical expressions, rather than the operations used to construct them.  It allows mathematical software to display formulas in a manner that can be understood by human users.
+<a href="https://www.w3.org/TR/MathML/chapter3.html" target="_blank">Presentation MathML</a> is a subset of MathML used to represent the visual notation of mathematical expressions, rather than the operations used to construct them.  It allows mathematical software to display formulas in a manner that can be understood by human users.
 </p>
+
+<h3 id="ff-ubrl">Unicode Braille</h3>
+
+<p>
+<a href="https://en.wikipedia.org/wiki/Braille_Patterns" target="_blank">Unicode Braille</a> is an encoding for Braille symbols using Unicode characters in the range <code>U+2800-U+28FF</code>.  It encodes all possible 8-dot Braille symbols.  A braille font with glyphs these characters may be used to display braille symbols as visual dot patterns, either with or without shadow dots for braille dots not included in each symbol.
+</p>
+
+<h3 id="ff-brf">BRF</h3>
+
+<p>
+<a href="https://en.wikipedia.org/wiki/Braille_ASCII" target="_blank">Braille Ready Format</a> is a file format used to represent braille symbols for electronic transmission.  It is a plain-text file where each braille symbol is encoded using the ASCII characters <code>U+0020-U+003F</code> and <code>U+005F-U+007E</code>.  BRF files are typically used for braille print embossing and electronic braille notetakers.
+<p>
 
 <h3 id="ff-mjax">MathJax</h3>
 
@@ -643,13 +663,13 @@ MathJax is a JavaScript library that can be used to support Presentation MathML 
 </p>
 
 <p>
-MathJax is typically used within a web page by providing special elements in the document header to load and/or configure the MathJax library.  See the <a href="https://docs.mathjax.org/en/latest/">MathJax Documentation</a> for more details.
+MathJax is typically used within a web page by providing special elements in the document header to load and/or configure the MathJax library.  See the <a href="https://docs.mathjax.org/en/latest/" target="_blank">MathJax Documentation</a> for more details.
 </p>
 
 <h2 id="menu-items">Menu Items</h2>
 
 <p>
-The AEE <i>application menu</i> provides File, Edit, and Help menus.
+The AEE <i>application menu</i> provides <a href="#menu-file">File</a>, <a href="#menu-edit">Edit</a>, and <a href="#menu-help">Help</a> menus.
 </p>
 
 <p>
@@ -663,29 +683,29 @@ Many of the menu items may also be activated using a single-key press after acce
 <h3 id="menu-file">File Menu</h3>
 
 <p>
-The File Menu provides menu items to load and store documents in the local file system and to view the document source, in a variety of different file formats, and to export them into a browser web page where they may be printed.
+The <i>File Menu</i> provides menu items to load and store documents in the local file system and to view the document source, in a variety of different file formats, and to export them into a browser web page where they may be printed.
 </p>
 
 <ul>
-<li><i>AEE Format</i> - HTML file format with included Content MathML</li>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
 <ul>
 <li><code>Open</code> - Load an editor document from a file in the local file system.</li>
 <li><code>Save</code> - Store an editor document to a file in the local file system.</li>
 <li><code>View Source</code> - View the editor document source in XML format.</li>
 </ul>
-<li><i>HTML Format</i> - HTML file format with included Presentation MathML</li>
+<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
 <ul>
 <li><code>Save HTML</code> - Store a browser document to a file in the local file system.</li>
 <li><code>Export HTML</code> - Open a browser web page to display the editor document.</li>
 <li><code>Print HTML</code> - Open a browser web page to print the editor document.</li>
 <li><code>View HTML</code> - View the browser document source in XML format.</li>
 </ul>
-<li><i>BRF Format</i> - Braille Ready File in computer braille format</li>
+<li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
 <ul>
 <li><code>Save BRF</code> - Store a braille ready document to a file in the local file system.</li>
 <li><code>View BRF</code> - View the braille ready document source in computer braille format.</li>
 </ul>
-<li><i>BRL Format</i> - HTML file format with included Unicode braille</li>
+<li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
 <ul>
 <li><code>Save BRL</code> - Store a braille document to a file in the local file system.</li>
 <li><code>Export BRL</code> - Open a browser web page to display the braille document.</li>
@@ -746,14 +766,14 @@ The AEE opens a browser page in a new tab to display the XML markup source for t
 <p>Store a document as a BRF Braille Ready File.</p>
 
 <p>
-The AEE stores the document using the ASCII braille encoding for import into tools that can use it.
+The AEE stores the document using the computer braille encoding for import into tools that can use it.
 </p>
 
 <h4 id="menu-file-view-brf">View BRF</h4>
 <p>View the BRF markup source for a document.</p>
 
 <p>
-The AEE opens a browser page in a new tab to display the BRF encoding for the document using the ASCII braille markup that represents the braille version of the document.
+The AEE opens a browser page in a new tab to display the BRF encoding for the document using the computer braille markup that represents the braille version of the document.
 </p>
 
 <h4 id="menu-file-save-brl">Save BRL</h4>
@@ -783,23 +803,23 @@ The AEE opens a browser web page in a new tab and places the Unicode braille enc
 <h3 id="menu-edit">Edit Menu</h3>
 
 <p>
-The Edit Menu provides operations to copy and paste document data from the system clipboard in a variety of different clipboard formats to export them into other applications.
+The <i>Edit Menu</i> provides operations to copy and paste document data from the system clipboard in a variety of different clipboard formats to export them into other applications.
 </p>
 
 <ul>
-<li><i>AEE Format</i> - HTML file format with included Content MathML</li>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
 <ul>
 <li><code>Copy</code> - Copy the current selection to the system clipboard.</li>
 <li><code>Paste</code> - Replace the current selection from the system clipboard.</li>
 <li><code>Copy All</code> - Copy the entire document to the system clipboard.</li>
 <li><code>Paste All</code> - Replace the entire document from the system clipboard.</li>
 </ul>
-<li><i>HTML Format</i> - HTML file format with included Presentation MathML</li>
+<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
 <ul>
 <li><code>Copy HTML</code> - Copy the current selection to the system clipboard.</li>
 <li><code>Copy All HTML</code> - Copy the entire document to the system clipboard.</li>
 </ul>
-<li><i>Math Format</i> - Presentation MathML file format</li>
+<li><i>Math Format</i> - Stand alone <a href="#ff-mmlp">Presentation MathML</a> file format</li>
 <ul>
 <li><code>Copy All Math</code> - Copy all math expressions in the document to the system clipboard.</li>
 </ul>
@@ -899,17 +919,17 @@ The Copy All Math operation can be used to export math expressions into Microsof
 <h3 id="menu-help">Help Menu</h3>
 
 <p>
-The Help Menu provides access to the editor documentation, including licensing and version information.
+The <i>Help Menu</i> provides access to the editor documentation, including licensing and version information.
 </p>
 
 <ul>
-<li><code>Welcome</code> - Open the AEE Welcome document.</li>
-<li><code>Users Guide</code> - Open the AEE Users Guide (this document).</li>
-<li><code>Settings</code> - Open the AEE Settings page.</li>
+<li><code>Welcome</code> - Open the AEE <a href="aee-welcome.html" target="_blank">Welcome</a> document.</li>
+<li><code>Users Guide</code> - Open the AEE <a href="aee-guide.html" target="_blank">Users Guide</a> (this document).</li>
+<li><code>Settings</code> - Open the AEE <a href="aee-settings.html" target="_blank">Settings</a> page.</li>
 <br/>
-<li><code>Terms of Service</code> - Open the AEE Terms of Service.</li>
-<li><code>Privacy Policy</code> - Open the AEE Privacy Policy.</li>
-<li><code>About</code> - Display version information about the AEE.</li>
+<li><code>Terms of Service</code> - Open the AEE <a href="aee-terms.pdf" target="_blank">Terms of Service</a>.</li>
+<li><code>Privacy Policy</code> - Open the AEE <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a>.</li>
+<li><code>About</code> - Display <a href="aee-about.html" target="_blank">version information</a> about the AEE.</li>
 </ul>
 
 <h4 id="menu-help-welcome">Welcome</h4>
@@ -969,28 +989,32 @@ The <a href="aee-about.html" target="_blank">About</a> page provides version num
 <h2 id="set-editor">Editor Settings</h2>
 
 <p>
-The Editor Settings page provides options that customize the behavior of the AEE, including application settings, braille settings, and font settings.
+The <a href="aee-settings.html" target="_blank">Settings</a> page provides options that customize the behavior of the AEE, including application settings, braille settings, and font settings.
 </p>
 
 <h3 id="set-app">Application Settings</h3>
 
 <p>
-The Application Settings control overall behavior and appearance of the AEE as an editing application, including the keyboard input mode, the visibility of editor output panels, and access to editor symbol palettes.
+The <a href="aee-settings.html#set-application" target="_blank">Application Settings</a> control overall behavior and appearance of the AEE as an editing application, including the keyboard input mode, the visibility of editor output panels, and access to editor symbol palettes.
 </p>
 
 <h4 id="set-input">Keyboard Input</h4>
 
 <p>
-The Keyboard Input settings provide an alternative means to set the keyboard input mode.  Selecting one of the keyboard input settings changes the keyboard input mode to match the selected option.  The current keyboard input mode is saved into local storage, and restored on return to the AEE web application page.
+The <a href="aee-settings.html#set-input" target="_blank">Keyboard Input</a> settings provide an alternative means to set the keyboard input mode.  Selecting one of the keyboard input settings changes the keyboard input mode to match the selected option.  The current keyboard input mode is saved into local storage, and restored on return to the AEE web application page.
 </p>
 
 <h4 id="set-panels">Editor Panels</h4>
 
 <p>
-The Editor Panels settings provide a means to enable or disable output panels that form the AEE user interface.  Enabling the Quick Buttons makes visible the top row of buttons for common math operations.  Disabling the Side Palettes can be convienient to allow more horizontal space for the main input area.  Disabling the Braille Bar output panel allows more vertical space for the main input area.
+The <a href="aee-settings.html#set-panels" target="_blank">Editor Panels</a> settings provide a means to enable or disable output panels that form the AEE user interface.  Enabling the Quick Buttons makes visible the top row of buttons for common math operations.  Disabling the Side Palettes can be convienient to allow more horizontal space for the main input area.  Disabling the Braille Bar output panel allows more vertical space for the main input area.
 </p>
 
 <h4 id="set-palettes">Symbol Palettes</h4>
+
+<p>
+The <a href="aee-settings.html#set-palettes" target="_blank">Symbol Palettes</a> settings provide a means to enable or disable, and open or close, side bar palettes one at a time.
+</p>
 
 <p>
 The Side Palettes may be enabled or disabled as a group, as described above, or they may be enabled or disabled one at a time.  Marking a palette as Active includes it in the list of palettes to be displayed, and marking it as Open expands the palette to provide access to the buttons it contains.
@@ -1003,13 +1027,13 @@ The All Palettes check boxes may be used to mark all of the palettes as either a
 <h3 id="set-braille">Braille Settings</h3>
 
 <p>
-The Braille Settings control the generation of braille output from the AEE, including the use of the MathJax library, the activation of specific contracted braille rule groups, and parameters that affect the application of braille formatting rules for displaying, saving, and printing braille output.
+The <a href="aee-settings.html#set-braille" target="_blank">Braille Settings</a> control the generation of braille output from the AEE, including the use of the MathJax library, the activation of specific contracted braille rule groups, and parameters that affect the application of braille formatting rules for displaying, saving, and printing braille output.
 </p>
 
 <h4 id="set-math">Math Output</h4>
 
 <p>
-The Math Output Settings control the use of the <a href="#ff-mjax">MathJax</a> library header in HTML markup generated by the AEE.  The MathJax library may be included in files saved using the <code>Save HTML</code> menu item, and in web pages created using the <code>Export HTML</code> and <code>Print HTML</code> options, each of which is controlled by the corresponding check box.
+The <a href="aee-settings.html#set-braille-math" target="_blank">Math Output</a> settings control the use of the <a href="#ff-mjax">MathJax</a> library header in HTML markup generated by the AEE.  The MathJax library may be included in files saved using the <code>Save HTML</code> menu item, and in web pages created using the <code>Export HTML</code> and <code>Print HTML</code> options, each of which is controlled by the corresponding check box.
 </p>
 
 <p>
@@ -1026,7 +1050,7 @@ The AEE includes the following HTML header in markup it creates for display by M
 <h4 id="set-rules">Braille Rules</h4>
 
 <p>
-The Braille Rules Settings control the use of specific groups of literary contractions by the braille translation library used by the AEE.  Each of these groups may be enabled or disabled individually to control whether or not those contractions are used on output when converting to contracted form, and whether or not they are understood on input.
+The <a href="aee-settings.html#set-braille-rules" target="_blank">Braille Rules</a> settings control the use of specific groups of literary contractions by the braille translation library used by the AEE.  Each of these groups may be enabled or disabled individually to control whether or not those contractions are used on output when converting to contracted form, and whether or not they are understood on input.
 </p>
 
 <p>
@@ -1040,7 +1064,7 @@ The <code>Initial-letter contractions</code> and <code>Final-letter groupsigns</
 <h4 id="set-formats">Braille Formats</h4>
 
 <p>
-The Braille Formats Settings control the use of indentation within Braille markup created by the AEE.  These settings can be used to affect Braille displayed on screen within the AEE web application, Braille displayed on an attached Braille terminal, and Braille saved in BRF Braille Ready Files using the <code>Save BRF</code> menu item.
+The <a href="aee-settings.html#set-braille-formats" target="_blank">Braille Formats</a> settings control the use of indentation within Braille markup created by the AEE.  These settings can be used to affect Braille displayed on screen within the AEE web application, Braille displayed on an attached Braille terminal, and Braille saved in BRF Braille Ready Files using the <code>Save BRF</code> menu item.
 </p>
 
 <p>
@@ -1054,13 +1078,13 @@ These options include specification of the overall line width, the indentation o
 <h3 id="set-font">Font Settings</h3>
 
 <p>
-The Font Settings control the document styles used for the HTML files generated by the AEE in support of the menu items on the File menu.
+The <a href="aee-settings.html#set-font" target="_blank">Font Settings</a> control the document styles used for the HTML files generated by the AEE in support of the menu items on the File menu.
 </p>
 
 <h4 id="set-font-size">Font Size</h4>
 
 <p>
-The Font Size Settings control the document font size.  There is one font size used for generated HTML files, and one for generated BRL files.
+The <a href="aee-settings.html#set-font-size" target="_blank">Font Size</a> settings control the document font size.  There is one font size used for generated HTML files, and one for generated BRL files.
 </p>
 
 <h2 id="web-browsers">Web Browsers</h2>
@@ -1410,7 +1434,7 @@ Since this setting cannot be controlled by the JAWS Settings Center, it also can
 <h2 id="nemeth-braille">Nemeth Braille</h2>
 
 <p>
-The AEE supports the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.
+The AEE supports the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.
 </p>
 
 <p>
