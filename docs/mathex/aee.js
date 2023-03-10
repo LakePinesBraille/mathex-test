@@ -671,7 +671,7 @@ const aee_init = () => {
 '            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="view" accesskey="v" aria-label="View Source">V&#x0332;iew Source</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveHTML" accesskey="h" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
+'            <li><a href="#" id="saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
 '            <li><a href="#" id="exportHTML" accesskey="x" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
 '            <li><a href="#" id="printHTML" accesskey="p" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
 '            <li><a href="#" id="viewHTML" aria-label="View HTML">View HTML</a></li>' +

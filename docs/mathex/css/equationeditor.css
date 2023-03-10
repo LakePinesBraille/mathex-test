@@ -283,6 +283,11 @@
     margin: 0px -2px;
 }
 
+.ee-input-panel hr
+{
+    border: 1px solid black;
+}
+
 /* Side bar styles */
 
 .ee-side-bar .accordion
