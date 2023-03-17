@@ -671,17 +671,17 @@ const aee_init = () => {
 '            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="view" accesskey="v" aria-label="View Source">V&#x0332;iew Source</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
+'            <li><a href="#" id="saveHTML">Save HTML</a></li>' +
 '            <li><a href="#" id="exportHTML" accesskey="x" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
 '            <li><a href="#" id="printHTML" accesskey="p" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
-'            <li><a href="#" id="viewHTML" aria-label="View HTML">View HTML</a></li>' +
+'            <li><a href="#" id="viewHTML">View HTML</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRF" accesskey="b" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="viewBRF" aria-label="View BRF">View BRF</a></li>' +
+'            <li><a href="#" id="viewBRF">View BRF</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveBRL" aria-label="Save BRL">Save BRL</a></li>' +
-'            <li><a href="#" id="exportBRL" aria-label="Export BRL">Export BRL</a></li>' +
-'            <li><a href="#" id="printBRL" aria-label="Print BRL">Print BRL</a></li>' +
+'            <li><a href="#" id="saveBRL">Save BRL</a></li>' +
+'            <li><a href="#" id="exportBRL">Export BRL</a></li>' +
+'            <li><a href="#" id="printBRL">Print BRL</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="close" accesskey="c" aria-label="Close">C&#x0332;lose</a></li>' +
 '          </ul>' +
