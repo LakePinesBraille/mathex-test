@@ -10,7 +10,7 @@
 const settings = {
   "aee-input-qwerty" : "false",
   "aee-input-braille" : "true",
-  "aee-input-six-key" : "false",
+  "aee-input-home" : "false",
   "aee-panel-quick-bar" : "true",
   "aee-panel-side-bar" : "true",
   "aee-panel-braille-bar" : "true",
@@ -30,6 +30,12 @@ const settings = {
   "aee-math-indent-runover" : 5,
   "aee-html-font-size" : 18,
   "aee-brl-font-size" : 24,
+  "fmt-heading-1": "center",
+  "fmt-heading-2": "cell-5",
+  "fmt-heading-3": "cell-7",
+  "fmt-heading-4": "cell-7",
+  "fmt-heading-5": "cell-7",
+  "fmt-heading-6": "cell-7",
   "brl-rules-all-rules" : "true",
   "brl-rules-alphabetic-wordsigns" : "true",
   "brl-rules-strong-wordsigns" : "true",
@@ -44,7 +50,7 @@ const settings = {
   "brl-rules-final-letter" : "true",
   "brl-rules-final-letter-46" : "true",
   "brl-rules-final-letter-56" : "true",
-  "brl-rules-shortforms" : "true",
+  "brl-rules-shortforms" : "true"
 };
 
 const palettes = {
@@ -75,7 +81,8 @@ const palettes = {
   "plt-script-lower" : "Script small",
   "plt-shapes" : "Shapes",
   "plt-circled" : "Circled",
-  "plt-squared" : "Squared"
+  "plt-squared" : "Squared",
+  "plt-headings" : "Headings"
 };
 
 const click_grp = function( gelt, elts )
@@ -252,6 +259,10 @@ const done = function() {
 <ul>
 <li><a href="#set-font-size">Font Size</a></li>
 </ul>
+<li><a href="#set-formats">Braille Formats</a></li>
+<ul>
+<li><a href="#set-fmt-headings">Headings</a></li>
+</ul>
 </ul>
 
 <h2 id="set-application">Application Settings</h2>
@@ -269,8 +280,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="aee-input-six-key">Six-key input mode</label>
-<input id="aee-input-six-key" type="radio" name="aee-input-type" value="six-key"></input>
+<label for="aee-input-home">Home row input mode</label>
+<input id="aee-input-home" type="radio" name="aee-input-type" value="home"></input>
 </div>
 
 <h2 id="set-panels">Editor Panels</h2>
@@ -459,6 +470,64 @@ const done = function() {
 <div>
 <label for="aee-brl-font-size">BRL format</label>
 <input id="aee-brl-font-size" type="number" min="1" max="99"></input>
+</div>
+
+<h2 id="set-formats">Braille Formats</h2>
+
+<h3 id="set-fmt-headings">Headings</h3>
+
+<div>
+<label for="fmt-heading-1">Level 1</label>
+<select id="fmt-heading-1">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
+</div>
+
+<div>
+<label for="fmt-heading-2">Level 2</label>
+<select id="fmt-heading-2">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
+</div>
+
+<div>
+<label for="fmt-heading-3">Level 3</label>
+<select id="fmt-heading-3">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
+</div>
+
+<div>
+<label for="fmt-heading-4">Level 4</label>
+<select id="fmt-heading-4">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
+</div>
+
+<div>
+<label for="fmt-heading-5">Level 5</label>
+<select id="fmt-heading-5">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
+</div>
+
+<div>
+<label for="fmt-heading-6">Level 6</label>
+<select id="fmt-heading-6">
+  <option value="center">Center</option>
+  <option value="cell-5">Cell 5</option>
+  <option value="cell-7">Cell 7</option>
+</select>
 </div>
 
 </body>

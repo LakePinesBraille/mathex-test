@@ -254,6 +254,13 @@
     font-size: 100%;
 }
 
+.ee-input-panel h1 { font-size: 1.5em }
+.ee-input-panel h2 { font-size: 1.25em }
+.ee-input-panel h3 { font-size: 1.0em }
+.ee-input-panel h4 { font-size: 0.75em }
+.ee-input-panel h5 { font-size: 0.6em }
+.ee-input-panel h6 { font-size: 0.5em }
+
 .ee-input-panel .caps
 {
     text-transform: uppercase;
