@@ -306,7 +306,10 @@ const aee_init = () => {
   };
 
   const moveToEnd = function() {
-    setTimeout( () => editor.processTemplate( "ctrl-end" ), 200 );
+    setTimeout( () => {
+        editor.processTemplate( "ctrl-home" )
+        editor.processTemplate( "end" )
+    }, 200 );
   };
 
   const do_close = async function( event ) {
