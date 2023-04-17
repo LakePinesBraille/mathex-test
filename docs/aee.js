@@ -96,7 +96,9 @@ const aee_init = () => {
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
-  var last_file_handle;
+  var last_file_handle = undefined;
+
+  var last_open_handle = undefined;
 
   const getOpenOptions = function() {
     return Object.assign( { startIn: last_file_handle }, file_options,
@@ -278,6 +280,30 @@ const aee_init = () => {
     }
   };
 
+  const saveThis = async ( markup ) => {
+    if ( window.showSaveFilePicker )
+    {
+      const handle = last_open_handle;
+      const file = await handle.createWritable();
+
+      await file.write( markup );
+      await file.close();
+    }
+    else
+    {
+      const name = last_open_handle.name;
+      const type = isMath() ? "application/mathml+xml" : "application/html";
+      const blob = new Blob( [ markup ], { type: type } );
+      const a = document.createElement( "a" );
+      a.download = name;
+      a.href = URL.createObjectURL( blob );
+      a.addEventListener( "click", () => {
+        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
+      } );
+      a.click();
+    }
+  };
+
   const saveFile = async ( options, markup, type ) => {
     exportFile( options, type );
 
@@ -312,13 +338,16 @@ const aee_init = () => {
     }, 200 );
   };
 
-  const do_close = async function( event ) {
+  const do_new = async function( event ) {
     try {
       event.preventDefault();
 
       editor.processTemplate( "clear" );
       editor.setFocus();
       moveToEnd();
+
+      last_file_handle = undefined;
+      last_open_handle = undefined;
     }
     catch ( e )
     {
@@ -336,19 +365,43 @@ const aee_init = () => {
       editor.setContent( markup );
       editor.setFocus();
       moveToEnd();
+
+      last_open_handle = last_file_handle;
     }
     catch ( e )
     {
     }
   };
 
+  const do_close = do_new;
+
   const do_save = async function( event ) {
+    if ( ! last_open_handle )
+    {
+        do_saveAs( event );
+        return;
+    }
+
+    try {
+      event.preventDefault();
+
+      const markup = editor.getContent();
+      await saveThis( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_saveAs = async function( event ) {
     try {
       event.preventDefault();
 
       const options = getOpenOptions();
       const markup = editor.getContent();
       await saveFile( options, markup );
+
+      last_open_handle = last_file_handle;
     }
     catch ( e )
     {
@@ -643,6 +696,48 @@ const aee_init = () => {
     }
   };
 
+  const do_welcome = async function ( event ) {
+    try {
+      event && event.preventDefault();
+
+      const iframe = document.createElement( "iframe" );
+      iframe.src = "aee-welcome.html";
+
+      iframe.onload = () => {
+        iframe.contentWindow.onunload = () => editor.setFocus();
+        iframe.onblur = () => iframe.focus();
+        iframe.focus();
+      };
+
+      document.body.appendChild( iframe );
+    }
+    catch ( e )
+    {
+        console.log( e );
+    }
+  };
+
+  const do_tutorial = async function( event ) {
+    try {
+      event.preventDefault();
+
+      var href = getSource() + event.target.getAttribute( "href" );
+      if ( localStorage && localStorage[ "gtk-last-page-href" ] &&
+           localStorage[ "gtk-show-last-page" ] !== "false" )
+      {
+        href = localStorage[ "gtk-last-page-href" ];
+      }
+
+      const nwindow = window.open( href );
+      nwindow.addEventListener( "unload", () => {
+        editor.setFocus();
+      } )
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_settings = async function( event ) {
     try {
       event.preventDefault();
@@ -670,8 +765,10 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="f">File<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
+'            <li><a href="#" id="new" accesskey="n" aria-label="New">N&#x0332;ew</a></li>' +
 '            <li><a href="#" id="open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
 '            <li><a href="#" id="view" accesskey="v" aria-label="View Source">V&#x0332;iew Source</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveHTML">Save HTML</a></li>' +
@@ -707,13 +804,14 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="aee-welcome.html" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
+'            <li><a href="#" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
+'            <li><a href="gtk/intro.html" id="tutorial" accesskey="t" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
 '            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="aee-settings.html" id="settings" accesskey="g" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
 '            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
 '            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
-'            <li><a href="aee-about.html" id="about" accesskey="a" aria-label="About">A&#x0332;bout</a></li>' +
+'            <li><a href="aee-about.html" id="about">About</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -724,8 +822,10 @@ const aee_init = () => {
   addMarkup( ".ee-version", getVersion() );
   addMarkup( ".ee-timestamp", getTimestamp() );
 
+  addClick( "#new", do_new );
   addClick( "#open", do_open );
   addClick( "#save", do_save );
+  addClick( "#saveAs", do_saveAs );
   addClick( "#view", do_view );
   addClick( "#saveHTML", do_saveHTML );
   addClick( "#exportHTML", do_exportHTML );
@@ -746,16 +846,18 @@ const aee_init = () => {
   addClick( "#copyAllHTML", do_copyAllHTML );
   addClick( "#copyAllMath", do_copyAllMath );
 
-  addClick( "#welcome", do_help );
+  addClick( "#welcome", do_welcome );
+  addClick( "#tutorial", do_tutorial );
+  addClick( "#settings", do_settings );
   addClick( "#guide", do_help );
   addClick( "#about", do_help );
 
-  addClick( "#settings", do_settings );
-
   const accel = {
     f: {
+      n: "#new",
       o: "#open",
       s: "#save",
+      a: "#saveAs",
       v: "#view",
       h: "#saveHTML",
       x: "#exportHTML",
@@ -764,9 +866,9 @@ const aee_init = () => {
       c: "#close" },
     h: {
       w: "#welcome",
+      t: "#tutorial",
       u: "#guide",
       g: "#settings",
-      a: "#about"
     }
   };
 
@@ -780,6 +882,12 @@ const aee_init = () => {
       editor.setFocus();
     }
   } );
+
+  if ( window.editor && localStorage &&
+       localStorage[ "gtk-show-welcome" ] !== "false" )
+  {
+    do_welcome();
+  }
 };
 
 document.addEventListener( "keydown", ( e ) => {
@@ -798,7 +906,11 @@ document.addEventListener( "keydown", ( e ) => {
   }
   if ( e.key === "Escape" )
   {
-    if ( window.editor )
+    if ( window.parent !== window )
+    {
+        window.parent.document.querySelector( "iframe" ).remove();
+    }
+    else if ( window.editor )
     {
       window.editor.setFocus();
     }

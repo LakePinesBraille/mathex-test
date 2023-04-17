@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>AEE Settings</title>
@@ -8,6 +8,11 @@
   <script src="aee.js"></script>
   <script>
 const settings = {
+  "gtk-show-welcome" : "true",
+  "gtk-show-last-page" : "true",
+  "gtk-last-page-href" : "",
+  "aee-width" : 656,
+  "aee-height" : 500,
   "aee-input-qwerty" : "false",
   "aee-input-braille" : "true",
   "aee-input-home" : "false",
@@ -139,8 +144,8 @@ const plts = function()
     var tr = 
 "<tr>" +
 "<td><label for=\"" + ak + "\">" + v + "</label></td>" +
-"<td><input id=\"" + ak + "\" type=\"checkbox\"></input></td>" +
-"<td><input id=\"" + ok + "\" type=\"checkbox\"></input></td>" +
+"<td><input id=\"" + ak + "\" type=\"checkbox\" aria-label=\"" + v + " active\"></input></td>" +
+"<td><input id=\"" + ok + "\" type=\"checkbox\" aria-label=\"" + v + " open\"></input></td>" +
 "</tr>";
     active_keys.push( ak );
     open_keys.push( ok );
@@ -193,13 +198,15 @@ const load = function() {
   {
     var v = localStorage[ k ] || settings[ k ] || "";
     var elt = document.querySelector( "#" + k );
-    if ( elt.type === "checkbox" || elt.type === "radio" )
-    {
-      elt.checked = ( v === "true" );
-    }
-    else
-    {
-      elt.value = v;
+    if ( elt ) {
+      if ( elt.type === "checkbox" || elt.type === "radio" )
+      {
+        elt.checked = ( v === "true" );
+      }
+      else
+      {
+        elt.value = v;
+      }
     }
   }
 };
@@ -209,8 +216,15 @@ const save = function() {
   for ( var k in settings )
   {
     var elt = document.querySelector( "#" + k );
-    var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
-    localStorage[ k ] = v;
+    if ( elt )
+    {
+      var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
+      localStorage[ k ] = v;
+    }
+    else
+    {
+      localStorage[ k ] = settings[ k ];
+    }
   }
 };
 
@@ -243,27 +257,40 @@ const done = function() {
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-<li><a href="#set-application">Application Settings</a></li>
+<li><a href="#set-tutorial">Tutorial Settings</a></li>
+<li><a href="#set-application">Application Settings</a>
 <ul>
 <li><a href="#set-input">Keyboard Input</a></li>
 <li><a href="#set-panels">Editor Panels</a></li>
 <li><a href="#set-palettes">Symbol Palettes</a></li>
-</ul>
-<li><a href="#set-braille">Braille Settings</a></li>
+</ul></li>
+<li><a href="#set-braille">Braille Settings</a>
 <ul>
 <li><a href="#set-braille-math">Math Output</a></li>
 <li><a href="#set-braille-rules">Braille Rules</a></li>
 <li><a href="#set-braille-formats">Braille Formats</a></li>
-</ul>
-<li><a href="#set-font">Font Settings</a></li>
+</ul></li>
+<li><a href="#set-font">Font Settings</a>
 <ul>
 <li><a href="#set-font-size">Font Size</a></li>
-</ul>
-<li><a href="#set-formats">Braille Formats</a></li>
+</ul></li>
+<li><a href="#set-formats">Braille Formats</a>
 <ul>
 <li><a href="#set-fmt-headings">Headings</a></li>
+</ul></li>
 </ul>
-</ul>
+
+<h2 id="set-tutorial">Tutorial Settings</h2>
+
+<div>
+<label for="gtk-show-welcome">Show the Welcome Page</label>
+<input id="gtk-show-welcome" type="checkbox"></input>
+</div>
+
+<div>
+<label for="gtk-show-last-page">Show the last topic visited</label>
+<input id="gtk-show-last-page" type="checkbox"></input>
+</div>
 
 <h2 id="set-application">Application Settings</h2>
 

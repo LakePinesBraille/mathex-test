@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>AEE Users Guide</title>
@@ -11,18 +11,18 @@
   </script>
 </head>
 <body class="aee-guide" onload="init()">
-<h1>Accessible Equation Editor Users Guide</h1>
+<h1>The Accessible Equation Editor Users Guide</h1>
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-<li><a href="#key-input">Keyboard Input</a></li>
+<li><a href="#key-input">Keyboard Input</a>
 <ul>
 <li><a href="#key-mode">Input Modes</a></li>
 <li><a href="#key-ctrl">Control Keys</a></li>
 <li><a href="#key-menu">Menu Keys</a></li>
 <li><a href="#key-focus">Focus Word</a></li>
-</ul>
-<li><a href="#brl-input">Braille Input</a></li>
+</ul></li>
+<li><a href="#brl-input">Braille Input</a>
 <ul>
 <li><a href="#brl-dash">Hyphens/Dashes</a></li>
 <li><a href="#brl-num">Numeric Mode</a></li>
@@ -30,22 +30,21 @@
 <li><a href="#brl-quot">Quotation Marks</a></li>
 <li><a href="#brl-mod">Letter Modifiers</a></li>
 <li><a href="#brl-spc">Spacing Modifiers</a></li>
-</ul>
-<li><a href="#math-eqns">Math Equations</a></li>
+</ul></li>
+<li><a href="#math-eqns">Math Equations</a>
 <ul>
 <li><a href="#math-inline">Inline Math</a></li>
 <li><a href="#math-display">Display Math</a></li>
 <li><a href="#math-multi">Multi-Line Math</a></li>
 <li><a href="#math-term">Termination</a></li>
-</ul>
-<li><a href="#file-formats">File Formats</a></li>
+</ul></li>
+<li><a href="#file-formats">File Formats</a>
 <ul>
 <li><a href="#file-aee">AEE Format</a></li>
 <li><a href="#file-html">HTML Format</a></li>
 <li><a href="#file-brf">BRF Format</a></li>
 <li><a href="#file-brl">BRL Format</a></li>
-<br/>
-<li><a href="#ff-html">HTML</a></li>
+<li class="skip"><a href="#ff-html">HTML</a></li>
 <li><a href="#ff-mml">MathML</a></li>
 <li><a href="#ff-mmlc">Content MathML</a></li>
 <li><a href="#ff-mmlp">Presentation MathML</a></li>
@@ -53,90 +52,85 @@
 <li><a href="#ff-ubrl">Unicode Braille</a></li>
 <li><a href="#ff-brf">BRF</a></li>
 <li><a href="#ff-mjax">MathJax</a></li>
-</ul>
-<li><a href="#menu-items">Menu Items</a></li>
+</ul></li>
+<li><a href="#menu-items">Menu Items</a>
 <ul>
-<li><a href="#menu-file">File Menu</a></li>
+<li><a href="#menu-file">File Menu</a>
 <ul>
+<li><a href="#menu-file-new">New</a></li>
 <li><a href="#menu-file-open">Open</a></li>
 <li><a href="#menu-file-save">Save</a></li>
+<li><a href="#menu-file-save-as">Save As</a></li>
 <li><a href="#menu-file-view">View Source</a></li>
-<br/>
-<li><a href="#menu-file-save-html">Save HTML</a></li>
+<li class="skip"><a href="#menu-file-save-html">Save HTML</a></li>
 <li><a href="#menu-file-export-html">Export HTML</a></li>
 <li><a href="#menu-file-print-html">Print HTML</a></li>
 <li><a href="#menu-file-view-html">View HTML</a></li>
-<br/>
-<li><a href="#menu-file-save-brf">Save BRF</a></li>
+<li class="skip"><a href="#menu-file-save-brf">Save BRF</a></li>
 <li><a href="#menu-file-view-brf">View BRF</a></li>
-<br/>
-<li><a href="#menu-file-save-brl">Save BRL</a></li>
+<li class="skip"><a href="#menu-file-save-brl">Save BRL</a></li>
 <li><a href="#menu-file-export-brl">Export BRL</a></li>
 <li><a href="#menu-file-print-brl">Print BRL</a></li>
-<br/>
-<li><a href="#menu-file-close">Close</a></li>
-</ul>
-<li><a href="#menu-edit">Edit Menu</a></li>
+<li class="skip"><a href="#menu-file-close">Close</a></li>
+</ul></li>
+<li><a href="#menu-edit">Edit Menu</a>
 <ul>
 <li><a href="#menu-edit-copy">Copy</a></li>
 <li><a href="#menu-edit-paste">Paste</a></li>
-<br/>
-<li><a href="#menu-edit-copy-all">Copy All</a></li>
+<li class="skip"><a href="#menu-edit-copy-all">Copy All</a></li>
 <li><a href="#menu-edit-paste-all">Paste All</a></li>
-<br/>
-<li><a href="#menu-edit-copy-html">Copy HTML</a></li>
+<li class="skip"><a href="#menu-edit-copy-html">Copy HTML</a></li>
 <li><a href="#menu-edit-copy-all-html">Copy All HTML</a></li>
-<br/>
-<li><a href="#menu-edit-copy-all-math">Copy All Math</a></li>
-</ul>
-<li><a href="#menu-help">Help Menu</a></li>
+<li class="skip"><a href="#menu-edit-copy-all-math">Copy All Math</a></li>
+</ul></li>
+<li><a href="#menu-help">Help Menu</a>
 <ul>
 <li><a href="#menu-help-welcome">Welcome</a></li>
+<li><a href="#menu-help-tutorial">Tutorial</a></li>
 <li><a href="#menu-help-guide">Users Guide</a></li>
 <li><a href="#menu-help-settings">Settings</a></li>
-<br/>
-<li><a href="#menu-help-terms">Terms of Service</a></li>
+<li class="skip"><a href="#menu-help-terms">Terms of Service</a></li>
 <li><a href="#menu-help-privacy">Privacy Policy</a></li>
 <li><a href="#menu-help-about">About</a></li>
-</ul>
-</ul>
-<li><a href="#set-editor">Editor Settings</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#set-editor">Editor Settings</a>
 <ul>
-<li><a href="#set-app">Application Settings</a></li>
+<li><a href="#set-app">Application Settings</a>
 <ul>
 <li><a href="#set-input">Keyboard Input</a></li>
 <li><a href="#set-panels">Editor Panels</a></li>
 <li><a href="#set-palettes">Symbol Palettes</a></li>
-</ul>
-<li><a href="#set-braille">Braille Settings</a></li>
+</ul></li>
+<li><a href="#set-braille">Braille Settings</a>
 <ul>
 <li><a href="#set-math">Math Output</a></li>
 <li><a href="#set-rules">Braille Rules</a></li>
 <li><a href="#set-formats">Braille Formats</a></li>
-</ul>
-<li><a href="#set-font">Font Settings</a></li>
+</ul></li>
+<li><a href="#set-font">Font Settings</a>
 <ul>
 <li><a href="#set-font-size">Font Size</a></li>
-</ul>
-</ul>
-<li><a href="#web-browsers">Web Browsers</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#web-browsers">Web Browsers</a>
 <ul>
 <li><a href="#web-mmlp">Presentation MathML</a></li>
 <li><a href="#web-fsa">File System Access</a></li>
 <li><a href="#web-clip">Clipboard Access</a></li>
 <li><a href="#web-print">Export, Print, and PDF</a></li>
-</ul>
-<li><a href="#screen-readers">Screen Readers</a></li>
+</ul></li>
+<li><a href="#screen-readers">Screen Readers</a>
 <ul>
-<li><a href="#sr-general">General Settings</a></li>
+<li><a href="#sr-general">General Settings</a>
 <ul>
 <li><a href="#sr-general-input">Braille Input</a></li>
 <li><a href="#sr-general-output">Braille Output</a></li>
 <li><a href="#sr-general-current">Current Word</a></li>
 <li><a href="#sr-general-msgs">Braille Messages</a></li>
 <li><a href="#sr-general-forms">Forms Mode</a></li>
-</ul>
-<li><a href="#sr-jaws">JAWS Settings</a></li>
+</ul></li>
+<li><a href="#sr-jaws">JAWS Settings</a>
 <ul>
 <li><a href="#sr-jaws-setup">JAWS Setup</a></li>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
@@ -147,8 +141,8 @@
 <li><a href="#sr-jaws-forms">Forms Mode</a></li>
 <li><a href="#sr-jaws-refresh">Page Refresh</a></li>
 <li><a href="#sr-jaws-tutor">Tutor Messages</a></li>
-</ul>
-<li><a href="#sr-nvda">NVDA Settings</a></li>
+</ul></li>
+<li><a href="#sr-nvda">NVDA Settings</a>
 <ul>
 <li><a href="#sr-nvda-setup">NVDA Setup</a></li>
 <li><a href="#sr-nvda-suggest">Suggested Settings</a></li>
@@ -157,13 +151,13 @@
 <li><a href="#sr-nvda-current">Current Word</a></li>
 <li><a href="#sr-nvda-msgs">Braille Messages</a></li>
 <li><a href="#sr-nvda-focus">Focus Mode</a></li>
-</ul>
-</ul>
-<li><a href="#nemeth-braille">Nemeth Braille</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#nemeth-braille">Nemeth Braille</a>
 <ul>
 <li><a href="#nemeth-short-under">Underbar Short Form</a></li>
 <li><a href="#nemeth-per-mille">Per Mille Symbol</a></li>
-</ul>
+</ul></li>
 </ul>
 
 <h2 id="key-input">Keyboard Input</h2>
@@ -279,21 +273,23 @@ Here are the <i>access keys</i> defined by the AEE application menus.
 </p>
 
 <ul>
-<li><code>Alt Shift F</code> - File Menu</li>
-<li><code>Alt Shift [F] O</code> - File Open</li>
-<li><code>Alt Shift [F] S</code> - File Save</li>
-<li><code>Alt Shift [F] V</code> - File View Source</li>
-<li><code>Alt Shift F, H</code> - File Save HTML</li>
-<li><code>Alt Shift [F] X</code> - File Export HTML</li>
-<li><code>Alt Shift [F] P</code> - File Print HTML</li>
-<li><code>Alt Shift [F] B</code> - File Save BRF</li>
-<li><code>Alt Shift [F] C</code> - File Close</li>
-<li><code>Alt Shift E</code> - Edit Menu</li>
-<li><code>Alt Shift H</code> - Help Menu</li>
-<li><code>Alt Shift [H] W</code> - Help Welcome</li>
-<li><code>Alt Shift [H] U</code> - Help Users Guide</li>
-<li><code>Alt Shift [H] G</code> - Help Settings</li>
-<li><code>Alt Shift [H] A</code> - Help About</li>
+<li><code>Alt Shift F</code> - <a href="#menu-file">File Menu</a></li>
+<li><code>Alt Shift [F] N</code> - <a href="#menu-file-new">File New</a></li>
+<li><code>Alt Shift [F] O</code> - <a href="#menu-file-open">File Open</a></li>
+<li><code>Alt Shift [F] S</code> - <a href="#menu-file-save">File Save</a></li>
+<li><code>Alt Shift [F] A</code> - <a href="#menu-file-save-as">File Save As</a></li>
+<li><code>Alt Shift [F] V</code> - <a href="#menu-file-view">File View Source</a></li>
+<li><code>Alt Shift F, H</code> - <a href="#menu-file-save-html">File Save HTML</a></li>
+<li><code>Alt Shift [F] X</code> - <a href="#menu-file-export-html">File Export HTML</a></li>
+<li><code>Alt Shift [F] P</code> - <a href="#menu-file-print-html">File Print HTML</a></li>
+<li><code>Alt Shift [F] B</code> - <a href="#menu-file-save-brf">File Save BRF</a></li>
+<li><code>Alt Shift [F] C</code> - <a href="#menu-file-close">File Close</a></li>
+<li><code>Alt Shift E</code> - <a href="#menu-edit">Edit Menu</a></li>
+<li><code>Alt Shift H</code> - <a href="#menu-help">Help Menu</a></li>
+<li><code>Alt Shift [H] W</code> - <a href="#menu-help-welcome">Help Welcome</a></li>
+<li><code>Alt Shift [H] T</code> - <a href="#menu-help-tutorial">Help Tutorial</a></li>
+<li><code>Alt Shift [H] U</code> - <a href="#menu-help-guide">Help Users Guide</a></li>
+<li><code>Alt Shift [H] G</code> - <a href="#menu-help-settings">Help Settings</a></li>
 </ul>
 
 <h3 id="key-focus">Focus Word</h3>
@@ -717,31 +713,47 @@ The <i>File Menu</i> provides menu items to load and store documents in the loca
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
 <ul>
 <li><code>Open</code> - Load an editor document from a file in the local file system.</li>
-<li><code>Save</code> - Store an editor document to a file in the local file system.</li>
+<li><code>Save</code> - Store an editor document to the file last used to access it.</li>
+<li><code>Save As</code> - Store an editor document to a file in the local file system.</li>
 <li><code>View Source</code> - View the editor document source in XML format.</li>
-</ul>
-<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
+</ul></li>
+<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a>
 <ul>
 <li><code>Save HTML</code> - Store a browser document to a file in the local file system.</li>
 <li><code>Export HTML</code> - Open a browser web page to display the editor document.</li>
 <li><code>Print HTML</code> - Open a browser web page to print the editor document.</li>
 <li><code>View HTML</code> - View the browser document source in XML format.</li>
-</ul>
-<li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
+</ul></li>
+<li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format
 <ul>
 <li><code>Save BRF</code> - Store a braille ready document to a file in the local file system.</li>
 <li><code>View BRF</code> - View the braille ready document source in computer braille format.</li>
-</ul>
-<li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
+</ul></li>
+<li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a>
 <ul>
 <li><code>Save BRL</code> - Store a braille document to a file in the local file system.</li>
 <li><code>Export BRL</code> - Open a browser web page to display the braille document.</li>
 <li><code>Print BRL</code> - Open a browser web page to print the braille document.</li>
+</ul></li>
 </ul>
-</ul>
+
+<h4 id="menu-file-new">New</h4>
+<p>Create a new empty document.</p>
+
+<p>
+The AEE discards the contents of the current document to create a new empty document, where you can enter the text and math contents of the new document.
+</p>
+
+<p>
+You can also type <code>Alt Shift F, N</code> to create a new empty document.
+</p>
+
+<p>
+This operation does not modify any file in the file system.
+</p>
 
 <h4 id="menu-file-open">Open</h4>
 <p>Load a document from a file in the local file system.</p>
@@ -750,11 +762,42 @@ The <i>File Menu</i> provides menu items to load and store documents in the loca
 The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
 </p>
 
+<p>
+You can also type <code>Alt Shift F, O</code> to open an existing document.
+</p>
+
+<p>
+This operation does not modify any file in the file system.
+</p>
+
 <h4 id="menu-file-save">Save</h4>
-<p>Store a document to a file in the local file system.</p>
+<p>Store a document to the file last used to access it.</p>
 
 <p>
 The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift F, S</code> to store a document to the file last used to access it.
+</p>
+
+<p>
+This operation modifies the file in the file system.
+</p>
+
+<h4 id="menu-file-save-as">Save As</h4>
+<p>Store a document to a different file in the local file system.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift F, A</code> to store a document a different file.
+</p>
+
+<p>
+This operation modifies the file in the file system.
 </p>
 
 <h4 id="menu-file-view">View Source</h4>
@@ -828,7 +871,19 @@ The AEE opens a browser web page in a new tab and places the Unicode braille enc
 </p>
 
 <h4 id="menu-file-close">Close</h4>
-<p>Clear the contents of the current document.  This menu item does not modify the filesystem.</p>
+<p>Clear the contents of the current document.</p>
+
+<p>
+The AEE discards the contents of the current document, so you can enter the text and math contents for a new document.
+</p>
+
+<p>
+You can also type <code>Alt Shift F, C</code> to clear the contents of the current document.
+</p>
+
+<p>
+This operation does not modify any file in the file system.
+</p>
 
 <h3 id="menu-edit">Edit Menu</h3>
 
@@ -837,22 +892,22 @@ The <i>Edit Menu</i> provides operations to copy and paste document data from th
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
 <ul>
 <li><code>Copy</code> - Copy the current selection to the system clipboard.</li>
 <li><code>Paste</code> - Replace the current selection from the system clipboard.</li>
 <li><code>Copy All</code> - Copy the entire document to the system clipboard.</li>
 <li><code>Paste All</code> - Replace the entire document from the system clipboard.</li>
-</ul>
-<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
+</ul></li>
+<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a>
 <ul>
 <li><code>Copy HTML</code> - Copy the current selection to the system clipboard.</li>
 <li><code>Copy All HTML</code> - Copy the entire document to the system clipboard.</li>
-</ul>
-<li><i>Math Format</i> - Stand alone <a href="#ff-mmlp">Presentation MathML</a> file format</li>
+</ul></li>
+<li><i>Math Format</i> - Stand alone <a href="#ff-mmlp">Presentation MathML</a> file format
 <ul>
 <li><code>Copy All Math</code> - Copy all math expressions in the document to the system clipboard.</li>
-</ul>
+</ul></li>
 </ul>
 
 <h4 id="menu-edit-copy">Copy</h4>
@@ -949,15 +1004,15 @@ The Copy All Math operation can be used to export math expressions into Microsof
 <h3 id="menu-help">Help Menu</h3>
 
 <p>
-The <i>Help Menu</i> provides access to the editor documentation, including licensing and version information.
+The <i>Help Menu</i> provides access to online documentation, configuration settings, software licensing, and version information.
 </p>
 
 <ul>
 <li><code>Welcome</code> - Open the AEE <a href="aee-welcome.html" target="_blank">Welcome</a> document.</li>
+<li><code>Tutorial</code> - Open the AEE <a href="gtk/intro.html" target="_blank">Tutorial</a> document.</li>
 <li><code>Users Guide</code> - Open the AEE <a href="aee-guide.html" target="_blank">Users Guide</a> (this document).</li>
 <li><code>Settings</code> - Open the AEE <a href="aee-settings.html" target="_blank">Settings</a> page.</li>
-<br/>
-<li><code>Terms of Service</code> - Open the AEE <a href="aee-terms.pdf" target="_blank">Terms of Service</a>.</li>
+<li class="skip"><code>Terms of Service</code> - Open the AEE <a href="aee-terms.pdf" target="_blank">Terms of Service</a>.</li>
 <li><code>Privacy Policy</code> - Open the AEE <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a>.</li>
 <li><code>About</code> - Display <a href="aee-about.html" target="_blank">version information</a> about the AEE.</li>
 </ul>
@@ -968,7 +1023,24 @@ Open the AEE Welcome document.
 </p>
 
 <p>
-The <a href="aee-welcome.html" target="_blank">Welcome</a> document provides a quick start page to describe how to choose the keyboard input mode and start using the AEE.
+The <a href="aee-welcome.html" target="_blank">Welcome</a> document provides a one-page quick-start introduction that describes how to choose the keyboard input mode and start using the AEE.
+</p>
+
+<p>
+You can also type <code>Alt Shift H, W</code> to open the AEE Welcome document.
+</p>
+
+<h4 id="menu-help-tutorial">Tutorial</h4>
+<p>
+Open the AEE Tutorial document.
+</p>
+
+<p>
+The Getting to Know the AEE <a href="gtk/intro.html" target="_blank">Tutorial</a> provides a mutli-page self-guided gentle introduction to the topics you need to start using the AEE.
+</p>
+
+<p>
+You can also type <code>Alt Shift H, T</code> to open the AEE Tutorial document.
 </p>
 
 <h4 id="menu-help-guide">Users Guide</h4>
@@ -980,13 +1052,21 @@ Open the AEE Users Guide.
 The <a href="aee-guide.html" target="_blank">Users Guide</a> (this document) provides more detailed instructions for how to use the AEE, including keyboard input, braille input, application menu items, and screen reader configuration information.
 </p>
 
+<p>
+You can also type <code>Alt Shift H, U</code> to open the AEE Users Guide.
+</p>
+
 <h4 id="menu-help-settings">Settings</h4>
 <p>
 Open the AEE Settings Page.
 </p>
 
 <p>
-The <a href="aee-settings.html" target="_blank">Settings</a> page provides a web form to select custom values for settings that affect the AEE behavior, including application settings, braille settings, and font settings.
+The <a href="aee-settings.html" target="_blank">Settings Page</a> provides a web form to select custom values for settings that affect the AEE behavior, including application settings, braille settings, and font settings.
+</p>
+
+<p>
+You can also type <code>Alt Shift H, G</code> to open the AEE Settings Page.
 </p>
 
 <h4 id="menu-help-terms">Terms of Service</h4>
@@ -995,7 +1075,7 @@ Open the AEE Terms of Service document.
 </p>
 
 <p>
-The <a href="aee-terms.pdf" target="_blank">Terms of Service</a> document describes the end user license agreement under which the AEE is provided free of charge to individual users.  Please contact Lake Pines Braille at <a href="mailto:aee@lakepinesbraille.com">aee@lakepinesbraille.com</a> for information about other uses of the AEE, which we would be happy to encourage!
+The <a href="aee-terms.pdf" target="_blank">Terms of Service</a> document describes the end user license agreement under which the AEE is provided free of charge to individual users, including students and teachers at educational institutions.  Please contact Lake Pines Braille at <a href="mailto:aee@lakepinesbraille.com">aee@lakepinesbraille.com</a> for information about other uses of the AEE, which we would be happy to encourage!
 </p>
 
 <h4 id="menu-help-privacy">Privacy Policy</h4>
@@ -1004,7 +1084,7 @@ Open the AEE Privacy Policy document.
 </p>
 
 <p>
-The <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a> document says that when we receive information about you, such as when you report issues, we do not share your personal information with anyone.  It just takes a few more words to say that in a way that ensures everyone remains safe when they use the site!
+The <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a> document says that when we receive information about you, such as when you report issues, we do not share your personal information with anyone.  It just takes a few more words to say that in a way that ensures everyone remains safe when they use the web site!
 </p>
 
 <h4 id="menu-help-about">About</h4>
@@ -1013,7 +1093,7 @@ Display version information about the AEE.
 </p>
 
 <p>
-The <a href="aee-about.html" target="_blank">About</a> page provides version number and copyright information for the AEE, and an email link to report issues.  Please include the AEE version when reporting issues.
+The <a href="aee-about.html" target="_blank">About</a> page provides version number and copyright information for the AEE, and an email link to report issues.  Please include the AEE version number when reporting issues.
 </p>
 
 <h2 id="set-editor">Editor Settings</h2>
