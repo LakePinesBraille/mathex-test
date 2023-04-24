@@ -701,10 +701,14 @@ const aee_init = () => {
       event && event.preventDefault();
 
       const iframe = document.createElement( "iframe" );
-      iframe.src = "aee-welcome.html";
+      iframe.src = getSource() + "aee-welcome.html";
 
       iframe.onload = () => {
-        iframe.contentWindow.onunload = () => editor.setFocus();
+        iframe.contentWindow.onunload = () => {
+          EquationEditorAPI.updateSettings();
+          editor.setFocus();
+        };
+
         iframe.onblur = () => iframe.focus();
         iframe.focus();
       };
@@ -713,7 +717,6 @@ const aee_init = () => {
     }
     catch ( e )
     {
-        console.log( e );
     }
   };
 
@@ -747,11 +750,11 @@ const aee_init = () => {
 
       nwindow.addEventListener( "beforeunload", () => {
         EquationEditorAPI.updateSettings();
-      } )
+      } );
 
       nwindow.addEventListener( "unload", () => {
         editor.setFocus();
-      } )
+      } );
     }
     catch ( e )
     {

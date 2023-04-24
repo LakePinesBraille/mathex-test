@@ -13,8 +13,8 @@ const settings = {
   "gtk-last-page-href" : "",
   "aee-width" : 656,
   "aee-height" : 500,
-  "aee-input-qwerty" : "false",
-  "aee-input-braille" : "true",
+  "aee-input-qwerty" : "true",
+  "aee-input-braille" : "false",
   "aee-input-home" : "false",
   "aee-panel-quick-bar" : "true",
   "aee-panel-side-bar" : "true",
@@ -221,10 +221,6 @@ const save = function() {
       var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
       localStorage[ k ] = v;
     }
-    else
-    {
-      localStorage[ k ] = settings[ k ];
-    }
   }
 };
 
@@ -292,7 +288,22 @@ const done = function() {
 <input id="gtk-show-last-page" type="checkbox"></input>
 </div>
 
+<div style="display: none">
+<label for="gtk-last-page-href">The last topic visited</label>
+<input id="gtk-last-page-href"></input>
+</div>
+
 <h2 id="set-application">Application Settings</h2>
+
+<div style="display: none">
+<label for="aee-width">Panel width</label>
+<input id="aee-width"></input>
+</div>
+
+<div style="display: none">
+<label for="aee-height">Panel height</label>
+<input id="aee-height"></input>
+</div>
 
 <h2 id="set-input">Keyboard Input</h2>
 

@@ -11,9 +11,11 @@
 
 <h1>Welcome to the Accessible Equation Editor!</h1>
 
+<!--
 <p>
 The Accessible Equation Editor (AEE) is a Web Application for Braille Text and Math documents!
 </p>
+-->
 
 <p>
 Press <code>Escape</code> to dismiss this Welcome Page and return to the application.
@@ -28,10 +30,23 @@ Please see the <a href="gtk/intro.html" target="_blank">Tutorial</a> for help ge
 <p>
 The <a href="gtk/key-input.html" target="_blank">Keyboard Input</a> page describes how to select your preferred keyboard input method.
 </p>
+<p>
+<input id="aee-input-qwerty" type="radio" name="aee-input-type" value="qwerty"></input>
+<label for="aee-input-qwerty">Computer Keyboard</label>&#x2003;
+<input id="aee-input-braille" type="radio" name="aee-input-type" value="braille"></input>
+<label for="aee-input-braille">Refreshable Braille</label>&#x2003;
+<input id="aee-input-home" type="radio" name="aee-input-type" value="home"></input>
+<label for="aee-input-home">Home Row Braille</label>
+</p>
 </li>
 <li>
 <p>
 The <a href="gtk/sr-setup.html" target="_blank">Screen Readers</a> page describes how to set up your screen reader to use the editor.
+</p>
+<p>
+&#x25CF;&#x2002;<a href="gtk/sr-jaws.html" target="_blank">JAWS Setup</a>&#x2003;
+&#x25CF;&#x2002;<a href="gtk/sr-nvda.html" target="_blank">NVDA Setup</a>&#x2003;
+&#x25CF;&#x2002;<a href="gtk/sr-other.html" target="_blank">Other Screen Readers</a>
 </p>
 </li>
 </ul>
@@ -49,8 +64,14 @@ From anywhere else on the page, press <code>Escape</code> to return to the input
 </ul>
 
 <p>
+Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, the <a href="gtk/intro.html" target="_blank">Tutorial</a>, or the <a href="aee-guide.html" target="_blank">Users Guide</a>.
+</p>
+
+<!--
+<p>
 Thank you for your interest in the Accessible Equation Editor!
 </p>
+-->
 <div>
 <input id="gtk-show-welcome" type="checkbox"></input>
 <label for="gtk-show-welcome">Show this Welcome Page when you start the AEE.</label>
@@ -60,21 +81,44 @@ Thank you for your interest in the Accessible Equation Editor!
 (() => {
   const load = function( k ) {
     const elt = document.querySelector( "#" + k );
-    if ( elt && elt.type === "checkbox" ) {
-      elt.checked = localStorage[ k ] !== "false";
-      elt.addEventListener( "change", () => save( k ) );
-      save( k );
+    if ( elt )
+    {
+      if ( elt.type === "checkbox" )
+      {
+        elt.checked = localStorage[ k ] !== "false";
+        elt.addEventListener( "change", () => save( k ) );
+        save( k );
+      }
+      if ( elt.type === "radio" )
+      {
+        elt.checked = localStorage[ k ] === "true";
+        elt.addEventListener( "change", () => saveAll() );
+        save( k );
+      }
     }
   };
 
   const save = function( k ) {
     const elt = document.querySelector( "#" + k );
-    if ( elt && elt.type === "checkbox" ) {
-      localStorage[ k ] = elt.checked ? "true" : "false";
+    if ( elt )
+    {
+      if ( elt.type === "checkbox" || elt.type === "radio" )
+      {
+        localStorage[ k ] = elt.checked ? "true" : "false";
+      }
     }
   };
 
+  const saveAll = function() {
+    save( "aee-input-qwerty" );
+    save( "aee-input-braille" );
+    save( "aee-input-home" );
+  }
+
   localStorage && load( "gtk-show-welcome" );
+  localStorage && load( "aee-input-qwerty" );
+  localStorage && load( "aee-input-braille" );
+  localStorage && load( "aee-input-home" );
 })();
 </script>
 
