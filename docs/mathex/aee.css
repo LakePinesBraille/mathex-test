@@ -16,6 +16,16 @@ body
     background-color: transparent;
 }
 
+iframe
+{
+    position: absolute;
+    z-index: 1080;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
 .ee-parent-panel
 {
     margin-bottom: 10px;
@@ -110,6 +120,14 @@ body
     margin: 1in 2in;
 }
 
+.aee-welcome a, .aee-guide a, .aee-settings a, .aee-about a {
+	font-weight: bold;
+}
+
+.aee-welcome code, .aee-guide code, .aee-settings code, .aee-about code {
+    font-weight: bold;
+}
+
 .aee-btn {
     color: #333333;
     background-color: #aaaaaa;
@@ -129,4 +147,8 @@ body
     border-width: 2px !important;
     border-style: solid !important;
     outline: 1px solid transparent !important;
+}
+
+li.skip {
+    margin-top: 20pt;
 }

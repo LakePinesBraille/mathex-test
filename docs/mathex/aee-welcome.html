@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>AEE Welcome</title>
@@ -12,32 +12,71 @@
 <h1>Welcome to the Accessible Equation Editor!</h1>
 
 <p>
-Welcome to the Accessible Equation Editor (AEE), a Web Application for Braille Text and Math documents!
+The Accessible Equation Editor (AEE) is a Web Application for Braille Text and Math documents!
 </p>
 
 <p>
-When you load the <a href=".">AEE Web Application</a>, it pulls the input focus to the AEE input area, where you may enter text and math.  At any time, you can press the <code>Escape</code> key to return to the input area.
+Press <code>Escape</code> to dismiss this Welcome Page and return to the application.
 </p>
 
 <p>
-If you are a braille user, press <code>Ctrl+r</code> to select Braille input mode (the default), and enter braille text and math into the input area using your braille terminal.
+Please see the <a href="gtk/intro.html" target="_blank">Tutorial</a> for help getting to know the AEE.
 </p>
 
+<ul>
+<li>
 <p>
-If you are a sighted user, press <code>Ctrl+q</code> to select QWERTY input mode, and enter text and math using your computer keyboard.
+The <a href="gtk/key-input.html" target="_blank">Keyboard Input</a> page describes how to select your preferred keyboard input method.
+</p>
+</li>
+<li>
 <p>
+The <a href="gtk/sr-setup.html" target="_blank">Screen Readers</a> page describes how to set up your screen reader to use the editor.
+</p>
+</li>
+</ul>
 
 <p>
-To enter braille using your computer keyboard, press <code>Ctrl+h</code> to select Home Row input mode, and enter braille using the home row keys <code>asdf jkl;</code> to enter braille <code>dots-7321 4568</code>, respectively.
+When the editor loads, it pulls focus to its input area, where you enter text and math.
 </p>
 
+<ul>
+<li>
 <p>
-Please see the <a href="aee-guide.html">AEE Users Guide</a> for more information, including a description of the AEE keyboard input modes, the AEE application menu items, screen reader configuration information, and much more!
+From anywhere else on the page, press <code>Escape</code> to return to the input area.
 </p>
+</li>
+</ul>
 
 <p>
 Thank you for your interest in the Accessible Equation Editor!
 </p>
+<div>
+<input id="gtk-show-welcome" type="checkbox"></input>
+<label for="gtk-show-welcome">Show this Welcome Page when you start the AEE.</label>
+</div>
+
+<script>
+(() => {
+  const load = function( k ) {
+    const elt = document.querySelector( "#" + k );
+    if ( elt && elt.type === "checkbox" ) {
+      elt.checked = localStorage[ k ] !== "false";
+      elt.addEventListener( "change", () => save( k ) );
+      save( k );
+    }
+  };
+
+  const save = function( k ) {
+    const elt = document.querySelector( "#" + k );
+    if ( elt && elt.type === "checkbox" ) {
+      localStorage[ k ] = elt.checked ? "true" : "false";
+    }
+  };
+
+  localStorage && load( "gtk-show-welcome" );
+})();
+</script>
 
 </body>
 </html>
