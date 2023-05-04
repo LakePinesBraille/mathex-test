@@ -63,6 +63,14 @@ iframe
     border-color: #bfbfbf !important;
 }
 
+.ee-file-name {
+    background: #e6e6e6;
+    display: none;
+    margin-bottom: 6px;
+    padding: 2px 10px;
+    width: fit-content;
+}
+
 .ee-init-panel {
     background: transparent;
     color: transparent;

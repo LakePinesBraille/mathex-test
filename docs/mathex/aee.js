@@ -1,6 +1,10 @@
 const aee_onload = () => {
   const body = document.body;
 
+  const p = document.createElement( "p" );
+  p.setAttribute( "class", "ee-file-name" );
+  body.insertBefore( p, body.firstChild );
+
   const div = document.createElement( "div" );
   div.setAttribute( "class", "ee-menu" );
   body.insertBefore( div, body.firstChild );
@@ -96,9 +100,46 @@ const aee_init = () => {
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
-  var last_file_handle = undefined;
+  var last_file_elt = document.querySelector( ".ee-file-name" );
+  var last_file_name = "";
+  var last_file_mod = false;
 
+  var last_file_handle = undefined;
   var last_open_handle = undefined;
+
+  const updateFileName = function() {
+    if ( last_file_elt )
+    {
+      // const value = last_file_name + ( last_file_mod ? " (*)" : "" );
+      const value = last_file_name;
+      last_file_elt.innerText = value;
+      last_file_elt.style.display = value ? "block" : "none";
+    }
+  };
+
+  const setCleanFileName = function( name ) {
+    setLastFileName( name );
+    clearModFlag();
+  };
+
+  const setLastFileName = function( name ) {
+    last_file_name = name;
+    updateFileName();
+  };
+
+  const clearModFlag = function () {
+    editor._initial = getContent();
+    last_file_mod = false;
+    updateFileName();
+  };
+
+  const updateModFlag = function() {
+    if ( last_file_elt )
+    {
+      last_file_mod = ( getContent() !== editor._initial );
+      updateFileName();
+    }
+  };
 
   const getOpenOptions = function() {
     return Object.assign( { startIn: last_file_handle }, file_options,
@@ -252,6 +293,7 @@ const aee_init = () => {
       [ handle ] = await window.showOpenFilePicker( options );
       const file = await handle.getFile();
       last_file_handle = handle;
+      setLastFileName( handle.name );
       return file;
     }
     else
@@ -312,6 +354,7 @@ const aee_init = () => {
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
       last_file_handle = handle;
+      setLastFileName( handle.name );
 
       await file.write( markup );
       await file.close();
@@ -331,11 +374,21 @@ const aee_init = () => {
     }
   };
 
-  const moveToEnd = function() {
+  const moveToHome = function() {
     setTimeout( () => {
         editor.processTemplate( "ctrl-home" )
-        editor.processTemplate( "end" )
+        editor.processTemplate( "home" )
     }, 200 );
+  };
+
+  const getContent = function() {
+    return editor.getContent();
+  };
+
+  const setContent = function( value ) {
+    editor.setContent( value );
+    editor.setFocus();
+    moveToHome();
   };
 
   const do_new = async function( event ) {
@@ -344,8 +397,10 @@ const aee_init = () => {
 
       editor.processTemplate( "clear" );
       editor.setFocus();
-      moveToEnd();
+      moveToHome();
 
+      setLastFileName( "" );
+      clearModFlag();
       last_file_handle = undefined;
       last_open_handle = undefined;
     }
@@ -362,10 +417,9 @@ const aee_init = () => {
       const file = await openFile( options );
       const markup = await file.text();
 
-      editor.setContent( markup );
-      editor.setFocus();
-      moveToEnd();
+      setContent( markup );
 
+      clearModFlag();
       last_open_handle = last_file_handle;
     }
     catch ( e )
@@ -385,8 +439,9 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const markup = editor.getContent();
-      await saveThis( markup );
+      await saveThis( getContent() );
+
+      clearModFlag();
     }
     catch ( e )
     {
@@ -398,9 +453,9 @@ const aee_init = () => {
       event.preventDefault();
 
       const options = getOpenOptions();
-      const markup = editor.getContent();
-      await saveFile( options, markup );
+      await saveFile( options, getContent() );
 
+      clearModFlag();
       last_open_handle = last_file_handle;
     }
     catch ( e )
@@ -545,7 +600,7 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const markup = addViewMarkup( editor.getContent() );
+      const markup = addViewMarkup( getContent() );
       const nwindow = window.open( "" );
 
       const options = getExportOptions();
@@ -620,9 +675,7 @@ const aee_init = () => {
   const do_copyAll = async function( event ) {
     try {
       event.preventDefault();
-
-      const markup = editor.getContent();
-      navigator.clipboard.writeText( markup );
+      navigator.clipboard.writeText( getContent() );
     }
     catch ( e )
     {
@@ -632,13 +685,7 @@ const aee_init = () => {
   const do_pasteAll = async function( event ) {
     try {
       event.preventDefault();
-
-      navigator.clipboard.readText().then(
-        ( markup ) => {
-            editor.setContent( markup );
-            editor.setFocus();
-            moveToEnd();
-        } );
+      navigator.clipboard.readText().then( setContent );
     }
     catch ( e )
     {
@@ -761,6 +808,36 @@ const aee_init = () => {
     }
   };
 
+  const do_drive_open = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.open( setContent, setCleanFileName );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_drive_save = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.save( getContent, setCleanFileName );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_drive_saveAs = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.save_as( getContent, setCleanFileName );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
@@ -790,6 +867,14 @@ const aee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="d">Drive<span class="caret"></span></a>' +
+'          <ul class="dropdown-menu">' +
+'            <li><a href="#" id="drive_open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
+'            <li><a href="#" id="drive_save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="drive_saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
+'          </ul>' +
+'        </li>' +
+'        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="e">Edit<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="copy">Copy</a></li>' +
@@ -814,7 +899,7 @@ const aee_init = () => {
 '            <hr/>' +
 '            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
 '            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
-'            <li><a href="aee-about.html" id="about">About</a></li>' +
+'            <li><a href="aee-about.html" id="about">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -841,6 +926,10 @@ const aee_init = () => {
   addClick( "#printBRL", do_printBRL );
   addClick( "#close", do_close );
 
+  addClick( "#drive_open", do_drive_open );
+  addClick( "#drive_save", do_drive_save );
+  addClick( "#drive_saveAs", do_drive_saveAs );
+
   addClick( "#copy", do_copy );
   addClick( "#paste", do_paste );
   addClick( "#copyAll", do_copyAll );
@@ -866,12 +955,19 @@ const aee_init = () => {
       x: "#exportHTML",
       p: "#printHTML",
       b: "#saveBRF",
-      c: "#close" },
+      c: "#close"
+    },
+    d: {
+      o: "#drive_open",
+      s: "#drive_save",
+      a: "#drive_saveAs"
+    },
     h: {
       w: "#welcome",
       t: "#tutorial",
       u: "#guide",
       g: "#settings",
+      a: "#about"
     }
   };
 
@@ -890,6 +986,10 @@ const aee_init = () => {
        localStorage[ "gtk-show-welcome" ] !== "false" )
   {
     do_welcome();
+  }
+  if ( window.editor )
+  {
+    window.setInterval( updateModFlag, 1000 );
   }
 };
 
