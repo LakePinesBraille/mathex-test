@@ -289,7 +289,6 @@ const aee_drive = () => {
             .setCallback( cb )
             .setTitle( title )
             .enableFeature( google.picker.Feature.NAV_HIDDEN )
-            .enableFeature( google.picker.Feature.MINE_ONLY )
             .addView( view )
             .build();
 
