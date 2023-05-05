@@ -216,7 +216,7 @@ const aee_drive = () => {
           tokenClient.callback = ( resp ) => {
             if ( resp.error )
             {
-              reject( ERR( resp.error.message ) );
+              reject( ERR( resp.error ) );
             }
             else
             {
