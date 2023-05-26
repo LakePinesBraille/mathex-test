@@ -1,15 +1,25 @@
 const aee_drive = () => {
 
+  // Public release web domain
+  const DOMAIN = /lakepinesbraille.com/;
+
+  // Public release switch
+  const RELEASE = DOMAIN.test( window.location.href );
+
   // Application ID
-  const APP_ID = "883559470760";
+  const APP_ID = RELEASE ?
+    "883559470760":
+    "672950632126";
 
   // Developer API Key
-  const API_KEY =
-    "AIzaSyDtPGhWx9PVRv8bSmw5p4B7eIXR3pBWP14";
+  const API_KEY = RELEASE ?
+    "AIzaSyDtPGhWx9PVRv8bSmw5p4B7eIXR3pBWP14":
+    "AIzaSyDAYkar6kzLyqPzQ4s6FB1-p07DSYvs6Io";
 
   // API OAuth 2.0 Client ID
-  const CLIENT_ID =
-    "883559470760-1j0r0d77n9h6ufi6m48e2gi5l67ndt12.apps.googleusercontent.com";
+  const CLIENT_ID = RELEASE ?
+    "883559470760-1j0r0d77n9h6ufi6m48e2gi5l67ndt12.apps.googleusercontent.com":
+    "672950632126-naefg7fqulag2gvvumkb7as6l91clcll.apps.googleusercontent.com";
 
   // API Discovery Document URL
   const DISCOVERY_DOC =
@@ -206,7 +216,7 @@ const aee_drive = () => {
           tokenClient.callback = ( resp ) => {
             if ( resp.error )
             {
-              reject( ERR( resp.error.message ) );
+              reject( ERR( resp.error ) );
             }
             else
             {
@@ -289,7 +299,6 @@ const aee_drive = () => {
             .setCallback( cb )
             .setTitle( title )
             .enableFeature( google.picker.Feature.NAV_HIDDEN )
-            .enableFeature( google.picker.Feature.MINE_ONLY )
             .addView( view )
             .build();
 
