@@ -63,4 +63,6 @@
 <style name="ee-multi-line" refs="ee-basic multi-line"/>
 <style name="ee-multi-fill" refs="ee-fill-in multi-fill"/>
 
+<style name="aee" refs="ee-text ee-full ee-braille br-text-gr2 braille"/>
+
 </catalog>
