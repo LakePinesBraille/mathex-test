@@ -87,7 +87,8 @@ const palettes = {
   "plt-shapes" : "Shapes",
   "plt-circled" : "Circled",
   "plt-squared" : "Squared",
-  "plt-headings" : "Headings"
+  "plt-headings" : "Headings",
+  "plt-style" : "Text styles"
 };
 
 const click_grp = function( gelt, elts )
@@ -253,7 +254,6 @@ const done = function() {
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
-<li><a href="#set-tutorial">Tutorial Settings</a></li>
 <li><a href="#set-application">Application Settings</a>
 <ul>
 <li><a href="#set-input">Keyboard Input</a></li>
@@ -262,36 +262,17 @@ const done = function() {
 </ul></li>
 <li><a href="#set-braille">Braille Settings</a>
 <ul>
-<li><a href="#set-braille-math">Math Output</a></li>
 <li><a href="#set-braille-rules">Braille Rules</a></li>
 <li><a href="#set-braille-formats">Braille Formats</a></li>
+<li><a href="#set-braille-headings">Braille Headings</a></li>
 </ul></li>
-<li><a href="#set-font">Font Settings</a>
+<li><a href="#set-output">Output Settings</a>
 <ul>
 <li><a href="#set-font-size">Font Size</a></li>
+<li><a href="#set-mathjax">MathJax</a></li>
 </ul></li>
-<li><a href="#set-formats">Braille Formats</a>
-<ul>
-<li><a href="#set-fmt-headings">Headings</a></li>
-</ul></li>
+<li><a href="#set-tutorial">Tutorial Settings</a></li>
 </ul>
-
-<h2 id="set-tutorial">Tutorial Settings</h2>
-
-<div>
-<label for="gtk-show-welcome">Show the Welcome Page</label>
-<input id="gtk-show-welcome" type="checkbox"></input>
-</div>
-
-<div>
-<label for="gtk-show-last-page">Show the last topic visited</label>
-<input id="gtk-show-last-page" type="checkbox"></input>
-</div>
-
-<div style="display: none">
-<label for="gtk-last-page-href">The last topic visited</label>
-<input id="gtk-last-page-href"></input>
-</div>
 
 <h2 id="set-application">Application Settings</h2>
 
@@ -305,7 +286,7 @@ const done = function() {
 <input id="aee-height"></input>
 </div>
 
-<h2 id="set-input">Keyboard Input</h2>
+<h3 id="set-input">Keyboard Input</h3>
 
 <div>
 <label for="aee-input-qwerty">Qwerty input mode</label>
@@ -322,7 +303,7 @@ const done = function() {
 <input id="aee-input-home" type="radio" name="aee-input-type" value="home"></input>
 </div>
 
-<h2 id="set-panels">Editor Panels</h2>
+<h3 id="set-panels">Editor Panels</h3>
 
 <div>
 <label for="aee-panel-quick-bar">Quick Buttons</label>
@@ -337,7 +318,7 @@ const done = function() {
 <input id="aee-panel-braille-bar" type="checkbox"></input>
 </div>
 
-<h2 id="set-palettes">Symbol Palettes</h2>
+<h3 id="set-palettes">Symbol Palettes</h3>
 
 <table>
 <thead>
@@ -351,23 +332,7 @@ const done = function() {
 
 <h2 id="set-braille">Braille Settings</h2>
 
-<h2 id="set-braille-math">Math Output</h2>
-
-<h3>Use MathJax</h3>
-<div>
-<label for="aee-mathjax-on-save">Save HTML</label>
-<input id="aee-mathjax-on-save" type="checkbox"></input>
-</div>
-<div>
-<label for="aee-mathjax-on-export">Export HTML</label>
-<input id="aee-mathjax-on-export" type="checkbox"></input>
-</div>
-<div>
-<label for="aee-mathjax-on-print">Print HTML</label>
-<input id="aee-mathjax-on-print" type="checkbox"></input>
-</div>
-
-<h2 id="set-braille-rules">Braille Rules</h2>
+<h3 id="set-braille-rules">Braille Rules</h3>
 
 <div>
 <label for="brl-rules-all-rules">Contracted Braille (all rules)</label>
@@ -444,9 +409,9 @@ const done = function() {
 <input id="brl-rules-shortforms" type="checkbox"></input>
 </div>
 
-<h2 id="set-braille-formats">Braille Formats</h2>
+<h3 id="set-braille-formats">Braille Formats</h3>
 
-<h3>On Screen</h3>
+<h4>On Screen</h4>
 <div>
 <label for="aee-screen-line-width">Line width</label>
 <input id="aee-screen-line-width" type="number" min="1" max="99"></input>
@@ -460,7 +425,7 @@ const done = function() {
 <input id="aee-screen-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
-<h3>On Device</h3>
+<h4>On Device</h4>
 <div>
 <label for="aee-device-line-width">Line width</label>
 <input id="aee-device-line-width" type="number" min="1" max="99"></input>
@@ -474,7 +439,7 @@ const done = function() {
 <input id="aee-device-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
-<h3>Braille Files</h3>
+<h4>Braille Files</h4>
 <div>
 <label for="aee-file-line-width">Line width</label>
 <input id="aee-file-line-width" type="number" min="1" max="99"></input>
@@ -488,7 +453,7 @@ const done = function() {
 <input id="aee-file-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
-<h3>Display Math</h3>
+<h4>Display Math</h4>
 <div>
 <label for="aee-math-indent-first">First line</label>
 <input id="aee-math-indent-first" type="number" min="1" max="9"></input>
@@ -498,21 +463,7 @@ const done = function() {
 <input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
-<h2 id="set-font">Font Settings</h2>
-
-<h3 id="set-font-size">Font Size</h3>
-<div>
-<label for="aee-html-font-size">HTML format</label>
-<input id="aee-html-font-size" type="number" min="1" max="99"></input>
-</div>
-<div>
-<label for="aee-brl-font-size">BRL format</label>
-<input id="aee-brl-font-size" type="number" min="1" max="99"></input>
-</div>
-
-<h2 id="set-formats">Braille Formats</h2>
-
-<h3 id="set-fmt-headings">Headings</h3>
+<h3 id="set-braille-headings">Braille Headings</h3>
 
 <div>
 <label for="fmt-heading-1">Level 1</label>
@@ -566,6 +517,49 @@ const done = function() {
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
 </select>
+</div>
+
+<h2 id="set-output">Output Settings</h2>
+
+<h3 id="set-font-size">Font Size</h3>
+<div>
+<label for="aee-html-font-size">HTML format</label>
+<input id="aee-html-font-size" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="aee-brl-font-size">BRL format</label>
+<input id="aee-brl-font-size" type="number" min="1" max="99"></input>
+</div>
+
+<h3 id="set-mathjax">Use MathJax for:</h3>
+<div>
+<label for="aee-mathjax-on-save">Save HTML</label>
+<input id="aee-mathjax-on-save" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-mathjax-on-export">Export HTML</label>
+<input id="aee-mathjax-on-export" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-mathjax-on-print">Print HTML</label>
+<input id="aee-mathjax-on-print" type="checkbox"></input>
+</div>
+
+<h2 id="set-tutorial">Tutorial Settings</h2>
+
+<div>
+<label for="gtk-show-welcome">Show the Welcome Page</label>
+<input id="gtk-show-welcome" type="checkbox"></input>
+</div>
+
+<div>
+<label for="gtk-show-last-page">Show the last topic visited</label>
+<input id="gtk-show-last-page" type="checkbox"></input>
+</div>
+
+<div style="display: none">
+<label for="gtk-last-page-href">The last topic visited</label>
+<input id="gtk-last-page-href"></input>
 </div>
 
 </body>
