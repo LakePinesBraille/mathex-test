@@ -193,7 +193,7 @@
 
 .ee-parent-panel .tooltip
 {
-    font-family: sans-serif, eeUBraille, 'Segoe UI Symbol';
+    font-family: sans-serif, aeeUBraille, Segoe UI Symbol;
 }
 
 .ee-parent-panel .tooltip.ee-markup
@@ -254,7 +254,11 @@
     font-size: 100%;
 }
 
-.ee-input-panel code { background: transparent }
+.ee-input-panel code {
+    background: transparent;
+    font-family: aeeUBraille, Courier New, Segoe UI Symbol;
+    font-weight: 600;
+}
 
 .ee-input-panel h1 { font-size: 1.5em }
 .ee-input-panel h2 { font-size: 1.25em }
@@ -281,7 +285,7 @@
     height: 100%;
 
     cursor: pointer !important;
-    font-family: eeUBraille, 'Segoe UI Symbol';
+    font-family: aeeUBraille, Segoe UI Symbol;
     font-size: 36px;
     line-height: 48px;
     white-space: pre;
@@ -738,15 +742,10 @@ apply, mphantom
 
 /* Custom font styles */
 
-.eeUBraille
-{
-    font-family: eeUBraille;
-}
-
 @font-face
 {
-    font-family: eeUBraille;
-    src:url('fonts/eeUBraille.ttf');
+    font-family: aeeUBraille;
+    src:url('fonts/aeeUBraille.ttf');
 }
 
 @font-face

@@ -45,7 +45,7 @@ const aee_init = () => {
   };
 
   const isMath = function() {
-    return editor && /math/.test( editor._initial );
+    return editor && !/html/.test( editor._initial );
   };
 
   const addMarkup = function( selector, markup ) {
@@ -123,6 +123,8 @@ const aee_init = () => {
   };
 
   const setLastFileName = function( name ) {
+    last_file_handle = undefined;
+    last_open_handle = undefined;
     last_file_name = name;
     updateFileName();
   };
@@ -161,6 +163,8 @@ const aee_init = () => {
 
   const html_otag = '<html>\r\n';
   const html_ctag = '</html>\r\n';
+  const head_otag = '<head>\r\n';
+  const head_ctag = '</head>\r\n';
   const body_otag = '<body>\r\n';
   const body_ctag = '</body>\r\n';
   const p_otag = '<p>\r\n';
@@ -178,7 +182,19 @@ const aee_init = () => {
 'src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js' +
 '?config=MML_CHTML"></script>\r\n';
   const body_tag = '  <body>\r\n';
-  const head_tag = '  <head>\r\n' + script_tag + '  </head>\r\n';
+  const head_tag = head_otag + script_tag + head_ctag;
+
+  const style_tag = '<style>\r\n' +
+    '@font-face {\r\n' +
+    '  font-family: aeeUBraille;\r\n' +
+    '  src:url("css/fonts/aeeUBraille.ttf");\r\n' +
+    '}\r\n' +
+    '.brl, code {\r\n' +
+    '  font-family:  aeeUBraille, Courier New, Segoe UI Symbol;\r\n' +
+    '  font-weight:  600;\r\n' +
+    '  color: #c7254e;\r\n' +
+    '}\r\n' +
+    '</style>\r\n';
 
   const getLocalSetting = function( key ) {
     return ( localStorage && localStorage[ key ] === "true" ) || false;
@@ -191,11 +207,13 @@ const aee_init = () => {
   const addBRLMarkup = function( markup ) {
     var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
 
+    result = result.replace( body_otag, head_otag + style_tag + head_ctag + body_otag );
+
     var sz = getLocalSettingNumber( "aee-brl-font-size" );
     if ( sz )
     {
         result = result.replace( "<body>",
-            "<body style=\"font-size: " + sz + "pt\">" );
+            "<body class=\"brl\" style=\"font-size: " + sz + "pt\">" );
     }
 
     return result;
@@ -230,6 +248,8 @@ const aee_init = () => {
             result = result.replace( body_tag, head_tag + body_tag );
         }
     }
+
+    result = result.replace( head_ctag, style_tag + head_ctag );
 
     var sz = getLocalSettingNumber( "aee-html-font-size" );
     if ( sz )
@@ -292,8 +312,8 @@ const aee_init = () => {
     {
       [ handle ] = await window.showOpenFilePicker( options );
       const file = await handle.getFile();
-      last_file_handle = handle;
       setLastFileName( handle.name );
+      last_file_handle = handle;
       return file;
     }
     else
@@ -315,6 +335,11 @@ const aee_init = () => {
     {
       options.suggestedName =
         last_file_handle.name.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
+    }
+    else if ( last_file_name )
+    {
+      options.suggestedName =
+        last_file_name.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
     }
     if ( type )
     {
@@ -353,8 +378,8 @@ const aee_init = () => {
     {
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
-      last_file_handle = handle;
       setLastFileName( handle.name );
+      last_file_handle = handle;
 
       await file.write( markup );
       await file.close();
@@ -401,8 +426,6 @@ const aee_init = () => {
 
       setLastFileName( "" );
       clearModFlag();
-      last_file_handle = undefined;
-      last_open_handle = undefined;
     }
     catch ( e )
     {
