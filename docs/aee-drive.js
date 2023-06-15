@@ -43,6 +43,9 @@ const aee_drive = () => {
   // The Google Identity Services access token
   let accessToken = null;
 
+  // The Google Identity Services access token expiration time
+  let expiryTime = null;
+
   // The most recent file name
   let fileName = null;
 
@@ -206,13 +209,19 @@ const aee_drive = () => {
         {
           reject( ERR( "Failed to create token client" ) );
         }
-        else if ( accessToken )
+        else if ( accessToken && ( new Date().getTime() < expiryTime.getTime() ) )
         {
-          LOG( "Access token already initialized" );
+          LOG( "Access token valid until " + expiryTime );
           resolve( accessToken );
         }
         else
         {
+          if ( accessToken )
+          {
+            LOG( "Access token expired at " + expiryTime );
+            accessToken = null;
+            expiryTime = null;
+          }
           tokenClient.callback = ( resp ) => {
             if ( resp.error )
             {
@@ -221,7 +230,8 @@ const aee_drive = () => {
             else
             {
               accessToken = resp.access_token;
-              LOG( "Access token initialized" );
+              expiryTime = new Date( new Date().getTime() + resp.expires_in * 1000 );
+              LOG( "Access token valid until " + expiryTime );
               resolve( accessToken );
             }
           };
