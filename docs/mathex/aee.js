@@ -196,6 +196,9 @@ const aee_init = () => {
     '}\r\n' +
     '</style>\r\n';
 
+  const samples_url =
+    'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
+
   const getLocalSetting = function( key ) {
     return ( localStorage && localStorage[ key ] === "true" ) || false;
   };
@@ -754,7 +757,8 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const src = getSource() + event.target.getAttribute( "href" );
+      const href = event.target.getAttribute( "href" );
+      const src = href.startsWith( "http" ) ? href : getSource() + href;
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "unload", () => {
@@ -918,6 +922,7 @@ const aee_init = () => {
 '            <li><a href="#" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
 '            <li><a href="gtk/intro.html" id="tutorial" accesskey="t" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
 '            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="' + samples_url + '" id="samples" accesskey="m" aria-label="Samples">Sam&#x0332;ples</a></li>' +
 '            <li><a href="aee-settings.html" id="settings" accesskey="g" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
 '            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
@@ -964,6 +969,7 @@ const aee_init = () => {
   addClick( "#welcome", do_welcome );
   addClick( "#tutorial", do_tutorial );
   addClick( "#settings", do_settings );
+  addClick( "#samples", do_help );
   addClick( "#guide", do_help );
   addClick( "#about", do_help );
 
@@ -989,6 +995,7 @@ const aee_init = () => {
       w: "#welcome",
       t: "#tutorial",
       u: "#guide",
+      m: "#samples",
       g: "#settings",
       a: "#about"
     }
