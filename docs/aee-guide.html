@@ -73,6 +73,13 @@
 <li><a href="#menu-file-print-brl">Print BRL</a></li>
 <li class="skip"><a href="#menu-file-close">Close</a></li>
 </ul></li>
+<li><a href="#menu-drive">Drive Menu</a>
+<ul>
+<li><a href="#menu-drive-open">Open</a></li>
+<li><a href="#menu-drive-save">Save</a></li>
+<li><a href="#menu-drive-save-as">Save As</a></li>
+<li><a href="#menu-drive-save-replace">Save Replace</a></li>
+</ul></li>
 <li><a href="#menu-edit">Edit Menu</a>
 <ul>
 <li><a href="#menu-edit-copy">Copy</a></li>
@@ -266,7 +273,7 @@ The AEE application menus support <i>access keys</i> for keyboard menu navigatio
 </p>
 
 <p>
-The <a href="#menu-file">File Menu</a>, <a href="#menu-edit">Edit Menu</a>, and <a href="#menu-help">Help Menu</a> may be accessed using the access keys <code>Alt Shift F</code>, <code>Alt Shift E</code>, and <code>Alt Shift H</code>, respectively.  Accessing a menu opens a drop-down list of the menu items for that menu.  These menu items may be navigated using the <code>Up</code> and <code>Down</code> arrow keys, or using the access keys for menu items that define them.  Menu items that define access keys may also be activated using <code>Alt Shift</code> plus the access key, without having to access the parent menu.
+The <a href="#menu-file">File Menu</a>, <a href="#menu-drive">Drive Menu</a>, <a href="#menu-edit">Edit Menu</a>, and <a href="#menu-help">Help Menu</a> may be accessed using the access keys <code>Alt Shift F</code>, <code>Alt Shift D</code>, <code>Alt Shift E</code>, and <code>Alt Shift H</code>, respectively.  Accessing a menu opens a drop-down list of the menu items for that menu.  These menu items may be navigated using the <code>Up</code> and <code>Down</code> arrow keys, or using the access keys for menu items that define them.  Menu items that define access keys may also be activated using <code>Alt Shift</code> plus the access key, without having to access the parent menu.
 </p>
 
 <p>
@@ -285,6 +292,11 @@ Here are the <i>access keys</i> defined by the AEE application menus.
 <li><code>Alt Shift [F] P</code> - <a href="#menu-file-print-html">File Print HTML</a></li>
 <li><code>Alt Shift [F] B</code> - <a href="#menu-file-save-brf">File Save BRF</a></li>
 <li><code>Alt Shift [F] C</code> - <a href="#menu-file-close">File Close</a></li>
+<li><code>Alt Shift D</code> - <a href="#menu-drive">Drive Menu</a></li>
+<li><code>Alt Shift [D] O</code> - <a href="#menu-drive-open">Drive Open</a></li>
+<li><code>Alt Shift [D] S</code> - <a href="#menu-drive-save">Drive Save</a></li>
+<li><code>Alt Shift [D] A</code> - <a href="#menu-drive-save-as">Drive Save As</a></li>
+<li><code>Alt Shift [D] R</code> - <a href="#menu-drive-save-replace">Drive Save Replace</a></li>
 <li><code>Alt Shift E</code> - <a href="#menu-edit">Edit Menu</a></li>
 <li><code>Alt Shift H</code> - <a href="#menu-help">Help Menu</a></li>
 <li><code>Alt Shift [H] W</code> - <a href="#menu-help-welcome">Help Welcome</a></li>
@@ -292,6 +304,7 @@ Here are the <i>access keys</i> defined by the AEE application menus.
 <li><code>Alt Shift [H] U</code> - <a href="#menu-help-guide">Help Users Guide</a></li>
 <li><code>Alt Shift [H] M</code> - <a href="#menu-help-samples">Help Samples</a></li>
 <li><code>Alt Shift [H] G</code> - <a href="#menu-help-settings">Help Settings</a></li>
+<li><code>Alt Shift [H] A</code> - <a href="#menu-help-about">Help About</a></li>
 </ul>
 
 <h3 id="key-focus">Focus Word</h3>
@@ -697,7 +710,7 @@ MathJax is typically used within a web page by providing special elements in the
 <h2 id="menu-items">Menu Items</h2>
 
 <p>
-The AEE <i>application menu</i> provides <a href="#menu-file">File</a>, <a href="#menu-edit">Edit</a>, and <a href="#menu-help">Help</a> menus.
+The AEE <i>application menu</i> provides <a href="#menu-file">File</a>, <a href="#menu-drive">Drive</a>, <a href="#menu-edit">Edit</a>, and <a href="#menu-help">Help</a> menus.
 </p>
 
 <p>
@@ -795,7 +808,7 @@ The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-m
 </p>
 
 <p>
-You can also type <code>Alt Shift F, A</code> to store a document a different file.
+You can also type <code>Alt Shift F, A</code> to store a document to a different file.
 </p>
 
 <p>
@@ -885,6 +898,82 @@ You can also type <code>Alt Shift F, C</code> to clear the contents of the curre
 
 <p>
 This operation does not modify any file in the file system.
+</p>
+
+<h3 id="menu-drive">Drive Menu</h3>
+
+<p>
+The <i>Drive Menu</i> provides menu items to load and store documents in the Google Drive shared file system.
+</p>
+
+<ul>
+<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
+<ul>
+<li><code>Open</code> - Load an editor document from the shared file system.</li>
+<li><code>Save</code> - Store an editor document to the shared document last used to access it.</li>
+<li><code>Save As</code> - Store an editor document to a new document in the shared file system.</li>
+<li><code>Save Replace</code> - Store an editor document to replace an existing document in the shared file system.</li>
+</ul></li>
+</ul>
+
+<h4 id="menu-drive-open">Open</h4>
+<p>Load a document from the shared file system.</p>
+
+<p>
+The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift D, O</code> to open an existing shared document.
+</p>
+
+<p>
+This operation does not modify any file in the file system.
+</p>
+
+<h4 id="menu-drive-save">Save</h4>
+<p>Store a document to the shared document last used to access it.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift D, S</code> to store a document to the shared document last used to access it.
+</p>
+
+<p>
+This operation modifies the shared document in the shared file system.
+</p>
+
+<h4 id="menu-drive-save-as">Save As</h4>
+<p>Store a document to a new document in the shared file system.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift D, A</code> to store a document to a new shared document.
+</p>
+
+<p>
+This operation modifies the document in the shared file system.
+</p>
+
+<h4 id="menu-drive-save-replace">Save Replace</h4>
+<p>Store a document to replace an existing document in the shared file system.</p>
+
+<p>
+The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+</p>
+
+<p>
+You can also type <code>Alt Shift D, R</code> to store a document to replace an existing shared document.
+</p>
+
+<p>
+This operation modifies the document in the shared file system.
 </p>
 
 <h3 id="menu-edit">Edit Menu</h3>
