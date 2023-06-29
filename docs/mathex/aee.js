@@ -1,3 +1,13 @@
+(() => {
+  // Collect the query parameters
+  if ( window.location.search )
+  {
+    const params = new URLSearchParams( window.location.search );
+    localStorage[ "aee-query-state" ] = params.get( "state" );
+    window.location.href = window.location.origin + window.location.pathname;
+  }
+})();
+
 const aee_onload = () => {
   const body = document.body;
 
@@ -580,7 +590,7 @@ const aee_init = () => {
       const nwindow = window.open( "" );
 
       const options = getExportOptions();
-      exportFile( options, "-p" );
+      exportFile( options );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -865,6 +875,26 @@ const aee_init = () => {
     }
   };
 
+  const do_drive_saveReplace = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.save_replace( getContent, setCleanFileName );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_drive_install = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.install();
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
@@ -899,6 +929,9 @@ const aee_init = () => {
 '            <li><a href="#" id="drive_open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="drive_save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="drive_saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
+'            <li><a href="#" id="drive_saveReplace" accesskey="r" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="drive_install" accesskey="i" aria-label="Install">I&#x0332;nstall</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -957,6 +990,8 @@ const aee_init = () => {
   addClick( "#drive_open", do_drive_open );
   addClick( "#drive_save", do_drive_save );
   addClick( "#drive_saveAs", do_drive_saveAs );
+  addClick( "#drive_saveReplace", do_drive_saveReplace );
+  addClick( "#drive_install", do_drive_install );
 
   addClick( "#copy", do_copy );
   addClick( "#paste", do_paste );
@@ -989,7 +1024,9 @@ const aee_init = () => {
     d: {
       o: "#drive_open",
       s: "#drive_save",
-      a: "#drive_saveAs"
+      a: "#drive_saveAs",
+      r: "#drive_saveReplace",
+      i: "#drive_install"
     },
     h: {
       w: "#welcome",
@@ -1012,11 +1049,31 @@ const aee_init = () => {
     }
   } );
 
+  // Process the query parameters
+  if ( window.editor && localStorage &&
+       localStorage[ "aee-query-state" ] )
+  {
+    const data = JSON.parse( localStorage[ "aee-query-state" ] );
+    delete localStorage[ "aee-query-state" ];
+
+    if ( data.action === "open" )
+    {
+      aee_drive.open_with( data, setContent, setCleanFileName );
+    }
+    if ( data.action === "create" )
+    {
+      aee_drive.create_new( data, getContent, setCleanFileName );
+    }
+    return;
+  }
+
+  // Show the welcome screen
   if ( window.editor && localStorage &&
        localStorage[ "gtk-show-welcome" ] !== "false" )
   {
     do_welcome();
   }
+
   if ( window.editor )
   {
     window.setInterval( updateModFlag, 1000 );

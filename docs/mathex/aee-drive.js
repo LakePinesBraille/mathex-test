@@ -49,9 +49,6 @@ const aee_drive = () => {
   // The most recent file name
   let fileName = null;
 
-  // The file ID for the parent folder
-  let folderId = "";
-
   // The file ID for the most recent file
   let fileId = "";
 
@@ -253,6 +250,49 @@ const aee_drive = () => {
   };
 
   /**
+   * Request the Google Drive UI install.
+   */
+  const requestInstall = () => {
+    return new Promise( ( resolve, reject ) => {
+      try {
+        if ( ! tokenClient )
+        {
+          reject( ERR( "Failed to create token client" ) );
+        }
+        else
+        {
+          tokenClient.callback = ( resp ) => {
+            if ( resp.error )
+            {
+              reject( ERR( resp.error ) );
+            }
+            else
+            {
+              LOG( "Success installing AEE into Google Drive UI" );
+              resolve( resp.accessToken );
+            }
+          };
+          tokenClient.error_callback = ( resp ) => {
+            if ( resp.message )
+            {
+              reject( ERR( resp.message ) );
+            }
+          };
+
+          tokenClient.requestAccessToken( {
+            scope: "https://www.googleapis.com/auth/drive.install",
+            prompt : ""
+          } );
+        }
+      }
+      catch ( e )
+      {
+        reject( e );
+      }
+    } );
+  };
+
+  /**
    * Initialize access to the Google Drive files.
    */
   const init = () => Promise.resolve()
@@ -269,6 +309,26 @@ const aee_drive = () => {
   const request = () => init()
     .then( () => requestAccess() )
     .then( () => LOG( "Access granted" ) );
+
+  /**
+   * Wait for the window to receive the focus.
+   */
+  const waitForFocus = () => {
+    return new Promise( ( resolve, reject ) => {
+      try {
+        window.addEventListener( "focus", () => {
+          LOG( "Window received focus" );
+          resolve( OK );
+        } );
+        window.setTimeout( () => {
+          reject( ERR( "Window did not receive focus" ) );
+        }, 1000 );
+      }
+      catch ( e ) {
+        reject( e );
+      }
+    } );
+  };
 
   /**
    * Create and display a file picker.
@@ -296,8 +356,10 @@ const aee_drive = () => {
             }
           };
 
+          const type = folders ? "application/vnd.google-apps.folder" : "text/html";
+
           const view = new google.picker.DocsView()
-            .setMimeTypes( "text/html" )
+            .setMimeTypes( type )
             .setIncludeFolders( true )
             .setSelectFolderEnabled( folders )
             .setMode( google.picker.DocsViewMode.LIST );
@@ -326,10 +388,12 @@ const aee_drive = () => {
    * Process the picker results for drive open.
    */
   async function open_picked( data, fn, cb ) {
+    const ofileName = fileName;
+    const ofileId = fileId;
+
     const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
 
     fileName = fileDoc[ google.picker.Document.NAME ];
-    folderId = fileDoc[ google.picker.Document.PARENT_ID ];
     fileId = fileDoc[ google.picker.Document.ID ];
 
     const result = await gapi.client.drive.files.get( {
@@ -345,9 +409,9 @@ const aee_drive = () => {
     }
     else
     {
-      fileName = "";
-      folderId = "";
-      fileId = "";
+      LOG( "Error opening file " + fileName );
+      fileName = ofileName;
+      fileId = ofileId;
     }
   };
 
@@ -392,81 +456,228 @@ const aee_drive = () => {
   const save_as_picked = ( data, fn, cb ) => {
     return new Promise( ( resolve, reject ) => {
       try {
+        const ofileName = fileName;
+        const ofileId = fileId;
+
         const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
 
         fileName = fileDoc[ google.picker.Document.NAME ];
-        folderId = fileDoc[ google.picker.Document.PARENT_ID ];
         fileId = fileDoc[ google.picker.Document.ID ];
 
-        const fileType = fileDoc[ google.picker.Document.TYPE ];
         const uri = "https://www.googleapis.com/upload/drive/v3/files/";
 
-        if ( fileType === "folder" )
+        const nfileName = prompt( "Save file as", ofileName || "untitled.html" );
+        if ( !nfileName )
         {
-          const nfileName = prompt( "Save new file as", "untitled.html" );
-          if ( nfileName )
+          fileName = ofileName;
+          fileId = ofileId;
+
+          reject( ERR( "File save as dialog cancelled" ) );
+          return;
+        }
+
+        var metadata = {
+          name : nfileName,
+          mimeType : "text/html",
+          parents : [ fileId ]
+        };
+        var form = new FormData();
+        form.append( "metadata", new Blob( [ JSON.stringify( metadata ) ], {
+          type : "application/json"
+        } ) );
+        form.append( "file", new Blob( [ fn() ], {
+          type : "text/html"
+        } ) );
+
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener( "readystatechange", () => {
+          if ( xhr.readyState === 4 && xhr.status === 200 )
           {
-            var metadata = {
-              name : nfileName,
-              mimeType : "text/html",
-              parents : [ fileId ]
-            };
-            var form = new FormData();
-            form.append( "metadata", new Blob( [ JSON.stringify( metadata ) ], {
-              type : "application/json"
-            } ) );
-            form.append( "file", new Blob( [ fn() ], {
-              type : "text/html"
-            } ) );
+            LOG( "Success saving file " + nfileName );
+            cb( nfileName );
 
-            var xhr = new XMLHttpRequest();
-            xhr.addEventListener( "readystatechange", () => {
-              if ( xhr.readyState === 4 && xhr.status === 200 )
-              {
-                LOG( "Success saving file " + nfileName );
-                cb( nfileName );
-                resolve( OK );
+            fileName = nfileName;
+            fileId = JSON.parse( xhr.response ).id;
 
-                fileName = nfileName;
-                folderId = fileId;
-                fileId = JSON.parse( xhr.response ).id;
-              }
-              else if ( xhr.readyState === 4 )
-              {
-                reject( ERR( "Error saving new file " + nfileName ) );
-
-                fileName = "";
-                fileId = "";
-                folderId = "";
-              }
-            } );
-            xhr.open( "POST", uri + "?uploadType=multipart" );
-            xhr.setRequestHeader( "Authorization", "Bearer " + accessToken );
-            xhr.send( form );
+            resolve( OK );
           }
+          else if ( xhr.readyState === 4 )
+          {
+            fileName = ofileName;
+            fileId = ofileId;
+
+            reject( ERR( "Error saving new file " + nfileName ) );
+          }
+        } );
+        xhr.open( "POST", uri + "?uploadType=multipart" );
+        xhr.setRequestHeader( "Authorization", "Bearer " + accessToken );
+        xhr.send( form );
+      }
+      catch ( e )
+      {
+        reject( e );
+      }
+    } );
+  };
+
+  /**
+   * Process the picker results for drive save replace.
+   */
+  const save_replace_picked = ( data, fn, cb ) => {
+    return new Promise( ( resolve, reject ) => {
+      try {
+        const ofileName = fileName;
+        const ofileId = fileId;
+
+        const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
+
+        fileName = fileDoc[ google.picker.Document.NAME ];
+        fileId = fileDoc[ google.picker.Document.ID ];
+
+        const uri = "https://www.googleapis.com/upload/drive/v3/files/";
+
+        if ( confirm( "Replace existing file " + fileName + "?" ) )
+        {
+          var xhr = new XMLHttpRequest();
+          xhr.addEventListener( "readystatechange", () => {
+            if ( xhr.readyState === 4 && xhr.status === 200 )
+            {
+              LOG( "Success saving file " + fileName );
+              cb( fileName );
+              resolve( OK );
+            }
+            else if ( xhr.readyState === 4 )
+            {
+              fileName = ofileName;
+              fileId = ofileId;
+
+              reject( ERR( "Error replacing file " + fileName ) );
+            }
+          } );
+          xhr.open( "PATCH", uri + fileId + "?uploadType=media" );
+          xhr.setRequestHeader( "Authorization", "Bearer " + accessToken );
+          xhr.send( new Blob( [ fn() ], { type: "text/html" } ) );
         }
         else
         {
-          if ( confirm( "Replace existing file " + fileName + "?" ) )
-          {
-            var xhr = new XMLHttpRequest();
-            xhr.addEventListener( "readystatechange", () => {
-              if ( xhr.readyState === 4 && xhr.status === 200 )
-              {
-                LOG( "Success saving file " + fileName );
-                cb( fileName );
-                resolve( OK );
-              }
-              else if ( xhr.readyState === 4 )
-              {
-                reject( ERR( "Error replacing file " + fileName ) );
-              }
-            } );
-            xhr.open( "PATCH", uri + fileId + "?uploadType=media" );
-            xhr.setRequestHeader( "Authorization", "Bearer " + accessToken );
-            xhr.send( new Blob( [ fn() ], { type: "text/html" } ) );
-          }
+          fileName = ofileName;
+          fileId = ofileId;
+
+          reject( ERR( "File save replace dialog cancelled" ) );
         }
+      }
+      catch ( e )
+      {
+        reject( e );
+      }
+    } );
+  };
+
+  /**
+   * Process the query data for drive open with.
+   */
+  async function open_with( data, fn, cb ) {
+    const ofileName = fileName;
+    const ofileId = fileId;
+
+    if ( ! data.ids[ 0 ] )
+    {
+      LOG( "Error opening file - id not found" );
+      return;
+    }
+
+    const metadata = await gapi.client.drive.files.get( {
+      fileId : data.ids[ 0 ]
+    } );
+
+    if ( metadata.status !== 200 )
+    {
+      LOG( "Error opening file - metadata not found" );
+      return;
+    }
+
+    const md = JSON.parse( metadata.body );
+    fileName = md.name;
+    fileId = md.id;
+
+    const result = await gapi.client.drive.files.get( {
+      fileId : fileId,
+      alt : "media"
+    } );
+
+    if ( result.status !== 200 )
+    {
+      fileName = ofileName;
+      fileId = ofileId;
+
+      LOG( "Error opening file " + fileName );
+      return;
+    }
+
+    fn( result.body );
+    cb( fileName );
+
+    LOG( "Success opening file " + fileName );
+  };
+
+  /**
+   * Process the query data for drive create new.
+   */
+  const create_new = ( data, fn, cb ) => {
+    return new Promise( ( resolve, reject ) => {
+      try {
+        const ofileName = fileName;
+        const ofileId = fileId;
+
+        fileId = data.folderId;
+        const uri = "https://www.googleapis.com/upload/drive/v3/files/";
+
+        const nfileName = prompt( "Save file as", ofileName || "untitled.html" );
+        if ( !nfileName )
+        {
+          fileName = ofileName;
+          fileId = ofileId;
+
+          reject( ERR( "File create new dialog cancelled" ) );
+          return;
+        }
+
+        var metadata = {
+          name : nfileName,
+          mimeType : "text/html",
+          parents : [ fileId ]
+        };
+        var form = new FormData();
+        form.append( "metadata", new Blob( [ JSON.stringify( metadata ) ], {
+          type : "application/json"
+        } ) );
+        form.append( "file", new Blob( [ fn() ], {
+          type : "text/html"
+        } ) );
+
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener( "readystatechange", () => {
+          if ( xhr.readyState === 4 && xhr.status === 200 )
+          {
+            LOG( "Success creating file " + nfileName );
+            cb( nfileName );
+
+            fileName = nfileName;
+            fileId = JSON.parse( xhr.response ).id;
+
+            resolve( OK );
+          }
+          else if ( xhr.readyState === 4 )
+          {
+            fileName = ofileName;
+            fileId = ofileId;
+
+            reject( ERR( "Error creating new file " + nfileName ) );
+          }
+        } );
+        xhr.open( "POST", uri + "?uploadType=multipart" );
+        xhr.setRequestHeader( "Authorization", "Bearer " + accessToken );
+        xhr.send( form );
       }
       catch ( e )
       {
@@ -487,8 +698,8 @@ const aee_drive = () => {
    * Save an existing file to Google Drive.
    */
   const drive_save = ( fn, cb ) => {
-    if ( fileName && fileId && folderId ) {
-      init()
+    if ( fileName && fileId ) {
+      request()
         .then( () => save_picked( fn, cb ) )
         .catch( e => ALERT( e.message ) );
     }
@@ -501,13 +712,48 @@ const aee_drive = () => {
    * Save a new file to Google Drive.
    */
   const drive_save_as = ( fn, cb ) => request()
-    .then( () => createPicker( true, "Select a file/folder to Save As" ) )
+    .then( () => createPicker( true, "Select a folder to Save into" ) )
     .then( ( data ) => save_as_picked( data, fn, cb ) )
+    .catch( e => ALERT( e.message ) );
+
+  /**
+   * Save and replace an existing file on Google Drive.
+   */
+  const drive_save_replace = ( fn, cb ) => request()
+    .then( () => createPicker( false, "Select a file to Replace" ) )
+    .then( ( data ) => save_replace_picked( data, fn, cb ) )
+    .catch( e => ALERT( e.message ) );
+
+  /**
+   * Install into the Google Drive UI.
+   */
+  const drive_install = () => init()
+    .then( () => requestInstall() )
+    .then( () => ALERT( "AEE installed into Google Drive UI" ) )
+    .catch( e => ALERT( e.message ) );
+
+  /**
+   * Process a Google Drive open with request.
+   */
+  const drive_open_with = ( data, fn, cb ) => request()
+    .then( () => open_with( data, fn, cb ) )
+    .catch( e => ALERT( e.message ) );
+
+  /**
+   * Process a Google Drive create new request..
+   */
+  const drive_create_new = ( data, fn, cb ) => request()
+    .then( () => waitForFocus() )
+    .then( () => create_new( data, fn, cb ) )
     .catch( e => ALERT( e.message ) );
 
   aee_drive.open = drive_open;
   aee_drive.save = drive_save;
   aee_drive.save_as = drive_save_as;
+  aee_drive.save_replace = drive_save_replace;
+  aee_drive.install = drive_install;
+  aee_drive.open_with = drive_open_with;
+  aee_drive.create_new = drive_create_new;
 };
 
 aee_drive();
