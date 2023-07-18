@@ -204,6 +204,16 @@ const aee_init = () => {
     '  font-weight:  600;\r\n' +
     '  color: #c7254e;\r\n' +
     '}\r\n' +
+    'aside {\r\n' +
+    '  display: inline;\r\n' +
+    '  color: blue;\r\n' +
+    '}\r\n' +
+    'aside::before {\r\n' +
+    '  content: "[";\r\n' +
+    '}\r\n' +
+    'aside::after {\r\n' +
+    '  content: "]";\r\n' +
+    '}\r\n' +
     '</style>\r\n';
 
   const samples_url =
