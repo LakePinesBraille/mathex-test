@@ -260,6 +260,18 @@
     font-weight: 600;
 }
 
+.ee-input-panel aside {
+    display: inline;
+    color: blue;
+}
+
+.ee-input-panel aside::before {
+    content: '[';
+}
+.ee-input-panel aside::after {
+    content: ']';
+}
+
 .ee-input-panel h1 { font-size: 1.5em }
 .ee-input-panel h2 { font-size: 1.25em }
 .ee-input-panel h3 { font-size: 1.0em }
