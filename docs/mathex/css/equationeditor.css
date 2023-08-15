@@ -254,31 +254,6 @@
     font-size: 100%;
 }
 
-.ee-input-panel code {
-    background: transparent;
-    font-family: aeeUBraille, Courier New, Segoe UI Symbol;
-    font-weight: 600;
-}
-
-.ee-input-panel aside {
-    display: inline;
-    color: blue;
-}
-
-.ee-input-panel aside::before {
-    content: '[';
-}
-.ee-input-panel aside::after {
-    content: ']';
-}
-
-.ee-input-panel h1 { font-size: 1.5em }
-.ee-input-panel h2 { font-size: 1.25em }
-.ee-input-panel h3 { font-size: 1.0em }
-.ee-input-panel h4 { font-size: 0.75em }
-.ee-input-panel h5 { font-size: 0.6em }
-.ee-input-panel h6 { font-size: 0.5em }
-
 .ee-input-panel .caps
 {
     text-transform: uppercase;
@@ -306,11 +281,6 @@
 .ee-quick-bar > div
 {
     margin: 0px -2px;
-}
-
-.ee-input-panel hr
-{
-    border: 1px solid black;
 }
 
 /* Side bar styles */
@@ -1280,3 +1250,46 @@ apply, mphantom
         width: 162px;
     }
 }
+
+/* HTML styles */
+
+/* Table font */
+.ee-input-panel table { font: 18pt sans-serif }
+
+/* Table padding */
+.ee-input-panel table td { padding: 0.5ex }
+.ee-input-panel table td p { padding: 0px; line-height: 100% }
+
+/* Table border */
+.ee-input-panel table.border td { border: 1px solid black }
+.ee-input-panel table.border { border-collapse: collapse }
+
+/* Table columns */
+.ee-input-panel table.left td { text-align: left }
+.ee-input-panel table.right td { text-align: right }
+.ee-input-panel table.center td { text-align: center }
+.ee-input-panel table.oneleft td:first-child { text-align: left }
+.ee-input-panel table.oneright td:last-child { text-align: right }
+
+/* Headings */
+.ee-input-panel h1 { font-size: 1.5em }
+.ee-input-panel h2 { font-size: 1.25em }
+.ee-input-panel h3 { font-size: 1.0em }
+.ee-input-panel h4 { font-size: 0.75em }
+.ee-input-panel h5 { font-size: 0.6em }
+.ee-input-panel h6 { font-size: 0.5em }
+
+/* Heading lines */
+.ee-input-panel hr { border: 1px solid black }
+
+/* Verbatim */
+.ee-input-panel code {
+    background: transparent;
+    font-family: aeeUBraille, Courier New, Segoe UI Symbol;
+    font-weight: 600;
+}
+
+/* Transcriber notes */
+.ee-input-panel aside { display: inline; color: blue }
+.ee-input-panel aside::before { content: '[' }
+.ee-input-panel aside::after { content: ']' }
