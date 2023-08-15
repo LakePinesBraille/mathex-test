@@ -1,0 +1,48 @@
+/* Braille font */
+@font-face {
+  font-family: aeeUBraille;
+  src:url("css/fonts/aeeUBraille.ttf");
+}
+
+/* Table font */
+table { font: 18pt sans-serif }
+
+/* Table padding */
+table td { padding: 0.5ex }
+table td p { padding: 0px; line-height: 100% }
+
+/* Table border */
+table.border td { border: 1px solid black }
+table.border { border-collapse: collapse }
+
+/* Table columns */
+table.left td { text-align: left }
+table.right td { text-align: right }
+table.center td { text-align: center }
+table.oneleft td:first-child { text-align: left }
+table.oneright td:last-child { text-align: right }
+
+/* Headings */
+h1 { font-size: 1.5em }
+h2 { font-size: 1.25em }
+h3 { font-size: 1.0em }
+h4 { font-size: 0.75em }
+h5 { font-size: 0.6em }
+h6 { font-size: 0.5em }
+
+/* Heading lines */
+hr { border: 1px solid black }
+
+/* Verbatim */
+.brl, code {
+    background: transparent;
+    color: #c7254e;
+    font-family: aeeUBraille, Courier New, Segoe UI Symbol;
+    font-weight: 600;
+}
+
+/* Transcriber notes */
+aside { display: inline; color: blue }
+aside::before { content: '[' }
+aside::after { content: ']' }
+    

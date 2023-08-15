@@ -194,27 +194,7 @@ const aee_init = () => {
   const body_tag = '  <body>\r\n';
   const head_tag = head_otag + script_tag + head_ctag;
 
-  const style_tag = '<style>\r\n' +
-    '@font-face {\r\n' +
-    '  font-family: aeeUBraille;\r\n' +
-    '  src:url("css/fonts/aeeUBraille.ttf");\r\n' +
-    '}\r\n' +
-    '.brl, code {\r\n' +
-    '  font-family:  aeeUBraille, Courier New, Segoe UI Symbol;\r\n' +
-    '  font-weight:  600;\r\n' +
-    '  color: #c7254e;\r\n' +
-    '}\r\n' +
-    'aside {\r\n' +
-    '  display: inline;\r\n' +
-    '  color: blue;\r\n' +
-    '}\r\n' +
-    'aside::before {\r\n' +
-    '  content: "[";\r\n' +
-    '}\r\n' +
-    'aside::after {\r\n' +
-    '  content: "]";\r\n' +
-    '}\r\n' +
-    '</style>\r\n';
+  const style_tag = '<link rel="stylesheet" type="text/css" href="aeex.css"/>\r\n';
 
   const samples_url =
     'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
