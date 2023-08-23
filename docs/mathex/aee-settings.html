@@ -22,13 +22,17 @@ const settings = {
   "aee-mathjax-on-save" : "false",
   "aee-mathjax-on-export" : "true",
   "aee-mathjax-on-print" : "true",
-  "aee-screen-line-width" : 20,
+  "aee-screen-page-width" : 30,
+  "aee-screen-page-height" : 4,
   "aee-screen-indent-first" : 1,
   "aee-screen-indent-runover" : 1,
-  "aee-device-line-width" : 40,
+  "aee-device-page-width" : 40,
+  "aee-device-page-height" : 1,
   "aee-device-indent-first" : 1,
   "aee-device-indent-runover" : 1,
-  "aee-file-line-width" : 40,
+  "aee-file-page-width" : 40,
+  "aee-file-page-height" : 25,
+  "aee-file-page-numbers" : "true",
   "aee-file-indent-first" : 1,
   "aee-file-indent-runover" : 1,
   "aee-math-indent-first" : 3,
@@ -263,8 +267,12 @@ const done = function() {
 <li><a href="#set-braille">Braille Settings</a>
 <ul>
 <li><a href="#set-braille-rules">Braille Rules</a></li>
-<li><a href="#set-braille-formats">Braille Formats</a></li>
-<li><a href="#set-braille-headings">Braille Headings</a></li>
+</ul></li>
+<li><a href="#set-formats">Braille Formats</a>
+<ul>
+<li><a href="#set-formats-page-size">Page Size</a></li>
+<li><a href="#set-formats-headings">Headings</a></li>
+<li><a href="#set-formats-indenting">Indenting</a></li>
 </ul></li>
 <li><a href="#set-output">Output Settings</a>
 <ul>
@@ -409,61 +417,45 @@ const done = function() {
 <input id="brl-rules-shortforms" type="checkbox"></input>
 </div>
 
-<h3 id="set-braille-formats">Braille Formats</h3>
+<h2 id="set-formats">Braille Formats</h2>
 
-<h4>On Screen</h4>
+<h3 id="set-formats-page-size">Page Size</h3>
+
+<h4>Screen</h4>
 <div>
-<label for="aee-screen-line-width">Line width</label>
-<input id="aee-screen-line-width" type="number" min="1" max="99"></input>
+<label for="aee-screen-page-width">Page width</label>
+<input id="aee-screen-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-screen-indent-first">First line</label>
-<input id="aee-screen-indent-first" type="number" min="1" max="9"></input>
-</div>
-<div>
-<label for="aee-screen-indent-runover">Run over</label>
-<input id="aee-screen-indent-runover" type="number" min="1" max="9"></input>
+<label for="aee-screen-page-height">Page height</label>
+<input id="aee-screen-page-height" type="number" min="1" max="99"></input>
 </div>
 
-<h4>On Device</h4>
+<h4>Device</h4>
 <div>
-<label for="aee-device-line-width">Line width</label>
-<input id="aee-device-line-width" type="number" min="1" max="99"></input>
+<label for="aee-device-page-width">Page width</label>
+<input id="aee-device-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-device-indent-first">First line</label>
-<input id="aee-device-indent-first" type="number" min="1" max="9"></input>
-</div>
-<div>
-<label for="aee-device-indent-runover">Run over</label>
-<input id="aee-device-indent-runover" type="number" min="1" max="9"></input>
+<label for="aee-device-page-height">Page height</label>
+<input id="aee-device-page-height" type="number" min="1" max="99"></input>
 </div>
 
-<h4>Braille Files</h4>
+<h4>Files</h4>
 <div>
-<label for="aee-file-line-width">Line width</label>
-<input id="aee-file-line-width" type="number" min="1" max="99"></input>
+<label for="aee-file-page-width">Page width</label>
+<input id="aee-file-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-file-indent-first">First line</label>
-<input id="aee-file-indent-first" type="number" min="1" max="9"></input>
+<label for="aee-file-page-height">Page height</label>
+<input id="aee-file-page-height" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-file-indent-runover">Run over</label>
-<input id="aee-file-indent-runover" type="number" min="1" max="9"></input>
-</div>
-
-<h4>Display Math</h4>
-<div>
-<label for="aee-math-indent-first">First line</label>
-<input id="aee-math-indent-first" type="number" min="1" max="9"></input>
-</div>
-<div>
-<label for="aee-math-indent-runover">Run over</label>
-<input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
+<label for="aee-file-page-numbers">Page numbers</label>
+<input id="aee-file-page-numbers" type="checkbox"></input>
 </div>
 
-<h3 id="set-braille-headings">Braille Headings</h3>
+<h3 id="set-formats-headings">Headings</h3>
 
 <div>
 <label for="fmt-heading-1">Level 1</label>
@@ -517,6 +509,48 @@ const done = function() {
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
 </select>
+</div>
+
+<h3 id="set-formats-indenting">Indenting</h3>
+
+<h4>Screen</h4>
+<div>
+<label for="aee-screen-indent-first">First line</label>
+<input id="aee-screen-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-screen-indent-runover">Run over</label>
+<input id="aee-screen-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h4>Device</h4>
+<div>
+<label for="aee-device-indent-first">First line</label>
+<input id="aee-device-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-device-indent-runover">Run over</label>
+<input id="aee-device-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h4>Files</h4>
+<div>
+<label for="aee-file-indent-first">First line</label>
+<input id="aee-file-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-file-indent-runover">Run over</label>
+<input id="aee-file-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h4>Display Math</h4>
+<div>
+<label for="aee-math-indent-first">First line</label>
+<input id="aee-math-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="aee-math-indent-runover">Run over</label>
+<input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h2 id="set-output">Output Settings</h2>

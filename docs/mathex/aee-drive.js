@@ -406,6 +406,12 @@ const aee_drive = () => {
       LOG( "Success opening file " + fileName );
       fn( result.body );
       cb( fileName );
+
+      const query = "?state=%7B%22action%22%3A%22open%22%2C%22ids%22%3A%5B%22" + fileId + "%22%5D%7D";
+      const params = new URLSearchParams( query );
+      const data = JSON.parse( params.get( "state" ) );
+
+      history.pushState( data, "", window.location.href );
     }
     else
     {
@@ -574,6 +580,24 @@ const aee_drive = () => {
   };
 
   /**
+   * Process the picker results for drive open.
+   */
+  async function link_picked( data, fn ) {
+    const ofileName = fileName;
+    const ofileId = fileId;
+
+    const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
+
+    fileName = fileDoc[ google.picker.Document.NAME ];
+    fileId = fileDoc[ google.picker.Document.ID ];
+
+    fn( fileName, fileId );
+
+    fileName = ofileName;
+    fileId = ofileId;
+  };
+
+  /**
    * Process the query data for drive open with.
    */
   async function open_with( data, fn, cb ) {
@@ -725,6 +749,14 @@ const aee_drive = () => {
     .catch( e => ALERT( e.message ) );
 
   /**
+   * Create a document link to an existing file on Google Drive.
+   */
+  const drive_link = ( fn ) => request()
+    .then( () => createPicker( false, "Select a file to Link to" ) )
+    .then( ( data ) => link_picked( data, fn ) )
+    .catch( e => ALERT( e.message ) );
+
+  /**
    * Install into the Google Drive UI.
    */
   const drive_install = () => init()
@@ -751,6 +783,7 @@ const aee_drive = () => {
   aee_drive.save = drive_save;
   aee_drive.save_as = drive_save_as;
   aee_drive.save_replace = drive_save_replace;
+  aee_drive.link = drive_link;
   aee_drive.install = drive_install;
   aee_drive.open_with = drive_open_with;
   aee_drive.create_new = drive_create_new;

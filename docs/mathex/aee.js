@@ -419,6 +419,11 @@ const aee_init = () => {
     moveToHome();
   };
 
+  const createLink = function( fileName, fileId ) {
+    editor.createLink( fileName, fileId );
+    editor.setFocus();
+  };
+
   const do_new = async function( event ) {
     try {
       event.preventDefault();
@@ -875,6 +880,16 @@ const aee_init = () => {
     }
   };
 
+  const do_drive_link = async function( event ) {
+    try {
+      event.preventDefault();
+      aee_drive.link( createLink );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_drive_install = async function( event ) {
     try {
       event.preventDefault();
@@ -920,6 +935,7 @@ const aee_init = () => {
 '            <li><a href="#" id="drive_save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="drive_saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
 '            <li><a href="#" id="drive_saveReplace" accesskey="r" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
+'            <li><a href="#" id="drive_link" accesskey="l" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="drive_install" accesskey="i" aria-label="Install">I&#x0332;nstall</a></li>' +
 '          </ul>' +
@@ -981,6 +997,7 @@ const aee_init = () => {
   addClick( "#drive_save", do_drive_save );
   addClick( "#drive_saveAs", do_drive_saveAs );
   addClick( "#drive_saveReplace", do_drive_saveReplace );
+  addClick( "#drive_link", do_drive_link );
   addClick( "#drive_install", do_drive_install );
 
   addClick( "#copy", do_copy );
@@ -1016,6 +1033,7 @@ const aee_init = () => {
       s: "#drive_save",
       a: "#drive_saveAs",
       r: "#drive_saveReplace",
+      l: "#drive_link",
       i: "#drive_install"
     },
     h: {
@@ -1067,6 +1085,62 @@ const aee_init = () => {
   if ( window.editor )
   {
     window.setInterval( updateModFlag, 1000 );
+  }
+
+  if ( window.editor )
+  {
+    document.addEventListener( "mousedown", ( e ) => {
+      var target = e.target;
+      while ( !target.href && target.parentNode )
+      {
+        target = target.parentNode;
+      }
+      const href = target.href || "";
+      if ( !( href.includes( "?" ) && href.includes( "lakepinesbraille.com" ) ) )
+      {
+        return;
+      }
+
+      var active = false;
+      var select = window.editor.selection();
+      var count = select.getHeadReferenceCount();
+      for ( var i = 0; i < count; i += 1 )
+      {
+        var elt = select.getHeadReference( i ).getContent();
+        if ( elt.getAttribute( "href" ) === href )
+        {
+            active = true;
+            break;
+        }
+      }
+      if ( !active )
+      {
+        return;
+      }
+
+      e.preventDefault();
+
+      const query = href.substring( href.indexOf( "?" ) );
+      const params = new URLSearchParams( query );
+      const data = JSON.parse( params.get( "state" ) );
+
+      aee_drive.open_with( data, setContent, setCleanFileName );
+      history.pushState( data, "", window.location.href );
+    }, true );
+  }
+
+  if ( window.editor )
+  {
+    window.addEventListener( "popstate", ( event ) => {
+      const data = event.state;
+      if ( data && data.action === "open" )
+      {
+        aee_drive.open_with( data, setContent, setCleanFileName );
+      }
+      else {
+        do_new( event );
+      }
+    } );
   }
 };
 

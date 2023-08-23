@@ -31,6 +31,7 @@
 <style name="_grade-3-5" href="mxc/grade-3-5.mxc"/>
 <style name="_grade-6-8" href="mxc/grade-6-8.mxc"/>
 <style name="_grade-9-12" href="mxc/grade-9-12.mxc"/>
+<style name="tables" href="mxc/tables.mxc"/>
 <style name="units" href="mxc/units.mxc"/>
 <style name="_units-3-5" href="mxc/units-3-5.mxc"/>
 <style name="_units-6-8" href="mxc/units-6-8.mxc"/>
@@ -40,7 +41,7 @@
 <!-- These entries define a style as a collection of other styles -->
 
 <style name="ee-basic"
-    refs="basic basic-layout basic-template basic-palettes units lang-en"/>
+    refs="basic basic-layout basic-template basic-palettes tables units lang-en"/>
 <style name="ee-fill-in" refs="ee-basic fill-in"/>
 <style name="ee-text" refs="ee-basic text"/>
 <style name="ee-full" refs="ee-basic full"/>
