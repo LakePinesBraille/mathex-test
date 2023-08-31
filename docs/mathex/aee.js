@@ -1046,6 +1046,7 @@ const aee_init = () => {
     }
   };
 
+  // Process access key events
   document.addEventListener( "keydown", ( e ) => {
     const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
     const x2 = x1[ e.key ] || "";
@@ -1057,38 +1058,9 @@ const aee_init = () => {
     }
   } );
 
-  // Process the query parameters
-  if ( window.editor && localStorage &&
-       localStorage[ "aee-query-state" ] )
-  {
-    const data = JSON.parse( localStorage[ "aee-query-state" ] );
-    delete localStorage[ "aee-query-state" ];
-
-    if ( data.action === "open" )
-    {
-      aee_drive.open_with( data, setContent, setCleanFileName );
-    }
-    if ( data.action === "create" )
-    {
-      aee_drive.create_new( data, getContent, setCleanFileName );
-    }
-    return;
-  }
-
-  // Show the welcome screen
-  if ( window.editor && localStorage &&
-       localStorage[ "gtk-show-welcome" ] !== "false" )
-  {
-    do_welcome();
-  }
-
   if ( window.editor )
   {
-    window.setInterval( updateModFlag, 1000 );
-  }
-
-  if ( window.editor )
-  {
+    // Process AEE document links
     document.addEventListener( "mousedown", ( e ) => {
       var target = e.target;
       while ( !target.href && target.parentNode )
@@ -1131,6 +1103,7 @@ const aee_init = () => {
 
   if ( window.editor )
   {
+    // Process AEE history links
     window.addEventListener( "popstate", ( event ) => {
       const data = event.state;
       if ( data && data.action === "open" )
@@ -1141,6 +1114,38 @@ const aee_init = () => {
         do_new( event );
       }
     } );
+  }
+
+  // Process the query parameters
+  if ( window.editor && localStorage &&
+       localStorage[ "aee-query-state" ] )
+  {
+    const data = JSON.parse( localStorage[ "aee-query-state" ] );
+    delete localStorage[ "aee-query-state" ];
+
+    if ( data.action === "open" )
+    {
+      aee_drive.open_with( data, setContent, setCleanFileName );
+      history.pushState( data, "", window.location.href );
+    }
+    if ( data.action === "create" )
+    {
+      aee_drive.create_new( data, getContent, setCleanFileName );
+      history.pushState( data, "", window.location.href );
+    }
+    return;
+  }
+
+  // Show the welcome screen
+  if ( window.editor && localStorage &&
+       localStorage[ "gtk-show-welcome" ] !== "false" )
+  {
+    do_welcome();
+  }
+
+  if ( window.editor )
+  {
+    window.setInterval( updateModFlag, 1000 );
   }
 };
 
