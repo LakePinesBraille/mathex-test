@@ -356,7 +356,7 @@ const aee_drive = () => {
             }
           };
 
-          const type = folders ? "application/vnd.google-apps.folder" : "text/html";
+          const type = folders ? "application/vnd.google-apps.folder" : "";
 
           const view = new google.picker.DocsView()
             .setMimeTypes( type )
