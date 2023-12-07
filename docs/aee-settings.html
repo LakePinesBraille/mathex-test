@@ -8,14 +8,24 @@
   <script src="aee.js"></script>
   <script>
 const settings = {
-  "gtk-show-welcome" : "true",
-  "gtk-show-last-page" : "true",
+  "aee-show-welcome" : "false",
+  "aee-show-users-guide" : "false",
+  "edt-show-tutorial" : "true",
+  "edt-show-last-page" : "true",
+  "edt-index-page-href" : "?edt/0000.html",
+  "edt-start-page-href" : "?edt/0101.html",
+  "edt-last-page-href" : "",
+  "gtk-show-tutorial" : "false",
+  "gtk-show-last-page" : "false",
   "gtk-last-page-href" : "",
-  "aee-width" : 656,
-  "aee-height" : 500,
+  "aee-width" : 0,
+  "aee-height" : 0,
   "aee-input-qwerty" : "true",
   "aee-input-braille" : "false",
   "aee-input-home" : "false",
+  "aee-panel-all-panels" : "false",
+  "aee-panel-app-menus" : "true",
+  "aee-panel-open-file" : "true",
   "aee-panel-quick-bar" : "true",
   "aee-panel-side-bar" : "true",
   "aee-panel-braille-bar" : "true",
@@ -81,18 +91,85 @@ const palettes = {
   "plt-trigonometry" : "Trigonometry",
   "plt-hyperbolic" : "Hyperbolic",
   "plt-scripts" : "Scripts",
-  "plt-symbols" : "Symbols",
-  "plt-greek-upper" : "Greek capital",
-  "plt-greek-lower" : "Greek small",
-  "plt-fraktur-upper" : "Fraktur capital",
-  "plt-fraktur-lower" : "Fraktur small",
-  "plt-script-upper" : "Script capital",
-  "plt-script-lower" : "Script small",
   "plt-shapes" : "Shapes",
   "plt-circled" : "Circled",
   "plt-squared" : "Squared",
   "plt-headings" : "Headings",
-  "plt-style" : "Text styles"
+  "plt-style" : "Text styles",
+  "plt-unB" : "Units - Base",
+  "plt-unO" : "Units - Other",
+  "plt-unD" : "Units - Derived",
+  "plt-unC" : "Units - Composed",
+  "plt-unM" : "Units - Meter",
+  "plt-unG" : "Units - Gram",
+  "plt-unL" : "Units - Liter",
+  "plt-chH" : "Elements",
+  "plt-rmA" : "Latin (upper)",
+  "plt-rma" : "Latin (lower)",
+  "plt-rm0" : "Latin (digit)",
+  "plt-rmb" : "Latin (basic)",
+  "plt-rmx" : "Latin (extended)",
+  "plt-rmp" : "Latin (punctuation)",
+  "plt-rms" : "Latin (symbol)",
+  "plt-bfA" : "Bold (upper)",
+  "plt-bfa" : "Bold (lower)",
+  "plt-bf0" : "Bold (digit)",
+  "plt-itA" : "Italic (upper)",
+  "plt-ita" : "Italic (lower)",
+  "plt-biA" : "Bold Italic (upper)",
+  "plt-bia" : "Bold Italic (lower)",
+  "plt-scA" : "Script (upper)",
+  "plt-sca" : "Script (lower)",
+  "plt-scbfA" : "Bold Script (upper)",
+  "plt-scbfa" : "Bold Script (lower)",
+  "plt-frA" : "Fraktur (upper)",
+  "plt-fra" : "Fraktur (lower)",
+  "plt-frbfA" : "Bold Fraktur (upper)",
+  "plt-frbfa" : "Bold Fraktur (lower)",
+  "plt-bbA" : "Blackboard (upper)",
+  "plt-bba" : "Blackboard (lower)",
+  "plt-bb0" : "Blackboard (digit)",
+  "plt-ssA" : "Sans Serif (upper)",
+  "plt-ssa" : "Sans Serif (lower)",
+  "plt-ss0" : "Sans Serif (digit)",
+  "plt-ssbfA" : "Sans Serif Bold (upper)",
+  "plt-ssbfa" : "Sans Serif Bold (lower)",
+  "plt-ssbf0" : "Sans Serif Bold (digit)",
+  "plt-ssitA" : "Sans Serif Italic (upper)",
+  "plt-ssita" : "Sans Serif Italic (lower)",
+  "plt-ssbiA" : "Sans Bold Italic (upper)",
+  "plt-ssbia" : "Sans Bold Italic (lower)",
+  "plt-ttA" : "Monospace (upper)",
+  "plt-tta" : "Monospace (lower)",
+  "plt-tt0" : "Monospace (digit)",
+  "plt-calA" : "Caligraphic (upper)",
+  "plt-cala" : "Caligraphic (lower)",
+  "plt-hatA" : "Hat (upper)",
+  "plt-hata" : "Hat (lower)",
+  "plt-vecA" : "Vector (upper)",
+  "plt-veca" : "Vector (lower)",
+  "plt-cyCy" : "Cyrillic (upper)",
+  "plt-cycy" : "Cyrillic (lower)",
+  "plt-hbalef" : "Hebrew (letter)",
+  "plt-hbaleph" : "Hebrew (symbol)",
+  "plt-gkAlpha" : "Greek (upper)",
+  "plt-gkalpha" : "Greek (lower)",
+  "plt-bfsymbol" : "Greek (symbol)",
+  "plt-bfAlpha" : "Greek Bold (upper)",
+  "plt-bfalpha" : "Greek Bold (lower)",
+  "plt-bfgreek" : "Greek Bold (symbol)",
+  "plt-itAlpha" : "Greek Italic (upper)",
+  "plt-italpha" : "Greek Italic (lower)",
+  "plt-itgreek" : "Greek Italic (symbol)",
+  "plt-biAlpha" : "Greek Bold Italic (upper)",
+  "plt-bialpha" : "Greek Bold Italic (lower)",
+  "plt-bigreek" : "Greek Bold Italic (symbol)",
+  "plt-ssbfAlpha" : "Greek Sans Bold (upper)",
+  "plt-ssbfalpha" : "Greek Sans Bold (lower)",
+  "plt-ssbfgreek" : "Greek Sans Bold (symbol)",
+  "plt-ssbiAlpha" : "Greek Sans BI (upper)",
+  "plt-ssbialpha" : "Greek Sans BI (lower)",
+  "plt-ssbigreek" : "Greek Sans BI (symbol)"
 };
 
 const click_grp = function( gelt, elts )
@@ -279,7 +356,7 @@ const done = function() {
 <li><a href="#set-font-size">Font Size</a></li>
 <li><a href="#set-mathjax">MathJax</a></li>
 </ul></li>
-<li><a href="#set-tutorial">Tutorial Settings</a></li>
+<li><a href="#set-startup">Startup Settings</a></li>
 </ul>
 
 <h2 id="set-application">Application Settings</h2>
@@ -313,6 +390,18 @@ const done = function() {
 
 <h3 id="set-panels">Editor Panels</h3>
 
+<div>
+<label for="aee-panel-all-panels">All Panels</label>
+<input id="aee-panel-all-panels" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-panel-app-menus">Editor Menus</label>
+<input id="aee-panel-app-menus" type="checkbox"></input>
+</div>
+<div>
+<label for="aee-panel-open-file">Open File Name</label>
+<input id="aee-panel-open-file" type="checkbox"></input>
+</div>
 <div>
 <label for="aee-panel-quick-bar">Quick Buttons</label>
 <input id="aee-panel-quick-bar" type="checkbox"></input>
@@ -579,21 +668,60 @@ const done = function() {
 <input id="aee-mathjax-on-print" type="checkbox"></input>
 </div>
 
-<h2 id="set-tutorial">Tutorial Settings</h2>
+<h2 id="set-startup">Startup Settings</h2>
 
 <div>
-<label for="gtk-show-welcome">Show the Welcome Page</label>
-<input id="gtk-show-welcome" type="checkbox"></input>
+<label for="aee-show-welcome">Show the Welcome Page</label>
+<input id="aee-show-welcome" type="checkbox"></input>
 </div>
 
 <div>
-<label for="gtk-show-last-page">Show the last topic visited</label>
-<input id="gtk-show-last-page" type="checkbox"></input>
+<label for="aee-show-users-guide">Show the Users Guide</label>
+<input id="aee-show-users-guide" type="checkbox"></input>
+</div>
+
+<div>
+<label for="edt-show-tutorial">Show the Tutorial</label>
+<input id="edt-show-tutorial" type="checkbox"></input>
+</div>
+
+<ul>
+<li>
+<label for="edt-show-last-page">Show the last topic visited</label>
+<input id="edt-show-last-page" type="checkbox"></input>
+</li>
+</ul>
+
+<div style="display: none">
+<label for="edt-index-page-href">The tutorial index page</label>
+<input id="edt-index-page-href" cols="40"></input>
 </div>
 
 <div style="display: none">
+<label for="edt-start-page-href">The tutorial start page</label>
+<input id="edt-start-page-href" cols="40"></input>
+</div>
+
+<div style="display: none">
+<label for="edt-last-page-href">The last topic visited</label>
+<input id="edt-last-page-href" cols="40"></input>
+</div>
+
+<div>
+<label for="gtk-show-tutorial">Show Getting To Know</label>
+<input id="gtk-show-tutorial" type="checkbox"></input>
+</div>
+
+<ul>
+<li>
+<label for="gtk-show-last-page">Show the last topic visited</label>
+<input id="gtk-show-last-page" type="checkbox"></input>
+</li>
+</ul>
+
+<div style="display: none">
 <label for="gtk-last-page-href">The last topic visited</label>
-<input id="gtk-last-page-href"></input>
+<input id="gtk-last-page-href" cols="40"></input>
 </div>
 
 </body>

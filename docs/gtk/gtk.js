@@ -46,5 +46,6 @@
   {
     localStorage[ "gtk-last-page-href" ] = window.location.href;
     load( "gtk-show-last-page" );
+    load( "gtk-show-tutorial" );
   }
 })();

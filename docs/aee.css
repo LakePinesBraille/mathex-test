@@ -115,7 +115,6 @@ iframe
 }
 
 .aee-settings label { width: 3.5in }
-.aee-settings input { width: 0.5in }
 .aee-settings td { width: 0.75in }
 .aee-settings .indent { padding-left: 0.5in }
 .aee-settings .aee-btn { padding: 0in 0.25in; margin-left: 0.25in }
@@ -159,4 +158,15 @@ iframe
 
 li.skip {
     margin-top: 20pt;
+}
+
+ul.check li a::before {
+    display: inline-block;
+    margin-left: -12px;
+    width: 18px;
+    content: '\A0';
+}
+
+ul.check li a.checked::before {
+    content: '\2713';
 }

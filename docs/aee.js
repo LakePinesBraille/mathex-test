@@ -2,8 +2,7 @@
   // Collect the query parameters
   if ( window.location.search )
   {
-    const params = new URLSearchParams( window.location.search );
-    localStorage[ "aee-query-state" ] = params.get( "state" );
+    localStorage[ "aee-query-state" ] = window.location.search;
     window.location.href = window.location.origin + window.location.pathname;
   }
 })();
@@ -40,10 +39,30 @@ const aee_init = () => {
     editor.setFocus();
   }
 
-  const getSource = function() {
+  const getDocBase = function() {
+    // from the aee.js script tag
     const elt = document.querySelector( "script" );
     const att = elt && elt.getAttribute( "src" ) || "";
-    return ( /aee\.js$/.test( att ) ) ? att.replace( "aee.js", "" ) : "";
+
+    if ( /aee\.js$/.test( att ) )
+    {
+        return att.replace( "aee.js", "" );
+    }
+
+    // from the aee.html window location
+    const href = window.location.href;
+
+    if ( /aee\.html$/.test( href ) )
+    {
+        return href.replace( "aee.html", "" );
+    }
+
+    if ( /\\$/.test( href ) )
+    {
+        return href;
+    }
+
+    return "";
   };
 
   const getVersion = function() {
@@ -110,6 +129,17 @@ const aee_init = () => {
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
+  const LOG = msg => msg; // console.log( msg );
+  const ALERT = msg => alert( msg );
+
+  var src_URL = getDocBase();
+  var base_URL = "";
+  var home_URL = "";
+  var file_URL = "";
+
+  var edt_home = "?edt/0000.html";
+  var edt_start = "?edt/0101.html";
+
   var last_file_elt = document.querySelector( ".ee-file-name" );
   var last_file_name = "";
   var last_file_mod = false;
@@ -120,16 +150,29 @@ const aee_init = () => {
   const updateFileName = function() {
     if ( last_file_elt )
     {
-      // const value = last_file_name + ( last_file_mod ? " (*)" : "" );
-      const value = last_file_name;
-      last_file_elt.innerText = value;
-      last_file_elt.style.display = value ? "block" : "none";
+      var value = getLocalSetting( "aee-panel-all-panels" )
+               && getLocalSetting( "aee-panel-open-file" );
+      last_file_elt.innerText = last_file_name;
+      last_file_elt.style.display = value && last_file_name ? "block" : "none";
     }
   };
 
-  const setCleanFileName = function( name ) {
+  const setCleanFileName = function( name, data ) {
     setLastFileName( name );
     clearModFlag();
+
+    if ( data && data.href )
+    {
+      if ( isTutorial( data.href ) )
+      {
+          localStorage[ "edt-last-page-href" ] = data.href;
+      }
+
+      delete data.href;
+      data.base = data.base || base_URL;
+      data.home = data.home || home_URL;
+      window.history.pushState( data, "" );
+    }
   };
 
   const setLastFileName = function( name ) {
@@ -203,8 +246,26 @@ const aee_init = () => {
     return ( localStorage && localStorage[ key ] === "true" ) || false;
   };
 
+  const setLocalSetting = function( key, val ) {
+    if ( localStorage )
+    {
+      localStorage[ key ] = ( val ? "true" : "false" );
+    }
+  };
+
+  const toggleLocalSetting = function ( key ) {
+    setLocalSetting( key, !getLocalSetting( key ) );
+  };
+
   const getLocalSettingNumber = function( key ) {
     return ( localStorage && localStorage[ key ] ) || "";
+  };
+
+  const setLocalSettingNumber = function( key, val ) {
+    if ( localStorage )
+    {
+      localStorage[ key ] = val;
+    }
   };
 
   const addBRLMarkup = function( markup ) {
@@ -405,7 +466,6 @@ const aee_init = () => {
   const moveToHome = function() {
     setTimeout( () => {
         editor.processTemplate( "ctrl-home" )
-        editor.processTemplate( "home" )
     }, 200 );
   };
 
@@ -420,13 +480,17 @@ const aee_init = () => {
   };
 
   const createLink = function( fileName, fileId ) {
-    editor.createLink( fileName, fileId );
-    editor.setFocus();
+    // null is dialog cancel, empty string is remove link
+    if ( fileName !== null )
+    {
+      editor.createLink( fileName, fileId );
+      editor.setFocus();
+    }
   };
 
   const do_new = async function( event ) {
     try {
-      event.preventDefault();
+      event && event.preventDefault();
 
       editor.processTemplate( "clear" );
       editor.setFocus();
@@ -434,6 +498,8 @@ const aee_init = () => {
 
       setLastFileName( "" );
       clearModFlag();
+      home_URL = "";
+      file_URL = "";
     }
     catch ( e )
     {
@@ -459,6 +525,16 @@ const aee_init = () => {
   };
 
   const do_close = do_new;
+
+  const do_link = async function( event ) {
+    try {
+      event.preventDefault();
+      createLink( prompt( "Link to file name", getCurrentLink() ) );
+    }
+    catch ( e )
+    {
+    }
+  };
 
   const do_save = async function( event ) {
     if ( ! last_open_handle )
@@ -758,12 +834,89 @@ const aee_init = () => {
     }
   };
 
-  const do_help = async function( event ) {
-    try {
-      event.preventDefault();
+  const updateChecked = function ( key, s )
+  {
+    const val = getLocalSetting( key );
+    const elt = document.querySelector( s );
+    if ( elt )
+    {
+      if ( val )
+      {
+        $( elt ).addClass( "checked" );
+      }
+      else
+      {
+        $( elt ).removeClass( "checked" );
+      }
+    }
+  };
 
-      const href = event.target.getAttribute( "href" );
-      const src = href.startsWith( "http" ) ? href : getSource() + href;
+  const updatePanels = function () {
+    updateChecked( "aee-panel-app-menus", "#panel_menus" );
+    updateChecked( "aee-panel-open-file", "#panel_fname" );
+    updateChecked( "aee-panel-quick-bar", "#panel_quick" );
+    updateChecked( "aee-panel-side-bar", "#panel_side" );
+    updateChecked( "aee-panel-braille-bar", "#panel_braille" );
+
+    EquationEditorAPI.updateSettings();
+    update_settings();
+    updateFileName();
+    editor.setFocus();
+  };
+
+  const setPanelSize = function ( value ) {
+    setLocalSetting( "aee-panel-all-panels", value );
+
+    const hh = window.innerHeight;
+    const ww = window.innerWidth;
+    setLocalSettingNumber( "aee-height", hh - 100 );
+    setLocalSettingNumber( "aee-width", ww - ( ww % 44 ) );
+
+    updatePanels();
+  };
+
+  const do_panel_maximize = async function ( event ) {
+    event && event.preventDefault();
+
+    const value = !getLocalSetting( "aee-panel-all-panels" );
+    setPanelSize( value );
+    updatePanels();
+  };
+
+  const do_panel_menus = async function ( event ) {
+    event && event.preventDefault();
+    toggleLocalSetting( "aee-panel-app-menus" );
+    setPanelSize( true );
+    updatePanels();
+  };
+
+  const do_panel_fname = async function ( event ) {
+    event && event.preventDefault();
+    toggleLocalSetting( "aee-panel-open-file" );
+    updatePanels();
+  };
+
+  const do_panel_quick = async function ( event ) {
+    event && event.preventDefault();
+    toggleLocalSetting( "aee-panel-quick-bar" );
+    updatePanels();
+  };
+
+  const do_panel_side = async function ( event ) {
+    event && event.preventDefault();
+    toggleLocalSetting( "aee-panel-side-bar" );
+    updatePanels();
+  };
+
+  const do_panel_braille = async function ( event ) {
+    event && event.preventDefault();
+    toggleLocalSetting( "aee-panel-braille-bar" );
+    updatePanels();
+  };
+
+  const do_help_open = async function( href ) {
+    try {
+      const src = href.startsWith( "http" ) ? href : getDocBase() + href;
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "unload", () => {
@@ -775,16 +928,29 @@ const aee_init = () => {
     }
   };
 
+  const do_help = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const href = event.target.getAttribute( "href" );
+      do_help_open( href );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_welcome = async function ( event ) {
     try {
       event && event.preventDefault();
 
       const iframe = document.createElement( "iframe" );
-      iframe.src = getSource() + "aee-welcome.html";
+      iframe.src = getDocBase() + "aee-welcome.html";
 
       iframe.onload = () => {
         iframe.contentWindow.onunload = () => {
           EquationEditorAPI.updateSettings();
+          update_settings();
           editor.setFocus();
         };
 
@@ -799,11 +965,13 @@ const aee_init = () => {
     }
   };
 
-  const do_tutorial = async function( event ) {
+  const do_tutorial_gtk = async function( event ) {
     try {
-      event.preventDefault();
+      event && event.preventDefault();
 
-      var href = getSource() + event.target.getAttribute( "href" );
+      var target = event && event.target || document.querySelector( "#tutorial" );
+      var href = getDocBase() + target.getAttribute( "href" );
+
       if ( localStorage && localStorage[ "gtk-last-page-href" ] &&
            localStorage[ "gtk-show-last-page" ] !== "false" )
       {
@@ -820,15 +988,39 @@ const aee_init = () => {
     }
   };
 
+  const do_tutorial_edt = async function( event ) {
+    try {
+      event && event.preventDefault();
+
+      var href = localStorage && localStorage[ "edt-start-page-href" ] || edt_start;
+
+      if ( localStorage && localStorage[ "edt-last-page-href" ] &&
+           localStorage[ "edt-show-last-page" ] !== "false" )
+      {
+        href = localStorage[ "edt-last-page-href" ];
+      }
+
+      if ( href )
+      {
+        do_query_href( href );
+        setPanelSize( false );
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_settings = async function( event ) {
     try {
       event.preventDefault();
 
-      const src = getSource() + event.target.getAttribute( "href" );
+      const src = getDocBase() + event.target.getAttribute( "href" );
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "beforeunload", () => {
         EquationEditorAPI.updateSettings();
+        update_settings();
       } );
 
       nwindow.addEventListener( "unload", () => {
@@ -900,6 +1092,150 @@ const aee_init = () => {
     }
   };
 
+  // Return true if the current url is a tutorial
+  const isTutorial = url => /edt\//.test( url );
+
+  // Retrieve the active document link target
+  const getCurrentLink = function () {
+    var href = "";
+    var select = window.editor.selection();
+    var count = select.getHeadReferenceCount();
+    for ( var i = 0; i < count && !href; i += 1 )
+    {
+      var elt = select.getHeadReference( i ).getContent();
+      href = elt.getAttribute( "href" ) || "";
+    }
+    return href;
+  };
+
+  const combine_url = function ( url, base ) {
+    const suffix = base.replaceAll( /(\.\.\/)+/g, "/" );
+    const prefix = base.substring( 0, base.length - suffix.length );
+    return prefix + suffix + url;
+  };
+
+  // Retrieve a remote resouce
+  const open_url = async function ( data, fn, cb ) {
+    var obaseURL = base_URL;
+    var ohomeURL = home_URL;
+    var ofileURL = file_URL;
+
+    base_URL = data.base && combine_url( data.base, src_URL ) || base_URL;
+    home_URL = data.home || home_URL;
+    file_URL = data.url && combine_url( data.url, base_URL || file_URL || src_URL ) || "";
+
+    if ( ! file_URL )
+    {
+      ALERT( "Error opening file - url not found" );
+      return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if ( xhr.readyState === 4 && xhr.status === 200 )
+      {
+        LOG( "Success opening file " + file_URL );
+        fn( xhr.responseText );
+        cb( file_URL, data );
+      }
+      else if ( xhr.readyState === 4 )
+      {
+        ALERT( "Error opening file " + file_URL );
+        base_URL = obaseURL;
+        home_URL = ohomeURL;
+        file_URL = ofileURL;
+      }
+    }
+    xhr.open( "GET", file_URL, true );
+    xhr.setRequestHeader( "Cache-Control", "no-cache" );
+    xhr.send();
+  };
+
+  // Process the query state data
+  const do_query_data = function( data ) {
+    if ( data && data.action === "open" && data.url )
+    {
+      // Open a remote web resource
+      open_url( data, setContent, setCleanFileName );
+    }
+
+    else if ( data && data.action === "open" && data.ids )
+    {
+      // Open a Google drive resource
+      aee_drive.open_with( data, setContent, setCleanFileName );
+    }
+
+    else if ( data && data.action === "create" && data.folderId )
+    {
+      // Create a Google drive resource
+      aee_drive.create_new( data, getContent, setCleanFileName );
+    }
+
+    else
+    {
+      // Create an empty document
+      do_new();
+    }
+  };
+
+  // Process the query parameters
+  const do_query_href = function( href ) {
+    href = href.substring( href.indexOf( "?" ) );
+    const params = new URLSearchParams( href );
+    const data = { "state" : { "action" : "open", "href" : href } };
+
+    if ( href.startsWith( "?state" ) )
+    {
+      // Long form - query state parameters
+      Object.assign( data.state, JSON.parse( params.get( "state" ) ) );
+    }
+
+    else if ( href.startsWith( "?id" ) )
+    {
+      // Short form - Google Drive ID
+      data.state.ids = [ params.get( "id" ) ];
+    }
+
+    else if ( href.startsWith( "?" ) )
+    {
+      // Short form - base + file URL
+      const s = href.substring( 1 );
+      const ix = s.indexOf( "/" );
+      if ( ix === -1 )
+      {
+        data.state.url = s;
+      }
+      else
+      {
+        data.state.base = s.substring( 0, ix + 1 );
+        data.state.url = s.substring( ix + 1 );
+      }
+
+      if ( isTutorial( href ) )
+      {
+        data.state.home = href;
+      }
+    }
+
+    else
+    {
+      // Short form - remote resource URL
+      data.state.url = href;
+    }
+
+    do_query_data( data.state );
+  };
+
+  const update_settings = function () {
+    const panel = document.querySelector( ".ee-menu" );
+    if ( panel )
+    {
+        const value = getLocalSetting( "aee-panel-all-panels" )
+                   && getLocalSetting( "aee-panel-app-menus" );
+        panel.style.display = value ? "block" : "none";
+    }
+  };
+
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
@@ -907,37 +1243,38 @@ const aee_init = () => {
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="f">File<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="#" id="new" accesskey="n" aria-label="New">N&#x0332;ew</a></li>' +
-'            <li><a href="#" id="open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
-'            <li><a href="#" id="save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
-'            <li><a href="#" id="saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
-'            <li><a href="#" id="view" accesskey="v" aria-label="View Source">V&#x0332;iew Source</a></li>' +
+'            <li><a href="#" id="new" aria-label="New">N&#x0332;ew</a></li>' +
+'            <li><a href="#" id="open" aria-label="Open">O&#x0332;pen</a></li>' +
+'            <li><a href="#" id="save" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
+'            <li><a href="#" id="view" aria-label="View Source">V&#x0332;iew Source</a></li>' +
+'            <li><a href="#" id="link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveHTML">Save HTML</a></li>' +
-'            <li><a href="#" id="exportHTML" accesskey="x" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
-'            <li><a href="#" id="printHTML" accesskey="p" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
+'            <li><a href="#" id="saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
+'            <li><a href="#" id="exportHTML" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
+'            <li><a href="#" id="printHTML" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
 '            <li><a href="#" id="viewHTML">View HTML</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveBRF" accesskey="b" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
 '            <li><a href="#" id="viewBRF">View BRF</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRL">Save BRL</a></li>' +
 '            <li><a href="#" id="exportBRL">Export BRL</a></li>' +
 '            <li><a href="#" id="printBRL">Print BRL</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="close" accesskey="c" aria-label="Close">C&#x0332;lose</a></li>' +
+'            <li><a href="#" id="close" aria-label="Close">C&#x0332;lose</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="d">Drive<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="#" id="drive_open" accesskey="o" aria-label="Open">O&#x0332;pen</a></li>' +
-'            <li><a href="#" id="drive_save" accesskey="s" aria-label="Save">S&#x0332;ave</a></li>' +
-'            <li><a href="#" id="drive_saveAs" accesskey="a" aria-label="Save As">Save A&#x0332;s</a></li>' +
-'            <li><a href="#" id="drive_saveReplace" accesskey="r" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
-'            <li><a href="#" id="drive_link" accesskey="l" aria-label="Link">L&#x0332;ink</a></li>' +
+'            <li><a href="#" id="drive_open" aria-label="Open">O&#x0332;pen</a></li>' +
+'            <li><a href="#" id="drive_save" aria-label="Save">S&#x0332;ave</a></li>' +
+'            <li><a href="#" id="drive_saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
+'            <li><a href="#" id="drive_saveReplace" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
+'            <li><a href="#" id="drive_link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="drive_install" accesskey="i" aria-label="Install">I&#x0332;nstall</a></li>' +
+'            <li><a href="#" id="drive_install" aria-label="Install">I&#x0332;nstall</a></li>' +
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
@@ -956,16 +1293,31 @@ const aee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="p">Panel<span class="caret"></span></a>' +
+'          <ul class="dropdown-menu check">' +
+'            <li><a href="#" id="panel_maximize" accesskey="x" aria-label="Maximize">Max&#x0332;imize</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="panel_menus" accesskey="m" aria-label="Menus">M&#x0332;enus</a></li>' +
+'            <li><a href="#" id="panel_fname" aria-label="File Name">F&#x0332;ile Name</a></li>' +
+'            <li><a href="#" id="panel_quick" aria-label="Quick Buttons">Q&#x0332;uick Buttons</a></li>' +
+'            <li><a href="#" id="panel_side" aria-label="Side Palettes">S&#x0332;ide Palettes</a></li>' +
+'            <li><a href="#" id="panel_braille" aria-label="Braille Bar">B&#x0332;raille Bar</a></li>' +
+'          </ul>' +
+'        </li>' +
+'        <li class="dropdown">' +
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="#" id="welcome" accesskey="w" aria-label="Welcome">W&#x0332;elcome</a></li>' +
-'            <li><a href="gtk/intro.html" id="tutorial" accesskey="t" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
-'            <li><a href="aee-guide.html" id="guide" accesskey="u" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
-'            <li><a href="' + samples_url + '" id="samples" accesskey="m" aria-label="Samples">Sam&#x0332;ples</a></li>' +
-'            <li><a href="aee-settings.html" id="settings" accesskey="g" aria-label="Settings">Setting&#x0332;s</a></li>' +
+'            <li><a href="#" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
+'            <li><a href="' + edt_start + '" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
+'            <li><a href="aee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
+'            <hr/>' +
+'            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
+'            <li><a href="aee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
 '            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
 '            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
+'            <hr/>' +
 '            <li><a href="aee-about.html" id="about">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -982,6 +1334,7 @@ const aee_init = () => {
   addClick( "#save", do_save );
   addClick( "#saveAs", do_saveAs );
   addClick( "#view", do_view );
+  addClick( "#link", do_link );
   addClick( "#saveHTML", do_saveHTML );
   addClick( "#exportHTML", do_exportHTML );
   addClick( "#printHTML", do_printHTML );
@@ -1008,12 +1361,26 @@ const aee_init = () => {
   addClick( "#copyAllHTML", do_copyAllHTML );
   addClick( "#copyAllMath", do_copyAllMath );
 
+  addClick( "#panel_maximize", do_panel_maximize );
+  addClick( "#panel_menus", do_panel_menus );
+  addClick( "#panel_fname", do_panel_fname );
+  addClick( "#panel_quick", do_panel_quick );
+  addClick( "#panel_side", do_panel_side );
+  addClick( "#panel_braille", do_panel_braille );
+
   addClick( "#welcome", do_welcome );
-  addClick( "#tutorial", do_tutorial );
+  addClick( "#tutorial", do_tutorial_edt );
+  addClick( "#getting", do_tutorial_gtk );
   addClick( "#settings", do_settings );
   addClick( "#samples", do_help );
   addClick( "#guide", do_help );
   addClick( "#about", do_help );
+
+  $( ".dropdown-menu" ).mouseleave( function() {
+    $( this ).closest( ".dropdown" ).click();
+  } );
+
+  update_settings();
 
   const accel = {
     f: {
@@ -1022,6 +1389,7 @@ const aee_init = () => {
       s: "#save",
       a: "#saveAs",
       v: "#view",
+      l: "#link",
       h: "#saveHTML",
       x: "#exportHTML",
       p: "#printHTML",
@@ -1036,10 +1404,19 @@ const aee_init = () => {
       l: "#drive_link",
       i: "#drive_install"
     },
+    p: {
+      x: "#panel_maximize",
+      m: "#panel_menus",
+      f: "#panel_fname",
+      q: "#panel_quick",
+      s: "#panel_side",
+      b: "#panel_braille"
+    },
     h: {
       w: "#welcome",
       t: "#tutorial",
       u: "#guide",
+      k: "#getting",
       m: "#samples",
       g: "#settings",
       a: "#about"
@@ -1047,7 +1424,7 @@ const aee_init = () => {
   };
 
   // Process access key events
-  document.addEventListener( "keydown", ( e ) => {
+  document.addEventListener( "keydown", e => {
     const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
     const x2 = x1[ e.key ] || "";
     const elt = x2 && document.querySelector( x2 ) || null;
@@ -1058,98 +1435,200 @@ const aee_init = () => {
     }
   } );
 
-  if ( window.editor )
-  {
-    // Process AEE document links
-    document.addEventListener( "mousedown", ( e ) => {
-      var target = e.target;
-      while ( !target.href && target.parentNode )
-      {
-        target = target.parentNode;
-      }
-      const href = target.href || "";
-      if ( !( href.includes( "?" ) && href.includes( "lakepinesbraille.com" ) ) )
-      {
-        return;
-      }
+  // Process document link key down events
+  const onKeyDown = e => {
+    var result = false;
+    var index = "";
+    var href = getCurrentLink();
+    var next = $( ".ee-input-panel a" ).filter(
+        ( i, x ) => x.innerHTML === "[Alt+Enter]" ).attr( "href" ) || "";
 
-      var active = false;
-      var select = window.editor.selection();
-      var count = select.getHeadReferenceCount();
-      for ( var i = 0; i < count; i += 1 )
-      {
-        var elt = select.getHeadReference( i ).getContent();
-        if ( elt.getAttribute( "href" ) === href )
-        {
-            active = true;
-            break;
-        }
-      }
-      if ( !active )
-      {
-        return;
-      }
+    const indexStart = 101;
+    const indexLimit = 119;
 
+    const getIndex = s => parseInt( s.replace( /.*([0-9]{4}).*/, "$1" ) );
+    const nextHome = v => ( v % 10 === 1 ? v - 10 : v - v % 10 + 1 );
+    const nextEnd = v => ( v % 10 === 9 ? v + 10 : v - v % 10 + 9 );
+    const fixIndex = v => Math.min( Math.max( v, indexStart ), indexLimit );
+    const putIndex = v => ( "0000" + v.toString() ).substr( -4 );
+
+    if ( e.key === "Escape" && isTutorial( file_URL ) &&
+        !document.querySelector( ".ee-menu" ).contains( document.activeElement ) )
+    {
+      result = true;
+      do_new();
+      setPanelSize( true );
+    }
+
+    if ( e.key === "Escape" )
+    {
+        result = true;
+        $( ".dropdown.open" ).click();
+        updatePanels();
+    }
+
+    if ( e.key === "Enter" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
+    {
+      href = next || href;
+      if ( !href )
+      {
+        window.editor.selection().linkRight();
+        href = getCurrentLink();
+      }
+    }
+
+    if ( e.key === "Enter" && isTutorial( file_URL ) && href )
+    {
+      result = true;
+      do_query_href( href );
+    }
+
+    if ( e.key === "Home" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
+    {
+        result = true;
+        index = putIndex( fixIndex( nextHome( getIndex( file_URL ) ) ) );
+        href = file_URL.replace( src_URL, "?" )
+            .replace( /[0-9]{4}/, index );
+        do_query_href( href );
+    }
+
+    if ( e.key === "End" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
+    {
+        result = true;
+        index = putIndex( fixIndex( nextEnd( getIndex( file_URL ) ) ) );
+        href = file_URL.replace( src_URL, "?" )
+            .replace( /[0-9]{4}/, index );
+        do_query_href( href );
+    }
+
+    if ( "FDEPH".indexOf( e.key ) !== -1 && e.altKey && !e.ctrlKey )
+    {
+        result = true;
+        $( ".ee-menu" ).show();
+    }
+
+    if ( e.key === "I" && e.altKey && !e.ctrlKey )
+    {
+      href = localStorage[ "edt-index-page-href" ] || edt_home;
+      if ( href )
+      {
+        result = true;
+        do_query_href( href );
+        setPanelSize( false );
+      }
+    }
+
+    if ( e.key === "T" && e.altKey && !e.ctrlKey )
+    {
+      href = localStorage[ "edt-last-page-href" ] || edt_start;
+      if ( href )
+      {
+        result = true;
+        do_query_href( href );
+        setPanelSize( false );
+      }
+    }
+
+    if ( e.key === "ArrowLeft" && e.altKey && !e.ctrlKey )
+    {
+      result = true;
+      window.history.back();
+    }
+
+    if ( e.key === "ArrowRight" && e.altKey && !e.ctrlKey )
+    {
+      result = true;
+      window.history.forward();
+    }
+
+    if ( result )
+    {
+      e.stopImmediatePropagation();
       e.preventDefault();
+    }
+  };
 
-      const query = href.substring( href.indexOf( "?" ) );
-      const params = new URLSearchParams( query );
-      const data = JSON.parse( params.get( "state" ) );
+  // Process document link key up events
+  const onKeyUp = e => {
+    if ( e.code === "AltLeft" || e.code === "AltRight" )
+    {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+  };
 
-      aee_drive.open_with( data, setContent, setCleanFileName );
-      history.pushState( data, "", window.location.href );
-    }, true );
-  }
+  // Process document link key press events
+  const onKeyPress = onKeyUp;
+
+  // Process document link mouse down events
+  const onMouseDown = e => {
+    var target = e.target;
+    while ( !target.href && target.parentNode.nodeType === 1 )
+    {
+      target = target.parentNode;
+    }
+    const href = target.getAttribute( "href" ) || "";
+
+    if ( href && href === getCurrentLink() )
+    {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      do_query_href( href );
+    }
+  };
 
   if ( window.editor )
   {
+    document.addEventListener( "keydown", onKeyDown, true );
+    document.addEventListener( "keyup", onKeyUp, true );
+    document.addEventListener( "keypress", onKeyPress, true );
+    document.addEventListener( "mousedown", onMouseDown, true );
+
     // Process AEE history links
-    window.addEventListener( "popstate", ( event ) => {
-      const data = event.state;
-      if ( data && data.action === "open" )
-      {
-        aee_drive.open_with( data, setContent, setCleanFileName );
-      }
-      else {
-        do_new( event );
-      }
-    } );
+    window.addEventListener( "popstate", e => do_query_data( e.state ) );
   }
 
   // Process the query parameters
   if ( window.editor && localStorage &&
        localStorage[ "aee-query-state" ] )
   {
-    const data = JSON.parse( localStorage[ "aee-query-state" ] );
+    const href = localStorage[ "aee-query-state" ]
     delete localStorage[ "aee-query-state" ];
 
-    if ( data.action === "open" )
-    {
-      aee_drive.open_with( data, setContent, setCleanFileName );
-      history.pushState( data, "", window.location.href );
-    }
-    if ( data.action === "create" )
-    {
-      aee_drive.create_new( data, getContent, setCleanFileName );
-      history.pushState( data, "", window.location.href );
-    }
+    do_query_href( href );
     return;
   }
 
-  // Show the welcome screen
+  // Show the welcome screen (aee)
   if ( window.editor && localStorage &&
-       localStorage[ "gtk-show-welcome" ] !== "false" )
+       localStorage[ "aee-show-welcome" ] !== "false" )
   {
     do_welcome();
   }
 
-  if ( window.editor )
+  // Show the users guide (aee)
+  else if ( window.editor && localStorage &&
+       localStorage[ "aee-show-users-guide" ] !== "false" )
   {
-    window.setInterval( updateModFlag, 1000 );
+    do_help_open( "aee-guide.html" );
+  }
+
+  // Show the tutorial screen (edt)
+  else if ( window.editor && localStorage &&
+       localStorage[ "edt-show-tutorial" ] !== "false" )
+  {
+    do_tutorial_edt();
+  }
+
+  // Show the tutorial screen (gtk)
+  else if ( window.editor && localStorage &&
+       localStorage[ "gtk-show-tutorial" ] !== "false" )
+  {
+    do_tutorial_gtk();
   }
 };
 
-document.addEventListener( "keydown", ( e ) => {
+document.addEventListener( "keydown", e => {
   if ( e.key === "Enter" )
   {
     const btn = document.querySelector( "#ok" );
