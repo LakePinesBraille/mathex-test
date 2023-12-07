@@ -9,20 +9,18 @@
 </head>
 <body class="aee-welcome">
 
-<h1>Welcome to the Accessible Equation Editor!</h1>
-
-<!--
-<p>
-The Accessible Equation Editor (AEE) is a Web Application for Braille Text and Math documents!
-</p>
--->
+<h1>Welcome to the Equation Editor!</h1>
 
 <p>
-Press <code>Escape</code> to dismiss this Welcome Page and return to the application.
+Press <code>Escape</code> to dismiss this Welcome Page and return to the editor.
 </p>
 
 <p>
-Please see the <a href="gtk/intro.html" target="_blank">Tutorial</a> for help getting to know the AEE.
+Please see the <a href="aee.html?edt/0101.html" target="_blank">Tutorial</a> for an interactive guide to basic editor behavior.
+</p>
+
+<p>
+Then use the <a href="gtk/intro.html" target="_blank">Getting To Know</a> pages for additional help getting started.
 </p>
 
 <ul>
@@ -64,17 +62,12 @@ From anywhere else on the page, press <code>Escape</code> to return to the input
 </ul>
 
 <p>
-Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, the <a href="gtk/intro.html" target="_blank">Tutorial</a>, or the <a href="aee-guide.html" target="_blank">Users Guide</a>.
+Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, the <a href="aee.html?edt/0101.html" target="_blank">Tutorial</a>, the <a href="aee-guide.html" target="_blank">Users Guide</a>, or the <a href="gtk/intro.html" target="_blank">Getting To Know</a> pages.
 </p>
 
-<!--
-<p>
-Thank you for your interest in the Accessible Equation Editor!
-</p>
--->
 <div>
-<input id="gtk-show-welcome" type="checkbox"></input>
-<label for="gtk-show-welcome">Show this Welcome Page when you start the AEE.</label>
+<input id="aee-show-welcome" type="checkbox"></input>
+<label for="aee-show-welcome">Show this Welcome Page when you start the AEE.</label>
 </div>
 
 <script>
@@ -115,7 +108,7 @@ Thank you for your interest in the Accessible Equation Editor!
     save( "aee-input-home" );
   }
 
-  localStorage && load( "gtk-show-welcome" );
+  localStorage && load( "aee-show-welcome" );
   localStorage && load( "aee-input-qwerty" );
   localStorage && load( "aee-input-braille" );
   localStorage && load( "aee-input-home" );

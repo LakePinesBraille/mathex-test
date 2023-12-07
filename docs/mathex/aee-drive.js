@@ -403,15 +403,15 @@ const aee_drive = () => {
 
     if ( result.status === 200 )
     {
-      LOG( "Success opening file " + fileName );
-      fn( result.body );
-      cb( fileName );
-
       const query = "?state=%7B%22action%22%3A%22open%22%2C%22ids%22%3A%5B%22" + fileId + "%22%5D%7D";
       const params = new URLSearchParams( query );
       const data = JSON.parse( params.get( "state" ) );
 
-      history.pushState( data, "", window.location.href );
+      data.href = query;
+
+      LOG( "Success opening file " + fileName );
+      fn( result.body );
+      cb( fileName, data );
     }
     else
     {
@@ -639,7 +639,7 @@ const aee_drive = () => {
     }
 
     fn( result.body );
-    cb( fileName );
+    cb( fileName, data );
 
     LOG( "Success opening file " + fileName );
   };
@@ -772,7 +772,7 @@ const aee_drive = () => {
     .catch( e => ALERT( e.message ) );
 
   /**
-   * Process a Google Drive create new request..
+   * Process a Google Drive create new request.
    */
   const drive_create_new = ( data, fn, cb ) => request()
     .then( () => waitForFocus() )

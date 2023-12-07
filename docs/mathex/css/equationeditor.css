@@ -319,6 +319,8 @@
     cursor: pointer;
     display: inline-block;
     text-decoration: none;
+    text-wrap: nowrap;
+    height: 24px;
     width: 100%;
 }
 
@@ -511,11 +513,6 @@
 .ee-button .script
 {
     font-family: 'Brush Script MT';
-}
-
-.ee-button .fraktur
-{
-    font-family: 'Euclid Fraktur';
 }
 
 .ee-button.btn-large
@@ -720,6 +717,11 @@ apply, mphantom
     background-image: none !important;
 
     box-shadow: none;
+}
+
+.ee-button span.btn-small
+{
+    font-size: 50%;
 }
 
 /* Custom font styles */
@@ -1280,7 +1282,10 @@ apply, mphantom
 .ee-input-panel h6 { font-size: 0.5em }
 
 /* Heading lines */
-.ee-input-panel hr { border: 1px solid black }
+.ee-input-panel hr {
+    border: 1px solid black;
+    margin-right: 28px;
+}
 
 /* Verbatim */
 .ee-input-panel code {
