@@ -1,11 +1,92 @@
 (() => {
   // Collect the query parameters
-  if ( window.location.search )
+  if ( window.location.search && localStorage )
   {
     localStorage[ "aee-query-state" ] = window.location.search;
     window.location.href = window.location.origin + window.location.pathname;
   }
 })();
+
+const aee_settings = {
+  "aee-show-welcome" : "false",
+  "aee-show-users-guide" : "false",
+  "edt-show-tutorial" : "true",
+  "edt-show-last-page" : "true",
+  "edt-index-page-href" : "?edt/0000.html",
+  "edt-start-page-href" : "?edt/0101.html",
+  "edt-last-page-href" : "",
+  "gtk-show-tutorial" : "false",
+  "gtk-show-last-page" : "false",
+  "gtk-last-page-href" : "",
+  "aee-width" : 0,
+  "aee-height" : 0,
+  "aee-input-qwerty" : "true",
+  "aee-input-braille" : "false",
+  "aee-input-home" : "false",
+  "aee-panel-all-panels" : "true",
+  "aee-panel-app-menus" : "true",
+  "aee-panel-open-file" : "true",
+  "aee-panel-quick-bar" : "true",
+  "aee-panel-side-bar" : "true",
+  "aee-panel-braille-bar" : "true",
+  "aee-mathjax-on-save" : "false",
+  "aee-mathjax-on-export" : "true",
+  "aee-mathjax-on-print" : "true",
+  "aee-screen-page-width" : 30,
+  "aee-screen-page-height" : 4,
+  "aee-screen-indent-first" : 1,
+  "aee-screen-indent-runover" : 1,
+  "aee-device-page-width" : 40,
+  "aee-device-page-height" : 1,
+  "aee-device-indent-first" : 1,
+  "aee-device-indent-runover" : 1,
+  "aee-file-page-width" : 40,
+  "aee-file-page-height" : 25,
+  "aee-file-page-numbers" : "true",
+  "aee-file-indent-first" : 1,
+  "aee-file-indent-runover" : 1,
+  "aee-math-indent-first" : 3,
+  "aee-math-indent-runover" : 5,
+  "aee-html-font-size" : 18,
+  "aee-brl-font-size" : 24,
+  "fmt-heading-1": "center",
+  "fmt-heading-2": "cell-5",
+  "fmt-heading-3": "cell-7",
+  "fmt-heading-4": "cell-7",
+  "fmt-heading-5": "cell-7",
+  "fmt-heading-6": "cell-7",
+  "brl-rules-all-rules" : "true",
+  "brl-rules-alphabetic-wordsigns" : "true",
+  "brl-rules-strong-wordsigns" : "true",
+  "brl-rules-strong-contractions" : "true",
+  "brl-rules-strong-groupsigns" : "true",
+  "brl-rules-lower-wordsigns" : "true",
+  "brl-rules-lower-groupsigns" : "true",
+  "brl-rules-initial-letter" : "true",
+  "brl-rules-initial-letter-45" : "true",
+  "brl-rules-initial-letter-456" : "true",
+  "brl-rules-initial-letter-5" : "true",
+  "brl-rules-final-letter" : "true",
+  "brl-rules-final-letter-46" : "true",
+  "brl-rules-final-letter-56" : "true",
+  "brl-rules-shortforms" : "true"
+};
+
+const aee_reset = () => {
+  localStorage = localStorage || {};
+  localStorage.clear = localStorage.clear || function() { localStorage = {} };
+
+  var key = "aee-panel-all-panels";
+  var value = localStorage[ key ];
+
+  localStorage.clear();
+  for ( var k in aee_settings )
+  {
+    localStorage[ k ] = aee_settings[ k ];
+  }
+
+  localStorage[ key ] = value || localStorage[ key ];
+};
 
 const aee_onload = () => {
   const body = document.body;
@@ -37,6 +118,11 @@ const aee_init = () => {
   {
     editor.model().setSystemClipboard( true );
     editor.setFocus();
+  }
+
+  if ( !( localStorage && localStorage[ "aee-show-welcome" ] ) )
+  {
+    aee_reset();
   }
 
   const getDocBase = function() {
@@ -243,14 +329,11 @@ const aee_init = () => {
     'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
 
   const getLocalSetting = function( key ) {
-    return ( localStorage && localStorage[ key ] === "true" ) || false;
+    return ( localStorage[ key ] === "true" ) || false;
   };
 
   const setLocalSetting = function( key, val ) {
-    if ( localStorage )
-    {
-      localStorage[ key ] = ( val ? "true" : "false" );
-    }
+    localStorage[ key ] = ( val ? "true" : "false" );
   };
 
   const toggleLocalSetting = function ( key ) {
@@ -258,14 +341,11 @@ const aee_init = () => {
   };
 
   const getLocalSettingNumber = function( key ) {
-    return ( localStorage && localStorage[ key ] ) || "";
+    return ( localStorage[ key ] ) || "";
   };
 
   const setLocalSettingNumber = function( key, val ) {
-    if ( localStorage )
-    {
-      localStorage[ key ] = val;
-    }
+    localStorage[ key ] = val;
   };
 
   const addBRLMarkup = function( markup ) {
@@ -885,8 +965,17 @@ const aee_init = () => {
 
   const do_panel_menus = async function ( event ) {
     event && event.preventDefault();
-    toggleLocalSetting( "aee-panel-app-menus" );
-    setPanelSize( true );
+
+    if ( getLocalSetting( "aee-panel-all-panels" ) )
+    {
+      toggleLocalSetting( "aee-panel-app-menus" );
+    }
+    else
+    {
+      setLocalSetting( "aee-panel-app-menus", true );
+      setPanelSize( true );
+    }
+
     updatePanels();
   };
 
@@ -972,7 +1061,7 @@ const aee_init = () => {
       var target = event && event.target || document.querySelector( "#tutorial" );
       var href = getDocBase() + target.getAttribute( "href" );
 
-      if ( localStorage && localStorage[ "gtk-last-page-href" ] &&
+      if ( localStorage[ "gtk-last-page-href" ] &&
            localStorage[ "gtk-show-last-page" ] !== "false" )
       {
         href = localStorage[ "gtk-last-page-href" ];
@@ -992,9 +1081,9 @@ const aee_init = () => {
     try {
       event && event.preventDefault();
 
-      var href = localStorage && localStorage[ "edt-start-page-href" ] || edt_start;
+      var href = localStorage[ "edt-start-page-href" ] || edt_start;
 
-      if ( localStorage && localStorage[ "edt-last-page-href" ] &&
+      if ( localStorage[ "edt-last-page-href" ] &&
            localStorage[ "edt-show-last-page" ] !== "false" )
       {
         href = localStorage[ "edt-last-page-href" ];
@@ -1589,8 +1678,7 @@ const aee_init = () => {
   }
 
   // Process the query parameters
-  if ( window.editor && localStorage &&
-       localStorage[ "aee-query-state" ] )
+  if ( window.editor && localStorage[ "aee-query-state" ] )
   {
     const href = localStorage[ "aee-query-state" ]
     delete localStorage[ "aee-query-state" ];
@@ -1600,29 +1688,25 @@ const aee_init = () => {
   }
 
   // Show the welcome screen (aee)
-  if ( window.editor && localStorage &&
-       localStorage[ "aee-show-welcome" ] !== "false" )
+  if ( window.editor && getLocalSetting( "aee-show-welcome" ) )
   {
     do_welcome();
   }
 
   // Show the users guide (aee)
-  else if ( window.editor && localStorage &&
-       localStorage[ "aee-show-users-guide" ] !== "false" )
+  else if ( window.editor && getLocalSetting( "aee-show-users-guide" ) )
   {
     do_help_open( "aee-guide.html" );
   }
 
   // Show the tutorial screen (edt)
-  else if ( window.editor && localStorage &&
-       localStorage[ "edt-show-tutorial" ] !== "false" )
+  else if ( window.editor && getLocalSetting( "edt-show-tutorial" ) )
   {
     do_tutorial_edt();
   }
 
   // Show the tutorial screen (gtk)
-  else if ( window.editor && localStorage &&
-       localStorage[ "gtk-show-tutorial" ] !== "false" )
+  else if ( window.editor && getLocalSetting( "gtk-show-tutorial" ) )
   {
     do_tutorial_gtk();
   }

@@ -7,71 +7,6 @@
   <link rel="stylesheet" type="text/css" href="aee.css"/>
   <script src="aee.js"></script>
   <script>
-const settings = {
-  "aee-show-welcome" : "false",
-  "aee-show-users-guide" : "false",
-  "edt-show-tutorial" : "true",
-  "edt-show-last-page" : "true",
-  "edt-index-page-href" : "?edt/0000.html",
-  "edt-start-page-href" : "?edt/0101.html",
-  "edt-last-page-href" : "",
-  "gtk-show-tutorial" : "false",
-  "gtk-show-last-page" : "false",
-  "gtk-last-page-href" : "",
-  "aee-width" : 0,
-  "aee-height" : 0,
-  "aee-input-qwerty" : "true",
-  "aee-input-braille" : "false",
-  "aee-input-home" : "false",
-  "aee-panel-all-panels" : "false",
-  "aee-panel-app-menus" : "true",
-  "aee-panel-open-file" : "true",
-  "aee-panel-quick-bar" : "true",
-  "aee-panel-side-bar" : "true",
-  "aee-panel-braille-bar" : "true",
-  "aee-mathjax-on-save" : "false",
-  "aee-mathjax-on-export" : "true",
-  "aee-mathjax-on-print" : "true",
-  "aee-screen-page-width" : 30,
-  "aee-screen-page-height" : 4,
-  "aee-screen-indent-first" : 1,
-  "aee-screen-indent-runover" : 1,
-  "aee-device-page-width" : 40,
-  "aee-device-page-height" : 1,
-  "aee-device-indent-first" : 1,
-  "aee-device-indent-runover" : 1,
-  "aee-file-page-width" : 40,
-  "aee-file-page-height" : 25,
-  "aee-file-page-numbers" : "true",
-  "aee-file-indent-first" : 1,
-  "aee-file-indent-runover" : 1,
-  "aee-math-indent-first" : 3,
-  "aee-math-indent-runover" : 5,
-  "aee-html-font-size" : 18,
-  "aee-brl-font-size" : 24,
-  "fmt-heading-1": "center",
-  "fmt-heading-2": "cell-5",
-  "fmt-heading-3": "cell-7",
-  "fmt-heading-4": "cell-7",
-  "fmt-heading-5": "cell-7",
-  "fmt-heading-6": "cell-7",
-  "brl-rules-all-rules" : "true",
-  "brl-rules-alphabetic-wordsigns" : "true",
-  "brl-rules-strong-wordsigns" : "true",
-  "brl-rules-strong-contractions" : "true",
-  "brl-rules-strong-groupsigns" : "true",
-  "brl-rules-lower-wordsigns" : "true",
-  "brl-rules-lower-groupsigns" : "true",
-  "brl-rules-initial-letter" : "true",
-  "brl-rules-initial-letter-45" : "true",
-  "brl-rules-initial-letter-456" : "true",
-  "brl-rules-initial-letter-5" : "true",
-  "brl-rules-final-letter" : "true",
-  "brl-rules-final-letter-46" : "true",
-  "brl-rules-final-letter-56" : "true",
-  "brl-rules-shortforms" : "true"
-};
-
 const palettes = {
   "plt-palettes" : "All Palettes",
   "plt-numbers" : "Numbers",
@@ -232,8 +167,8 @@ const plts = function()
     active_keys.push( ak );
     open_keys.push( ok );
     rows.push( tr );
-    settings[ ak ] = "true";
-    settings[ ok ] = "false";
+    aee_settings[ ak ] = "true";
+    aee_settings[ ok ] = "false";
   };
 
   const tbody = document.querySelector( "table tbody" );
@@ -276,9 +211,9 @@ const init = function() {
 };
 
 const load = function() {
-  for ( var k in settings )
+  for ( var k in aee_settings )
   {
-    var v = localStorage[ k ] || settings[ k ] || "";
+    var v = localStorage[ k ] || aee_settings[ k ] || "";
     var elt = document.querySelector( "#" + k );
     if ( elt ) {
       if ( elt.type === "checkbox" || elt.type === "radio" )
@@ -295,7 +230,7 @@ const load = function() {
 
 const save = function() {
   localStorage.clear();
-  for ( var k in settings )
+  for ( var k in aee_settings )
   {
     var elt = document.querySelector( "#" + k );
     if ( elt )
@@ -307,12 +242,8 @@ const save = function() {
 };
 
 const reset = function() {
-  localStorage.clear();
-  for ( var k in settings )
-  {
-    localStorage[ k ] = settings[ k ];
-  }
-};
+  aee_reset();
+}
 
 const done = function() {
   window.close();
