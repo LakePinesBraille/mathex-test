@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>Accessible Equation Editor Testing</name>
+  <name>Equation Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
   <version>0.5.12-SNAPSHOT</version>
@@ -40,7 +40,7 @@
               <outputDirectory>${basedir}/version</outputDirectory>
               <resources>
                 <resource>
-                  <directory>../mathex-aee/archive/version</directory>
+                  <directory>../mathex-ee/archive/version</directory>
                 </resource>
               </resources>
             </configuration>
@@ -61,7 +61,7 @@
             </goals>
             <configuration>
               <target>
-                <unzip src="version/mathex-aee-${project.version}.zip" dest="docs/mathex" />
+                <unzip src="version/mathex-ee-${project.version}.zip" dest="docs/mathex" />
               </target>
             </configuration>
           </execution>
@@ -76,7 +76,7 @@
               <target>
                 <delete quiet="true" failonerror="false" dir="../public_html/mathex-old"/>
                 <move quiet="true" failonerror="false" file="../public_html/mathex" tofile="../public_html/mathex-old"/>
-                <unzip src="version/mathex-aee-${project.version}.zip" dest="../public_html/mathex" />
+                <unzip src="version/mathex-ee-${project.version}.zip" dest="../public_html/mathex" />
               </target>
             </configuration>
           </execution>
@@ -92,7 +92,7 @@
           <basedir>${basedir}</basedir>
           <includes>version/*,docs/**/*</includes>
           <excludes>docs/mathex/lib/mathjax*/**/*</excludes>
-          <message>Deploy mathex-aee-${project.version}</message>
+          <message>Deploy mathex-ee-${project.version}</message>
         </configuration>
       </plugin>
 

@@ -2,14 +2,14 @@
   // Collect the query parameters
   if ( window.location.search && localStorage )
   {
-    localStorage[ "aee-query-state" ] = window.location.search;
+    localStorage[ "ee-query-state" ] = window.location.search;
     window.location.href = window.location.origin + window.location.pathname;
   }
 })();
 
-const aee_settings = {
-  "aee-show-welcome" : "false",
-  "aee-show-users-guide" : "false",
+const ee_settings = {
+  "ee-show-welcome" : "false",
+  "ee-show-users-guide" : "false",
   "edt-show-tutorial" : "true",
   "edt-show-last-page" : "true",
   "edt-index-page-href" : "?edt/0000.html",
@@ -18,37 +18,37 @@ const aee_settings = {
   "gtk-show-tutorial" : "false",
   "gtk-show-last-page" : "false",
   "gtk-last-page-href" : "",
-  "aee-width" : 0,
-  "aee-height" : 0,
-  "aee-input-qwerty" : "true",
-  "aee-input-braille" : "false",
-  "aee-input-home" : "false",
-  "aee-panel-all-panels" : "true",
-  "aee-panel-app-menus" : "true",
-  "aee-panel-open-file" : "true",
-  "aee-panel-quick-bar" : "true",
-  "aee-panel-side-bar" : "true",
-  "aee-panel-braille-bar" : "true",
-  "aee-mathjax-on-save" : "false",
-  "aee-mathjax-on-export" : "true",
-  "aee-mathjax-on-print" : "true",
-  "aee-screen-page-width" : 30,
-  "aee-screen-page-height" : 4,
-  "aee-screen-indent-first" : 1,
-  "aee-screen-indent-runover" : 1,
-  "aee-device-page-width" : 40,
-  "aee-device-page-height" : 1,
-  "aee-device-indent-first" : 1,
-  "aee-device-indent-runover" : 1,
-  "aee-file-page-width" : 40,
-  "aee-file-page-height" : 25,
-  "aee-file-page-numbers" : "true",
-  "aee-file-indent-first" : 1,
-  "aee-file-indent-runover" : 1,
-  "aee-math-indent-first" : 3,
-  "aee-math-indent-runover" : 5,
-  "aee-html-font-size" : 18,
-  "aee-brl-font-size" : 24,
+  "ee-width" : 0,
+  "ee-height" : 0,
+  "ee-input-qwerty" : "true",
+  "ee-input-braille" : "false",
+  "ee-input-home" : "false",
+  "ee-panel-all-panels" : "true",
+  "ee-panel-app-menus" : "true",
+  "ee-panel-open-file" : "true",
+  "ee-panel-quick-bar" : "true",
+  "ee-panel-side-bar" : "true",
+  "ee-panel-braille-bar" : "true",
+  "ee-mathjax-on-save" : "false",
+  "ee-mathjax-on-export" : "true",
+  "ee-mathjax-on-print" : "true",
+  "ee-screen-page-width" : 30,
+  "ee-screen-page-height" : 4,
+  "ee-screen-indent-first" : 1,
+  "ee-screen-indent-runover" : 1,
+  "ee-device-page-width" : 40,
+  "ee-device-page-height" : 1,
+  "ee-device-indent-first" : 1,
+  "ee-device-indent-runover" : 1,
+  "ee-file-page-width" : 40,
+  "ee-file-page-height" : 25,
+  "ee-file-page-numbers" : "true",
+  "ee-file-indent-first" : 1,
+  "ee-file-indent-runover" : 1,
+  "ee-math-indent-first" : 3,
+  "ee-math-indent-runover" : 5,
+  "ee-html-font-size" : 18,
+  "ee-brl-font-size" : 24,
   "fmt-heading-1": "center",
   "fmt-heading-2": "cell-5",
   "fmt-heading-3": "cell-7",
@@ -72,23 +72,23 @@ const aee_settings = {
   "brl-rules-shortforms" : "true"
 };
 
-const aee_reset = () => {
+const ee_reset = () => {
   localStorage = localStorage || {};
   localStorage.clear = localStorage.clear || function() { localStorage = {} };
 
-  var key = "aee-panel-all-panels";
+  var key = "ee-panel-all-panels";
   var value = localStorage[ key ];
 
   localStorage.clear();
-  for ( var k in aee_settings )
+  for ( var k in ee_settings )
   {
-    localStorage[ k ] = aee_settings[ k ];
+    localStorage[ k ] = ee_settings[ k ];
   }
 
   localStorage[ key ] = value || localStorage[ key ];
 };
 
-const aee_onload = () => {
+const ee_onload = () => {
   const body = document.body;
 
   const p = document.createElement( "p" );
@@ -112,7 +112,7 @@ const aee_onload = () => {
   elt.focus();
 };
 
-const aee_init = () => {
+const ee_init = () => {
   editor = EquationEditorAPI.getInstance( "RESPONSE" );
   if ( editor )
   {
@@ -120,27 +120,27 @@ const aee_init = () => {
     editor.setFocus();
   }
 
-  if ( !( localStorage && localStorage[ "aee-show-welcome" ] ) )
+  if ( !( localStorage && localStorage[ "ee-show-welcome" ] ) )
   {
-    aee_reset();
+    ee_reset();
   }
 
   const getDocBase = function() {
-    // from the aee.js script tag
+    // from the ee.js script tag
     const elt = document.querySelector( "script" );
     const att = elt && elt.getAttribute( "src" ) || "";
 
-    if ( /aee\.js$/.test( att ) )
+    if ( /ee\.js$/.test( att ) )
     {
-        return att.replace( "aee.js", "" );
+        return att.replace( "ee.js", "" );
     }
 
-    // from the aee.html window location
+    // from the ee.html window location
     const href = window.location.href;
 
-    if ( /aee\.html$/.test( href ) )
+    if ( /ee\.html$/.test( href ) )
     {
-        return href.replace( "aee.html", "" );
+        return href.replace( "ee.html", "" );
     }
 
     if ( /\\$/.test( href ) )
@@ -236,8 +236,8 @@ const aee_init = () => {
   const updateFileName = function() {
     if ( last_file_elt )
     {
-      var value = getLocalSetting( "aee-panel-all-panels" )
-               && getLocalSetting( "aee-panel-open-file" );
+      var value = getLocalSetting( "ee-panel-all-panels" )
+               && getLocalSetting( "ee-panel-open-file" );
       last_file_elt.innerText = last_file_name;
       last_file_elt.style.display = value && last_file_name ? "block" : "none";
     }
@@ -323,7 +323,7 @@ const aee_init = () => {
   const body_tag = '  <body>\r\n';
   const head_tag = head_otag + script_tag + head_ctag;
 
-  const style_tag = '<link rel="stylesheet" type="text/css" href="aeex.css"/>\r\n';
+  const style_tag = '<link rel="stylesheet" type="text/css" href="eex.css"/>\r\n';
 
   const samples_url =
     'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
@@ -353,7 +353,7 @@ const aee_init = () => {
 
     result = result.replace( body_otag, head_otag + style_tag + head_ctag + body_otag );
 
-    var sz = getLocalSettingNumber( "aee-brl-font-size" );
+    var sz = getLocalSettingNumber( "ee-brl-font-size" );
     if ( sz )
     {
         result = result.replace( "<body>",
@@ -369,7 +369,7 @@ const aee_init = () => {
 
     var result = view_open + markup + view_close;
 
-    var sz = getLocalSettingNumber( "aee-html-font-size" );
+    var sz = getLocalSettingNumber( "ee-html-font-size" );
     if ( sz )
     {
         result = result.replace( "<body>",
@@ -395,7 +395,7 @@ const aee_init = () => {
 
     result = result.replace( head_ctag, style_tag + head_ctag );
 
-    var sz = getLocalSettingNumber( "aee-html-font-size" );
+    var sz = getLocalSettingNumber( "ee-html-font-size" );
     if ( sz )
     {
         result = result.replace( "<body>",
@@ -655,7 +655,7 @@ const aee_init = () => {
       event.preventDefault();
 
       const options = getExportOptions();
-      const mathjax = getLocalSetting( "aee-mathjax-on-save" );
+      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
       const markup = addMathJax( editor.getPresent(), mathjax );
       await saveFile( options, markup, "-p" );
     }
@@ -694,7 +694,7 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const mathjax = getLocalSetting( "aee-mathjax-on-export" );
+      const mathjax = getLocalSetting( "ee-mathjax-on-export" );
       const markup = addMathJax( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
@@ -736,7 +736,7 @@ const aee_init = () => {
     try {
       event.preventDefault();
 
-      const mathjax = getLocalSetting( "aee-mathjax-on-print" );
+      const mathjax = getLocalSetting( "ee-mathjax-on-print" );
       const markup = addMathJax( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
@@ -932,11 +932,11 @@ const aee_init = () => {
   };
 
   const updatePanels = function () {
-    updateChecked( "aee-panel-app-menus", "#panel_menus" );
-    updateChecked( "aee-panel-open-file", "#panel_fname" );
-    updateChecked( "aee-panel-quick-bar", "#panel_quick" );
-    updateChecked( "aee-panel-side-bar", "#panel_side" );
-    updateChecked( "aee-panel-braille-bar", "#panel_braille" );
+    updateChecked( "ee-panel-app-menus", "#panel_menus" );
+    updateChecked( "ee-panel-open-file", "#panel_fname" );
+    updateChecked( "ee-panel-quick-bar", "#panel_quick" );
+    updateChecked( "ee-panel-side-bar", "#panel_side" );
+    updateChecked( "ee-panel-braille-bar", "#panel_braille" );
 
     EquationEditorAPI.updateSettings();
     update_settings();
@@ -945,12 +945,12 @@ const aee_init = () => {
   };
 
   const setPanelSize = function ( value ) {
-    setLocalSetting( "aee-panel-all-panels", value );
+    setLocalSetting( "ee-panel-all-panels", value );
 
     const hh = window.innerHeight;
     const ww = window.innerWidth;
-    setLocalSettingNumber( "aee-height", hh - 100 );
-    setLocalSettingNumber( "aee-width", ww - ( ww % 44 ) );
+    setLocalSettingNumber( "ee-height", hh - 100 );
+    setLocalSettingNumber( "ee-width", ww - ( ww % 44 ) );
 
     updatePanels();
   };
@@ -958,7 +958,7 @@ const aee_init = () => {
   const do_panel_maximize = async function ( event ) {
     event && event.preventDefault();
 
-    const value = !getLocalSetting( "aee-panel-all-panels" );
+    const value = !getLocalSetting( "ee-panel-all-panels" );
     setPanelSize( value );
     updatePanels();
   };
@@ -966,13 +966,13 @@ const aee_init = () => {
   const do_panel_menus = async function ( event ) {
     event && event.preventDefault();
 
-    if ( getLocalSetting( "aee-panel-all-panels" ) )
+    if ( getLocalSetting( "ee-panel-all-panels" ) )
     {
-      toggleLocalSetting( "aee-panel-app-menus" );
+      toggleLocalSetting( "ee-panel-app-menus" );
     }
     else
     {
-      setLocalSetting( "aee-panel-app-menus", true );
+      setLocalSetting( "ee-panel-app-menus", true );
       setPanelSize( true );
     }
 
@@ -981,25 +981,25 @@ const aee_init = () => {
 
   const do_panel_fname = async function ( event ) {
     event && event.preventDefault();
-    toggleLocalSetting( "aee-panel-open-file" );
+    toggleLocalSetting( "ee-panel-open-file" );
     updatePanels();
   };
 
   const do_panel_quick = async function ( event ) {
     event && event.preventDefault();
-    toggleLocalSetting( "aee-panel-quick-bar" );
+    toggleLocalSetting( "ee-panel-quick-bar" );
     updatePanels();
   };
 
   const do_panel_side = async function ( event ) {
     event && event.preventDefault();
-    toggleLocalSetting( "aee-panel-side-bar" );
+    toggleLocalSetting( "ee-panel-side-bar" );
     updatePanels();
   };
 
   const do_panel_braille = async function ( event ) {
     event && event.preventDefault();
-    toggleLocalSetting( "aee-panel-braille-bar" );
+    toggleLocalSetting( "ee-panel-braille-bar" );
     updatePanels();
   };
 
@@ -1034,7 +1034,7 @@ const aee_init = () => {
       event && event.preventDefault();
 
       const iframe = document.createElement( "iframe" );
-      iframe.src = getDocBase() + "aee-welcome.html";
+      iframe.src = getDocBase() + "ee-welcome.html";
 
       iframe.onload = () => {
         iframe.contentWindow.onunload = () => {
@@ -1124,7 +1124,7 @@ const aee_init = () => {
   const do_drive_open = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.open( setContent, setCleanFileName );
+      ee_drive.open( setContent, setCleanFileName );
     }
     catch ( e )
     {
@@ -1134,7 +1134,7 @@ const aee_init = () => {
   const do_drive_save = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.save( getContent, setCleanFileName );
+      ee_drive.save( getContent, setCleanFileName );
     }
     catch ( e )
     {
@@ -1144,7 +1144,7 @@ const aee_init = () => {
   const do_drive_saveAs = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.save_as( getContent, setCleanFileName );
+      ee_drive.save_as( getContent, setCleanFileName );
     }
     catch ( e )
     {
@@ -1154,7 +1154,7 @@ const aee_init = () => {
   const do_drive_saveReplace = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.save_replace( getContent, setCleanFileName );
+      ee_drive.save_replace( getContent, setCleanFileName );
     }
     catch ( e )
     {
@@ -1164,7 +1164,7 @@ const aee_init = () => {
   const do_drive_link = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.link( createLink );
+      ee_drive.link( createLink );
     }
     catch ( e )
     {
@@ -1174,7 +1174,7 @@ const aee_init = () => {
   const do_drive_install = async function( event ) {
     try {
       event.preventDefault();
-      aee_drive.install();
+      ee_drive.install();
     }
     catch ( e )
     {
@@ -1251,13 +1251,13 @@ const aee_init = () => {
     else if ( data && data.action === "open" && data.ids )
     {
       // Open a Google drive resource
-      aee_drive.open_with( data, setContent, setCleanFileName );
+      ee_drive.open_with( data, setContent, setCleanFileName );
     }
 
     else if ( data && data.action === "create" && data.folderId )
     {
       // Create a Google drive resource
-      aee_drive.create_new( data, getContent, setCleanFileName );
+      ee_drive.create_new( data, getContent, setCleanFileName );
     }
 
     else
@@ -1319,8 +1319,8 @@ const aee_init = () => {
     const panel = document.querySelector( ".ee-menu" );
     if ( panel )
     {
-        const value = getLocalSetting( "aee-panel-all-panels" )
-                   && getLocalSetting( "aee-panel-app-menus" );
+        const value = getLocalSetting( "ee-panel-all-panels" )
+                   && getLocalSetting( "ee-panel-app-menus" );
         panel.style.display = value ? "block" : "none";
     }
   };
@@ -1398,16 +1398,16 @@ const aee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
 '            <li><a href="' + edt_start + '" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
-'            <li><a href="aee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
 '            <hr/>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
-'            <li><a href="aee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
+'            <li><a href="ee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
-'            <li><a href="aee-terms.pdf" target="_blank">Terms of Service</a></li>' +
-'            <li><a href="aee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
+'            <li><a href="ee-terms.pdf" target="_blank">Terms of Service</a></li>' +
+'            <li><a href="ee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
 '            <hr/>' +
-'            <li><a href="aee-about.html" id="about">A&#x0332;bout</a></li>' +
+'            <li><a href="ee-about.html" id="about">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
@@ -1673,30 +1673,30 @@ const aee_init = () => {
     document.addEventListener( "keypress", onKeyPress, true );
     document.addEventListener( "mousedown", onMouseDown, true );
 
-    // Process AEE history links
+    // Process history links
     window.addEventListener( "popstate", e => do_query_data( e.state ) );
   }
 
   // Process the query parameters
-  if ( window.editor && localStorage[ "aee-query-state" ] )
+  if ( window.editor && localStorage[ "ee-query-state" ] )
   {
-    const href = localStorage[ "aee-query-state" ]
-    delete localStorage[ "aee-query-state" ];
+    const href = localStorage[ "ee-query-state" ]
+    delete localStorage[ "ee-query-state" ];
 
     do_query_href( href );
     return;
   }
 
-  // Show the welcome screen (aee)
-  if ( window.editor && getLocalSetting( "aee-show-welcome" ) )
+  // Show the welcome screen (ee)
+  if ( window.editor && getLocalSetting( "ee-show-welcome" ) )
   {
     do_welcome();
   }
 
-  // Show the users guide (aee)
-  else if ( window.editor && getLocalSetting( "aee-show-users-guide" ) )
+  // Show the users guide (ee)
+  else if ( window.editor && getLocalSetting( "ee-show-users-guide" ) )
   {
-    do_help_open( "aee-guide.html" );
+    do_help_open( "ee-guide.html" );
   }
 
   // Show the tutorial screen (edt)

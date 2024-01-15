@@ -1,4 +1,4 @@
-const aee_drive = () => {
+const ee_drive = () => {
 
   // Public release web domain
   const DOMAIN = /lakepinesbraille.com/;
@@ -268,7 +268,7 @@ const aee_drive = () => {
             }
             else
             {
-              LOG( "Success installing AEE into Google Drive UI" );
+              LOG( "Success installing into Google Drive UI" );
               resolve( resp.accessToken );
             }
           };
@@ -761,7 +761,7 @@ const aee_drive = () => {
    */
   const drive_install = () => init()
     .then( () => requestInstall() )
-    .then( () => ALERT( "AEE installed into Google Drive UI" ) )
+    .then( () => ALERT( "Installed into Google Drive UI" ) )
     .catch( e => ALERT( e.message ) );
 
   /**
@@ -779,14 +779,14 @@ const aee_drive = () => {
     .then( () => create_new( data, fn, cb ) )
     .catch( e => ALERT( e.message ) );
 
-  aee_drive.open = drive_open;
-  aee_drive.save = drive_save;
-  aee_drive.save_as = drive_save_as;
-  aee_drive.save_replace = drive_save_replace;
-  aee_drive.link = drive_link;
-  aee_drive.install = drive_install;
-  aee_drive.open_with = drive_open_with;
-  aee_drive.create_new = drive_create_new;
+  ee_drive.open = drive_open;
+  ee_drive.save = drive_save;
+  ee_drive.save_as = drive_save_as;
+  ee_drive.save_replace = drive_save_replace;
+  ee_drive.link = drive_link;
+  ee_drive.install = drive_install;
+  ee_drive.open_with = drive_open_with;
+  ee_drive.create_new = drive_create_new;
 };
 
-aee_drive();
+ee_drive();

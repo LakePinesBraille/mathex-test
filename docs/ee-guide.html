@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AEE Users Guide</title>
-  <link rel="icon" type="image/x-icon" href="aee.png">
-  <link rel="stylesheet" type="text/css" href="aee.css"/>
-  <script src="aee.js"></script>
+  <title>Equalize Editor Users Guide</title>
+  <link rel="icon" type="image/x-icon" href="ee.png">
+  <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee.js"></script>
   <script>const init = () =>
     document.querySelector('#host').download = ( window.location.host || "localhost" ) + ".JCF"
   </script>
 </head>
-<body class="aee-guide" onload="init()">
-<h1>The Accessible Equation Editor Users Guide</h1>
+<body class="ee-guide" onload="init()">
+<h1>The Equalize Editor Users Guide</h1>
 
 <h2 id="table-of-contents">Table of Contents</h2>
 <ul>
@@ -40,7 +40,7 @@
 </ul></li>
 <li><a href="#file-formats">File Formats</a>
 <ul>
-<li><a href="#file-aee">AEE Format</a></li>
+<li><a href="#file-ee">EE Format</a></li>
 <li><a href="#file-html">HTML Format</a></li>
 <li><a href="#file-brf">BRF Format</a></li>
 <li><a href="#file-brl">BRL Format</a></li>
@@ -171,13 +171,13 @@
 <h2 id="key-input">Keyboard Input</h2>
 
 <p>
-The AEE supports keyboard input from a <i>standard computer keyboard</i> or from a <i>refreshable braille keyboard</i>.  These devices input keyboard characters and braille symbols using three major <i>keyboard input modes</i> provided by the AEE, with specific input methods for special kinds of characters.
+The EE supports keyboard input from a <i>standard computer keyboard</i> or from a <i>refreshable braille keyboard</i>.  These devices input keyboard characters and braille symbols using three major <i>keyboard input modes</i> provided by the EE, with specific input methods for special kinds of characters.
 </p>
 
 <h3 id="key-mode">Input Modes</h3>
 
 <p>
-The AEE provides three major <i>keyboard input modes</i> to support text and math entry using both computer and braille keyboards.  One of these three keyboard input modes is always in effect, and interprets keyboard events received by the AEE.
+The EE provides three major <i>keyboard input modes</i> to support text and math entry using both computer and braille keyboards.  One of these three keyboard input modes is always in effect, and interprets keyboard events received by the EE.
 </p>
 
 <ul>
@@ -193,7 +193,7 @@ This mode simulates a refreshable braille keyboard using the home row keys of a 
 </ul>
 
 <p>
-Special keystrokes change the keyboard input mode.  They may be entered from either a computer or braille keyboard, and are examples of <a href="#key-ctrl">control characters</a> supported by the AEE.
+Special keystrokes change the keyboard input mode.  They may be entered from either a computer or braille keyboard, and are examples of <a href="#key-ctrl">control characters</a> supported by the EE.
 </p>
 
 <p>
@@ -207,7 +207,7 @@ The following control characters may be entered on a standard computer keyboard 
 </ul>
 
 <p>
-The AEE supports the sequence <code>==</code> to enter a control character, to support braille keyboards that may not provide a way to type control characters.
+The EE supports the sequence <code>==</code> to enter a control character, to support braille keyboards that may not provide a way to type control characters.
 </p>
 
 <ul>
@@ -217,7 +217,7 @@ The AEE supports the sequence <code>==</code> to enter a control character, to s
 </ul>
 
 <p>
-Typing <code>dots-123456</code> on a braille keyboard enters the <code>=</code> key, so the AEE also supports <code>dots-123456 dots-123456</code> as a way to type control characters.
+Typing <code>dots-123456</code> on a braille keyboard enters the <code>=</code> key, so the EE also supports <code>dots-123456 dots-123456</code> as a way to type control characters.
 </p>
 
 <ul>
@@ -227,7 +227,7 @@ Typing <code>dots-123456</code> on a braille keyboard enters the <code>=</code> 
 </ul>
 
 <p>
-The AEE supports the sequence <code>===</code> to switch from Braille input mode to Qwerty input mode, or from any other input mode to Braille input mode.  On a braille keyboard, typing <code>dots-123456</code> three times has the same effect.
+The EE supports the sequence <code>===</code> to switch from Braille input mode to Qwerty input mode, or from any other input mode to Braille input mode.  On a braille keyboard, typing <code>dots-123456</code> three times has the same effect.
 </p>
 
 <p>
@@ -235,21 +235,21 @@ Switching to <i>Braille input mode</i> on a standard computer keyboard simulates
 </p>
 
 <p>
-The current keyboard input mode may also be changed on the <a href="aee-settings.html#set-input" target="_blank">Settings Page</a>, and persists when you revisit the AEE web application.
+The current keyboard input mode may also be changed on the <a href="ee-settings.html#set-input" target="_blank">Settings Page</a>, and persists when you revisit the EE web application.
 </p>
 
 <h3 id="key-ctrl">Control Keys</h3>
 
 <p>
-The AEE supports operations normally activated with a control key combination.  While these keys are easy to type from a computer keyboard, they are often less convenient to type from a braille keyboard.
+The EE supports operations normally activated with a control key combination.  While these keys are easy to type from a computer keyboard, they are often less convenient to type from a braille keyboard.
 </p>
 
 <p>
-To make these operations easier to type from a braille keyboard, the AEE treats the sequence <code>dots-123456 dots-123456</code> followed by a letter as equivalent to the corresponding control character.
+To make these operations easier to type from a braille keyboard, the EE treats the sequence <code>dots-123456 dots-123456</code> followed by a letter as equivalent to the corresponding control character.
 </p>
 
 <p>
-Here are the <i>control characters</i> supported by the AEE.
+Here are the <i>control characters</i> supported by the EE.
 </p>
 
 <ul>
@@ -269,7 +269,7 @@ Here are the <i>control characters</i> supported by the AEE.
 <h3 id="key-menu">Menu Keys</h3>
 
 <p>
-The AEE application menus support <i>access keys</i> for keyboard menu navigation.
+The EE application menus support <i>access keys</i> for keyboard menu navigation.
 </p>
 
 <p>
@@ -277,7 +277,7 @@ The <a href="#menu-file">File Menu</a>, <a href="#menu-drive">Drive Menu</a>, <a
 </p>
 
 <p>
-Here are the <i>access keys</i> defined by the AEE application menus.
+Here are the <i>access keys</i> defined by the EE application menus.
 </p>
 
 <ul>
@@ -310,15 +310,15 @@ Here are the <i>access keys</i> defined by the AEE application menus.
 <h3 id="key-focus">Focus Word</h3>
 
 <p>
-The AEE tracks the <i>keyboard input focus word</i>, that is, the literary braille word that contains the insertion point.  The Unicode characters that are considered word separators are space <code>U+0020</code>, hyphen <code>U+002D</code>, dash <code>U+2013</code>, and long dash <code>U+2014</code>, and variations of these characters <code>U+2010-U+2015</code>.  These word separators define the boundaries between words used to determine the characters contained in the focus word.
+The EE tracks the <i>keyboard input focus word</i>, that is, the literary braille word that contains the insertion point.  The Unicode characters that are considered word separators are space <code>U+0020</code>, hyphen <code>U+002D</code>, dash <code>U+2013</code>, and long dash <code>U+2014</code>, and variations of these characters <code>U+2010-U+2015</code>.  These word separators define the boundaries between words used to determine the characters contained in the focus word.
 </p>
 
 <p>
-The focus word changes as you enter text or move the insertion point.  When a word gains the input focus, the AEE displays the uncontracted braille for the word, which you may then modify using contracted or uncontracted braille.  When a word loses the input focus, the AEE translates the word back into contracted form to be included in the braille output.
+The focus word changes as you enter text or move the insertion point.  When a word gains the input focus, the EE displays the uncontracted braille for the word, which you may then modify using contracted or uncontracted braille.  When a word loses the input focus, the EE translates the word back into contracted form to be included in the braille output.
 </p>
 
 <p>
-When a word gains the input focus, the AEE will insert the uncontracted braille into the visual document as needed to allow the user to modify the focus word in uncontracted form.  When a word loses the input focus, the AEE will process any contracted and/or uncontracted braille input as needed to construct the contracted form of the focus word, and to update the visual form of the focus word for insertion into the document.
+When a word gains the input focus, the EE will insert the uncontracted braille into the visual document as needed to allow the user to modify the focus word in uncontracted form.  When a word loses the input focus, the EE will process any contracted and/or uncontracted braille input as needed to construct the contracted form of the focus word, and to update the visual form of the focus word for insertion into the document.
 </p>
 
 <p>
@@ -328,13 +328,13 @@ The focus word is only used in this way for literary text, not for math expressi
 <h2 id="brl-input">Braille Input</h2>
 
 <p>
-The AEE supports braille input according to the <a href="https://iceb.org/Rules%20of%20Unified%20English%20Braille%202013.pdf" target="_blank">Rules of UEB, Second Edition, 2013</a>.  The following sections provide additional information for special kinds of braille symbols and Unicode characters, and how they are handled in the AEE.
+The EE supports braille input according to the <a href="https://iceb.org/Rules%20of%20Unified%20English%20Braille%202013.pdf" target="_blank">Rules of UEB, Second Edition, 2013</a>.  The following sections provide additional information for special kinds of braille symbols and Unicode characters, and how they are handled in the EE.
 </p>
 
 <h3 id="brl-dash">Hyphens/Dashes</h3>
 
 <p>
-The AEE recognizes hyphen (as <code>dots-36</code>), dash (as <code>dots-6 dots-36</code>), and long dash (as <code>dots-5 dots-6 dots-36</code>), underscore (as <code>dots-46 dots-36</code>), and macron (as <code>dots-4 dots-36</code>).  The AEE recognizes space, hyphen, and dash as characters that mark word boundaries.
+The EE recognizes hyphen (as <code>dots-36</code>), dash (as <code>dots-6 dots-36</code>), and long dash (as <code>dots-5 dots-6 dots-36</code>), underscore (as <code>dots-46 dots-36</code>), and macron (as <code>dots-4 dots-36</code>).  The EE recognizes space, hyphen, and dash as characters that mark word boundaries.
 </p>
 
 <p>
@@ -355,47 +355,47 @@ Within literary text, these characters are represented by:
 </ul>
 
 <p>
-The AEE translates hyphens (<code>U+002D</code>, <code>U+2010</code>, and <code>U+2011</code>) to <code>dots-36</code>, shorter dashes (<code>U+2012</code> and <code>U+2013</code>) to <code>dots-6 dots-36</code> and longer dashes (<code>U+2014</code> and <code>U+2015</code>) to <code>dots-5 dots-6 dots-36</code>.  The AEE back-translates hyphen to <code>U+002D</code>, dash to <code>U+2013</code>, and long dash to <code>U+2014</code>.
+The EE translates hyphens (<code>U+002D</code>, <code>U+2010</code>, and <code>U+2011</code>) to <code>dots-36</code>, shorter dashes (<code>U+2012</code> and <code>U+2013</code>) to <code>dots-6 dots-36</code> and longer dashes (<code>U+2014</code> and <code>U+2015</code>) to <code>dots-5 dots-6 dots-36</code>.  The EE back-translates hyphen to <code>U+002D</code>, dash to <code>U+2013</code>, and long dash to <code>U+2014</code>.
 </p>
 
 <h3 id="brl-num">Numeric Mode</h3>
 
 <p>
-The AEE supports the <i>numeric indicators</i> (digits, decimal point, numeric comma) in <i>numeric mode</i> within literary text.
+The EE supports the <i>numeric indicators</i> (digits, decimal point, numeric comma) in <i>numeric mode</i> within literary text.
 </p>
 
 <p>
-The AEE recognizes a numeral, or a decimal point or numeric comma followed by a numeral, as the start of numeric mode in literary text.  The AEE recognizes a numeral, a decimal point, a numeric comma, or a numeric space followed by a numeral, as a continuation of numeric mode in literary text.
+The EE recognizes a numeral, or a decimal point or numeric comma followed by a numeral, as the start of numeric mode in literary text.  The EE recognizes a numeral, a decimal point, a numeric comma, or a numeric space followed by a numeral, as a continuation of numeric mode in literary text.
 </p>
 
 <p>
-The AEE recognizes a numeric fraction line as a continuation of numeric mode in literary text.
+The EE recognizes a numeric fraction line as a continuation of numeric mode in literary text.
 </p>
 
 <p>
-The AEE back-translates a simple fraction to the corresponding single-character Unicode <i>vulgar fraction</i> symbol when it is available.  The AEE translates a numeric mode sequence that contains more than one numeric fraction line as separate numeric instances, and translates each numeric fraction line into a textual fraction line.
+The EE back-translates a simple fraction to the corresponding single-character Unicode <i>vulgar fraction</i> symbol when it is available.  The EE translates a numeric mode sequence that contains more than one numeric fraction line as separate numeric instances, and translates each numeric fraction line into a textual fraction line.
 </p>
 
 <p>
-The AEE treats a space in literary text between two numerals as a numeric space.  In all other cases, the space or any non-numeric mode symbol terminates numeric mode.
+The EE treats a space in literary text between two numerals as a numeric space.  In all other cases, the space or any non-numeric mode symbol terminates numeric mode.
 </p>
 
 <p>
-The AEE includes a decimal point or numeric comma within the numeric mode indicator when it is followed by a numeral at the start of a word.
+The EE includes a decimal point or numeric comma within the numeric mode indicator when it is followed by a numeral at the start of a word.
 </p>
 
 <h3 id="brl-vul">Vulgar Fractions</h3>
 
 <p>
-The AEE recognizes Unicode characters used to represent a <i>vulgar fraction</i>, that is, a single character that includes both a single-digit numerator and a single-digit denominator separated by a short diagonal slash.
+The EE recognizes Unicode characters used to represent a <i>vulgar fraction</i>, that is, a single character that includes both a single-digit numerator and a single-digit denominator separated by a short diagonal slash.
 </p>
 
 <p>
-The AEE supports the translation of Unicode vulgar fraction characters into Braille numeric fractions, and back-translates these numeric fractions using the Unicode vulgar fraction characters where available.
+The EE supports the translation of Unicode vulgar fraction characters into Braille numeric fractions, and back-translates these numeric fractions using the Unicode vulgar fraction characters where available.
 </p>
 
 <p>
-The following <i>vulgar fraction</i> characters are supported by the AEE:
+The following <i>vulgar fraction</i> characters are supported by the EE:
 </p>
 
 <ul>
@@ -422,7 +422,7 @@ The following <i>vulgar fraction</i> characters are supported by the AEE:
 <h3 id="brl-quot">Quotation Marks</h3>
 
 <p>
-The AEE recognizes the one-cell quotation marks (<code>dots-236</code> and <code>dots-356</code>), as well as the following collection of <i>quotation mark</i> characters used in literary text:
+The EE recognizes the one-cell quotation marks (<code>dots-236</code> and <code>dots-356</code>), as well as the following collection of <i>quotation mark</i> characters used in literary text:
 </p>
 
 <ul>
@@ -439,17 +439,17 @@ The AEE recognizes the one-cell quotation marks (<code>dots-236</code> and <code
 </ul>
 
 <p>
-The AEE follows the characters used in the literary text, with the exception that the non-directional quotation mark (<code>U+0022</code>) is translated into the one-cell open quotation mark (as <code>dots-236</code>) within the initial punctuation before a word, and into the one-cell close quotation mark (as <code>dots-356</code>) within the final punctuation after a word.
+The EE follows the characters used in the literary text, with the exception that the non-directional quotation mark (<code>U+0022</code>) is translated into the one-cell open quotation mark (as <code>dots-236</code>) within the initial punctuation before a word, and into the one-cell close quotation mark (as <code>dots-356</code>) within the final punctuation after a word.
 </p>
 
 <p>
-On back translation, the AEE translates the one-cell quotation marks into the non-directional quotation mark (<code>U+0022</code>).
+On back translation, the EE translates the one-cell quotation marks into the non-directional quotation mark (<code>U+0022</code>).
 </p>
 
 <h3 id="brl-mod">Letter Modifiers</h3>
 
 <p>
-The AEE supports the following <i>combining characters</i> as braille <i>letter modifiers</i>.
+The EE supports the following <i>combining characters</i> as braille <i>letter modifiers</i>.
 </p>
 
 <ul>
@@ -468,7 +468,7 @@ The AEE supports the following <i>combining characters</i> as braille <i>letter 
 </ul>
 
 <p>
-The AEE supports the following <i>combining characters</i> as additional braille <i>letter modifiers</i>.
+The EE supports the following <i>combining characters</i> as additional braille <i>letter modifiers</i>.
 </p>
 
 <ul>
@@ -483,13 +483,13 @@ These combining characters are designed to be used in combination with a base ch
 </p>
 
 <p>
-The AEE supports the use of these braille modifiers in combination with a base character, and will back-translate these combinations to a single-character Unicode equivalent when one is defined, or to a two-character Unicode sequence consisting of the spacing version of the modifier, followed by the base-character.
+The EE supports the use of these braille modifiers in combination with a base character, and will back-translate these combinations to a single-character Unicode equivalent when one is defined, or to a two-character Unicode sequence consisting of the spacing version of the modifier, followed by the base-character.
 </p>
 
 <h3 id="brl-spc">Spacing Modifiers</h3>
 
 <p>
-The AEE supports <i>spacing characters</i> equivalent to <i>combining characters</i> where they are defined.
+The EE supports <i>spacing characters</i> equivalent to <i>combining characters</i> where they are defined.
 </p>
 
 <ul>
@@ -515,16 +515,16 @@ These characters are designed to be used in isolation without a base character.
 </p>
 
 <p>
-The AEE back-translates macron (<code>dots-4 dots-36</code>) as <code>U+00AF MACRON</code>.
+The EE back-translates macron (<code>dots-4 dots-36</code>) as <code>U+00AF MACRON</code>.
 </p>
 <p>
-The AEE back-translates acute (<code>dots-45 dots-34</code>) as <code>U+00B4 ACUTE ACCENT</code>.
+The EE back-translates acute (<code>dots-45 dots-34</code>) as <code>U+00B4 ACUTE ACCENT</code>.
 </p>
 
 <h2 id="math-eqns">Math Equations</h2>
 
 <p>
-The AEE supports entering equations using the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.  Typical printed math typography uses three main forms to arrange math within text documents.
+The EE supports entering equations using the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.  Typical printed math typography uses three main forms to arrange math within text documents.
 </p>
 
 <h3 id="math-inline">Inline Math</h3>
@@ -586,11 +586,11 @@ A user may indicate the end of a math expression of any form by terminating the 
 <h2 id="file-formats">File Formats</h2>
 
 <p>
-The AEE creates text and math compound documents using four user-facing file formats.
+The EE creates text and math compound documents using four user-facing file formats.
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
+<li><i>EE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
 <li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
 <li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
 <li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
@@ -611,24 +611,24 @@ These user-facing file formats employ several standard file formats to represent
 <li><i>MathJax</i> - a JavaScript library to support Presentation MathML</li>
 </ul>
 
-<h3 id="file-aee">AEE Format</h3>
+<h3 id="file-ee">EE Format</h3>
 
 <p>
-The <i>AEE format</i> for a document is the internal form used to encode text plus math documents in the AEE.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> elements that encode the text and math portions of the document.
+The <i>EE format</i> for a document is the internal form used to encode text plus math documents in the EE.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> elements that encode the text and math portions of the document.
 </p>
 
 <p>
-The AEE format is used to load and save documents to the file system to support document authoring.  It may not be loaded directly into a web browser, or other applications that only support <a href="#ff-mmlp">Presentation MathML</a>.
+The EE format is used to load and save documents to the file system to support document authoring.  It may not be loaded directly into a web browser, or other applications that only support <a href="#ff-mmlp">Presentation MathML</a>.
 </p>
 
 <h3 id="file-html">HTML Format</h3>
 
 <p>
-The <i>HTML format</i> for a document is the external form used to encode text plus math documents by the AEE for display within a web browser.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> elements that encode the text and math portions of the document.
+The <i>HTML format</i> for a document is the external form used to encode text plus math documents by the EE for display within a web browser.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> elements that encode the text and math portions of the document.
 </p>
 
 <p>
-The HTML format is used to export and print documents for display within a web browser.  It may not be loaded directly into the AEE, or other applications that only support <a href="#ff-mmlc">Content MathML</a>.
+The HTML format is used to export and print documents for display within a web browser.  It may not be loaded directly into the EE, or other applications that only support <a href="#ff-mmlc">Content MathML</a>.
 </p>
 
 <h3 id="file-brf">BRF Format</h3>
@@ -638,7 +638,7 @@ The <i>BRF format</i> for a document is the Braille Ready Format for a document,
 </p>
 
 <p>
-The BRF format may be imported by software commonly available on electronic braille notetakers, and may be printed by braille embossers to produce hard-copy braille.  It may not be loaded directly into the AEE.
+The BRF format may be imported by software commonly available on electronic braille notetakers, and may be printed by braille embossers to produce hard-copy braille.  It may not be loaded directly into the EE.
 </p>
 
 <h3 id="file-brl">BRL Format</h3>
@@ -648,7 +648,7 @@ The <i>BRL format</i> for a document an external form used to display the <a hre
 </p>
 
 <p>
-The BRL format may be used to produce visual representations of the braille signs used to communicate the document, typically used for braille instruction.  It may not be loaded directly into the AEE.
+The BRL format may be used to produce visual representations of the braille signs used to communicate the document, typically used for braille instruction.  It may not be loaded directly into the EE.
 </p>
 
 <h3 id="ff-html">HTML</h3>
@@ -710,7 +710,7 @@ MathJax is typically used within a web page by providing special elements in the
 <h2 id="menu-items">Menu Items</h2>
 
 <p>
-The AEE <i>application menu</i> provides <a href="#menu-file">File</a>, <a href="#menu-drive">Drive</a>, <a href="#menu-edit">Edit</a>, and <a href="#menu-help">Help</a> menus.
+The EE <i>application menu</i> provides <a href="#menu-file">File</a>, <a href="#menu-drive">Drive</a>, <a href="#menu-edit">Edit</a>, and <a href="#menu-help">Help</a> menus.
 </p>
 
 <p>
@@ -728,7 +728,7 @@ The <i>File Menu</i> provides menu items to load and store documents in the loca
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
+<li><i>EE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
 <ul>
 <li><code>Open</code> - Load an editor document from a file in the local file system.</li>
 <li><code>Save</code> - Store an editor document to the file last used to access it.</li>
@@ -759,7 +759,7 @@ The <i>File Menu</i> provides menu items to load and store documents in the loca
 <p>Create a new empty document.</p>
 
 <p>
-The AEE discards the contents of the current document to create a new empty document, where you can enter the text and math contents of the new document.
+The EE discards the contents of the current document to create a new empty document, where you can enter the text and math contents of the new document.
 </p>
 
 <p>
@@ -774,7 +774,7 @@ This operation does not modify any file in the file system.
 <p>Load a document from a file in the local file system.</p>
 
 <p>
-The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+The EE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -789,7 +789,7 @@ This operation does not modify any file in the file system.
 <p>Store a document to the file last used to access it.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
 <p>
@@ -804,7 +804,7 @@ This operation modifies the file in the file system.
 <p>Store a document to a different file in the local file system.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
 <p>
@@ -819,77 +819,77 @@ This operation modifies the file in the file system.
 <p>View the XML markup source for a document.</p>
 
 <p>
-The AEE opens a browser page in a new tab to display the XML markup source for the document using the <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> that represents the text and math portions of the document.
+The EE opens a browser page in a new tab to display the XML markup source for the document using the <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> that represents the text and math portions of the document.
 </p>
 
 <h4 id="menu-file-save-html">Save HTML</h4>
 <p>Store a document that can be viewed in a web browser.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
 </p>
 
 <h4 id="menu-file-export-html">Export HTML</h4>
 <p>Open a browser web page to display the document.</p>
 
 <p>
-The AEE opens a browser web page in a new tab and places the contents of the document in the web page.  The AEE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
+The EE opens a browser web page in a new tab and places the contents of the document in the web page.  The EE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> to allow browsers that <a href="#web-mmlp">support Presentation MathML</a> to display the document.
 </p>
 
 <h4 id="menu-file-print-html">Print HTML</h4>
 <p>Open a browser web page to print the document.</p>
 
 <p>
-The AEE opens a browser web page in a new tab and places the contents of the document in the web page.  The AEE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a>, then invokes the browser print dialog to print the page.
+The EE opens a browser web page in a new tab and places the contents of the document in the web page.  The EE creates the web page using <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a>, then invokes the browser print dialog to print the page.
 </p>
 
 <h4 id="menu-file-view-html">View HTML</h4>
 <p>View the HTML markup source for a document.</p>
 
 <p>
-The AEE opens a browser page in a new tab to display the XML markup source for the document using the <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> that represents the text and math portions of the document.
+The EE opens a browser page in a new tab to display the XML markup source for the document using the <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> that represents the text and math portions of the document.
 </p>
 
 <h4 id="menu-file-save-brf">Save BRF</h4>
 <p>Store a document as a BRF Braille Ready File.</p>
 
 <p>
-The AEE stores the document using the computer braille encoding for import into tools that can use it.
+The EE stores the document using the computer braille encoding for import into tools that can use it.
 </p>
 
 <h4 id="menu-file-view-brf">View BRF</h4>
 <p>View the BRF markup source for a document.</p>
 
 <p>
-The AEE opens a browser page in a new tab to display the BRF encoding for the document using the computer braille markup that represents the braille version of the document.
+The EE opens a browser page in a new tab to display the BRF encoding for the document using the computer braille markup that represents the braille version of the document.
 </p>
 
 <h4 id="menu-file-save-brl">Save BRL</h4>
 <p>Store a document as a web browser file to display the Unicode braille encoding of the document.</p>
 
 <p>
-The AEE stores the document using an <a href="#ff-html">HTML</a> header around the Unicode braille encoding of the document.  Loading this document in a web browser displays the braille dots using an appropriate braille font.
+The EE stores the document using an <a href="#ff-html">HTML</a> header around the Unicode braille encoding of the document.  Loading this document in a web browser displays the braille dots using an appropriate braille font.
 </p>
 
 <h4 id="menu-file-export-brl">Export BRL</h4>
 <p>Open a browser web page to display the Unicode braille encoding of a document.</p>
 
 <p>
-The AEE opens a browser web page in a new tab and places the Unicode braille encoding of the document in the web page.  The AEE creates the web page using an <a href="#ff-html">HTML</a> header around the Unicode braille, and displays the braille dots using an appropriate braille font.
+The EE opens a browser web page in a new tab and places the Unicode braille encoding of the document in the web page.  The EE creates the web page using an <a href="#ff-html">HTML</a> header around the Unicode braille, and displays the braille dots using an appropriate braille font.
 </p>
 
 <h4 id="menu-file-print-brl">Print BRL</h4>
 <p>Open a browser web page to print the Unicode braille encoding of a document.</p>
 
 <p>
-The AEE opens a browser web page in a new tab and places the Unicode braille encoding of the document in the web page.  The AEE creates the web page using an <a href="#ff-html">HTML</a> header around the Unicode braille, then invokes the browser print dialog to print the page.
+The EE opens a browser web page in a new tab and places the Unicode braille encoding of the document in the web page.  The EE creates the web page using an <a href="#ff-html">HTML</a> header around the Unicode braille, then invokes the browser print dialog to print the page.
 </p>
 
 <h4 id="menu-file-close">Close</h4>
 <p>Clear the contents of the current document.</p>
 
 <p>
-The AEE discards the contents of the current document, so you can enter the text and math contents for a new document.
+The EE discards the contents of the current document, so you can enter the text and math contents for a new document.
 </p>
 
 <p>
@@ -907,7 +907,7 @@ The <i>Drive Menu</i> provides menu items to load and store documents in the Goo
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
+<li><i>EE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
 <ul>
 <li><code>Open</code> - Load an editor document from the shared file system.</li>
 <li><code>Save</code> - Store an editor document to the shared document last used to access it.</li>
@@ -920,7 +920,7 @@ The <i>Drive Menu</i> provides menu items to load and store documents in the Goo
 <p>Load a document from the shared file system.</p>
 
 <p>
-The AEE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+The EE loads the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -935,7 +935,7 @@ This operation does not modify any file in the file system.
 <p>Store a document to the shared document last used to access it.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
 <p>
@@ -950,7 +950,7 @@ This operation modifies the shared document in the shared file system.
 <p>Store a document to a new document in the shared file system.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
 <p>
@@ -965,7 +965,7 @@ This operation modifies the document in the shared file system.
 <p>Store a document to replace an existing document in the shared file system.</p>
 
 <p>
-The AEE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
+The EE stores the document using <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> to allow it to retrieve the text and math portions of the document.
 </p>
 
 <p>
@@ -983,7 +983,7 @@ The <i>Edit Menu</i> provides operations to copy and paste document data from th
 </p>
 
 <ul>
-<li><i>AEE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
+<li><i>EE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a>
 <ul>
 <li><code>Copy</code> - Copy the current selection to the system clipboard.</li>
 <li><code>Paste</code> - Replace the current selection from the system clipboard.</li>
@@ -1007,7 +1007,7 @@ Copy the current selection to the system clipboard.
 </p>
 
 <p>
-The AEE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+The EE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -1020,7 +1020,7 @@ Replace the current selection from the system clipboard.
 </p>
 
 <p>
-The AEE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the current selection in the document.
+The EE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the current selection in the document.
 </p>
 
 <p>
@@ -1033,7 +1033,7 @@ Copy the entire document to the system clipboard.
 </p>
 
 <p>
-The AEE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
+The EE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -1046,7 +1046,7 @@ Replace the entire document from the system clipboard.
 </p>
 
 <p>
-The AEE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the entire document.
+The EE pastes <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlc">Content MathML</a> from the system clipboard to replace the entire document.
 </p>
 
 <p>
@@ -1059,7 +1059,7 @@ Copy presentation markup for the current selection to the system clipboard.
 </p>
 
 <p>
-The AEE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.
+The EE copies the current selection to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -1072,7 +1072,7 @@ Copy presentation markup for the entire document to the system clipboard.
 </p>
 
 <p>
-The AEE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.
+The EE copies the entire document to the system clipboard using <a href="#ff-html">HTML</a> and/or <a href="#ff-mmlp">Presentation MathML</a> to represent the text and math portions of the document.
 </p>
 
 <p>
@@ -1085,7 +1085,7 @@ Copy presentation markup for all of the math in the entire document to the syste
 </p>
 
 <p>
-The AEE copies the <a href="#ff-mmlp">Presentation MathML</a> for each of the math elements in the entire document to the system clipboard.  The math markup is assembled into a single multi-line math expression.
+The EE copies the <a href="#ff-mmlp">Presentation MathML</a> for each of the math elements in the entire document to the system clipboard.  The math markup is assembled into a single multi-line math expression.
 </p>
 
 <p>
@@ -1099,136 +1099,136 @@ The <i>Help Menu</i> provides access to online documentation, configuration sett
 </p>
 
 <ul>
-<li><code>Welcome</code> - Open the AEE <a href="aee-welcome.html" target="_blank">Welcome</a> document.</li>
-<li><code>Tutorial</code> - Open the AEE <a href="gtk/intro.html" target="_blank">Tutorial</a> document.</li>
-<li><code>Users Guide</code> - Open the AEE <a href="aee-guide.html" target="_blank">Users Guide</a> (this document).</li>
-<li><code>Samples</code> - Open the AEE <a href="https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing" target="_blank">Samples</a> folder.</li>
-<li><code>Settings</code> - Open the AEE <a href="aee-settings.html" target="_blank">Settings</a> page.</li>
-<li class="skip"><code>Terms of Service</code> - Open the AEE <a href="aee-terms.pdf" target="_blank">Terms of Service</a>.</li>
-<li><code>Privacy Policy</code> - Open the AEE <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a>.</li>
-<li><code>About</code> - Display <a href="aee-about.html" target="_blank">version information</a> about the AEE.</li>
+<li><code>Welcome</code> - Open the EE <a href="ee-welcome.html" target="_blank">Welcome</a> document.</li>
+<li><code>Tutorial</code> - Open the EE <a href="gtk/intro.html" target="_blank">Tutorial</a> document.</li>
+<li><code>Users Guide</code> - Open the EE <a href="ee-guide.html" target="_blank">Users Guide</a> (this document).</li>
+<li><code>Samples</code> - Open the EE <a href="https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing" target="_blank">Samples</a> folder.</li>
+<li><code>Settings</code> - Open the EE <a href="ee-settings.html" target="_blank">Settings</a> page.</li>
+<li class="skip"><code>Terms of Service</code> - Open the EE <a href="ee-terms.pdf" target="_blank">Terms of Service</a>.</li>
+<li><code>Privacy Policy</code> - Open the EE <a href="ee-privacy.pdf" target="_blank">Privacy Policy</a>.</li>
+<li><code>About</code> - Display <a href="ee-about.html" target="_blank">version information</a> about the EE.</li>
 </ul>
 
 <h4 id="menu-help-welcome">Welcome</h4>
 <p>
-Open the AEE Welcome document.
+Open the EE Welcome document.
 </p>
 
 <p>
-The <a href="aee-welcome.html" target="_blank">Welcome</a> document provides a one-page quick-start introduction that describes how to choose the keyboard input mode and start using the AEE.
+The <a href="ee-welcome.html" target="_blank">Welcome</a> document provides a one-page quick-start introduction that describes how to choose the keyboard input mode and start using the EE.
 </p>
 
 <p>
-You can also type <code>Alt Shift H, W</code> to open the AEE Welcome document.
+You can also type <code>Alt Shift H, W</code> to open the EE Welcome document.
 </p>
 
 <h4 id="menu-help-tutorial">Tutorial</h4>
 <p>
-Open the AEE Tutorial document.
+Open the EE Tutorial document.
 </p>
 
 <p>
-The Getting to Know the AEE <a href="gtk/intro.html" target="_blank">Tutorial</a> provides a mutli-page self-guided gentle introduction to the topics you need to start using the AEE.
+The Getting to Know the EE <a href="gtk/intro.html" target="_blank">Tutorial</a> provides a mutli-page self-guided gentle introduction to the topics you need to start using the EE.
 </p>
 
 <p>
-You can also type <code>Alt Shift H, T</code> to open the AEE Tutorial document.
+You can also type <code>Alt Shift H, T</code> to open the EE Tutorial document.
 </p>
 
 <h4 id="menu-help-guide">Users Guide</h4>
 <p>
-Open the AEE Users Guide.
+Open the EE Users Guide.
 </p>
 
 <p>
-The <a href="aee-guide.html" target="_blank">Users Guide</a> (this document) provides more detailed instructions for how to use the AEE, including keyboard input, braille input, application menu items, and screen reader configuration information.
+The <a href="ee-guide.html" target="_blank">Users Guide</a> (this document) provides more detailed instructions for how to use the EE, including keyboard input, braille input, application menu items, and screen reader configuration information.
 </p>
 
 <p>
-You can also type <code>Alt Shift H, U</code> to open the AEE Users Guide.
+You can also type <code>Alt Shift H, U</code> to open the EE Users Guide.
 </p>
 
 <h4 id="menu-help-samples">Samples</h4>
 <p>
-Open the AEE Samples Folder.
+Open the EE Samples Folder.
 </p>
 
 <p>
-The <a href="https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing" target="_blank">AEE Samples</a> folder contains sample files that can be opened using the AEE.
+The <a href="https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing" target="_blank">EE Samples</a> folder contains sample files that can be opened using the EE.
 </p>
 
 <p>
-You can also type <code>Alt Shift H, M</code> to open the AEE Samples Folder.
+You can also type <code>Alt Shift H, M</code> to open the EE Samples Folder.
 </p>
 
 <h4 id="menu-help-settings">Settings</h4>
 <p>
-Open the AEE Settings Page.
+Open the EE Settings Page.
 </p>
 
 <p>
-The <a href="aee-settings.html" target="_blank">Settings Page</a> provides a web form to select custom values for settings that affect the AEE behavior, including application settings, braille settings, and font settings.
+The <a href="ee-settings.html" target="_blank">Settings Page</a> provides a web form to select custom values for settings that affect the EE behavior, including application settings, braille settings, and font settings.
 </p>
 
 <p>
-You can also type <code>Alt Shift H, G</code> to open the AEE Settings Page.
+You can also type <code>Alt Shift H, G</code> to open the EE Settings Page.
 </p>
 
 <h4 id="menu-help-terms">Terms of Service</h4>
 <p>
-Open the AEE Terms of Service document.
+Open the EE Terms of Service document.
 </p>
 
 <p>
-The <a href="aee-terms.pdf" target="_blank">Terms of Service</a> document describes the end user license agreement under which the AEE is provided free of charge to individual users, including students and teachers at educational institutions.  Please contact Lake Pines Braille at <a href="mailto:aee@lakepinesbraille.com">aee@lakepinesbraille.com</a> for information about other uses of the AEE, which we would be happy to encourage!
+The <a href="ee-terms.pdf" target="_blank">Terms of Service</a> document describes the end user license agreement under which the EE is provided free of charge to individual users, including students and teachers at educational institutions.  Please contact us at <a href="mailto:ee@equalizelearning.com">ee@equalizelearning.com</a> for information about other uses of the EE, which we would be happy to encourage!
 </p>
 
 <h4 id="menu-help-privacy">Privacy Policy</h4>
 <p>
-Open the AEE Privacy Policy document.
+Open the EE Privacy Policy document.
 </p>
 
 <p>
-The <a href="aee-privacy.pdf" target="_blank">Privacy Policy</a> document says that when we receive information about you, such as when you report issues, we do not share your personal information with anyone.  It just takes a few more words to say that in a way that ensures everyone remains safe when they use the web site!
+The <a href="ee-privacy.pdf" target="_blank">Privacy Policy</a> document says that when we receive information about you, such as when you report issues, we do not share your personal information with anyone.  It just takes a few more words to say that in a way that ensures everyone remains safe when they use the web site!
 </p>
 
 <h4 id="menu-help-about">About</h4>
 <p>
-Display version information about the AEE.
+Display version information about the EE.
 </p>
 
 <p>
-The <a href="aee-about.html" target="_blank">About</a> page provides version number and copyright information for the AEE, and an email link to report issues.  Please include the AEE version number when reporting issues.
+The <a href="ee-about.html" target="_blank">About</a> page provides version number and copyright information for the EE, and an email link to report issues.  Please include the EE version number when reporting issues.
 </p>
 
 <h2 id="set-editor">Editor Settings</h2>
 
 <p>
-The <a href="aee-settings.html" target="_blank">Settings</a> page provides options that customize the behavior of the AEE, including application settings, braille settings, and font settings.
+The <a href="ee-settings.html" target="_blank">Settings</a> page provides options that customize the behavior of the EE, including application settings, braille settings, and font settings.
 </p>
 
 <h3 id="set-app">Application Settings</h3>
 
 <p>
-The <a href="aee-settings.html#set-application" target="_blank">Application Settings</a> control overall behavior and appearance of the AEE as an editing application, including the keyboard input mode, the visibility of editor output panels, and access to editor symbol palettes.
+The <a href="ee-settings.html#set-application" target="_blank">Application Settings</a> control overall behavior and appearance of the EE as an editing application, including the keyboard input mode, the visibility of editor output panels, and access to editor symbol palettes.
 </p>
 
 <h4 id="set-input">Keyboard Input</h4>
 
 <p>
-The <a href="aee-settings.html#set-input" target="_blank">Keyboard Input</a> settings provide an alternative means to set the keyboard input mode.  Selecting one of the keyboard input settings changes the keyboard input mode to match the selected option.  The current keyboard input mode is saved into local storage, and restored on return to the AEE web application page.
+The <a href="ee-settings.html#set-input" target="_blank">Keyboard Input</a> settings provide an alternative means to set the keyboard input mode.  Selecting one of the keyboard input settings changes the keyboard input mode to match the selected option.  The current keyboard input mode is saved into local storage, and restored on return to the EE web application page.
 </p>
 
 <h4 id="set-panels">Editor Panels</h4>
 
 <p>
-The <a href="aee-settings.html#set-panels" target="_blank">Editor Panels</a> settings provide a means to enable or disable output panels that form the AEE user interface.  Enabling the Quick Buttons makes visible the top row of buttons for common math operations.  Disabling the Side Palettes can be convenient to allow more horizontal space for the main input area.  Disabling the Braille Bar output panel allows more vertical space for the main input area.
+The <a href="ee-settings.html#set-panels" target="_blank">Editor Panels</a> settings provide a means to enable or disable output panels that form the EE user interface.  Enabling the Quick Buttons makes visible the top row of buttons for common math operations.  Disabling the Side Palettes can be convenient to allow more horizontal space for the main input area.  Disabling the Braille Bar output panel allows more vertical space for the main input area.
 </p>
 
 <h4 id="set-palettes">Symbol Palettes</h4>
 
 <p>
-The <a href="aee-settings.html#set-palettes" target="_blank">Symbol Palettes</a> settings provide a means to enable or disable, and open or close, side bar palettes one at a time.
+The <a href="ee-settings.html#set-palettes" target="_blank">Symbol Palettes</a> settings provide a means to enable or disable, and open or close, side bar palettes one at a time.
 </p>
 
 <p>
@@ -1242,21 +1242,21 @@ The All Palettes check boxes may be used to mark all of the palettes as either a
 <h3 id="set-braille">Braille Settings</h3>
 
 <p>
-The <a href="aee-settings.html#set-braille" target="_blank">Braille Settings</a> control the generation of braille output from the AEE, including the use of the MathJax library, the activation of specific contracted braille rule groups, and parameters that affect the application of braille formatting rules for displaying, saving, and printing braille output.
+The <a href="ee-settings.html#set-braille" target="_blank">Braille Settings</a> control the generation of braille output from the EE, including the use of the MathJax library, the activation of specific contracted braille rule groups, and parameters that affect the application of braille formatting rules for displaying, saving, and printing braille output.
 </p>
 
 <h4 id="set-math">Math Output</h4>
 
 <p>
-The <a href="aee-settings.html#set-braille-math" target="_blank">Math Output</a> settings control the use of the <a href="#ff-mjax">MathJax</a> library header in HTML markup generated by the AEE.  The MathJax library may be included in files saved using the <code>Save HTML</code> menu item, and in web pages created using the <code>Export HTML</code> and <code>Print HTML</code> options, each of which is controlled by the corresponding check box.
+The <a href="ee-settings.html#set-braille-math" target="_blank">Math Output</a> settings control the use of the <a href="#ff-mjax">MathJax</a> library header in HTML markup generated by the EE.  The MathJax library may be included in files saved using the <code>Save HTML</code> menu item, and in web pages created using the <code>Export HTML</code> and <code>Print HTML</code> options, each of which is controlled by the corresponding check box.
 </p>
 
 <p>
-The AEE creates the markup using HTML headers to allow the <a href="#ff-mjax">MathJax</a> library to display the document in browsers that do not <a href="#web-mmlp">support Presentation MathML</a>.  These settings can also be used to work around known issues with native MathML support in any particular browser.
+The EE creates the markup using HTML headers to allow the <a href="#ff-mjax">MathJax</a> library to display the document in browsers that do not <a href="#web-mmlp">support Presentation MathML</a>.  These settings can also be used to work around known issues with native MathML support in any particular browser.
 </p>
 
 <p>
-The AEE includes the following HTML header in markup it creates for display by MathJax:
+The EE includes the following HTML header in markup it creates for display by MathJax:
 </p>
 <pre>
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=MML_CHTML"></script>
@@ -1265,11 +1265,11 @@ The AEE includes the following HTML header in markup it creates for display by M
 <h4 id="set-rules">Braille Rules</h4>
 
 <p>
-The <a href="aee-settings.html#set-braille-rules" target="_blank">Braille Rules</a> settings control the use of specific groups of literary contractions by the braille translation library used by the AEE.  Each of these groups may be enabled or disabled individually to control whether or not those contractions are used on output when converting to contracted form, and whether or not they are understood on input.
+The <a href="ee-settings.html#set-braille-rules" target="_blank">Braille Rules</a> settings control the use of specific groups of literary contractions by the braille translation library used by the EE.  Each of these groups may be enabled or disabled individually to control whether or not those contractions are used on output when converting to contracted form, and whether or not they are understood on input.
 </p>
 
 <p>
-The rules are grouped according to the sections of the UEB Rules document.  If the <code>Contracted Braille (all rules)</code> box is unchecked, the behavior of the AEE should conform to the use of uncontracted braille.
+The rules are grouped according to the sections of the UEB Rules document.  If the <code>Contracted Braille (all rules)</code> box is unchecked, the behavior of the EE should conform to the use of uncontracted braille.
 </p>
 
 <p>
@@ -1279,7 +1279,7 @@ The <code>Initial-letter contractions</code> and <code>Final-letter groupsigns</
 <h4 id="set-formats">Braille Formats</h4>
 
 <p>
-The <a href="aee-settings.html#set-braille-formats" target="_blank">Braille Formats</a> settings control the use of indentation within Braille markup created by the AEE.  These settings can be used to affect Braille displayed on screen within the AEE web application, Braille displayed on an attached Braille terminal, and Braille saved in BRF Braille Ready Files using the <code>Save BRF</code> menu item.
+The <a href="ee-settings.html#set-braille-formats" target="_blank">Braille Formats</a> settings control the use of indentation within Braille markup created by the EE.  These settings can be used to affect Braille displayed on screen within the EE web application, Braille displayed on an attached Braille terminal, and Braille saved in BRF Braille Ready Files using the <code>Save BRF</code> menu item.
 </p>
 
 <p>
@@ -1293,13 +1293,13 @@ These options include specification of the overall line width, the indentation o
 <h3 id="set-font">Font Settings</h3>
 
 <p>
-The <a href="aee-settings.html#set-font" target="_blank">Font Settings</a> control the document styles used for the HTML files generated by the AEE in support of the menu items on the File menu.
+The <a href="ee-settings.html#set-font" target="_blank">Font Settings</a> control the document styles used for the HTML files generated by the EE in support of the menu items on the File menu.
 </p>
 
 <h4 id="set-font-size">Font Size</h4>
 
 <p>
-The <a href="aee-settings.html#set-font-size" target="_blank">Font Size</a> settings control the document font size.  There is one font size used for generated HTML files, and one for generated BRL files.
+The <a href="ee-settings.html#set-font-size" target="_blank">Font Size</a> settings control the document font size.  There is one font size used for generated HTML files, and one for generated BRL files.
 </p>
 
 <h2 id="web-browsers">Web Browsers</h2>
@@ -1364,11 +1364,11 @@ The Opera-specific Save As PDF option may be used to save native Presentation Ma
 <h3 id="web-fsa">File System Access</h3>
 
 <p>
-The <a href="#menu-file">File Menu</a> operations use the File System Access API for those browsers that support it.  Specifically, the AEE looks for the methods <code>showOpenFilePicker</code> and <code>showSaveFilePicker</code> on the browser window object.
+The <a href="#menu-file">File Menu</a> operations use the File System Access API for those browsers that support it.  Specifically, the EE looks for the methods <code>showOpenFilePicker</code> and <code>showSaveFilePicker</code> on the browser window object.
 </p>
 
 <p>
-The AEE implements fallback methods for File System Access for those browsers that do not support it.  The fallback method for File Open is to use an internal <code>&lt;input type="file"></code> element to prompt the user to select the file to upload into the editor document.  The fallback method for File Save is to use an internal <code>&lt;a download="name"></code> element to prompt the user to select the file to download from the editor document.
+The EE implements fallback methods for File System Access for those browsers that do not support it.  The fallback method for File Open is to use an internal <code>&lt;input type="file"></code> element to prompt the user to select the file to upload into the editor document.  The fallback method for File Save is to use an internal <code>&lt;a download="name"></code> element to prompt the user to select the file to download from the editor document.
 </p>
 
 <p>
@@ -1382,7 +1382,7 @@ As a browser user, it is usually a good idea to specify a preferred folder for b
 <h3 id="web-clip">Clipboard Access</h3>
 
 <p>
-The <a href="#menu-edit">Edit Menu</a> operations use the Clipboard API for those browsers that support it.  Specifically, the AEE uses the methods <code>navigator.clipboard.writeText</code> for the copy operations, and <code>navigator.clipboard.readText</code> for the paste operations.
+The <a href="#menu-edit">Edit Menu</a> operations use the Clipboard API for those browsers that support it.  Specifically, the EE uses the methods <code>navigator.clipboard.writeText</code> for the copy operations, and <code>navigator.clipboard.readText</code> for the paste operations.
 </p>
 
 <h5 id="web-clip-chromium">Chromium</h5>
@@ -1406,15 +1406,15 @@ When this flag is enabled, and a paste operation is invoked from the menu, Firef
 <h3 id="web-print">Export, Print, and PDF</h3>
 
 <p>
-The AEE provides an <a href="#menu-file-export-html">Export HTML</a> menu item that opens a new browser page and places the contents of the document in the page.  This new page can be printed or saved to a PDF file in the usual ways supported by the browser.
+The EE provides an <a href="#menu-file-export-html">Export HTML</a> menu item that opens a new browser page and places the contents of the document in the page.  This new page can be printed or saved to a PDF file in the usual ways supported by the browser.
 </p>
 
 <p>
-The AEE provides a <a href="#menu-file-print-html">Print HTML</a> menu item to print files.  It exports the document to a new browser page, as described above, and invokes the browser print support directly.
+The EE provides a <a href="#menu-file-print-html">Print HTML</a> menu item to print files.  It exports the document to a new browser page, as described above, and invokes the browser print support directly.
 </p>
 
 <p>
-The AEE does not provide a separate <code>Save as PDF</code> menu item, but the <a href="#menu-file-print-html">Print</a> menu item can be used to invoke the browser <code>Save as PDF</code> support to create PDF files that include both text and math markup.
+The EE does not provide a separate <code>Save as PDF</code> menu item, but the <a href="#menu-file-print-html">Print</a> menu item can be used to invoke the browser <code>Save as PDF</code> support to create PDF files that include both text and math markup.
 </p>
 
 <p>
@@ -1426,11 +1426,11 @@ A file created by the <a href="#menu-file-save-html">Save HTML</a> menu item can
 <h3 id="sr-general">General Settings</h3>
 
 <p>
-The AEE is designed to work with a wide range of screen readers, using as few custom configuration settings as possible.  There are some settings required for the AEE to work properly, and others where the AEE is designed to work with any setting value in use.
+The EE is designed to work with a wide range of screen readers, using as few custom configuration settings as possible.  There are some settings required for the EE to work properly, and others where the EE is designed to work with any setting value in use.
 </p>
 
 <p>
-The following paragraphs describe general settings common to all screen readers.  Additional sections provide specific instructions needed to set up specific screen readers.  Any screen reader not listed below may be supported by using the general settings descriptions to determine screen reader settings that will allow the AEE to operate properly.
+The following paragraphs describe general settings common to all screen readers.  Additional sections provide specific instructions needed to set up specific screen readers.  Any screen reader not listed below may be supported by using the general settings descriptions to determine screen reader settings that will allow the EE to operate properly.
 </p>
 
 <h4 id="sr-general-input">Braille Input</h4>
@@ -1440,11 +1440,11 @@ Each screen reader provides a way to choose the Braille code used to translate i
 </p>
 
 <p>
-Since the AEE performs its own Braille translation, it needs to receive Braille symbols untranslated by the screen reader.  These Braille symbols may be generated as Braille key input from an attached Braille device, or as six-key Braille input from the home row keys of a computer keyboard.
+Since the EE performs its own Braille translation, it needs to receive Braille symbols untranslated by the screen reader.  These Braille symbols may be generated as Braille key input from an attached Braille device, or as six-key Braille input from the home row keys of a computer keyboard.
 </p>
 
 <p>
-The recommended setting for Braille Input for the AEE is to use <code>Computer Braille</code> input, so the AEE can receive and process the raw Braille symbols collected by the braille device.
+The recommended setting for Braille Input for the EE is to use <code>Computer Braille</code> input, so the EE can receive and process the raw Braille symbols collected by the braille device.
 </p>
 
 <h4 id="sr-general-output">Braille Output</h4>
@@ -1454,11 +1454,11 @@ Each screen reader provides a way to choose the Braille code used to output info
 </p>
 
 <p>
-Since the AEE performs its own Braille translation, it generates <a href="#ff-ubrl">Unicode Braille</a> that is designed not to be translated by the screen reader.  However, the Braille Output setting may be used to translate other text that appears in the AEE user interface, including menu item labels, button tool tips, and palette labels.
+Since the EE performs its own Braille translation, it generates <a href="#ff-ubrl">Unicode Braille</a> that is designed not to be translated by the screen reader.  However, the Braille Output setting may be used to translate other text that appears in the EE user interface, including menu item labels, button tool tips, and palette labels.
 </p>
 
 <p>
-The AEE will operate properly with any selection for the Braille Output translation setting.
+The EE will operate properly with any selection for the Braille Output translation setting.
 </p>
 
 <h4 id="sr-general-current">Current Word</h4>
@@ -1468,11 +1468,11 @@ Each screen reader provides a way to choose the Braille translation of the <i>Cu
 </p>
 
 <p>
-This setting only affects read-only text that appears in the AEE user interface for menu item labels and palette labels, and does not affect the <a href="#ff-ubrl">Unicode Braille</a> generated by the AEE for document content.
+This setting only affects read-only text that appears in the EE user interface for menu item labels and palette labels, and does not affect the <a href="#ff-ubrl">Unicode Braille</a> generated by the EE for document content.
 </p>
 
 <p>
-The AEE will operate properly with either selection for the Current Word translation setting.
+The EE will operate properly with either selection for the Current Word translation setting.
 </p>
 
 <h4 id="sr-general-msgs">Braille Messages</h4>
@@ -1490,11 +1490,11 @@ Setting Braille Messages to <code>Off</code> instructs the screen reader not to 
 </p>
 
 <p>
-The AEE uses ARIA live messages to support self-voicing feedback during math expression entry.  Displaying such messages on the Braille display works well for occasional messages, but can overwhelm when they occur frequently, as they do in the AEE.
+The EE uses ARIA live messages to support self-voicing feedback during math expression entry.  Displaying such messages on the Braille display works well for occasional messages, but can overwhelm when they occur frequently, as they do in the EE.
 </p>
 
 <p>
-For this reason, the recommended setting for the AEE is to disable Braille Messages, which allows the AEE to provide Braille and speech feedback on each keystroke.
+For this reason, the recommended setting for the EE is to disable Braille Messages, which allows the EE to provide Braille and speech feedback on each keystroke.
 </p>
 
 <h4 id="sr-general-forms">Forms Mode</h4>
@@ -1508,7 +1508,7 @@ The screen reader is said to be in Forms Mode (Focus Mode) when the user interac
 </p>
 
 <p>
-The AEE uses interactive controls for text and math entry, and so Forms Mode is used to interact with the editor.
+The EE uses interactive controls for text and math entry, and so Forms Mode is used to interact with the editor.
 </p>
 
 <p>
@@ -1520,11 +1520,11 @@ Screen readers often provide <i>Manual Forms Mode</i> keyboard commands to switc
 </p>
 
 <p>
-Screen readers often provide an <i>Auto Focus</i> setting to automatically pull the input focus to a focusable form control when one is present on a web page.  Such settings can be used to pull the input focus into an application like the AEE when the page loads, without the need for additional user action.
+Screen readers often provide an <i>Auto Focus</i> setting to automatically pull the input focus to a focusable form control when one is present on a web page.  Such settings can be used to pull the input focus into an application like the EE when the page loads, without the need for additional user action.
 </p>
 
 <p>
-Auto Forms Mode and Auto Focus make it easier to navigate to the AEE input panel, but the AEE should also operate properly using Manual Forms Mode keyboard commands.  The AEE is designed to work with Auto Forms Mode, which is the recommended setting.
+Auto Forms Mode and Auto Focus make it easier to navigate to the EE input panel, but the EE should also operate properly using Manual Forms Mode keyboard commands.  The EE is designed to work with Auto Forms Mode, which is the recommended setting.
 </p>
 
 <h3 id="sr-jaws">JAWS Settings</h3>
@@ -1552,7 +1552,7 @@ See the JAWS Help Topics for further details on how to use the JAWS Settings Cen
 <h4 id="sr-jaws-setup">JAWS Setup</h4>
 
 <p>
-The AEE Configuration File <a href="config/aee.jcf" target="blank">aee.jcf</a> contains configuration directives for JAWS that can be used to apply recommended settings for the AEE.  You can use the following steps to install these settings as a Domain Settings file in the JAWS Settings Folder, so they will be used for the AEE web site without affecting configuration settings for other applications.
+The EE Configuration File <a href="config/ee.jcf" target="blank">ee.jcf</a> contains configuration directives for JAWS that can be used to apply recommended settings for the EE.  You can use the following steps to install these settings as a Domain Settings file in the JAWS Settings Folder, so they will be used for the EE web site without affecting configuration settings for other applications.
 </p>
 
 <p>
@@ -1570,11 +1570,11 @@ First, use these steps to find the location of the JAWS Settings Folder on your 
 </ul>
 
 <p>
-Next, use these steps to install the AEE Configuration File in the JAWS Settings Folder.
+Next, use these steps to install the EE Configuration File in the JAWS Settings Folder.
 </p>
 
 <ul>
-<li>Use <code>Tab</code> to navigate to <a id="host" href="config/aee.jcf">this link</a> to the AEE Configuration File
+<li>Use <code>Tab</code> to navigate to <a id="host" href="config/ee.jcf">this link</a> to the EE Configuration File
 <li>Press <code>Shift + F10</code> to activate the link context menu</li>
 <li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
 <li>Use <code>Tab</code> to navigate to the All Locations split button</li>
@@ -1582,11 +1582,11 @@ Next, use these steps to install the AEE Configuration File in the JAWS Settings
 <li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
 <li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
 <li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the AEE configuration file</li>
+<li>Press <code>Enter</code> to save the EE configuration file</li>
 </ul>
 
 <p>
-These steps need to be done only once, for each web domain used to access the AEE.
+These steps need to be done only once, for each web domain used to access the EE.
 </p>
 
 <p>
@@ -1596,7 +1596,7 @@ The configuration settings included in this file are explained in the following 
 <h4 id="sr-jaws-suggest">Suggested Settings</h4>
 
 <p>
-The following JAWS settings are recommended for web pages that contain the AEE.
+The following JAWS settings are recommended for web pages that contain the EE.
 </p>
 
 <ul>
@@ -1622,7 +1622,7 @@ This setting controls the Braille code used to input information from an attache
 </p>
 
 <p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate Braille input sent to the AEE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate Braille input sent to the EE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
 </p>
 
 <h4 id="sr-jaws-output">Braille Output</h4>
@@ -1634,7 +1634,7 @@ This setting controls the Braille code used to output information to an attached
 </p>
 
 <p>
-Setting this option to <code>Unified English Braille Grade 2</code> instructs JAWS to translate user interface text output from the AEE.  See the general comments in the <a href="#sr-general-output">Braille Output</a> section for more information.
+Setting this option to <code>Unified English Braille Grade 2</code> instructs JAWS to translate user interface text output from the EE.  See the general comments in the <a href="#sr-general-output">Braille Output</a> section for more information.
 </p>
 
 <h4 id="sr-jaws-current">Current Word</h4>
@@ -1674,7 +1674,7 @@ Forms Mode affects how JAWS navigates web content in an interactive browser page
 </p>
 
 <p>
-Setting this option to <code>Auto</code> instructs JAWS to switch to Forms Mode on navigation to the AEE to allow the user to interact directly with the AEE input area.
+Setting this option to <code>Auto</code> instructs JAWS to switch to Forms Mode on navigation to the EE to allow the user to interact directly with the EE input area.
 </p>
 
 <p>
@@ -1687,11 +1687,11 @@ See the general comments in the <a href="#sr-general-forms">Forms Mode</a> secti
 </code>
 
 <p>
-Dynamic web pages like the AEE web page require special techniques to control the JAWS page refresh behavior.
+Dynamic web pages like the EE web page require special techniques to control the JAWS page refresh behavior.
 </p>
 
 <p>
-JAWS provides the key combination <code>JAWS + Escape</code> to refresh the braille page manually.  This key combination can be used when JAWS fails to keep up with dynamic page changes used by the AEE.
+JAWS provides the key combination <code>JAWS + Escape</code> to refresh the braille page manually.  This key combination can be used when JAWS fails to keep up with dynamic page changes used by the EE.
 </p>
 
 <p>
@@ -1703,7 +1703,7 @@ The <code>Page Refresh Filter</code> setting may be used to control the JAWS pag
 </p>
 
 <p>
-The recommended setting for the AEE is to disable the JAWS page refresh behavior by setting the <code>Page Refresh Filter</code> setting to <code>Suppress All Refreshes</code>.  It is recommended that this setting be used for the AEE web site without affecting other applications, as described above.
+The recommended setting for the EE is to disable the JAWS page refresh behavior by setting the <code>Page Refresh Filter</code> setting to <code>Suppress All Refreshes</code>.  It is recommended that this setting be used for the EE web site without affecting other applications, as described above.
 </p>
 
 <h4 id="sr-jaws-tutor">Tutor Messages</h4>
@@ -1721,7 +1721,7 @@ JAWS announces short phrases to assist novice users with menu and control usage.
 </ul>
 
 <p>
-Since this setting cannot be controlled by the JAWS Settings Center, it also cannot be placed in domain settings files.  While the recommended setting for the AEE is to use <code>Announce custom messages only</code>, the AEE will operate properly with any setting.
+Since this setting cannot be controlled by the JAWS Settings Center, it also cannot be placed in domain settings files.  While the recommended setting for the EE is to use <code>Announce custom messages only</code>, the EE will operate properly with any setting.
 </p>
 
 <h3 id="sr-nvda">NVDA Settings</h3>
@@ -1749,7 +1749,7 @@ See the <a href="https://www.nvaccess.org/files/nvda/documentation/userGuide.htm
 <h4 id="sr-nvda-setup">NVDA Setup</h4>
 
 <p>
-The AEE Configuration File <a href="config/aee.ini" target="blank">aee.ini</a> contains configuration directives for NVDA that can be used to apply recommended settings for the AEE.  You can use the following steps to install these settings as a Configuration Profile in the NVDA Settings Folder, so they will be used for the <code>aee</code> configuration profile without affecting configuration settings for other configuration profiles.
+The EE Configuration File <a href="config/ee.ini" target="blank">ee.ini</a> contains configuration directives for NVDA that can be used to apply recommended settings for the EE.  You can use the following steps to install these settings as a Configuration Profile in the NVDA Settings Folder, so they will be used for the <code>ee</code> configuration profile without affecting configuration settings for other configuration profiles.
 </p>
 
 <p>
@@ -1768,11 +1768,11 @@ First, use these steps to find the location of the User Configuration Folder on 
 </ul>
 
 <p>
-Next, use these steps to install the AEE Configuration File in the User Configuration Folder.
+Next, use these steps to install the EE Configuration File in the User Configuration Folder.
 </p>
 
 <ul>
-<li>Use <code>Tab</code> to navigate to <a href="config/aee.ini">this link</a> to the AEE Configuration File
+<li>Use <code>Tab</code> to navigate to <a href="config/ee.ini">this link</a> to the EE Configuration File
 <li>Press <code>Shift + F10</code> to activate the link context menu</li>
 <li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
 <li>Use <code>Tab</code> to navigate to the All Locations split button</li>
@@ -1781,7 +1781,7 @@ Next, use these steps to install the AEE Configuration File in the User Configur
 <li>Type <code>\profiles</code> to finish the path to the Configuration Profiles Folder</li>
 <li>Press <code>Enter</code> to open the Configuration Profiles Folder</li>
 <li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the AEE configuration file</li>
+<li>Press <code>Enter</code> to save the EE configuration file</li>
 </ul>
 
 <p>
@@ -1793,7 +1793,7 @@ The configuration settings included in this file are explained in the following 
 </p>
 
 <p>
-The AEE Gestures File <a href="config/gestures.ini" target="blank">gestures.ini</a> contains configuration directives that may be <em>added</em> to the NVDA <code>gestures.ini</code> file to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>aee</code> configuration profile.  You can use the following steps to add the AEE keyboard gesture.
+The EE Gestures File <a href="config/gestures.ini" target="blank">gestures.ini</a> contains configuration directives that may be <em>added</em> to the NVDA <code>gestures.ini</code> file to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.  You can use the following steps to add the EE keyboard gesture.
 </p>
 
 <p>
@@ -1801,15 +1801,15 @@ First, use these steps to copy the configuration directives to the clipboard.
 </p>
 
 <ul>
-<li>Use <code>Tab</code> to navigate to <a href="config/gestures.ini" target="blank">this link</a> to the AEE Gestures File</li>
-<li>Press <code>Enter</code> to open the AEE Gestures File in a new tab</li>
+<li>Use <code>Tab</code> to navigate to <a href="config/gestures.ini" target="blank">this link</a> to the EE Gestures File</li>
+<li>Press <code>Enter</code> to open the EE Gestures File in a new tab</li>
 <li>Press <code>NVDA + F2</code> and then <code>Ctrl + A</code> to select all text</li>
 <li>Press <code>NVDA + F2</code> and then <code>Ctrl + C</code> to copy all text</li>
-<li>Press <code>Ctrl + F4</code> to dismiss the AEE Gestures File</li>
+<li>Press <code>Ctrl + F4</code> to dismiss the EE Gestures File</li>
 </ul>
 
 <p>
-Next, use these steps to add the AEE Gestures File to the NVDA <code>gestures.ini</code>.
+Next, use these steps to add the EE Gestures File to the NVDA <code>gestures.ini</code>.
 </p>
 
 <ul>
@@ -1819,7 +1819,7 @@ Next, use these steps to add the AEE Gestures File to the NVDA <code>gestures.in
 <li>Arrow down to select Explore NVDA user configuration directory and press <code>Enter</code></li>
 <li>Press <code>G</code> to select the <code>gestures.ini</code> file</li>
 <li>Press <code>Enter</code> to open the file in Notepad</li>
-<li>Press <code>Ctrl + V</code> to paste the new AEE gesture</li>
+<li>Press <code>Ctrl + V</code> to paste the new EE gesture</li>
 <li>Combine any duplicate configuration sections</li>
 <li>Press <code>Ctrl + S</code> to save the updated <code>gestures.ini</code> file</li>
 <li>Press <code>Alt + F4</code> to close Notepad</li>
@@ -1832,7 +1832,7 @@ These steps need to be done only once.
 <h4 id="sr-nvda-suggest">Suggested Settings</h4>
 
 <p>
-The following NVDA settings are recommended for web pages that contain the AEE.
+The following NVDA settings are recommended for web pages that contain the EE.
 </p>
 
 <ul>
@@ -1858,7 +1858,7 @@ This setting controls the Braille code used to input information from an attache
 </p>
 
 <p>
-Setting this option to <code>Unicode Braille</code> instructs NVDA not to translate Braille input sent to the AEE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
+Setting this option to <code>Unicode Braille</code> instructs NVDA not to translate Braille input sent to the EE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
 </p>
 
 <p>
@@ -1874,7 +1874,7 @@ This setting controls the Braille code used to output information to an attached
 </p>
 
 <p>
-Setting this option to <code>UEB Code Grade 2</code> instructs JAWS to contract Braille output from the AEE user interface.  See the general comments in the <a href="#sr-general-output">Braille Output</a> section for more information.
+Setting this option to <code>UEB Code Grade 2</code> instructs JAWS to contract Braille output from the EE user interface.  See the general comments in the <a href="#sr-general-output">Braille Output</a> section for more information.
 </p>
 
 <p>
@@ -1940,27 +1940,27 @@ See the general comments in the <a href="#sr-general-forms">Forms Mode</a> secti
 <h2 id="nemeth-braille">Nemeth Braille</h2>
 
 <p>
-The AEE supports the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.
+The EE supports the <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf" target="_blank">Nemeth Braille Code for Mathematics and Science Notation, 1972 Revision</a>.
 </p>
 
 <p>
-The Braille Authority of North America (BANA) has approved a sequence of <a href="https://www.brailleauthority.org/nemeth-code-0#updates">Nemeth Updates</a>, some of which are supported by the AEE as described below.
+The Braille Authority of North America (BANA) has approved a sequence of <a href="https://www.brailleauthority.org/nemeth-code-0#updates">Nemeth Updates</a>, some of which are supported by the EE as described below.
 </p>
 
 <p>
-The following sections describe support for certain specific Nemeth Braille forms in the AEE.
+The following sections describe support for certain specific Nemeth Braille forms in the EE.
 </p>
 
 <h3 id="nemeth-short-under">Underbar Short Form</h3>
 
 <p>
-Following a single letter or digit, the AEE outputs the short form for both the overbar modifier, as described in <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf">Nemeth Braille Code: Rule XIV §86b</a>, and the underbar modifier, as described in <a href="https://www.brailleauthority.org/nemethupdates2013/rule-xiv86c.pdf">Nemeth Update: Rule XIV §86c</a>.
+Following a single letter or digit, the EE outputs the short form for both the overbar modifier, as described in <a href="https://nfb.org/images/nfb/documents/pdf/nemeth_1972.pdf">Nemeth Braille Code: Rule XIV §86b</a>, and the underbar modifier, as described in <a href="https://www.brailleauthority.org/nemethupdates2013/rule-xiv86c.pdf">Nemeth Update: Rule XIV §86c</a>.
 </p>
 
 <h3 id="nemeth-per-mille">Per Mille Symbol</h3>
 
 <p>
-The AEE supports the per mille symbol &#x2030; as <code>dots-4 dots-356 dots-356</code>, as described in <a href="https://www.brailleauthority.org/nemethupdates2014/rule-xxii-section-162.pdf">Nemeth Update: Rule XXII §162</a>,
+The EE supports the per mille symbol &#x2030; as <code>dots-4 dots-356 dots-356</code>, as described in <a href="https://www.brailleauthority.org/nemethupdates2014/rule-xxii-section-162.pdf">Nemeth Update: Rule XXII §162</a>,
 and the per myriad symbol &#x2031; as <code>dots-4 dots-356 dots-356 dots-356</code>.
 </p>
 

@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AEE Welcome</title>
-  <link rel="icon" type="image/x-icon" href="aee.png">
-  <link rel="stylesheet" type="text/css" href="aee.css"/>
-  <script src="aee.js"></script>
+  <title>Equalize Editor Welcome</title>
+  <link rel="icon" type="image/x-icon" href="ee.png">
+  <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee.js"></script>
 </head>
-<body class="aee-welcome">
+<body class="ee-welcome">
 
-<h1>Welcome to the Equation Editor!</h1>
+<h1>Welcome to the Equalize Editor!</h1>
 
 <p>
 Press <code>Escape</code> to dismiss this Welcome Page and return to the editor.
 </p>
 
 <p>
-Please see the <a href="aee.html?edt/0101.html" target="_blank">Tutorial</a> for an interactive guide to basic editor behavior.
+Please see the <a href="ee.html?edt/0101.html" target="_blank">Tutorial</a> for an interactive guide to basic editor behavior.
 </p>
 
 <p>
@@ -29,12 +29,12 @@ Then use the <a href="gtk/intro.html" target="_blank">Getting To Know</a> pages 
 The <a href="gtk/key-input.html" target="_blank">Keyboard Input</a> page describes how to select your preferred keyboard input method.
 </p>
 <p>
-<input id="aee-input-qwerty" type="radio" name="aee-input-type" value="qwerty"></input>
-<label for="aee-input-qwerty">Computer Keyboard</label>&#x2003;
-<input id="aee-input-braille" type="radio" name="aee-input-type" value="braille"></input>
-<label for="aee-input-braille">Refreshable Braille</label>&#x2003;
-<input id="aee-input-home" type="radio" name="aee-input-type" value="home"></input>
-<label for="aee-input-home">Home Row Braille</label>
+<input id="ee-input-qwerty" type="radio" name="ee-input-type" value="qwerty"></input>
+<label for="ee-input-qwerty">Computer Keyboard</label>&#x2003;
+<input id="ee-input-braille" type="radio" name="ee-input-type" value="braille"></input>
+<label for="ee-input-braille">Refreshable Braille</label>&#x2003;
+<input id="ee-input-home" type="radio" name="ee-input-type" value="home"></input>
+<label for="ee-input-home">Home Row Braille</label>
 </p>
 </li>
 <li>
@@ -62,12 +62,12 @@ From anywhere else on the page, press <code>Escape</code> to return to the input
 </ul>
 
 <p>
-Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, the <a href="aee.html?edt/0101.html" target="_blank">Tutorial</a>, the <a href="aee-guide.html" target="_blank">Users Guide</a>, or the <a href="gtk/intro.html" target="_blank">Getting To Know</a> pages.
+Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, the <a href="ee.html?edt/0101.html" target="_blank">Tutorial</a>, the <a href="ee-guide.html" target="_blank">Users Guide</a>, or the <a href="gtk/intro.html" target="_blank">Getting To Know</a> pages.
 </p>
 
 <div>
-<input id="aee-show-welcome" type="checkbox"></input>
-<label for="aee-show-welcome">Show this Welcome Page when you start the AEE.</label>
+<input id="ee-show-welcome" type="checkbox"></input>
+<label for="ee-show-welcome">Show this Welcome Page when you start the editor.</label>
 </div>
 
 <script>
@@ -103,15 +103,15 @@ Use the <a href="gtk/menu-help.html">Help Menu</a> to access this Welcome Page, 
   };
 
   const saveAll = function() {
-    save( "aee-input-qwerty" );
-    save( "aee-input-braille" );
-    save( "aee-input-home" );
+    save( "ee-input-qwerty" );
+    save( "ee-input-braille" );
+    save( "ee-input-home" );
   }
 
-  localStorage && load( "aee-show-welcome" );
-  localStorage && load( "aee-input-qwerty" );
-  localStorage && load( "aee-input-braille" );
-  localStorage && load( "aee-input-home" );
+  localStorage && load( "ee-show-welcome" );
+  localStorage && load( "ee-input-qwerty" );
+  localStorage && load( "ee-input-braille" );
+  localStorage && load( "ee-input-home" );
 })();
 </script>
 

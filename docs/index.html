@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AEE Web Application</title>
-  <link rel="icon" type="image/x-icon" href="aee.png">
-  <link rel="stylesheet" type="text/css" href="aee.css"/>
-  <script src="aee.js"></script>
-  <script src="aee-drive.js"></script>
+  <title>Equalize Editor</title>
+  <link rel="icon" type="image/x-icon" href="ee.png">
+  <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee.js"></script>
+  <script src="ee-drive.js"></script>
   <script type="text/javascript">
     EquationEditorOptions = {
       "styleBase" : "mathex/deploy/equationeditor/styles",
       "scriptBase" : "mathex/lib",
       "models" : [{
         "identifier" : "RESPONSE",
-        "styles" : "aee"
+        "styles" : "ee"
       }],
-      callback : aee_init
+      callback : ee_init
     };
   </script>
   <script src="mathex/deploy/equationeditor/equationeditor-lib.js"></script>
 </head>
-<body onload="aee_onload()">
+<body onload="ee_onload()">
 </body>
 </html>

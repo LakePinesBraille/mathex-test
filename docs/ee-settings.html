@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AEE Settings</title>
-  <link rel="icon" type="image/x-icon" href="aee.png">
-  <link rel="stylesheet" type="text/css" href="aee.css"/>
-  <script src="aee.js"></script>
+  <title>Equalize Editor Settings</title>
+  <link rel="icon" type="image/x-icon" href="ee.png">
+  <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee.js"></script>
   <script>
 const palettes = {
   "plt-palettes" : "All Palettes",
@@ -167,8 +167,8 @@ const plts = function()
     active_keys.push( ak );
     open_keys.push( ok );
     rows.push( tr );
-    aee_settings[ ak ] = "true";
-    aee_settings[ ok ] = "false";
+    ee_settings[ ak ] = "true";
+    ee_settings[ ok ] = "false";
   };
 
   const tbody = document.querySelector( "table tbody" );
@@ -179,7 +179,7 @@ const plts = function()
   rule( active_keys.shift(), active_keys );
   rule( open_keys.shift(), open_keys );
 
-  rule( "aee-panel-side-bar", side, click_any );
+  rule( "ee-panel-side-bar", side, click_any );
 };
 
 const init = function() {
@@ -211,9 +211,9 @@ const init = function() {
 };
 
 const load = function() {
-  for ( var k in aee_settings )
+  for ( var k in ee_settings )
   {
-    var v = localStorage[ k ] || aee_settings[ k ] || "";
+    var v = localStorage[ k ] || ee_settings[ k ] || "";
     var elt = document.querySelector( "#" + k );
     if ( elt ) {
       if ( elt.type === "checkbox" || elt.type === "radio" )
@@ -230,7 +230,7 @@ const load = function() {
 
 const save = function() {
   localStorage.clear();
-  for ( var k in aee_settings )
+  for ( var k in ee_settings )
   {
     var elt = document.querySelector( "#" + k );
     if ( elt )
@@ -242,7 +242,7 @@ const save = function() {
 };
 
 const reset = function() {
-  aee_reset();
+  ee_reset();
 }
 
 const done = function() {
@@ -250,17 +250,17 @@ const done = function() {
 };
   </script>
 </head>
-<body class="aee-settings" onload="init(); load()">
-<h1>Accessible Equation Editor Settings</h1>
+<body class="ee-settings" onload="init(); load()">
+<h1>Equalize Editor Settings</h1>
 
 <div>
-<button type="button" class="aee-btn" id="ok" onclick="save(); done()"
+<button type="button" class="ex-btn" id="ok" onclick="save(); done()"
     title="Save your changes and close the settings">OK</button>
-<button type="button" class="aee-btn" id="apply" onclick="save()"
+<button type="button" class="ex-btn" id="apply" onclick="save()"
     title="Save your changes without closing the settings">Apply</button>
-<button type="button" class="aee-btn" id="reset" onclick="reset(); load()"
+<button type="button" class="ex-btn" id="reset" onclick="reset(); load()"
     title="Discard your changes and load the default settings">Reset</button>
-<button type="button" class="aee-btn" id="cancel" onclick="done()"
+<button type="button" class="ex-btn" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
 </div>
 
@@ -293,57 +293,57 @@ const done = function() {
 <h2 id="set-application">Application Settings</h2>
 
 <div style="display: none">
-<label for="aee-width">Panel width</label>
-<input id="aee-width"></input>
+<label for="ee-width">Panel width</label>
+<input id="ee-width"></input>
 </div>
 
 <div style="display: none">
-<label for="aee-height">Panel height</label>
-<input id="aee-height"></input>
+<label for="ee-height">Panel height</label>
+<input id="ee-height"></input>
 </div>
 
 <h3 id="set-input">Keyboard Input</h3>
 
 <div>
-<label for="aee-input-qwerty">Qwerty input mode</label>
-<input id="aee-input-qwerty" type="radio" name="aee-input-type" value="qwerty"></input>
+<label for="ee-input-qwerty">Qwerty input mode</label>
+<input id="ee-input-qwerty" type="radio" name="ee-input-type" value="qwerty"></input>
 </div>
 
 <div>
-<label for="aee-input-braille">Braille input mode</label>
-<input id="aee-input-braille" type="radio" name="aee-input-type" value="braille"></input>
+<label for="ee-input-braille">Braille input mode</label>
+<input id="ee-input-braille" type="radio" name="ee-input-type" value="braille"></input>
 </div>
 
 <div>
-<label for="aee-input-home">Home row input mode</label>
-<input id="aee-input-home" type="radio" name="aee-input-type" value="home"></input>
+<label for="ee-input-home">Home row input mode</label>
+<input id="ee-input-home" type="radio" name="ee-input-type" value="home"></input>
 </div>
 
 <h3 id="set-panels">Editor Panels</h3>
 
 <div>
-<label for="aee-panel-all-panels">All Panels</label>
-<input id="aee-panel-all-panels" type="checkbox"></input>
+<label for="ee-panel-all-panels">All Panels</label>
+<input id="ee-panel-all-panels" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-panel-app-menus">Editor Menus</label>
-<input id="aee-panel-app-menus" type="checkbox"></input>
+<label for="ee-panel-app-menus">Editor Menus</label>
+<input id="ee-panel-app-menus" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-panel-open-file">Open File Name</label>
-<input id="aee-panel-open-file" type="checkbox"></input>
+<label for="ee-panel-open-file">Open File Name</label>
+<input id="ee-panel-open-file" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-panel-quick-bar">Quick Buttons</label>
-<input id="aee-panel-quick-bar" type="checkbox"></input>
+<label for="ee-panel-quick-bar">Quick Buttons</label>
+<input id="ee-panel-quick-bar" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-panel-side-bar">Side Palettes</label>
-<input id="aee-panel-side-bar" type="checkbox"></input>
+<label for="ee-panel-side-bar">Side Palettes</label>
+<input id="ee-panel-side-bar" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-panel-braille-bar">Braille Bar</label>
-<input id="aee-panel-braille-bar" type="checkbox"></input>
+<label for="ee-panel-braille-bar">Braille Bar</label>
+<input id="ee-panel-braille-bar" type="checkbox"></input>
 </div>
 
 <h3 id="set-palettes">Symbol Palettes</h3>
@@ -443,36 +443,36 @@ const done = function() {
 
 <h4>Screen</h4>
 <div>
-<label for="aee-screen-page-width">Page width</label>
-<input id="aee-screen-page-width" type="number" min="1" max="99"></input>
+<label for="ee-screen-page-width">Page width</label>
+<input id="ee-screen-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-screen-page-height">Page height</label>
-<input id="aee-screen-page-height" type="number" min="1" max="99"></input>
+<label for="ee-screen-page-height">Page height</label>
+<input id="ee-screen-page-height" type="number" min="1" max="99"></input>
 </div>
 
 <h4>Device</h4>
 <div>
-<label for="aee-device-page-width">Page width</label>
-<input id="aee-device-page-width" type="number" min="1" max="99"></input>
+<label for="ee-device-page-width">Page width</label>
+<input id="ee-device-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-device-page-height">Page height</label>
-<input id="aee-device-page-height" type="number" min="1" max="99"></input>
+<label for="ee-device-page-height">Page height</label>
+<input id="ee-device-page-height" type="number" min="1" max="99"></input>
 </div>
 
 <h4>Files</h4>
 <div>
-<label for="aee-file-page-width">Page width</label>
-<input id="aee-file-page-width" type="number" min="1" max="99"></input>
+<label for="ee-file-page-width">Page width</label>
+<input id="ee-file-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-file-page-height">Page height</label>
-<input id="aee-file-page-height" type="number" min="1" max="99"></input>
+<label for="ee-file-page-height">Page height</label>
+<input id="ee-file-page-height" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-file-page-numbers">Page numbers</label>
-<input id="aee-file-page-numbers" type="checkbox"></input>
+<label for="ee-file-page-numbers">Page numbers</label>
+<input id="-file-page-numbers" type="checkbox"></input>
 </div>
 
 <h3 id="set-formats-headings">Headings</h3>
@@ -535,80 +535,80 @@ const done = function() {
 
 <h4>Screen</h4>
 <div>
-<label for="aee-screen-indent-first">First line</label>
-<input id="aee-screen-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-screen-indent-first">First line</label>
+<input id="ee-screen-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="aee-screen-indent-runover">Run over</label>
-<input id="aee-screen-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-screen-indent-runover">Run over</label>
+<input id="ee-screen-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h4>Device</h4>
 <div>
-<label for="aee-device-indent-first">First line</label>
-<input id="aee-device-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-device-indent-first">First line</label>
+<input id="ee-device-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="aee-device-indent-runover">Run over</label>
-<input id="aee-device-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-device-indent-runover">Run over</label>
+<input id="ee-device-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h4>Files</h4>
 <div>
-<label for="aee-file-indent-first">First line</label>
-<input id="aee-file-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-file-indent-first">First line</label>
+<input id="ee-file-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="aee-file-indent-runover">Run over</label>
-<input id="aee-file-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-file-indent-runover">Run over</label>
+<input id="ee-file-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h4>Display Math</h4>
 <div>
-<label for="aee-math-indent-first">First line</label>
-<input id="aee-math-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-math-indent-first">First line</label>
+<input id="ee-math-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="aee-math-indent-runover">Run over</label>
-<input id="aee-math-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-math-indent-runover">Run over</label>
+<input id="ee-math-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h2 id="set-output">Output Settings</h2>
 
 <h3 id="set-font-size">Font Size</h3>
 <div>
-<label for="aee-html-font-size">HTML format</label>
-<input id="aee-html-font-size" type="number" min="1" max="99"></input>
+<label for="ee-html-font-size">HTML format</label>
+<input id="ee-html-font-size" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="aee-brl-font-size">BRL format</label>
-<input id="aee-brl-font-size" type="number" min="1" max="99"></input>
+<label for="ee-brl-font-size">BRL format</label>
+<input id="ee-brl-font-size" type="number" min="1" max="99"></input>
 </div>
 
 <h3 id="set-mathjax">Use MathJax for:</h3>
 <div>
-<label for="aee-mathjax-on-save">Save HTML</label>
-<input id="aee-mathjax-on-save" type="checkbox"></input>
+<label for="ee-mathjax-on-save">Save HTML</label>
+<input id="ee-mathjax-on-save" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-mathjax-on-export">Export HTML</label>
-<input id="aee-mathjax-on-export" type="checkbox"></input>
+<label for="ee-mathjax-on-export">Export HTML</label>
+<input id="ee-mathjax-on-export" type="checkbox"></input>
 </div>
 <div>
-<label for="aee-mathjax-on-print">Print HTML</label>
-<input id="aee-mathjax-on-print" type="checkbox"></input>
+<label for="ee-mathjax-on-print">Print HTML</label>
+<input id="ee-mathjax-on-print" type="checkbox"></input>
 </div>
 
 <h2 id="set-startup">Startup Settings</h2>
 
 <div>
-<label for="aee-show-welcome">Show the Welcome Page</label>
-<input id="aee-show-welcome" type="checkbox"></input>
+<label for="ee-show-welcome">Show the Welcome Page</label>
+<input id="ee-show-welcome" type="checkbox"></input>
 </div>
 
 <div>
-<label for="aee-show-users-guide">Show the Users Guide</label>
-<input id="aee-show-users-guide" type="checkbox"></input>
+<label for="ee-show-users-guide">Show the Users Guide</label>
+<input id="ee-show-users-guide" type="checkbox"></input>
 </div>
 
 <div>

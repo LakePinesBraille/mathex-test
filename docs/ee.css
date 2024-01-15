@@ -6,7 +6,7 @@ html
 {
     height: 100%;
     background-size: cover;
-    background-image: url( aee.jpg );
+    background-image: url( ee.jpg );
 }
 
 body
@@ -89,37 +89,37 @@ iframe
     left: -100px;
 }
 
-.aee-welcome {
+.ee-welcome {
     font-size: 15pt;
     background: white;
     border-radius: 6px;
     padding: 0.25in;
 }
 
-.aee-guide {
+.ee-guide {
     font-size: 15pt;
     background: white;
     border-radius: 6px;
     padding: 0.25in;
 }
 
-.aee-guide h4, .aee-guide h5 {
+.ee-guide h4, .ee-guide h5 {
     font-weight: bold;
 }
 
-.aee-settings {
+.ee-settings {
     font-size: 15pt;
     background: white;
     border-radius: 6px;
     padding: 0.25in;
 }
 
-.aee-settings label { width: 3.5in }
-.aee-settings td { width: 0.75in }
-.aee-settings .indent { padding-left: 0.5in }
-.aee-settings .aee-btn { padding: 0in 0.25in; margin-left: 0.25in }
+.ee-settings label { width: 3.5in }
+.ee-settings td { width: 0.75in }
+.ee-settings .indent { padding-left: 0.5in }
+.ee-settings .ex-btn { padding: 0in 0.25in; margin-left: 0.25in }
 
-.aee-about {
+.ee-about {
     font-size: 15pt;
     background: white;
     text-align: center;
@@ -127,15 +127,15 @@ iframe
     margin: 1in 2in;
 }
 
-.aee-welcome a, .aee-guide a, .aee-settings a, .aee-about a {
+.ee-welcome a, .ee-guide a, .ee-settings a, .ee-about a {
 	font-weight: bold;
 }
 
-.aee-welcome code, .aee-guide code, .aee-settings code, .aee-about code {
+.ee-welcome code, .ee-guide code, .ee-settings code, .ee-about code {
     font-weight: bold;
 }
 
-.aee-btn {
+.ex-btn {
     color: #333333;
     background-color: #aaaaaa;
     background-image: linear-gradient(to bottom, #cccccc, #aaaaaa);
@@ -144,12 +144,12 @@ iframe
     border-radius: 8px;
 }
 
-.aee-btn:hover, .aee-btn:focus, .aee-btn:active {
+.ex-btn:hover, .ex-btn:focus, .ex-btn:active {
     background-color: #dddddd !important;
     background-image: none !important;
 }
 
-.aee-btn:focus {
+.ex-btn:focus {
     border-color: #049CDB !important;
     border-width: 2px !important;
     border-style: solid !important;

@@ -1,7 +1,7 @@
 /* Braille font */
 @font-face {
-  font-family: aeeUBraille;
-  src:url("css/fonts/aeeUBraille.ttf");
+  font-family: eeUBraille;
+  src:url("css/fonts/eeUBraille.ttf");
 }
 
 /* Table font */
@@ -37,7 +37,7 @@ hr { border: 1px solid black }
 .brl, code {
     background: transparent;
     color: #c7254e;
-    font-family: aeeUBraille, Courier New, Segoe UI Symbol;
+    font-family: eeUBraille, Courier New, Segoe UI Symbol;
     font-weight: 600;
 }
 
