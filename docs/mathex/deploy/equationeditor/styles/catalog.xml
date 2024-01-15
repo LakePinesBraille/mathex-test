@@ -1,0 +1,57 @@
+<catalog>
+
+<style name="ex-basic" href="mxc/ex-basic.mxc"/>
+<style name="ex-braille" href="mxc/ex-braille.mxc"/>
+<style name="ex-buttons" href="mxc/ex-buttons.mxc"/>
+<style name="ex-spanish" href="mxc/ex-spanish.mxc"/>
+
+<!-- These entries define a style as a reference to a specific file -->
+
+<style name="basic" href="mxc/basic.mxc"/>
+<style name="basic-layout" href="mxc/basic-layout.mxc"/>
+<style name="basic-template" href="mxc/basic-template.mxc"/>
+<style name="basic-palettes" href="mxc/basic-palettes.mxc"/>
+<style name="braille" href="mxc/braille.mxc"/>
+<style name="braille-key" href="mxc/braille-key.mxc"/>
+<style name="braille-layout" href="mxc/braille-layout.mxc"/>
+<style name="braille-template" href="mxc/braille-template.mxc"/>
+<style name="braille-tooltips" href="mxc/braille-tooltips.mxc"/>
+<style name="br-text-echo" href="mxc/br-text-echo.mxc"/>
+<style name="br-text-cbc" href="mxc/br-text-cbc.mxc"/>
+<style name="br-text-gr1" href="mxc/br-text-gr1.mxc"/>
+<style name="br-text-gr2" href="mxc/br-text-gr2.mxc"/>
+<style name="full" href="mxc/full.mxc"/>
+<style name="palettes" href="mxc/palettes.mxc"/>
+<style name="render" href="mxc/render.mxc"/>
+<style name="text" href="mxc/text.mxc"/>
+<style name="_grade-3-5" href="mxc/grade-3-5.mxc"/>
+<style name="_grade-6-8" href="mxc/grade-6-8.mxc"/>
+<style name="_grade-9-12" href="mxc/grade-9-12.mxc"/>
+<style name="tables" href="mxc/tables.mxc"/>
+<style name="units" href="mxc/units.mxc"/>
+<style name="_units-3-5" href="mxc/units-3-5.mxc"/>
+<style name="_units-6-8" href="mxc/units-6-8.mxc"/>
+<style name="lang-en" href="mxc/lang-en.mxc"/>
+<style name="lang-es" href="mxc/lang-es.mxc"/>
+
+<!-- These entries define a style as a collection of other styles -->
+
+<style name="ee-basic"
+    refs="ex-basic basic basic-layout basic-template basic-palettes tables units lang-en"/>
+<style name="ee-text" refs="ee-basic text"/>
+<style name="ee-full" refs="ee-basic full"/>
+<style name="ee-palettes" refs="ee-basic palettes"/>
+<style name="ee-render" refs="ee-basic render"/>
+<style name="ee-braille"
+    refs="ex-braille braille-key braille-layout braille-template braille-tooltips"/>
+
+<style name="grade-3-5" refs="ee-basic _grade-3-5"/>
+<style name="grade-6-8" refs="ee-basic _grade-6-8"/>
+<style name="grade-9-12" refs="ee-basic _grade-9-12"/>
+
+<style name="units-3-5" refs="_units-3-5"/>
+<style name="units-6-8" refs="_units-6-8"/>
+
+<style name="ee" refs="ee-text ee-full ee-braille br-text-gr2 braille"/>
+
+</catalog>
