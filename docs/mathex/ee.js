@@ -223,7 +223,7 @@ const ee_init = () => {
   var home_URL = "";
   var file_URL = "";
 
-  var edt_home = "?edt/0000.html";
+  var edt_index = "?edt/0000.html";
   var edt_start = "?edt/0101.html";
 
   var last_file_elt = document.querySelector( ".ee-file-name" );
@@ -249,7 +249,7 @@ const ee_init = () => {
 
     if ( data && data.href )
     {
-      if ( isTutorial( data.href ) )
+      if ( isTutorial( data.href ) && !isTutorialIndex( data.href ) )
       {
           localStorage[ "edt-last-page-href" ] = data.href;
       }
@@ -362,6 +362,8 @@ const ee_init = () => {
 
     return result;
   };
+
+  const addBRFMarkup = addBRLMarkup; // !!
 
   const addViewMarkup = function( markup ) {
     markup = markup.replaceAll( "&", "&amp;" );
@@ -763,6 +765,26 @@ const ee_init = () => {
     }
   };
 
+  const do_printBRF = async function( event ) {
+    try {
+      event.preventDefault();
+
+      const markup = addBRFMarkup( editor.getAsciiBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getBRFOptions();
+      exportFile( options, "-brf" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+
+      nwindow.print();
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_printBRL = async function( event ) {
     try {
       event.preventDefault();
@@ -1033,21 +1055,8 @@ const ee_init = () => {
     try {
       event && event.preventDefault();
 
-      const iframe = document.createElement( "iframe" );
-      iframe.src = getDocBase() + "ee-welcome.html";
-
-      iframe.onload = () => {
-        iframe.contentWindow.onunload = () => {
-          EquationEditorAPI.updateSettings();
-          update_settings();
-          editor.setFocus();
-        };
-
-        iframe.onblur = () => iframe.focus();
-        iframe.focus();
-      };
-
-      document.body.appendChild( iframe );
+      do_query_href( edt_start );
+      setPanelSize( false );
     }
     catch ( e )
     {
@@ -1089,6 +1098,22 @@ const ee_init = () => {
         href = localStorage[ "edt-last-page-href" ];
       }
 
+      if ( href )
+      {
+        do_query_href( href );
+        setPanelSize( false );
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_index = async function ( event ) {
+    try {
+      event && event.preventDefault();
+
+      const href = localStorage[ "edt-index-page-href" ] || edt_index;
       if ( href )
       {
         do_query_href( href );
@@ -1183,6 +1208,9 @@ const ee_init = () => {
 
   // Return true if the current url is a tutorial
   const isTutorial = url => /edt\//.test( url );
+
+  // Return true if the current url is a tutorial index page
+  const isTutorialIndex = url => /edt\/.*0\.html/.test( url );
 
   // Retrieve the active document link target
   const getCurrentLink = function () {
@@ -1345,6 +1373,7 @@ const ee_init = () => {
 '            <li><a href="#" id="viewHTML">View HTML</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="printBRF" aria-label="Emboss BRF">E&#x0332;mboss BRF</a></li>' +
 '            <li><a href="#" id="viewBRF">View BRF</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRL">Save BRL</a></li>' +
@@ -1398,6 +1427,7 @@ const ee_init = () => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
 '            <li><a href="' + edt_start + '" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
+'            <li><a href="' + edt_index + '" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
 '            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
 '            <hr/>' +
@@ -1429,6 +1459,7 @@ const ee_init = () => {
   addClick( "#printHTML", do_printHTML );
   addClick( "#viewHTML", do_viewHTML );
   addClick( "#saveBRF", do_saveBRF );
+  addClick( "#printBRF", do_printBRF );
   addClick( "#viewBRF", do_viewBRF );
   addClick( "#saveBRL", do_saveBRL );
   addClick( "#exportBRL", do_exportBRL );
@@ -1459,6 +1490,7 @@ const ee_init = () => {
 
   addClick( "#welcome", do_welcome );
   addClick( "#tutorial", do_tutorial_edt );
+  addClick( "#index", do_index );
   addClick( "#getting", do_tutorial_gtk );
   addClick( "#settings", do_settings );
   addClick( "#samples", do_help );
@@ -1482,6 +1514,7 @@ const ee_init = () => {
       h: "#saveHTML",
       x: "#exportHTML",
       p: "#printHTML",
+      e: "#printBRF",
       b: "#saveBRF",
       c: "#close"
     },
@@ -1504,6 +1537,7 @@ const ee_init = () => {
     h: {
       w: "#welcome",
       t: "#tutorial",
+      i: "#index",
       u: "#guide",
       k: "#getting",
       m: "#samples",
@@ -1533,13 +1567,44 @@ const ee_init = () => {
         ( i, x ) => x.innerHTML === "[Alt+Enter]" ).attr( "href" ) || "";
 
     const indexStart = 101;
-    const indexLimit = 119;
+    const indexLimit = 439;
+    const skipIndex = {
+        180: true,
+        190: true,
+        200: true,
+        300: true,
+        350: true,
+        360: true,
+        370: true,
+        380: true,
+        390: true,
+        400: true
+    };
 
     const getIndex = s => parseInt( s.replace( /.*([0-9]{4}).*/, "$1" ) );
     const nextHome = v => ( v % 10 === 1 ? v - 10 : v - v % 10 + 1 );
     const nextEnd = v => ( v % 10 === 9 ? v + 10 : v - v % 10 + 9 );
-    const fixIndex = v => Math.min( Math.max( v, indexStart ), indexLimit );
     const putIndex = v => ( "0000" + v.toString() ).substr( -4 );
+
+    const nextHomeIndex = function ( url ) {
+      var index = getIndex( url );
+      index = index > indexStart ? nextHome( index ) : index;
+      while ( skipIndex[ index - 1 ] )
+      {
+        index = nextHome( index );
+      }
+      return putIndex( index );
+    };
+
+    const nextEndIndex = function ( url ) {
+      var index = getIndex( url );
+      index = index < indexLimit ? nextEnd( index ) : index;
+      while ( index === 109 || skipIndex[ index - 9 ] )
+      {
+        index = nextEnd( index );
+      }
+      return putIndex( index );
+    };
 
     if ( e.key === "Escape" && isTutorial( file_URL ) &&
         !document.querySelector( ".ee-menu" ).contains( document.activeElement ) )
@@ -1575,18 +1640,16 @@ const ee_init = () => {
     if ( e.key === "Home" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
     {
         result = true;
-        index = putIndex( fixIndex( nextHome( getIndex( file_URL ) ) ) );
-        href = file_URL.replace( src_URL, "?" )
-            .replace( /[0-9]{4}/, index );
+        index = nextHomeIndex( file_URL );
+        href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
         do_query_href( href );
     }
 
     if ( e.key === "End" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
     {
         result = true;
-        index = putIndex( fixIndex( nextEnd( getIndex( file_URL ) ) ) );
-        href = file_URL.replace( src_URL, "?" )
-            .replace( /[0-9]{4}/, index );
+        index = nextEndIndex( file_URL );
+        href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
         do_query_href( href );
     }
 
@@ -1598,7 +1661,7 @@ const ee_init = () => {
 
     if ( e.key === "I" && e.altKey && !e.ctrlKey )
     {
-      href = localStorage[ "edt-index-page-href" ] || edt_home;
+      href = localStorage[ "edt-index-page-href" ] || edt_index;
       if ( href )
       {
         result = true;
@@ -1684,6 +1747,10 @@ const ee_init = () => {
     delete localStorage[ "ee-query-state" ];
 
     do_query_href( href );
+    if ( isTutorial( href ) )
+    {
+      setPanelSize( false );
+    }
     return;
   }
 
@@ -1728,11 +1795,7 @@ document.addEventListener( "keydown", e => {
   }
   if ( e.key === "Escape" )
   {
-    if ( window.parent !== window )
-    {
-        window.parent.document.querySelector( "iframe" ).remove();
-    }
-    else if ( window.editor )
+    if ( window.editor )
     {
       window.editor.setFocus();
     }

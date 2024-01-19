@@ -1,6 +1,6 @@
-@import url( "css/bootstrap-3.3.7.min.css" );
-@import url( "css/jquery-ui-1.12.1.min.css" );
-@import url( "css/equationeditor.css" );
+@import url( "mathex/css/bootstrap-3.3.7.min.css" );
+@import url( "mathex/css/jquery-ui-1.12.1.min.css" );
+@import url( "mathex/css/equationeditor.css" );
 
 html
 {
@@ -14,16 +14,6 @@ body
     font-size: 150%;
     margin: 10px;
     background-color: transparent;
-}
-
-iframe
-{
-    position: absolute;
-    z-index: 1080;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
 }
 
 .ee-parent-panel
@@ -89,13 +79,6 @@ iframe
     left: -100px;
 }
 
-.ee-welcome {
-    font-size: 15pt;
-    background: white;
-    border-radius: 6px;
-    padding: 0.25in;
-}
-
 .ee-guide {
     font-size: 15pt;
     background: white;
@@ -127,11 +110,11 @@ iframe
     margin: 1in 2in;
 }
 
-.ee-welcome a, .ee-guide a, .ee-settings a, .ee-about a {
+.ee-guide a, .ee-settings a, .ee-about a {
 	font-weight: bold;
 }
 
-.ee-welcome code, .ee-guide code, .ee-settings code, .ee-about code {
+.ee-guide code, .ee-settings code, .ee-about code {
     font-weight: bold;
 }
 
