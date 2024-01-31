@@ -1,0 +1,397 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <body>
+    <h1>Lesson 6:  Printing a Document</h1>
+    <hr />
+    <p>This lesson shows how to produce hard copy from the documents you create.</p>
+    <hr />
+    <p>The end of this document includes the complete derivation of the formula for the general solution of the quadratic equation.</p>
+    <p>You should now be able to create this document from scratch, with a bit of work.</p>
+    <p>Now we will show what you can do with these documents.</p>
+    <hr />
+    <p>
+    <b>Example 1:</b>  Export an HTML document.</p>
+    <p>The documents created by the editor use a special kind of HTML that includes Content MathML, which web browsers do not support.</p>
+    <p>However, the editor can <i>export</i> a version of HTML that uses Presentation MathML, which many web browsers do support.</p>
+    <p>When you select the <code>Export HTML</code> item on the <code>File</code> menu, the current document is displayed in a static browser tab where you can read it like any other web page.</p>
+    <p>Dismiss the tab when you are ready to return to the editor window.</p>
+    <hr />
+    <p>
+    <b>Example 2:</b>  Print an HTML document.</p>
+    <p>When you select the <code>Print HTML</code> item on the <code>File</code> menu, the current document is displayed in a separate browser tab, and the browser Print operation is used to <i>print</i> the document to a printer or save it as a PDF file, just like with any other web page.</p>
+    <p>Dismiss the tab when you are ready to return to the editor window.</p>
+    <hr />
+    <p>
+    <b>Example 3:</b>  View HTML source markup.</p>
+    <p>You can <i>view</i> the HTML and Content MathML markup used to represent a document using the <code>View Source</code> item on the <code>File</code> menu.</p>
+    <p>The HTML source markup is displayed in a separate browser tab.  Dismiss the tab when you are ready to return to the editor window.</p>
+    <p>This HTML markup is what the editor saves when it saves a document.</p>
+    <hr />
+    <p>
+    <b>Example 4:</b>  View HTML output markup.</p>
+    <p>You can <i>view</i> the HTML and Presentation MathML markup used to print a document using the <code>View HTML</code> item on the <code>File</code> menu.</p>
+    <p>The HTML output markup is displayed in a separate browser tab.  Dismiss the tab when you are ready to return to the editor window.</p>
+    <p>This HTML markup is what the editor uses when it exports or prints a document.</p>
+    <hr />
+    <p>
+      <b>Exercises</b>
+    </p>
+    <p>1.  Export the current document as an HTML document using <code>Export HTML</code>.</p>
+    <p>
+      <input />
+    </p>
+    <p>2.  Print the current document as an HTML document using <code>Print HTML</code>.</p>
+    <p>
+      <input />
+    </p>
+    <p>3.  View the source markup for the current document using <code>View Source</code>.</p>
+    <p>
+      <input />
+    </p>
+    <p>4.  View the output markup for the current document using <code>View HTML</code>.</p>
+    <p>
+      <input />
+    </p>
+    <hr />
+    <p>
+      <b>Homework</b>
+    </p>
+    <p>1.  Open the local file you created for the Homework for Lesson 1.</p>
+    <p>(using <code>File</code> &gt; <code>Open</code>)</p>
+    <p>
+      <input />
+    </p>
+    <p>2.  Print the document as an HTML document using <code>Print HTML</code>.</p>
+    <p>
+      <input />
+    </p>
+    <hr />
+    <h1>Solving the Quadratic Equation</h1>
+    <p>Start with the general quadratic equation.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci>a</ci>
+              <apply>
+                <power/>
+                <ci>x</ci>
+                <cn>2</cn>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <ci>b</ci>
+              <ci>x</ci>
+            </apply>
+            <ci>c</ci>
+          </apply>
+          <cn>0</cn>
+        </apply>
+    </math></p>
+    <p>Multiply by <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <cn>4</cn>
+          <ci>a</ci>
+        </apply>
+    </math>.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <apply>
+                <power/>
+                <ci>a</ci>
+                <cn>2</cn>
+              </apply>
+              <apply>
+                <power/>
+                <ci>x</ci>
+                <cn>2</cn>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <ci>a</ci>
+              <ci>b</ci>
+              <ci>x</ci>
+            </apply>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <ci>a</ci>
+              <ci>c</ci>
+            </apply>
+          </apply>
+          <cn>0</cn>
+        </apply>
+    </math></p>
+    <p>Add <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <plus/>
+          <apply>
+            <power/>
+            <ci>b</ci>
+            <cn>2</cn>
+          </apply>
+          <apply>
+            <minus/>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <ci>a</ci>
+              <ci>c</ci>
+            </apply>
+          </apply>
+        </apply>
+    </math>.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <apply>
+                <power/>
+                <ci>a</ci>
+                <cn>2</cn>
+              </apply>
+              <apply>
+                <power/>
+                <ci>x</ci>
+                <cn>2</cn>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <cn>4</cn>
+              <ci>a</ci>
+              <ci>b</ci>
+              <ci>x</ci>
+            </apply>
+            <apply>
+              <power/>
+              <ci>b</ci>
+              <cn>2</cn>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <ci>b</ci>
+              <cn>2</cn>
+            </apply>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <cn>4</cn>
+                <ci>a</ci>
+                <ci>c</ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+    </math></p>
+    <p>Factor the perfect square.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <power/>
+            <apply>
+              <paren/>
+              <apply>
+                <plus/>
+                <apply>
+                  <times/>
+                  <cn>2</cn>
+                  <ci>a</ci>
+                  <ci>x</ci>
+                </apply>
+                <ci>b</ci>
+              </apply>
+            </apply>
+            <cn>2</cn>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <ci>b</ci>
+              <cn>2</cn>
+            </apply>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <cn>4</cn>
+                <ci>a</ci>
+                <ci>c</ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+    </math></p>
+    <p>Take the square root.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <cn>2</cn>
+              <ci>a</ci>
+              <ci>x</ci>
+            </apply>
+            <ci>b</ci>
+          </apply>
+          <apply>
+            <pm/>
+            <apply>
+              <root/>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <ci>b</ci>
+                  <cn>2</cn>
+                </apply>
+                <apply>
+                  <minus/>
+                  <apply>
+                    <times/>
+                    <cn>4</cn>
+                    <ci>a</ci>
+                    <ci>c</ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+    </math></p>
+    <p>Subtract <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <ci>b</ci>
+    </math>.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <times/>
+            <cn>2</cn>
+            <ci>a</ci>
+            <ci>x</ci>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <minus/>
+              <ci>b</ci>
+            </apply>
+            <apply>
+              <pm/>
+              <apply>
+                <root/>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci>b</ci>
+                    <cn>2</cn>
+                  </apply>
+                  <apply>
+                    <minus/>
+                    <apply>
+                      <times/>
+                      <cn>4</cn>
+                      <ci>a</ci>
+                      <ci>c</ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+    </math></p>
+    <p>Divide by <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <cn>2</cn>
+          <ci>a</ci>
+        </apply>
+    </math>.</p>
+    <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <ci>x</ci>
+          <apply>
+            <divide/>
+            <apply>
+              <plus/>
+              <apply>
+                <minus/>
+                <ci>b</ci>
+              </apply>
+              <apply>
+                <pm/>
+                <apply>
+                  <root/>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci>b</ci>
+                      <cn>2</cn>
+                    </apply>
+                    <apply>
+                      <minus/>
+                      <apply>
+                        <times/>
+                        <cn>4</cn>
+                        <ci>a</ci>
+                        <ci>c</ci>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <cn>2</cn>
+              <ci>a</ci>
+            </apply>
+          </apply>
+        </apply>
+    </math></p>
+    <p>Giving the formula for the solutions of the general quadratic equation in terms of the coefficients <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <ci>a</ci>
+      </math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <ci>b</ci>
+      </math>, and <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <ci>c</ci>
+    </math>.</p>
+    <hr />
+    <p>Press <a href="?Lesson-07.html">[Alt+Enter]</a> when you are ready to continue.</p>
+    <hr />
+    <p>
+      <small>
+        <i>Copyright © 2024 Lake Pines Braille</i>
+      </small>
+    </p>
+  </body>
+</html>
