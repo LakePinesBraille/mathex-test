@@ -1,17 +1,17 @@
 (() => {
   // Collect the query parameters
-  if ( window.location.search && localStorage )
+  if ( window.location.search && localStorage &&
+       window.location.search !== localStorage[ "ee-query-state" ] )
   {
     localStorage[ "ee-query-state" ] = window.location.search;
-    window.location.href = window.location.origin + window.location.pathname;
   }
 })();
 
 const ee_settings = {
   "ee-show-welcome" : "false",
   "ee-show-users-guide" : "false",
-  "edt-show-tutorial" : "true",
-  "edt-show-last-page" : "true",
+  "edt-show-tutorial" : "false",
+  "edt-show-last-page" : "false",
   "edt-index-page-href" : "?edt/0000.html",
   "edt-start-page-href" : "?edt/0101.html",
   "edt-last-page-href" : "",
@@ -225,6 +225,7 @@ const ee_init = () => {
 
   var edt_index = "?edt/0000.html";
   var edt_start = "?edt/0101.html";
+  var bt_start = "?train/Syllabus.html"
 
   var last_file_elt = document.querySelector( ".ee-file-name" );
   var last_file_name = "";
@@ -251,7 +252,7 @@ const ee_init = () => {
     {
       if ( isTutorial( data.href ) && !isTutorialIndex( data.href ) )
       {
-          localStorage[ "edt-last-page-href" ] = data.href;
+        localStorage[ "edt-last-page-href" ] = data.href;
       }
 
       delete data.href;
@@ -362,8 +363,6 @@ const ee_init = () => {
 
     return result;
   };
-
-  const addBRFMarkup = addBRLMarkup; // !!
 
   const addViewMarkup = function( markup ) {
     markup = markup.replaceAll( "&", "&amp;" );
@@ -477,20 +476,14 @@ const ee_init = () => {
   };
 
   const exportFile = ( options, type ) => {
-    if ( last_file_handle )
-    {
-      options.suggestedName =
-        last_file_handle.name.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
-    }
-    else if ( last_file_name )
-    {
-      options.suggestedName =
-        last_file_name.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
-    }
-    if ( type )
-    {
-      options.suggestedName = options.suggestedName + type;
-    }
+    var fname = last_file_handle && last_file_handle.name ||
+        last_file_name || "untitled";
+
+    fname = fname.replace( /^.*\//, "" );
+    fname = fname.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
+    fname = fname + ( type || "" );
+
+    options.suggestedName = fname;
   };
 
   const saveThis = async ( markup ) => {
@@ -582,6 +575,8 @@ const ee_init = () => {
       clearModFlag();
       home_URL = "";
       file_URL = "";
+
+      ee_drive.clear();
     }
     catch ( e )
     {
@@ -600,6 +595,8 @@ const ee_init = () => {
 
       clearModFlag();
       last_open_handle = last_file_handle;
+
+      ee_drive.clear();
     }
     catch ( e )
     {
@@ -631,6 +628,8 @@ const ee_init = () => {
       await saveThis( getContent() );
 
       clearModFlag();
+
+      ee_drive.clear();
     }
     catch ( e )
     {
@@ -646,6 +645,8 @@ const ee_init = () => {
 
       clearModFlag();
       last_open_handle = last_file_handle;
+
+      ee_drive.clear();
     }
     catch ( e )
     {
@@ -769,7 +770,7 @@ const ee_init = () => {
     try {
       event.preventDefault();
 
-      const markup = addBRFMarkup( editor.getAsciiBraille() );
+      const markup = editor.getAsciiBraille();
       const nwindow = window.open( "" );
 
       const options = getBRFOptions();
@@ -1063,6 +1064,18 @@ const ee_init = () => {
     }
   };
 
+  const do_training = async function ( event ) {
+    try {
+      event && event.preventDefault();
+
+      do_query_href( bt_start );
+      setPanelSize( false );
+    }
+    catch ( e )
+    {
+    }
+  };
+
   const do_tutorial_gtk = async function( event ) {
     try {
       event && event.preventDefault();
@@ -1159,7 +1172,11 @@ const ee_init = () => {
   const do_drive_save = async function( event ) {
     try {
       event.preventDefault();
-      ee_drive.save( getContent, setCleanFileName );
+
+      const options = getOpenOptions();
+      exportFile( options );
+
+      ee_drive.save( getContent, setCleanFileName, options );
     }
     catch ( e )
     {
@@ -1169,7 +1186,11 @@ const ee_init = () => {
   const do_drive_saveAs = async function( event ) {
     try {
       event.preventDefault();
-      ee_drive.save_as( getContent, setCleanFileName );
+
+      const options = getOpenOptions();
+      exportFile( options );
+
+      ee_drive.save_as( getContent, setCleanFileName, options );
     }
     catch ( e )
     {
@@ -1274,6 +1295,7 @@ const ee_init = () => {
     {
       // Open a remote web resource
       open_url( data, setContent, setCleanFileName );
+      ee_drive.clear();
     }
 
     else if ( data && data.action === "open" && data.ids )
@@ -1295,8 +1317,9 @@ const ee_init = () => {
     }
   };
 
-  // Process the query parameters
-  const do_query_href = function( href ) {
+  // Retrieve the query parameters
+  const get_query_data = function( href )
+  {
     href = href.substring( href.indexOf( "?" ) );
     const params = new URLSearchParams( href );
     const data = { "state" : { "action" : "open", "href" : href } };
@@ -1317,15 +1340,17 @@ const ee_init = () => {
     {
       // Short form - base + file URL
       const s = href.substring( 1 );
-      const ix = s.indexOf( "/" );
+      const ix = s.indexOf( "/", 1 );
       if ( ix === -1 )
       {
+        data.state.base = base_URL;
         data.state.url = s;
       }
       else
       {
         data.state.base = s.substring( 0, ix + 1 );
         data.state.url = s.substring( ix + 1 );
+        base_URL = data.state.base;
       }
 
       if ( isTutorial( href ) )
@@ -1340,6 +1365,12 @@ const ee_init = () => {
       data.state.url = href;
     }
 
+    return data;
+  };
+
+  // Process the query parameters
+  const do_query_href = function( href ) {
+    const data = get_query_data( href );
     do_query_data( data.state );
   };
 
@@ -1426,6 +1457,7 @@ const ee_init = () => {
 '          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
+'            <li><a href="' + bt_start + '" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
 '            <li><a href="' + edt_start + '" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
 '            <li><a href="' + edt_index + '" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
 '            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
@@ -1489,6 +1521,7 @@ const ee_init = () => {
   addClick( "#panel_braille", do_panel_braille );
 
   addClick( "#welcome", do_welcome );
+  addClick( "#training", do_training );
   addClick( "#tutorial", do_tutorial_edt );
   addClick( "#index", do_index );
   addClick( "#getting", do_tutorial_gtk );
@@ -1536,6 +1569,7 @@ const ee_init = () => {
     },
     h: {
       w: "#welcome",
+      b: "#training",
       t: "#tutorial",
       i: "#index",
       u: "#guide",
@@ -1621,7 +1655,7 @@ const ee_init = () => {
         updatePanels();
     }
 
-    if ( e.key === "Enter" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
+    if ( e.key === "Enter" && e.altKey && !e.ctrlKey )
     {
       href = next || href;
       if ( !href )
@@ -1629,9 +1663,11 @@ const ee_init = () => {
         window.editor.selection().linkRight();
         href = getCurrentLink();
       }
+      result = true;
+      do_query_href( href );
     }
 
-    if ( e.key === "Enter" && isTutorial( file_URL ) && href )
+    if ( e.key === "Enter" && !e.altKey && !e.ctrlKey && href )
     {
       result = true;
       do_query_href( href );
@@ -1743,7 +1779,7 @@ const ee_init = () => {
   // Process the query parameters
   if ( window.editor && localStorage[ "ee-query-state" ] )
   {
-    const href = localStorage[ "ee-query-state" ]
+    const href = localStorage[ "ee-query-state" ];
     delete localStorage[ "ee-query-state" ];
 
     do_query_href( href );

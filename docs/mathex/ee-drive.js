@@ -459,11 +459,12 @@ const ee_drive = () => {
   /**
    * Process the picker results for drive save as.
    */
-  const save_as_picked = ( data, fn, cb ) => {
+  const save_as_picked = ( data, fn, cb, options ) => {
     return new Promise( ( resolve, reject ) => {
       try {
         const ofileName = fileName;
         const ofileId = fileId;
+        const fname = ofileName || options.suggestedName + ".html";
 
         const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
 
@@ -472,7 +473,7 @@ const ee_drive = () => {
 
         const uri = "https://www.googleapis.com/upload/drive/v3/files/";
 
-        const nfileName = prompt( "Save file as", ofileName || "untitled.html" );
+        const nfileName = prompt( "Save file as", fname );
         if ( !nfileName )
         {
           fileName = ofileName;
@@ -711,6 +712,14 @@ const ee_drive = () => {
   };
 
   /**
+   * Clear the file name for Google Drive.
+   */
+  const drive_clear = () => {
+    fileName = undefined;
+    fileId = undefined;
+  };
+
+  /**
    * Open a file from Google Drive.
    */
   const drive_open = ( fn, cb ) => request()
@@ -721,23 +730,23 @@ const ee_drive = () => {
   /**
    * Save an existing file to Google Drive.
    */
-  const drive_save = ( fn, cb ) => {
+  const drive_save = ( fn, cb, options ) => {
     if ( fileName && fileId ) {
       request()
         .then( () => save_picked( fn, cb ) )
         .catch( e => ALERT( e.message ) );
     }
     else {
-      return drive_save_as( fn, cb );
+      return drive_save_as( fn, cb, options );
     }
   };
 
   /**
    * Save a new file to Google Drive.
    */
-  const drive_save_as = ( fn, cb ) => request()
+  const drive_save_as = ( fn, cb, options ) => request()
     .then( () => createPicker( true, "Select a folder to Save into" ) )
-    .then( ( data ) => save_as_picked( data, fn, cb ) )
+    .then( ( data ) => save_as_picked( data, fn, cb, options ) )
     .catch( e => ALERT( e.message ) );
 
   /**
@@ -779,6 +788,7 @@ const ee_drive = () => {
     .then( () => create_new( data, fn, cb ) )
     .catch( e => ALERT( e.message ) );
 
+  ee_drive.clear = drive_clear;
   ee_drive.open = drive_open;
   ee_drive.save = drive_save;
   ee_drive.save_as = drive_save_as;
