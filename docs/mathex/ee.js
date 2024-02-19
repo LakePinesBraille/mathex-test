@@ -7,126 +7,142 @@
   }
 })();
 
-const ee_settings = {
-  "ee-show-welcome" : "false",
-  "ee-show-users-guide" : "false",
-  "edt-show-tutorial" : "false",
-  "edt-show-last-page" : "false",
-  "edt-index-page-href" : "?edt/0000.html",
-  "edt-start-page-href" : "?edt/0101.html",
-  "edt-last-page-href" : "",
-  "gtk-show-tutorial" : "false",
-  "gtk-show-last-page" : "false",
-  "gtk-last-page-href" : "",
-  "ee-width" : 0,
-  "ee-height" : 0,
-  "ee-input-qwerty" : "true",
-  "ee-input-braille" : "false",
-  "ee-input-home" : "false",
-  "ee-panel-all-panels" : "true",
-  "ee-panel-app-menus" : "true",
-  "ee-panel-open-file" : "true",
-  "ee-panel-quick-bar" : "true",
-  "ee-panel-side-bar" : "true",
-  "ee-panel-braille-bar" : "true",
-  "ee-mathjax-on-save" : "false",
-  "ee-mathjax-on-export" : "true",
-  "ee-mathjax-on-print" : "true",
-  "ee-screen-page-width" : 30,
-  "ee-screen-page-height" : 4,
-  "ee-screen-indent-first" : 1,
-  "ee-screen-indent-runover" : 1,
-  "ee-device-page-width" : 40,
-  "ee-device-page-height" : 1,
-  "ee-device-indent-first" : 1,
-  "ee-device-indent-runover" : 1,
-  "ee-file-page-width" : 40,
-  "ee-file-page-height" : 25,
-  "ee-file-page-numbers" : "true",
-  "ee-file-indent-first" : 1,
-  "ee-file-indent-runover" : 1,
-  "ee-math-indent-first" : 3,
-  "ee-math-indent-runover" : 5,
-  "ee-html-font-size" : 18,
-  "ee-brl-font-size" : 24,
-  "fmt-heading-1": "center",
-  "fmt-heading-2": "cell-5",
-  "fmt-heading-3": "cell-7",
-  "fmt-heading-4": "cell-7",
-  "fmt-heading-5": "cell-7",
-  "fmt-heading-6": "cell-7",
-  "brl-rules-all-rules" : "true",
-  "brl-rules-alphabetic-wordsigns" : "true",
-  "brl-rules-strong-wordsigns" : "true",
-  "brl-rules-strong-contractions" : "true",
-  "brl-rules-strong-groupsigns" : "true",
-  "brl-rules-lower-wordsigns" : "true",
-  "brl-rules-lower-groupsigns" : "true",
-  "brl-rules-initial-letter" : "true",
-  "brl-rules-initial-letter-45" : "true",
-  "brl-rules-initial-letter-456" : "true",
-  "brl-rules-initial-letter-5" : "true",
-  "brl-rules-final-letter" : "true",
-  "brl-rules-final-letter-46" : "true",
-  "brl-rules-final-letter-56" : "true",
-  "brl-rules-shortforms" : "true"
-};
+const ee = (() => {
+  /**
+   * The equation editor user interface object.
+   */
+  const _ee = {};
 
-const ee_reset = () => {
-  localStorage = localStorage || {};
-  localStorage.clear = localStorage.clear || function() { localStorage = {} };
+  /**
+   * The equation editor user interface onload handler.
+   */
+  _ee.onload = () => {
+    const body = document.body;
 
-  var key = "ee-panel-all-panels";
-  var value = localStorage[ key ];
+    // Create the open file name element 
+    const p = document.createElement( "p" );
+    p.setAttribute( "class", "ee-file-name" );
+    body.insertBefore( p, body.firstChild );
+    open_file_panel = p;
 
-  localStorage.clear();
-  for ( var k in ee_settings )
-  {
-    localStorage[ k ] = ee_settings[ k ];
-  }
+    // Create the menu container element
+    const div = document.createElement( "div" );
+    div.setAttribute( "class", "ee-menu" );
+    body.insertBefore( div, body.firstChild );
+    menu_bar_panel = div;
 
-  localStorage[ key ] = value || localStorage[ key ];
-};
+    // Create the initial focus handler element
+    const elt = document.createElement( "textarea" );
+    elt.setAttribute( "class", "ee-init-panel" );
+    elt.setAttribute( "aria-label", "equation" );
+    elt.setAttribute( "tabindex", "-1" );
+    elt.addEventListener( "blur", () => body.removeChild( elt ) );
+    body.insertBefore( elt, body.firstChild );
 
-const ee_onload = () => {
-  const body = document.body;
+    // Transfer the input focus to the focus handler element
+    elt.focus();
+  };
 
-  const p = document.createElement( "p" );
-  p.setAttribute( "class", "ee-file-name" );
-  body.insertBefore( p, body.firstChild );
+  /**
+   * Reset the default equation editor user interface settings.
+   */
+  _ee.reset = () => {
+    localStorage = localStorage || {};
+    localStorage.clear = localStorage.clear || ( () => localStorage = {} );
 
-  const div = document.createElement( "div" );
-  div.setAttribute( "class", "ee-menu" );
-  body.insertBefore( div, body.firstChild );
+    const key = "ee-panel-all-panels";
+    const value = localStorage[ key ];
 
-  const elt = document.createElement( "textarea" );
-  elt.setAttribute( "class", "ee-init-panel" );
-  elt.setAttribute( "aria-label", "equation" );
-  elt.setAttribute( "tabindex", "-1" );
+    localStorage.clear();
+    for ( var k in ee.settings )
+    {
+      localStorage[ k ] = ee.settings[ k ];
+    }
 
-  elt.addEventListener( "blur", () => {
-    body.removeChild( elt );
-  } );
+    localStorage[ key ] = value || localStorage[ key ];
+  };
 
-  body.insertBefore( elt, body.firstChild );
-  elt.focus();
-};
+  /**
+   * Initialize the equation editor user interface elements.
+   */
+  _ee.init = () => {
+    if ( !( localStorage && localStorage[ "ee-show-welcome" ] ) )
+    {
+      ee.reset();
+    }
 
-const ee_init = () => {
-  editor = EquationEditorAPI.getInstance( "RESPONSE" );
-  if ( editor )
-  {
-    editor.model().setSystemClipboard( true );
-    editor.setFocus();
-  }
+    addMarkup( ".ee-version", getVersion() );
+    addMarkup( ".ee-timestamp", getTimestamp() );
 
-  if ( !( localStorage && localStorage[ "ee-show-welcome" ] ) )
-  {
-    ee_reset();
-  }
+    editor = EquationEditorAPI.getInstance( "RESPONSE" );
+    if ( editor )
+    {
+      editor.model().setSystemClipboard( true );
+      editor.setFocus();
 
-  const getDocBase = function() {
-    // from the ee.js script tag
+      initMenus();
+      initEvents();
+      initContent();
+    }
+  };
+
+  const LOG = msg => msg; // console.log( msg );
+  const ALERT = msg => alert( msg );
+
+  /**
+   * Retrieve a boolean setting value.
+   */
+  const getLocalSetting = ( key ) => {
+    return ( localStorage[ key ] === "true" ) || false;
+  };
+
+  /**
+   * Set a boolean setting value.
+   */
+  const setLocalSetting = ( key, value ) => {
+    localStorage[ key ] = ( value ? "true" : "false" );
+  };
+
+  /**
+   * Toggle a boolean setting value.
+   */
+  const toggleLocalSetting = ( key ) => {
+    setLocalSetting( key, !getLocalSetting( key ) );
+  };
+
+  /**
+   * Get a numerical setting value.
+   */
+  const getLocalSettingNumber = ( key ) => {
+    return ( localStorage[ key ] ) || "";
+  };
+
+  /**
+   * Set a numerical setting value.
+   */
+  const setLocalSettingNumber = ( key, value ) => {
+    localStorage[ key ] = value;
+  };
+
+  /**
+   * Retrieve the equation editor component version.
+   */
+  const getVersion = () => {
+    return EquationEditorAPI && EquationEditorAPI.version || "";
+  };
+
+  /**
+   * Retrieve the equation editor component timestamp.
+   */
+  const getTimestamp = () => {
+    return EquationEditorAPI && EquationEditorAPI.timeStamp || "";
+  };
+
+  /**
+   * Retrieve the base URL of the equation editor user interface document.
+   */
+  const getDocBase = () => {
+    // from the script tag
     const elt = document.querySelector( "script" );
     const att = elt && elt.getAttribute( "src" ) || "";
 
@@ -135,7 +151,7 @@ const ee_init = () => {
         return att.replace( "ee.js", "" );
     }
 
-    // from the ee.html window location
+    // from the window location
     const href = window.location.href;
 
     if ( /ee\.html$/.test( href ) )
@@ -151,102 +167,204 @@ const ee_init = () => {
     return "";
   };
 
-  const getVersion = function() {
-    return EquationEditorAPI.version;
-  };
+  /**
+   * Return true if the current url is a tutorial.
+   */
+  const isTraining = url => /train\//.test( url );
 
-  const getTimestamp = function() {
-    return EquationEditorAPI.timeStamp;
-  };
+  /**
+   * Return true if the current url is a tutorial.
+   */
+  const isTutorial = url => /edt\//.test( url );
 
-  const isMath = function() {
-    return editor && !/html/.test( editor._initial );
-  };
+  /**
+   * Return true if the current url is a tutorial index page.
+   */
+  const isTutorialIndex = url => /edt\/.*0\.html/.test( url );
 
-  const addMarkup = function( selector, markup ) {
-    const elt = document.querySelector( selector );
-    if ( elt )
-    {
-      elt.innerHTML = markup;
-    }
-  };
-
-  const addClick = function( s, fn ) {
-    const elt = document.querySelector( s );
-    if ( elt )
-    {
-      elt.onclick = fn;
-    }
-  };
-
+  /**
+   * File dialog user interface options.
+   */
   const file_options = {
     multiple : false,
     excludeAcceptAllOption : true,
     suggestedName : "untitled"
   };
 
-  const math_types = { types : [ {
-    description : "MathML Content",
-    accept : { "application/mathml-content+xml" : [ ".mml" ] }
-  } ] };
-
-  const math_export = { types : [ {
-    description : "MathML Presentation",
-    accept : { "application/mathml-presentation+xml" : [ ".mml" ] }
-  } ] };
-
-  const brf_export = { types : [ {
-    description : "Braille Ready File",
-    accept : { "application/brf" : [ ".brf" ] }
-  } ] };
-
-  const brl_export = { types : [ {
-    description : "Braille HTML File",
-    accept : { "application/html" : [ ".html" ] }
-  } ] };
-
-  const text_types = { types : [ {
+  /**
+   * File open/save file type options.
+   */
+  const open_types = { types : [ {
     description : "HTML + MathML Content",
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
-  const text_export = { types : [ {
+  /**
+   * HTML file save/export file type options.
+   */
+  const html_types = { types : [ {
     description : "HTML + MathML Presentation",
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
-  const LOG = msg => msg; // console.log( msg );
-  const ALERT = msg => alert( msg );
+  /**
+   * BRF file save/export file type options.
+   */
+  const brf_types = { types : [ {
+    description : "Braille Ready File",
+    accept : { "application/brf" : [ ".brf" ] }
+  } ] };
 
+  /**
+   * BRL file save/export dialog user interface options.
+   */
+  const brl_types = { types : [ {
+    description : "Braille HTML File",
+    accept : { "application/html" : [ ".html" ] }
+  } ] };
+
+  /**
+   * Retrieve the file open/save dialog options.
+   */
+  const getOpenOptions = () => {
+    return Object.assign( { startIn: last_file_handle }, file_options, open_types );
+  };
+
+  /**
+   * Retrieve the HTML export dialog options.
+   */
+  const getHTMLOptions = () => {
+    return Object.assign( { startIn: last_file_handle }, file_options, html_types );
+  };
+
+  /**
+   * Retrieve the BRF export dialog options.
+   */
+  const getBRFOptions = () => {
+    return Object.assign( { startIn: last_file_handle }, file_options, brf_types );
+  };
+
+  /**
+   * Retrieve the BRL export dialog options.
+   */
+  const getBRLOptions = () => {
+    return Object.assign( { startIn: last_file_handle }, file_options, brl_types );
+  };
+
+  /**
+   * Set the suggested file name dialog option.
+   */
+  const setFileOption = ( options, type ) => {
+    var fname = last_file_handle && last_file_handle.name ||
+        open_file_name || "untitled";
+
+    fname = fname.replace( /^.*\//, "" );
+    fname = fname.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
+    fname = fname + ( type || "" );
+
+    options.suggestedName = fname;
+  };
+
+  /**
+   * The menu bar panel.
+   */
+   var menu_bar_panel = null;
+
+  /**
+   * The open file name panel.
+   */
+  var open_file_panel = null;
+
+  /**
+   * The open file name.
+   */
+  var open_file_name = "";
+
+  /**
+   * The open file handle.
+   */
+  var open_file_handle = undefined;
+
+  /**
+   * The last file handle.
+   */
+  var last_file_handle = undefined;
+
+  /**
+   * The URL of the equation editor user interface document.
+   */
   var src_URL = getDocBase();
+
+  /**
+   * The URL of the user interface document base.
+   */
   var base_URL = "";
+
+  /**
+   * The URL of the user interface home document.
+   */
   var home_URL = "";
+
+  /**
+   * The URL of the current open document.
+   */
   var file_URL = "";
 
-  var edt_index = "?edt/0000.html";
-  var edt_start = "?edt/0101.html";
-  var bt_start = "?train/Syllabus.html"
+  /**
+   * Update the menu bar panel.
+   */
+  const updateMenuBarPanel = () => {
+    const panel = menu_bar_panel;
+    const value = getLocalSetting( "ee-panel-all-panels" )
+               && getLocalSetting( "ee-panel-app-menus" );
 
-  var last_file_elt = document.querySelector( ".ee-file-name" );
-  var last_file_name = "";
-  var last_file_mod = false;
-
-  var last_file_handle = undefined;
-  var last_open_handle = undefined;
-
-  const updateFileName = function() {
-    if ( last_file_elt )
+    if ( panel )
     {
-      var value = getLocalSetting( "ee-panel-all-panels" )
-               && getLocalSetting( "ee-panel-open-file" );
-      last_file_elt.innerText = last_file_name;
-      last_file_elt.style.display = value && last_file_name ? "block" : "none";
+      panel.style.display = value ? "block" : "none";
     }
   };
 
-  const setCleanFileName = function( name, data ) {
-    setLastFileName( name );
-    clearModFlag();
+  /**
+   * Update the open file name panel.
+   */
+  const updateOpenFilePanel = () => {
+    const panel = open_file_panel;
+    const name = open_file_name;
+    const value = getLocalSetting( "ee-panel-all-panels" )
+               && getLocalSetting( "ee-panel-open-file" );
+
+    if ( panel )
+    {
+      panel.innerText = name;
+      panel.style.display = name && value ? "block" : "none";
+    }
+  };
+
+  /**
+   * Set the open file name.
+   */
+  const setOpenFileName = ( name ) => {
+    open_file_name = name;
+    open_file_handle = undefined;
+    last_file_handle = undefined;
+
+    updateOpenFilePanel();
+  };
+
+  /**
+   * Set the open file handle.
+   */
+  const setOpenFileHandle = ( handle ) => {
+    setOpenFileName( handle.name );
+    open_file_handle = handle;
+    last_file_handle = handle;
+  };
+
+  /**
+   * Set the open file data.
+   */
+  const setOpenFileData = ( name, data ) => {
+    setOpenFileName( name );
 
     if ( data && data.href )
     {
@@ -262,683 +380,10 @@ const ee_init = () => {
     }
   };
 
-  const setLastFileName = function( name ) {
-    last_file_handle = undefined;
-    last_open_handle = undefined;
-    last_file_name = name;
-    updateFileName();
-  };
-
-  const clearModFlag = function () {
-    editor._initial = getContent();
-    last_file_mod = false;
-    updateFileName();
-  };
-
-  const updateModFlag = function() {
-    if ( last_file_elt )
-    {
-      last_file_mod = ( getContent() !== editor._initial );
-      updateFileName();
-    }
-  };
-
-  const getOpenOptions = function() {
-    return Object.assign( { startIn: last_file_handle }, file_options,
-      isMath() ? math_types : text_types );
-  };
-
-  const getExportOptions = function() {
-    return Object.assign( { startIn: last_file_handle }, file_options,
-      isMath() ? math_export : text_export );
-  };
-
-  const getBRFOptions = function() {
-    return Object.assign( { startIn: last_file_handle }, file_options, brf_export );
-  };
-
-  const getBRLOptions = function() {
-    return Object.assign( { startIn: last_file_handle }, file_options, brl_export );
-  };
-
-  const html_otag = '<html>\r\n';
-  const html_ctag = '</html>\r\n';
-  const head_otag = '<head>\r\n';
-  const head_ctag = '</head>\r\n';
-  const body_otag = '<body>\r\n';
-  const body_ctag = '</body>\r\n';
-  const p_otag = '<p>\r\n';
-  const p_ctag = '\r\n</p>\r\n';
-  const pre_otag = '<pre>\r\n';
-  const pre_ctag = '\r\n</pre>\r\n';
-
-  const html_open = html_otag + body_otag + p_otag;
-  const html_close = p_ctag + body_ctag + html_ctag;
-
-  const view_open = html_otag + body_otag + pre_otag;
-  const view_close = pre_ctag + body_ctag + html_ctag;
-
-  const script_tag = '    <script type="text/javascript" ' +
-'src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js' +
-'?config=MML_CHTML"></script>\r\n';
-  const body_tag = '  <body>\r\n';
-  const head_tag = head_otag + script_tag + head_ctag;
-
-  const style_tag = '<link rel="stylesheet" type="text/css" href="eex.css"/>\r\n';
-
-  const samples_url =
-    'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
-
-  const getLocalSetting = function( key ) {
-    return ( localStorage[ key ] === "true" ) || false;
-  };
-
-  const setLocalSetting = function( key, val ) {
-    localStorage[ key ] = ( val ? "true" : "false" );
-  };
-
-  const toggleLocalSetting = function ( key ) {
-    setLocalSetting( key, !getLocalSetting( key ) );
-  };
-
-  const getLocalSettingNumber = function( key ) {
-    return ( localStorage[ key ] ) || "";
-  };
-
-  const setLocalSettingNumber = function( key, val ) {
-    localStorage[ key ] = val;
-  };
-
-  const addBRLMarkup = function( markup ) {
-    var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
-
-    result = result.replace( body_otag, head_otag + style_tag + head_ctag + body_otag );
-
-    var sz = getLocalSettingNumber( "ee-brl-font-size" );
-    if ( sz )
-    {
-        result = result.replace( "<body>",
-            "<body class=\"brl\" style=\"font-size: " + sz + "pt\">" );
-    }
-
-    return result;
-  };
-
-  const addViewMarkup = function( markup ) {
-    markup = markup.replaceAll( "&", "&amp;" );
-    markup = markup.replaceAll( "<", "&lt;" );
-
-    var result = view_open + markup + view_close;
-
-    var sz = getLocalSettingNumber( "ee-html-font-size" );
-    if ( sz )
-    {
-        result = result.replace( "<body>",
-            "<body style=\"font-size: " + sz + "pt\">" );
-    }
-
-    return result;
-  };
-
-  const addMathJax = function( markup, mathjax ) {
-    var result = markup;
-    if ( mathjax )
-    {
-        if ( isMath() )
-        {
-            result = '<html>' + head_tag + body_tag + result + '  </body>\r\n</html>';
-        }
-        else
-        {
-            result = result.replace( body_tag, head_tag + body_tag );
-        }
-    }
-
-    result = result.replace( head_ctag, style_tag + head_ctag );
-
-    var sz = getLocalSettingNumber( "ee-html-font-size" );
-    if ( sz )
-    {
-        result = result.replace( "<body>",
-            "<body style=\"font-size: " + sz + "pt\">" );
-    }
-
-    return result;
-  };
-
-  const getMathBits = function( value ) {
-    var result = [];
-    var index = 0;
-    var start = 0;
-    var limit = 0;
-    var data;
-
-    while ( ( index = value.indexOf( "<math ", index ) ) != -1 )
-    {
-        // Remove the outer <math> tags
-        start = value.indexOf( ">", index );
-        limit = value.indexOf( "</math>", index );
-
-        if ( start === -1 || limit === -1 )
-        {
-            break;
-        }
-
-        data = value.substring( start + 1, limit );
-        index = limit;
-
-        // Remove the outer <mtable> tags
-        start = data.indexOf( "<mtable>" );
-        limit = data.indexOf( "</mtable>" );
-
-        if ( !( start === -1 || limit === -1 ) )
-        {
-            data = data.substring( start + 8, limit );
-        }
-
-        // Supply the outer <mtr> <mtd> tags
-        start = data.indexOf( "<mtr>" );
-        limit = data.indexOf( "</mtr>" );
-
-        if ( start === -1 || limit === -1 )
-        {
-            data = "<mtr><mtd>" + data + "</mtd></mtr>";
-        }
- 
-        result.push( data );
-    }
-
-    return '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtable>'
-        + result.join() + '</mtable></math>';
-  };
-
-  const openFile = async ( options ) => {
-    if ( window.showOpenFilePicker )
-    {
-      [ handle ] = await window.showOpenFilePicker( options );
-      const file = await handle.getFile();
-      setLastFileName( handle.name );
-      last_file_handle = handle;
-      return file;
-    }
-    else
-    {
-      return new Promise( ( resolve ) => {
-        const input = document.createElement( "input" );
-        input.type = "file";
-        input.addEventListener( "change", () => {
-          const file = input.files[ 0 ];
-          resolve( file );
-        } );
-        input.click();
-      } );
-    }
-  };
-
-  const exportFile = ( options, type ) => {
-    var fname = last_file_handle && last_file_handle.name ||
-        last_file_name || "untitled";
-
-    fname = fname.replace( /^.*\//, "" );
-    fname = fname.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
-    fname = fname + ( type || "" );
-
-    options.suggestedName = fname;
-  };
-
-  const saveThis = async ( markup ) => {
-    if ( window.showSaveFilePicker )
-    {
-      const handle = last_open_handle;
-      const file = await handle.createWritable();
-
-      await file.write( markup );
-      await file.close();
-    }
-    else
-    {
-      const name = last_open_handle.name;
-      const type = isMath() ? "application/mathml+xml" : "application/html";
-      const blob = new Blob( [ markup ], { type: type } );
-      const a = document.createElement( "a" );
-      a.download = name;
-      a.href = URL.createObjectURL( blob );
-      a.addEventListener( "click", () => {
-        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
-      } );
-      a.click();
-    }
-  };
-
-  const saveFile = async ( options, markup, type ) => {
-    exportFile( options, type );
-
-    if ( window.showSaveFilePicker )
-    {
-      const handle = await window.showSaveFilePicker( options );
-      const file = await handle.createWritable();
-      setLastFileName( handle.name );
-      last_file_handle = handle;
-
-      await file.write( markup );
-      await file.close();
-    }
-    else
-    {
-      const name = options.suggestedName + ( isMath() ? ".mml" : ".html" );
-      const type = isMath() ? "application/mathml+xml" : "application/html";
-      const blob = new Blob( [ markup ], { type: type } );
-      const a = document.createElement( "a" );
-      a.download = name;
-      a.href = URL.createObjectURL( blob );
-      a.addEventListener( "click", () => {
-        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
-      } );
-      a.click();
-    }
-  };
-
-  const moveToHome = function() {
-    setTimeout( () => {
-        editor.processTemplate( "ctrl-home" )
-    }, 200 );
-  };
-
-  const getContent = function() {
-    return editor.getContent();
-  };
-
-  const setContent = function( value ) {
-    editor.setContent( value );
-    editor.setFocus();
-    moveToHome();
-  };
-
-  const createLink = function( fileName, fileId ) {
-    // null is dialog cancel, empty string is remove link
-    if ( fileName !== null )
-    {
-      editor.createLink( fileName, fileId );
-      editor.setFocus();
-    }
-  };
-
-  const do_new = async function( event ) {
-    try {
-      event && event.preventDefault();
-
-      editor.processTemplate( "clear" );
-      editor.setFocus();
-      moveToHome();
-
-      setLastFileName( "" );
-      clearModFlag();
-      home_URL = "";
-      file_URL = "";
-
-      ee_drive.clear();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_open = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getOpenOptions();
-      const file = await openFile( options );
-      const markup = await file.text();
-
-      setContent( markup );
-
-      clearModFlag();
-      last_open_handle = last_file_handle;
-
-      ee_drive.clear();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_close = do_new;
-
-  const do_link = async function( event ) {
-    try {
-      event.preventDefault();
-      createLink( prompt( "Link to file name", getCurrentLink() ) );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_save = async function( event ) {
-    if ( ! last_open_handle )
-    {
-        do_saveAs( event );
-        return;
-    }
-
-    try {
-      event.preventDefault();
-
-      await saveThis( getContent() );
-
-      clearModFlag();
-
-      ee_drive.clear();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_saveAs = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getOpenOptions();
-      await saveFile( options, getContent() );
-
-      clearModFlag();
-      last_open_handle = last_file_handle;
-
-      ee_drive.clear();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_saveHTML = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getExportOptions();
-      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
-      const markup = addMathJax( editor.getPresent(), mathjax );
-      await saveFile( options, markup, "-p" );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_saveBRF = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getBRFOptions();
-      const markup = editor.getAsciiBraille();
-      await saveFile( options, markup );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_saveBRL = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getBRLOptions();
-      const markup = addBRLMarkup( editor.getContractedBraille() );
-      await saveFile( options, markup, "-brl" );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_exportHTML = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const mathjax = getLocalSetting( "ee-mathjax-on-export" );
-      const markup = addMathJax( editor.getPresent(), mathjax );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options, "-p" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-
-      if ( mathjax )
-      {
-        setTimeout( () => nwindow.MathJax.Hub.Startup.onload(), 100 );
-      }
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_exportBRL = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = addBRLMarkup( editor.getContractedBraille() );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options, "-brl" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_printHTML = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const mathjax = getLocalSetting( "ee-mathjax-on-print" );
-      const markup = addMathJax( editor.getPresent(), mathjax );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-
-      if ( mathjax )
-      {
-        setTimeout( () => {
-          nwindow.MathJax.Hub.Startup.onload();
-          nwindow.MathJax.Hub.Queue( () => nwindow.print() );
-        }, 100 );
-      }
-      else
-      {
-        nwindow.print();
-      }
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_printBRF = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = editor.getAsciiBraille();
-      const nwindow = window.open( "" );
-
-      const options = getBRFOptions();
-      exportFile( options, "-brf" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-
-      nwindow.print();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_printBRL = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = addBRLMarkup( editor.getContractedBraille() );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options, "-brl" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-
-      nwindow.print();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_view = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = addViewMarkup( getContent() );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_viewHTML = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = addViewMarkup( editor.getPresent() );
-      const nwindow = window.open( "" );
-
-      const options = getExportOptions();
-      exportFile( options, "-p" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_viewBRF = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = addViewMarkup( editor.getAsciiBraille() );
-      const nwindow = window.open( "" );
-
-      const options = getBRFOptions();
-      exportFile( options );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_copy = async function( event ) {
-    try {
-      event.preventDefault();
-      editor.copy();
-      editor.setFocus();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_paste = async function( event ) {
-    try {
-      event.preventDefault();
-      editor.paste();
-      editor.setFocus();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_copyAll = async function( event ) {
-    try {
-      event.preventDefault();
-      navigator.clipboard.writeText( getContent() );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_pasteAll = async function( event ) {
-    try {
-      event.preventDefault();
-      navigator.clipboard.readText().then( setContent );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_copyHTML = async function( event ) {
-    try {
-      event.preventDefault();
-      editor.copyPresent();
-      editor.setFocus();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_copyAllHTML = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = editor.getPresent();
-      navigator.clipboard.writeText( markup );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_copyAllMath = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const markup = getMathBits( editor.getPresent() );
-      navigator.clipboard.writeText( markup );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const updateChecked = function ( key, s )
-  {
+  /**
+   * Update a view menu item check mark.
+   */
+  const updateCheckMark = ( key, s ) => {
     const val = getLocalSetting( key );
     const elt = document.querySelector( s );
     if ( elt )
@@ -954,306 +399,54 @@ const ee_init = () => {
     }
   };
 
-  const updatePanels = function () {
-    updateChecked( "ee-panel-app-menus", "#panel_menus" );
-    updateChecked( "ee-panel-open-file", "#panel_fname" );
-    updateChecked( "ee-panel-quick-bar", "#panel_quick" );
-    updateChecked( "ee-panel-side-bar", "#panel_side" );
-    updateChecked( "ee-panel-braille-bar", "#panel_braille" );
+  /**
+   * Update the equation editor user interface panels.
+   */
+  const updatePanels = () => {
+    updateCheckMark( "ee-panel-app-menus", "#panel_menus" );
+    updateCheckMark( "ee-panel-open-file", "#panel_fname" );
+    updateCheckMark( "ee-panel-quick-bar", "#panel_quick" );
+    updateCheckMark( "ee-panel-side-bar", "#panel_side" );
+    updateCheckMark( "ee-panel-braille-bar", "#panel_braille" );
 
     EquationEditorAPI.updateSettings();
-    update_settings();
-    updateFileName();
+    updateMenuBarPanel();
+    updateOpenFilePanel();
     editor.setFocus();
   };
 
-  const setPanelSize = function ( value ) {
+  /**
+   * Update the equation editor input panel size.
+   */
+  const setPanelSize = ( value ) => {
     setLocalSetting( "ee-panel-all-panels", value );
 
-    const hh = window.innerHeight;
-    const ww = window.innerWidth;
-    setLocalSettingNumber( "ee-height", hh - 100 );
-    setLocalSettingNumber( "ee-width", ww - ( ww % 44 ) );
+    var firefox = /firefox/i.test( navigator.userAgent );
+    const dh = 100;
+    const dw = firefox ? 16 : 0;
+
+    const hh = window.innerHeight - dh;
+    const ww = window.innerWidth - dw;
+
+    setLocalSettingNumber( "ee-height", hh );
+    setLocalSettingNumber( "ee-width", ww );
 
     updatePanels();
   };
 
-  const do_panel_maximize = async function ( event ) {
-    event && event.preventDefault();
-
-    const value = !getLocalSetting( "ee-panel-all-panels" );
-    setPanelSize( value );
-    updatePanels();
-  };
-
-  const do_panel_menus = async function ( event ) {
-    event && event.preventDefault();
-
-    if ( getLocalSetting( "ee-panel-all-panels" ) )
-    {
-      toggleLocalSetting( "ee-panel-app-menus" );
-    }
-    else
-    {
-      setLocalSetting( "ee-panel-app-menus", true );
-      setPanelSize( true );
-    }
-
-    updatePanels();
-  };
-
-  const do_panel_fname = async function ( event ) {
-    event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-open-file" );
-    updatePanels();
-  };
-
-  const do_panel_quick = async function ( event ) {
-    event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-quick-bar" );
-    updatePanels();
-  };
-
-  const do_panel_side = async function ( event ) {
-    event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-side-bar" );
-    updatePanels();
-  };
-
-  const do_panel_braille = async function ( event ) {
-    event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-braille-bar" );
-    updatePanels();
-  };
-
-  const do_help_open = async function( href ) {
-    try {
-      const src = href.startsWith( "http" ) ? href : getDocBase() + href;
-      const nwindow = window.open( src );
-
-      nwindow.addEventListener( "unload", () => {
-        editor.setFocus();
-      } )
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_help = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const href = event.target.getAttribute( "href" );
-      do_help_open( href );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_welcome = async function ( event ) {
-    try {
-      event && event.preventDefault();
-
-      do_query_href( edt_start );
-      setPanelSize( false );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_training = async function ( event ) {
-    try {
-      event && event.preventDefault();
-
-      do_query_href( bt_start );
-      setPanelSize( false );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_tutorial_gtk = async function( event ) {
-    try {
-      event && event.preventDefault();
-
-      var target = event && event.target || document.querySelector( "#tutorial" );
-      var href = getDocBase() + target.getAttribute( "href" );
-
-      if ( localStorage[ "gtk-last-page-href" ] &&
-           localStorage[ "gtk-show-last-page" ] !== "false" )
-      {
-        href = localStorage[ "gtk-last-page-href" ];
-      }
-
-      const nwindow = window.open( href );
-      nwindow.addEventListener( "unload", () => {
-        editor.setFocus();
-      } )
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_tutorial_edt = async function( event ) {
-    try {
-      event && event.preventDefault();
-
-      var href = localStorage[ "edt-start-page-href" ] || edt_start;
-
-      if ( localStorage[ "edt-last-page-href" ] &&
-           localStorage[ "edt-show-last-page" ] !== "false" )
-      {
-        href = localStorage[ "edt-last-page-href" ];
-      }
-
-      if ( href )
-      {
-        do_query_href( href );
-        setPanelSize( false );
-      }
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_index = async function ( event ) {
-    try {
-      event && event.preventDefault();
-
-      const href = localStorage[ "edt-index-page-href" ] || edt_index;
-      if ( href )
-      {
-        do_query_href( href );
-        setPanelSize( false );
-      }
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_settings = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const src = getDocBase() + event.target.getAttribute( "href" );
-      const nwindow = window.open( src );
-
-      nwindow.addEventListener( "beforeunload", () => {
-        EquationEditorAPI.updateSettings();
-        update_settings();
-      } );
-
-      nwindow.addEventListener( "unload", () => {
-        editor.setFocus();
-      } );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_open = async function( event ) {
-    try {
-      event.preventDefault();
-      ee_drive.open( setContent, setCleanFileName );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_save = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getOpenOptions();
-      exportFile( options );
-
-      ee_drive.save( getContent, setCleanFileName, options );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_saveAs = async function( event ) {
-    try {
-      event.preventDefault();
-
-      const options = getOpenOptions();
-      exportFile( options );
-
-      ee_drive.save_as( getContent, setCleanFileName, options );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_saveReplace = async function( event ) {
-    try {
-      event.preventDefault();
-      ee_drive.save_replace( getContent, setCleanFileName );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_link = async function( event ) {
-    try {
-      event.preventDefault();
-      ee_drive.link( createLink );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  const do_drive_install = async function( event ) {
-    try {
-      event.preventDefault();
-      ee_drive.install();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  // Return true if the current url is a tutorial
-  const isTutorial = url => /edt\//.test( url );
-
-  // Return true if the current url is a tutorial index page
-  const isTutorialIndex = url => /edt\/.*0\.html/.test( url );
-
-  // Retrieve the active document link target
-  const getCurrentLink = function () {
-    var href = "";
-    var select = window.editor.selection();
-    var count = select.getHeadReferenceCount();
-    for ( var i = 0; i < count && !href; i += 1 )
-    {
-      var elt = select.getHeadReference( i ).getContent();
-      href = elt.getAttribute( "href" ) || "";
-    }
-    return href;
-  };
-
-  const combine_url = function ( url, base ) {
+  /**
+   * Combine a relative url with a document base value.
+   */
+  const combine_url = ( url, base ) => {
     const suffix = base.replaceAll( /(\.\.\/)+/g, "/" );
     const prefix = base.substring( 0, base.length - suffix.length );
     return prefix + suffix + url;
   };
 
-  // Retrieve a remote resouce
-  const open_url = async function ( data, fn, cb ) {
+  /**
+   * Retrieve the remote resource named in the query parameters.
+   */
+  const open_url = async ( data, fn, cb ) => {
     var obaseURL = base_URL;
     var ohomeURL = home_URL;
     var ofileURL = file_URL;
@@ -1269,7 +462,7 @@ const ee_init = () => {
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = () => {
       if ( xhr.readyState === 4 && xhr.status === 200 )
       {
         LOG( "Success opening file " + file_URL );
@@ -1289,37 +482,10 @@ const ee_init = () => {
     xhr.send();
   };
 
-  // Process the query state data
-  const do_query_data = function( data ) {
-    if ( data && data.action === "open" && data.url )
-    {
-      // Open a remote web resource
-      open_url( data, setContent, setCleanFileName );
-      ee_drive.clear();
-    }
-
-    else if ( data && data.action === "open" && data.ids )
-    {
-      // Open a Google drive resource
-      ee_drive.open_with( data, setContent, setCleanFileName );
-    }
-
-    else if ( data && data.action === "create" && data.folderId )
-    {
-      // Create a Google drive resource
-      ee_drive.create_new( data, getContent, setCleanFileName );
-    }
-
-    else
-    {
-      // Create an empty document
-      do_new();
-    }
-  };
-
-  // Retrieve the query parameters
-  const get_query_data = function( href )
-  {
+  /**
+   * Process the query parameters from a link reference.
+   */
+  const get_query_data = ( href ) => {
     href = href.substring( href.indexOf( "?" ) );
     const params = new URLSearchParams( href );
     const data = { "state" : { "action" : "open", "href" : href } };
@@ -1368,20 +534,1410 @@ const ee_init = () => {
     return data;
   };
 
-  // Process the query parameters
-  const do_query_href = function( href ) {
+  /**
+   * Process the query parameters from a link reference.
+   */
+  const do_query_data = ( data ) => {
+    if ( data && data.action === "open" && data.url )
+    {
+      // Open a remote web resource
+      open_url( data, setContent, setOpenFileData );
+      ee_drive.clear();
+    }
+
+    else if ( data && data.action === "open" && data.ids )
+    {
+      // Open a Google drive resource
+      ee_drive.open_with( data, setContent, setOpenFileData );
+    }
+
+    else if ( data && data.action === "create" && data.folderId )
+    {
+      // Create a Google drive resource
+      ee_drive.create_new( data, getContent, setOpenFileData );
+    }
+
+    else
+    {
+      // Create an empty document
+      do_file_new();
+    }
+  };
+
+  /**
+   * Process the query parameters from a link reference.
+   */
+  const do_query_href = ( href ) => {
     const data = get_query_data( href );
     do_query_data( data.state );
   };
 
-  const update_settings = function () {
-    const panel = document.querySelector( ".ee-menu" );
-    if ( panel )
+  /**
+   * Process the query parameters from the document URL.
+   */
+  const do_query_state = () => {
+    const href = localStorage[ "ee-query-state" ];
+    delete localStorage[ "ee-query-state" ];
+
+    do_query_href( href );
+
+    if ( isTutorial( href ) )
     {
-        const value = getLocalSetting( "ee-panel-all-panels" )
-                   && getLocalSetting( "ee-panel-app-menus" );
-        panel.style.display = value ? "block" : "none";
+      setPanelSize( false );
     }
+    else
+    {
+      updatePanels();
+    }
+  };
+
+  /**
+   * Document markup constants.
+   */
+
+  const html_otag = '<html>\r\n';
+  const html_ctag = '</html>\r\n';
+  const head_otag = '<head>\r\n';
+  const head_ctag = '</head>\r\n';
+  const body_otag = '<body>\r\n';
+  const body_ctag = '</body>\r\n';
+  const body_tag = '  <body>\r\n';
+  const p_otag = '<p>\r\n';
+  const p_ctag = '\r\n</p>\r\n';
+  const pre_otag = '<pre>\r\n';
+  const pre_ctag = '\r\n</pre>\r\n';
+
+  const view_open = html_otag + body_otag + pre_otag;
+  const view_close = pre_ctag + body_ctag + html_ctag;
+
+  const html_open = html_otag + body_otag + p_otag;
+  const html_close = p_ctag + body_ctag + html_ctag;
+
+  const style_tag = '<link rel="stylesheet" type="text/css" href="eex.css"/>\r\n';
+  const script_tag = '<script type="text/javascript" ' +
+    'src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js' +
+    '?config=MML_CHTML"></script>\r\n';
+  const head_tag = head_otag + script_tag + head_ctag;
+
+  /**
+   * Insert document markup to set the font size.
+   */
+  const addFontSize = ( markup, key ) => {
+    const sz = getLocalSettingNumber( key );
+    if ( sz )
+    {
+      markup = markup.replace( "<body>",
+        "<body style=\"font-size: " + sz + "pt\">" );
+    }
+    return markup;
+  };
+
+  /**
+   * Insert document markup to view an HTML document.
+   */
+  const addViewMarkup = ( markup ) => {
+    markup = markup.replaceAll( "&", "&amp;" );
+    markup = markup.replaceAll( "<", "&lt;" );
+
+    var result = view_open + markup + view_close;
+    result = addFontSize( result, "ee-html-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Insert document markup to invoke the MathJax library.
+   */
+  const addMathMarkup = ( markup, mathjax ) => {
+    var result = markup;
+    if ( mathjax )
+    {
+      result = result.replace( body_tag, head_tag + body_tag );
+    }
+
+    result = result.replace( head_ctag, style_tag + head_ctag );
+    result = addFontSize( result, "ee-html-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Insert document markup to view a BRL document.
+   */
+  const addBRLMarkup = ( markup ) => {
+    var result = html_open + markup.replaceAll( "\n", "<br/>\r\n" ) + html_close;
+
+    result = result.replace( body_otag, head_otag + style_tag + head_ctag + body_otag );
+    result = addFontSize( result, "ee-brl-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Retrieve a file handle for an open file operation.
+   */
+  const openFile = async ( options ) => {
+    if ( window.showOpenFilePicker )
+    {
+      [ handle ] = await window.showOpenFilePicker( options );
+      const file = await handle.getFile();
+      setOpenFileHandle( handle );
+      return file;
+    }
+    else
+    {
+      return new Promise( ( resolve ) => {
+        const input = document.createElement( "input" );
+        input.type = "file";
+        input.addEventListener( "change", () => {
+          const file = input.files[ 0 ];
+          setOpenFileName( file.name );
+          resolve( file );
+        } );
+        input.click();
+      } );
+    }
+  };
+
+  /**
+   * Output document markup for a save file operation.
+   */
+  const saveFile = async ( options, markup, type ) => {
+    setFileOption( options, type );
+
+    if ( window.showSaveFilePicker )
+    {
+      const handle = await window.showSaveFilePicker( options );
+      const file = await handle.createWritable();
+      setOpenFileHandle( handle );
+      await file.write( markup );
+      await file.close();
+    }
+    else
+    {
+      const name = options.suggestedName + ".html";
+      const type = "application/html";
+      const blob = new Blob( [ markup ], { type: type } );
+      const a = document.createElement( "a" );
+      a.download = name;
+      a.href = URL.createObjectURL( blob );
+      a.addEventListener( "click", () => {
+        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
+      } );
+      a.click();
+    }
+  };
+
+  /**
+   * Output document markup for a save file operation.
+   */
+  const saveThis = async ( markup ) => {
+    if ( window.showSaveFilePicker )
+    {
+      const handle = open_file_handle;
+      const file = await handle.createWritable();
+      await file.write( markup );
+      await file.close();
+    }
+    else
+    {
+      const name = open_file_handle.name;
+      const type = "application/html";
+      const blob = new Blob( [ markup ], { type: type } );
+      const a = document.createElement( "a" );
+      a.download = name;
+      a.href = URL.createObjectURL( blob );
+      a.addEventListener( "click", () => {
+        setTimeout( () => URL.revokeObjectURL( a.href ), 30000 );
+      } );
+      a.click();
+    }
+  };
+
+  /**
+   * Move the equation editor cursor to the home position.
+   */
+  const moveToHome = () => {
+    setTimeout( () => {
+      editor.processTemplate( "ctrl-home" )
+    }, 200 );
+  };
+
+  /**
+   * Retrieve the equation editor content markup.
+   */
+  const getContent = () => {
+    return editor.getContent();
+  };
+
+  /**
+   * Set the equation editor content markup.
+   */
+  const setContent = ( value ) => {
+    editor.setContent( value );
+    editor.setFocus();
+    moveToHome();
+  };
+
+  /**
+   * Retrieve the active document link target.
+   */
+  const getLinkTarget = () => {
+    var href = "";
+    var select = window.editor.selection();
+    var count = select.getHeadReferenceCount();
+    for ( var i = 0; i < count && !href; i += 1 )
+    {
+      var elt = select.getHeadReference( i ).getContent();
+      href = elt.getAttribute( "href" ) || "";
+    }
+    return href;
+  };
+
+  /**
+   * Create an equation editor document link.
+   */
+  const createLink = ( fileName, fileId ) => {
+    // null is dialog cancel, empty string is remove link
+    if ( fileName !== null )
+    {
+      editor.createLink( fileName, fileId );
+      editor.setFocus();
+    }
+  };
+
+  /**
+   * Retrieve the math markup from an equation editor document.
+   */
+  const getMathBits = ( value ) => {
+    var result = [];
+    var index = 0;
+    var start = 0;
+    var limit = 0;
+    var data;
+
+    while ( ( index = value.indexOf( "<math ", index ) ) != -1 )
+    {
+        // Remove the outer <math> tags
+        start = value.indexOf( ">", index );
+        limit = value.indexOf( "</math>", index );
+
+        if ( start === -1 || limit === -1 )
+        {
+            break;
+        }
+
+        data = value.substring( start + 1, limit );
+        index = limit;
+
+        // Remove the outer <mtable> tags
+        start = data.indexOf( "<mtable>" );
+        limit = data.indexOf( "</mtable>" );
+
+        if ( !( start === -1 || limit === -1 ) )
+        {
+            data = data.substring( start + 8, limit );
+        }
+
+        // Supply the outer <mtr> <mtd> tags
+        start = data.indexOf( "<mtr>" );
+        limit = data.indexOf( "</mtr>" );
+
+        if ( start === -1 || limit === -1 )
+        {
+            data = "<mtr><mtd>" + data + "</mtd></mtr>";
+        }
+ 
+        result.push( data );
+    }
+
+    return '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mtable>'
+        + result.join() + '</mtable></math>';
+  };
+
+  /**
+   * Handler method for the file > new operation.
+   */
+  const do_file_new = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      editor.processTemplate( "clear" );
+      editor.setFocus();
+      moveToHome();
+
+      setOpenFileName( "" );
+      home_URL = "";
+      file_URL = "";
+
+      setPanelSize( true );
+      ee_drive.clear();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > open operation.
+   */
+  const do_file_open = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getOpenOptions();
+      const file = await openFile( options );
+      const markup = await file.text();
+
+      setContent( markup );
+      ee_drive.clear();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > save operation.
+   */
+  const do_file_save = async ( event ) => {
+    if ( ! open_file_handle )
+    {
+        do_file_save_as( event );
+        return;
+    }
+
+    try {
+      event && event.preventDefault();
+
+      await saveThis( getContent() );
+      ee_drive.clear();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > save as operation.
+   */
+  const do_file_save_as = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getOpenOptions();
+      await saveFile( options, getContent() );
+      ee_drive.clear();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > link operation.
+   */
+  const do_file_link = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      createLink( prompt( "Link to file name", getLinkTarget() ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  const do_file_close = do_file_new;
+
+  /**
+   * Handler method for the file > save HTML operation.
+   */
+  const do_save_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getHTMLOptions();
+      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
+      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      await saveFile( options, markup, "-p" );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > save BRF operation.
+   */
+  const do_save_BRF = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getBRFOptions();
+      const markup = editor.getAsciiBraille();
+      await saveFile( options, markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > save BRL operation.
+   */
+  const do_save_BRL = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getBRLOptions();
+      const markup = addBRLMarkup( editor.getContractedBraille() );
+      await saveFile( options, markup, "-brl" );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > export HTML operation.
+   */
+  const do_export_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const mathjax = getLocalSetting( "ee-mathjax-on-export" );
+      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options, "-p" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+
+      if ( mathjax )
+      {
+        setTimeout( () => nwindow.MathJax.Hub.Startup.onload(), 100 );
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > export BRL operation.
+   */
+  const do_export_BRL = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addBRLMarkup( editor.getContractedBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options, "-brl" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > print HTML operation.
+   */
+  const do_print_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const mathjax = getLocalSetting( "ee-mathjax-on-print" );
+      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+
+      if ( mathjax )
+      {
+        setTimeout( () => {
+          nwindow.MathJax.Hub.Startup.onload();
+          nwindow.MathJax.Hub.Queue( () => nwindow.print() );
+        }, 100 );
+      }
+      else
+      {
+        nwindow.print();
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > print BRF operation.
+   */
+  const do_print_BRF = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = editor.getAsciiBraille();
+      const nwindow = window.open( "" );
+
+      const options = getBRFOptions();
+      setFileOption( options, "-brf" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+
+      nwindow.print();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > print BRL operation.
+   */
+  const do_print_BRL = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addBRLMarkup( editor.getContractedBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options, "-brl" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+
+      nwindow.print();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > view source operation.
+   */
+  const do_view_source = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addViewMarkup( getContent() );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > view HTML operation.
+   */
+  const do_view_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addViewMarkup( editor.getPresent() );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options, "-p" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > view BRF operation.
+   */
+  const do_view_BRF = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addViewMarkup( editor.getAsciiBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getBRFOptions();
+      setFileOption( options );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > open operation.
+   */
+  const do_drive_open = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      ee_drive.open( setContent, setOpenFileData );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save operation.
+   */
+  const do_drive_save = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getOpenOptions();
+      setFileOption( options );
+
+      ee_drive.save( getContent, setOpenFileData, options );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save as operation.
+   */
+  const do_drive_save_as = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getOpenOptions();
+      setFileOption( options );
+
+      ee_drive.save_as( getContent, setOpenFileData, options );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save replace operation.
+   */
+  const do_drive_save_replace = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      ee_drive.save_replace( getContent, setOpenFileData );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > link operation.
+   */
+  const do_drive_link = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      ee_drive.link( createLink );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > install operation.
+   */
+  const do_drive_install = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      ee_drive.install();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > copy operation.
+   */
+  const do_edit_copy = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      editor.copy();
+      editor.setFocus();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > paste operation.
+   */
+  const do_edit_paste = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      editor.paste();
+      editor.setFocus();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > copy all operation.
+   */
+  const do_edit_copy_all = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      navigator.clipboard.writeText( getContent() );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > paste all operation.
+   */
+  const do_edit_paste_all = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      navigator.clipboard.readText().then( setContent );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > copy HTML operation.
+   */
+  const do_edit_copy_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+      editor.copyPresent();
+      editor.setFocus();
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > copy all HTML operation.
+   */
+  const do_edit_copy_all_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = editor.getPresent();
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the edit > copy all math operation.
+   */
+  const do_edit_copy_all_math = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = getMathBits( editor.getPresent() );
+      navigator.clipboard.writeText( markup );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the panel > maximize menu operation.
+   */
+  const do_panel_maximize = async ( event ) => {
+    event && event.preventDefault();
+
+    const value = !getLocalSetting( "ee-panel-all-panels" );
+    setPanelSize( value );
+  };
+
+  /**
+   * Handler method for the panel > menus menu operation.
+   */
+  const do_panel_menus = async ( event ) => {
+    event && event.preventDefault();
+
+    if ( getLocalSetting( "ee-panel-all-panels" ) )
+    {
+      toggleLocalSetting( "ee-panel-app-menus" );
+      updatePanels();
+    }
+    else
+    {
+      setLocalSetting( "ee-panel-app-menus", true );
+      setPanelSize( true );
+    }
+  };
+
+  /**
+   * Handler method for the panel > file name menu operation.
+   */
+  const do_panel_fname = async ( event ) => {
+    event && event.preventDefault();
+    toggleLocalSetting( "ee-panel-open-file" );
+    updatePanels();
+  };
+
+  /**
+   * Handler method for the panel > quick buttons menu operation.
+   */
+  const do_panel_quick = async ( event ) => {
+    event && event.preventDefault();
+    toggleLocalSetting( "ee-panel-quick-bar" );
+    updatePanels();
+  };
+
+  /**
+   * Handler method for the panel > size palettes menu operation.
+   */
+  const do_panel_side = async ( event ) => {
+    event && event.preventDefault();
+    toggleLocalSetting( "ee-panel-side-bar" );
+    updatePanels();
+  };
+
+  /**
+   * Handler method for the panel > braille bar menu operation.
+   */
+  const do_panel_braille = async ( event ) => {
+    event && event.preventDefault();
+    toggleLocalSetting( "ee-panel-braille-bar" );
+    updatePanels();
+  };
+
+  const edt_index = "?edt/0000.html";
+  const edt_start = "?edt/0101.html";
+  const bt_start = "?train/Syllabus.html";
+
+  const guide_url = "ee-guide.html";
+  const samples_url =
+    'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
+
+  /**
+   * Handler method for the help > welcome menu operation.
+   */
+  const do_help_welcome = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      do_query_href( edt_start );
+      setPanelSize( false );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the help > training menu operation.
+   */
+  const do_help_training = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      do_query_href( bt_start );
+      setPanelSize( false );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the help > tutorial menu operation.
+   */
+  const do_help_tutorial_edt = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      var href = localStorage[ "edt-start-page-href" ] || edt_start;
+
+      if ( localStorage[ "edt-last-page-href" ] &&
+           localStorage[ "edt-show-last-page" ] !== "false" )
+      {
+        href = localStorage[ "edt-last-page-href" ];
+      }
+
+      if ( href )
+      {
+        do_query_href( href );
+        setPanelSize( false );
+      }
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the help > tutorial index menu operation.
+   */
+  const do_help_tutorial_index = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const href = localStorage[ "edt-index-page-href" ] || edt_index;
+      do_query_href( href );
+      setPanelSize( false );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the help > Getting To Know menu operation.
+   */
+  const do_help_tutorial_gtk = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      var target = event && event.target || document.querySelector( "#getting" );
+      var href = src_URL + target.getAttribute( "href" );
+
+      if ( localStorage[ "gtk-last-page-href" ] &&
+           localStorage[ "gtk-show-last-page" ] !== "false" )
+      {
+        href = localStorage[ "gtk-last-page-href" ];
+      }
+
+      const nwindow = window.open( href );
+      nwindow.addEventListener( "unload", () => {
+        editor.setFocus();
+      } )
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the help > settings menu operation.
+   */
+  const do_help_settings = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const src = src_URL + event.target.getAttribute( "href" );
+      const nwindow = window.open( src );
+
+      nwindow.addEventListener( "beforeunload", () => {
+        EquationEditorAPI.updateSettings();
+        updateMenuBarPanel();
+        updateOpenFilePanel();
+      } );
+
+      nwindow.addEventListener( "unload", () => {
+        editor.setFocus();
+      } );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Helper method to open specific help resources.
+   */
+  const do_help_open = async ( href ) => {
+    try {
+      const src = href.startsWith( "http" ) ? href : src_URL + href;
+      const nwindow = window.open( src );
+
+      nwindow.addEventListener( "unload", () => {
+        editor.setFocus();
+      } )
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for miscellaneous help menu operations.
+   */
+  const do_help = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const href = event.target.getAttribute( "href" );
+      do_help_open( href );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Tutorial index numbers.
+   */
+
+  const indexStart = 101;
+  const indexLimit = 439;
+  const skipIndex = {
+    180: true,
+    190: true,
+    200: true,
+    300: true,
+    350: true,
+    360: true,
+    370: true,
+    380: true,
+    390: true,
+    400: true
+  };
+
+  const getIndex = s => parseInt( s.replace( /.*([0-9]{4}).*/, "$1" ) );
+  const nextHome = v => ( v % 10 === 1 ? v - 10 : v - v % 10 + 1 );
+  const nextEnd = v => ( v % 10 === 9 ? v + 10 : v - v % 10 + 9 );
+  const putIndex = v => ( "0000" + v.toString() ).substr( -4 );
+
+  /**
+   * Return the next index for the tutorial home key.
+   */
+  const nextHomeIndex = function ( url ) {
+    var index = getIndex( url );
+    index = index > indexStart ? nextHome( index ) : index;
+    while ( skipIndex[ index - 1 ] )
+    {
+      index = nextHome( index );
+    }
+    return putIndex( index );
+  };
+
+  /**
+   * Return the next index for the tutorial end key.
+   */
+  const nextEndIndex = function ( url ) {
+    var index = getIndex( url );
+    index = index < indexLimit ? nextEnd( index ) : index;
+    while ( index === 109 || skipIndex[ index - 9 ] )
+    {
+      index = nextEnd( index );
+    }
+    return putIndex( index );
+  };
+
+  /**
+   * Add markup to a user interface element.
+   */
+  const addMarkup = ( s, markup ) => {
+    const elt = document.querySelector( s );
+    if ( elt )
+    {
+      elt.innerHTML = markup;
+    }
+  };
+
+  /**
+   * Add a click handler to a user interface element.
+   */
+  const addClick = ( s, fn ) => {
+    const elt = document.querySelector( s );
+    if ( elt )
+    {
+      elt.onclick = fn;
+    }
+  };
+
+  /**
+   * Ignore alt key release events.
+   */
+  const onAltKey = ( event ) => {
+    if ( event.code === "AltLeft" || event.code === "AltRight" )
+    {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
+  };
+
+  /**
+   * Handler for menu key accelerators.
+   */
+  const onMenuKey = ( event ) => {
+    const alt = event.altKey && event.shiftKey && ! event.ctrlKey;
+    const key = event.key;
+    var val = alt && menuKeys[ key ] || "";
+    var elt = val && document.querySelector( val ) || null;
+
+    if ( menu_bar_panel.contains( event.target ) )
+    {
+      if ( key === "ArrowLeft" )
+      {
+        elt = $( ".dropdown.open" ).prev( ".dropdown" ).find( "a" )[0];
+        val = "#" + ( elt ? elt.id : "" );
+      }
+
+      if ( key === "ArrowRight" )
+      {
+        elt = $( ".dropdown.open" ).next( ".dropdown" ).find( "a" )[0];
+        val = "#" + ( elt ? elt.id : "" );
+      }
+    }
+
+    if ( elt )
+    {
+      LOG( "menu " + val );
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      $( menu_bar_panel ).show();
+      elt.click();
+    }
+  };
+
+  /**
+   * Handler for menu item accelerators.
+   */
+  const onMenuItem = ( event ) => {
+    const mkey = event.target.innerText[ 0 ];
+    const key = event.key;
+    const mval = menuItems[ mkey ] || {};
+    var val = mval[ key ] || "";
+    var elt = val && document.querySelector( val ) || null;
+
+    if ( menu_bar_panel.contains( event.target ) )
+    {
+      if ( key === "Enter" )
+      {
+        val = "#" + event.target.id;
+        elt = event.target;
+      }
+    }
+
+    if ( elt )
+    {
+      LOG( "item " + val );
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      elt.click();
+      updateMenuBarPanel();
+      editor.setFocus();
+    }
+  };
+
+  /**
+   * Handler to close the open drop down menu.
+   */
+  const onMenuClose = () => {
+    const elt = $( ".dropdown.open" ).find( "a" )[0];
+
+    if ( elt )
+    {
+      LOG( "close #" + elt.id );
+      elt.click();
+    }
+  };
+
+  /**
+   * Handler for the escape key.
+   */
+  const onEscapeKey = ( event ) => {
+    if ( menu_bar_panel.contains( event.target ) )
+    {
+      onMenuClose();
+      updateMenuBarPanel();
+    }
+
+    else if ( isTutorial( file_URL ) || isTraining( file_URL ) )
+    {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      do_file_new();
+    }
+  };
+
+  /**
+   * Handler for the escape key in a child window.
+   */
+  const onEscapeChild = ( nwindow ) => ( event ) => {
+    if ( event.key === "Escape" )
+    {
+       nwindow.close();
+    }
+  };
+
+  /**
+   * Handler for the enter key.
+   */
+  const onEnterKey = ( event ) => {
+    var href = getLinkTarget();
+    var next = $( ".ee-input-panel a" ).filter(
+      ( i, x ) => x.innerHTML === "[Alt+Enter]" ).attr( "href" );
+
+    if ( event.altKey && ! event.ctrlKey )
+    {
+      // Next page, then current link, then right link
+      href = next || href;
+      if ( !href )
+      {
+        window.editor.selection().linkRight();
+        href = getLinkTarget();
+      }
+    }
+
+    if ( href )
+    {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      do_query_href( href );
+    }
+  };
+
+  /**
+   * Handler for the home key.
+   */
+  const onHomeKey = ( event ) => {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    const index = nextHomeIndex( file_URL );
+    const href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
+
+    do_query_href( href );
+  };
+
+  /**
+   * Handler for the end key.
+   */
+  const onEndKey = ( event ) => {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    const index = nextEndIndex( file_URL );
+    const href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
+
+    do_query_href( href );
+  };
+
+
+  /**
+   * Handler for the left key.
+   */
+  const onLeftKey = ( event ) => {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    window.history.back();
+  };
+
+  /**
+   * Handler for the right key.
+   */
+  const onRightKey = ( event ) => {
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    window.history.forward();
+  };
+
+  /**
+   * Handler for editor user interface keys.
+   */
+  const onKeyDown = ( event ) => {
+    const key = event.key;
+    const alt = event.altKey && ! event.ctrlKey;
+
+    if ( key === "Escape" )
+    {
+      onEscapeKey( event );
+    }
+
+    if ( key === "Enter" )
+    {
+      onEnterKey( event );
+    }
+
+    if ( key === "Home" && alt && isTutorial( file_URL ) )
+    {
+      onHomeKey( event );
+    }
+
+    if ( key === "End" && alt && isTutorial( file_URL ) )
+    {
+      onEndKey( event );
+    }
+
+    if ( key === "ArrowLeft" && alt )
+    {
+      onLeftKey( event );
+    }
+
+    if ( key === "ArrowRight" && alt )
+    {
+      onRightKey( event );
+    }
+  };
+
+  /**
+   * Handler for document link mouse down.
+   */
+  const onDocLink = ( event ) => {
+    var target = event.target;
+    while ( !target.href && target.parentNode.nodeType === 1 )
+    {
+      target = target.parentNode;
+    }
+    const href = target.getAttribute( "href" ) || "";
+
+    if ( href && href === getLinkTarget() )
+    {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      do_query_href( href );
+    }
+  };
+
+  /**
+   * Handler for window history links.
+   */
+  const onPopHistory = ( event ) => {
+    event.preventDefault();
+    do_query_data( event.state );
   };
 
   const menu_markup =
@@ -1389,7 +1945,8 @@ const ee_init = () => {
 '    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
 '      <ul class="nav navbar-nav">' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="f">File<span class="caret"></span></a>' +
+'          <a href="#" id="file_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
+'             aria-haspopup="true" aria-expanded="false" aria-label="File">F&#x0332;ile<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="new" aria-label="New">N&#x0332;ew</a></li>' +
 '            <li><a href="#" id="open" aria-label="Open">O&#x0332;pen</a></li>' +
@@ -1415,7 +1972,8 @@ const ee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="d">Drive<span class="caret"></span></a>' +
+'          <a href="#" id="drive_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
+'             aria-haspopup="true" aria-expanded="false" aria-label="Drive">D&#x0332;rive<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="drive_open" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="drive_save" aria-label="Save">S&#x0332;ave</a></li>' +
@@ -1427,7 +1985,8 @@ const ee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="e">Edit<span class="caret"></span></a>' +
+'          <a href="#" id="edit_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
+'             aria-haspopup="true" aria-expanded="false" aria-label="Edit">E&#x0332;dit<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="copy">Copy</a></li>' +
 '            <li><a href="#" id="paste">Paste</a></li>' +
@@ -1442,11 +2001,12 @@ const ee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="p">Panel<span class="caret"></span></a>' +
+'          <a href="#" id="panel_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
+'             aria-haspopup="true" aria-expanded="false" aria-label="View">V&#x0332;iew<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu check">' +
-'            <li><a href="#" id="panel_maximize" accesskey="x" aria-label="Maximize">Max&#x0332;imize</a></li>' +
+'            <li><a href="#" id="panel_maximize" aria-label="Maximize">Max&#x0332;imize</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="panel_menus" accesskey="m" aria-label="Menus">M&#x0332;enus</a></li>' +
+'            <li><a href="#" id="panel_menus" aria-label="Menus">M&#x0332;enus</a></li>' +
 '            <li><a href="#" id="panel_fname" aria-label="File Name">F&#x0332;ile Name</a></li>' +
 '            <li><a href="#" id="panel_quick" aria-label="Quick Buttons">Q&#x0332;uick Buttons</a></li>' +
 '            <li><a href="#" id="panel_side" aria-label="Side Palettes">S&#x0332;ide Palettes</a></li>' +
@@ -1454,13 +2014,14 @@ const ee_init = () => {
 '          </ul>' +
 '        </li>' +
 '        <li class="dropdown">' +
-'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" accesskey="h">Help<span class="caret"></span></a>' +
+'          <a href="#" id="help_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
+'             aria-haspopup="true" aria-expanded="false" aria-label="Help">H&#x0332;elp<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
-'            <li><a href="' + bt_start + '" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
-'            <li><a href="' + edt_start + '" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
-'            <li><a href="' + edt_index + '" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
-'            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="#" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
+'            <li><a href="#" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
+'            <li><a href="#" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
+'            <li><a href="' + guide_url + '" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
 '            <hr/>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
@@ -1469,75 +2030,35 @@ const ee_init = () => {
 '            <li><a href="ee-terms.pdf" target="_blank">Terms of Service</a></li>' +
 '            <li><a href="ee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
 '            <hr/>' +
-'            <li><a href="ee-about.html" id="about">A&#x0332;bout</a></li>' +
+'            <li><a href="ee-about.html" id="about" aria-label="About">A&#x0332;bout</a></li>' +
 '          </ul>' +
 '        </li>' +
 '      </ul>' +
 '    </div>' +
 '  </div>';
 
-  addMarkup( ".ee-menu", menu_markup );
-  addMarkup( ".ee-version", getVersion() );
-  addMarkup( ".ee-timestamp", getTimestamp() );
+  /**
+   * The menu accelerator keys.
+   */
+  const menuKeys = {
+    F: "#file_menu",
+    D: "#drive_menu",
+    E: "#edit_menu",
+    V: "#panel_menu",
+    H: "#help_menu",
 
-  addClick( "#new", do_new );
-  addClick( "#open", do_open );
-  addClick( "#save", do_save );
-  addClick( "#saveAs", do_saveAs );
-  addClick( "#view", do_view );
-  addClick( "#link", do_link );
-  addClick( "#saveHTML", do_saveHTML );
-  addClick( "#exportHTML", do_exportHTML );
-  addClick( "#printHTML", do_printHTML );
-  addClick( "#viewHTML", do_viewHTML );
-  addClick( "#saveBRF", do_saveBRF );
-  addClick( "#printBRF", do_printBRF );
-  addClick( "#viewBRF", do_viewBRF );
-  addClick( "#saveBRL", do_saveBRL );
-  addClick( "#exportBRL", do_exportBRL );
-  addClick( "#printBRL", do_printBRL );
-  addClick( "#close", do_close );
+    X: "#panel_maximize",
+    M: "#panel_menus",
+    P: "#printHTML",
+    I: "#index",
+    T: "#tutorial"
+  };
 
-  addClick( "#drive_open", do_drive_open );
-  addClick( "#drive_save", do_drive_save );
-  addClick( "#drive_saveAs", do_drive_saveAs );
-  addClick( "#drive_saveReplace", do_drive_saveReplace );
-  addClick( "#drive_link", do_drive_link );
-  addClick( "#drive_install", do_drive_install );
-
-  addClick( "#copy", do_copy );
-  addClick( "#paste", do_paste );
-  addClick( "#copyAll", do_copyAll );
-  addClick( "#pasteAll", do_pasteAll );
-  addClick( "#copyHTML", do_copyHTML );
-  addClick( "#copyAllHTML", do_copyAllHTML );
-  addClick( "#copyAllMath", do_copyAllMath );
-
-  addClick( "#panel_maximize", do_panel_maximize );
-  addClick( "#panel_menus", do_panel_menus );
-  addClick( "#panel_fname", do_panel_fname );
-  addClick( "#panel_quick", do_panel_quick );
-  addClick( "#panel_side", do_panel_side );
-  addClick( "#panel_braille", do_panel_braille );
-
-  addClick( "#welcome", do_welcome );
-  addClick( "#training", do_training );
-  addClick( "#tutorial", do_tutorial_edt );
-  addClick( "#index", do_index );
-  addClick( "#getting", do_tutorial_gtk );
-  addClick( "#settings", do_settings );
-  addClick( "#samples", do_help );
-  addClick( "#guide", do_help );
-  addClick( "#about", do_help );
-
-  $( ".dropdown-menu" ).mouseleave( function() {
-    $( this ).closest( ".dropdown" ).click();
-  } );
-
-  update_settings();
-
-  const accel = {
-    f: {
+  /**
+   * The menu item accelerator keys.
+   */
+  const menuItems = {
+    F: {
       n: "#new",
       o: "#open",
       s: "#save",
@@ -1547,11 +2068,11 @@ const ee_init = () => {
       h: "#saveHTML",
       x: "#exportHTML",
       p: "#printHTML",
-      e: "#printBRF",
       b: "#saveBRF",
+      e: "#printBRF",
       c: "#close"
     },
-    d: {
+    D: {
       o: "#drive_open",
       s: "#drive_save",
       a: "#drive_saveAs",
@@ -1559,7 +2080,7 @@ const ee_init = () => {
       l: "#drive_link",
       i: "#drive_install"
     },
-    p: {
+    V: {
       x: "#panel_maximize",
       m: "#panel_menus",
       f: "#panel_fname",
@@ -1567,7 +2088,7 @@ const ee_init = () => {
       s: "#panel_side",
       b: "#panel_braille"
     },
-    h: {
+    H: {
       w: "#welcome",
       b: "#training",
       t: "#tutorial",
@@ -1580,240 +2101,218 @@ const ee_init = () => {
     }
   };
 
-  // Process access key events
-  document.addEventListener( "keydown", e => {
-    const x1 = accel[ e.target.getAttribute( "accesskey" ) ] || {};
-    const x2 = x1[ e.key ] || "";
-    const elt = x2 && document.querySelector( x2 ) || null;
-    if ( elt )
+  /**
+   * Construct the user interface menu elements.
+   */
+  const initMenus = () => {
+    addMarkup( ".ee-menu", menu_markup );
+
+    addClick( "#new", do_file_new );
+    addClick( "#open", do_file_open );
+    addClick( "#save", do_file_save );
+    addClick( "#saveAs", do_file_save_as );
+    addClick( "#view", do_view_source );
+    addClick( "#link", do_file_link );
+    addClick( "#saveHTML", do_save_HTML );
+    addClick( "#exportHTML", do_export_HTML );
+    addClick( "#printHTML", do_print_HTML );
+    addClick( "#viewHTML", do_view_HTML );
+    addClick( "#saveBRF", do_save_BRF );
+    addClick( "#printBRF", do_print_BRF );
+    addClick( "#viewBRF", do_view_BRF );
+    addClick( "#saveBRL", do_save_BRL );
+    addClick( "#exportBRL", do_export_BRL );
+    addClick( "#printBRL", do_print_BRL );
+    addClick( "#close", do_file_close );
+
+    addClick( "#drive_open", do_drive_open );
+    addClick( "#drive_save", do_drive_save );
+    addClick( "#drive_saveAs", do_drive_save_as );
+    addClick( "#drive_saveReplace", do_drive_save_replace );
+    addClick( "#drive_link", do_drive_link );
+    addClick( "#drive_install", do_drive_install );
+
+    addClick( "#copy", do_edit_copy );
+    addClick( "#paste", do_edit_paste );
+    addClick( "#copyAll", do_edit_copy_all );
+    addClick( "#pasteAll", do_edit_paste_all );
+    addClick( "#copyHTML", do_edit_copy_HTML );
+    addClick( "#copyAllHTML", do_edit_copy_all_HTML );
+    addClick( "#copyAllMath", do_edit_copy_all_math );
+
+    addClick( "#panel_maximize", do_panel_maximize );
+    addClick( "#panel_menus", do_panel_menus );
+    addClick( "#panel_fname", do_panel_fname );
+    addClick( "#panel_quick", do_panel_quick );
+    addClick( "#panel_side", do_panel_side );
+    addClick( "#panel_braille", do_panel_braille );
+
+    addClick( "#welcome", do_help_welcome );
+    addClick( "#training", do_help_training );
+    addClick( "#tutorial", do_help_tutorial_edt );
+    addClick( "#index", do_help_tutorial_index );
+    addClick( "#getting", do_help_tutorial_gtk );
+    addClick( "#settings", do_help_settings );
+    addClick( "#samples", do_help );
+    addClick( "#guide", do_help );
+    addClick( "#about", do_help );
+
+    // Update equation editor user interface panels.
+    updateMenuBarPanel();
+    updateOpenFilePanel();
+  };
+
+  /**
+   * Install the user interface event handlers.
+   */
+  const initEvents = () => {
+
+    // Ignore alt key release events
+    document.addEventListener( "keyup", onAltKey, true );
+    document.addEventListener( "keypress", onAltKey, true );
+
+    // Menu accelerator key down
+    document.addEventListener( "keydown", onMenuKey, true );
+
+    // Menu item accelerator key down
+    document.addEventListener( "keydown", onMenuItem, true );
+
+    // Editor user interface key down
+    document.addEventListener( "keydown", onKeyDown, true );
+
+    // Document link mouse down
+    document.addEventListener( "mousedown", onDocLink, true );
+
+    // Process window history links
+    window.addEventListener( "popstate", onPopHistory );
+
+    // Process window loss of focus
+    window.addEventListener( "blur", onMenuClose );
+
+    // Process input area gain of focus
+    $( ".ee-input-panel" ).on( "focus", onMenuClose );
+
+    // Close open menus on mouse leave
+    $( ".dropdown-menu" ).on( "mouseleave", onMenuClose );
+  };
+
+  /**
+   * Load the initial document content.
+   */
+  const initContent = () => {
+
+    // Process the query parameters
+    if ( localStorage[ "ee-query-state" ] )
     {
-      elt.click();
-      editor.setFocus();
+      do_query_state();
     }
-  } );
 
-  // Process document link key down events
-  const onKeyDown = e => {
-    var result = false;
-    var index = "";
-    var href = getCurrentLink();
-    var next = $( ".ee-input-panel a" ).filter(
-        ( i, x ) => x.innerHTML === "[Alt+Enter]" ).attr( "href" ) || "";
-
-    const indexStart = 101;
-    const indexLimit = 439;
-    const skipIndex = {
-        180: true,
-        190: true,
-        200: true,
-        300: true,
-        350: true,
-        360: true,
-        370: true,
-        380: true,
-        390: true,
-        400: true
-    };
-
-    const getIndex = s => parseInt( s.replace( /.*([0-9]{4}).*/, "$1" ) );
-    const nextHome = v => ( v % 10 === 1 ? v - 10 : v - v % 10 + 1 );
-    const nextEnd = v => ( v % 10 === 9 ? v + 10 : v - v % 10 + 9 );
-    const putIndex = v => ( "0000" + v.toString() ).substr( -4 );
-
-    const nextHomeIndex = function ( url ) {
-      var index = getIndex( url );
-      index = index > indexStart ? nextHome( index ) : index;
-      while ( skipIndex[ index - 1 ] )
-      {
-        index = nextHome( index );
-      }
-      return putIndex( index );
-    };
-
-    const nextEndIndex = function ( url ) {
-      var index = getIndex( url );
-      index = index < indexLimit ? nextEnd( index ) : index;
-      while ( index === 109 || skipIndex[ index - 9 ] )
-      {
-        index = nextEnd( index );
-      }
-      return putIndex( index );
-    };
-
-    if ( e.key === "Escape" && isTutorial( file_URL ) &&
-        !document.querySelector( ".ee-menu" ).contains( document.activeElement ) )
+    // Show the welcome screen (ee)
+    else if ( getLocalSetting( "ee-show-welcome" ) )
     {
-      result = true;
-      do_new();
+      do_help_welcome();
+    }
+
+    // Show the users guide (ee)
+    else if ( getLocalSetting( "ee-show-users-guide" ) )
+    {
+      do_help_open( guide_url );
+    }
+
+    // Show the tutorial screen (edt)
+    else if ( getLocalSetting( "edt-show-tutorial" ) )
+    {
+      do_help_tutorial_edt();
+    }
+
+    // Show the tutorial screen (gtk)
+    else if ( getLocalSetting( "gtk-show-tutorial" ) )
+    {
+      do_help_tutorial_gtk();
+    }
+
+    else if ( open_file_name || getLocalSetting( "ee-panel-all-panels" ) )
+    {
+      updatePanels();
+    }
+
+    else
+    {
       setPanelSize( true );
     }
 
-    if ( e.key === "Escape" )
-    {
-        result = true;
-        $( ".dropdown.open" ).click();
-        updatePanels();
-    }
-
-    if ( e.key === "Enter" && e.altKey && !e.ctrlKey )
-    {
-      href = next || href;
-      if ( !href )
-      {
-        window.editor.selection().linkRight();
-        href = getCurrentLink();
-      }
-      result = true;
-      do_query_href( href );
-    }
-
-    if ( e.key === "Enter" && !e.altKey && !e.ctrlKey && href )
-    {
-      result = true;
-      do_query_href( href );
-    }
-
-    if ( e.key === "Home" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
-    {
-        result = true;
-        index = nextHomeIndex( file_URL );
-        href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
-        do_query_href( href );
-    }
-
-    if ( e.key === "End" && e.altKey && !e.ctrlKey && isTutorial( file_URL ) )
-    {
-        result = true;
-        index = nextEndIndex( file_URL );
-        href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
-        do_query_href( href );
-    }
-
-    if ( "FDEPH".indexOf( e.key ) !== -1 && e.altKey && !e.ctrlKey )
-    {
-        result = true;
-        $( ".ee-menu" ).show();
-    }
-
-    if ( e.key === "I" && e.altKey && !e.ctrlKey )
-    {
-      href = localStorage[ "edt-index-page-href" ] || edt_index;
-      if ( href )
-      {
-        result = true;
-        do_query_href( href );
-        setPanelSize( false );
-      }
-    }
-
-    if ( e.key === "T" && e.altKey && !e.ctrlKey )
-    {
-      href = localStorage[ "edt-last-page-href" ] || edt_start;
-      if ( href )
-      {
-        result = true;
-        do_query_href( href );
-        setPanelSize( false );
-      }
-    }
-
-    if ( e.key === "ArrowLeft" && e.altKey && !e.ctrlKey )
-    {
-      result = true;
-      window.history.back();
-    }
-
-    if ( e.key === "ArrowRight" && e.altKey && !e.ctrlKey )
-    {
-      result = true;
-      window.history.forward();
-    }
-
-    if ( result )
-    {
-      e.stopImmediatePropagation();
-      e.preventDefault();
-    }
   };
 
-  // Process document link key up events
-  const onKeyUp = e => {
-    if ( e.code === "AltLeft" || e.code === "AltRight" )
-    {
-      e.stopImmediatePropagation();
-      e.preventDefault();
-    }
+  /**
+   * The default values for the equation editor user interface settings.
+   */
+  _ee.settings = {
+    "ee-show-welcome" : "false",
+    "ee-show-users-guide" : "false",
+    "edt-show-tutorial" : "false",
+    "edt-show-last-page" : "false",
+    "edt-index-page-href" : "?edt/0000.html",
+    "edt-start-page-href" : "?edt/0101.html",
+    "edt-last-page-href" : "",
+    "gtk-show-tutorial" : "false",
+    "gtk-show-last-page" : "false",
+    "gtk-last-page-href" : "",
+    "ee-width" : 0,
+    "ee-height" : 0,
+    "ee-input-qwerty" : "true",
+    "ee-input-braille" : "false",
+    "ee-input-home" : "false",
+    "ee-panel-all-panels" : "true",
+    "ee-panel-app-menus" : "true",
+    "ee-panel-open-file" : "true",
+    "ee-panel-quick-bar" : "true",
+    "ee-panel-side-bar" : "true",
+    "ee-panel-braille-bar" : "true",
+    "ee-mathjax-on-save" : "false",
+    "ee-mathjax-on-export" : "true",
+    "ee-mathjax-on-print" : "true",
+    "ee-screen-page-width" : 30,
+    "ee-screen-page-height" : 4,
+    "ee-screen-indent-first" : 1,
+    "ee-screen-indent-runover" : 1,
+    "ee-device-page-width" : 40,
+    "ee-device-page-height" : 1,
+    "ee-device-indent-first" : 1,
+    "ee-device-indent-runover" : 1,
+    "ee-file-page-width" : 40,
+    "ee-file-page-height" : 25,
+    "ee-file-page-numbers" : "true",
+    "ee-file-indent-first" : 1,
+    "ee-file-indent-runover" : 1,
+    "ee-math-indent-first" : 3,
+    "ee-math-indent-runover" : 5,
+    "ee-html-font-size" : 18,
+    "ee-brl-font-size" : 24,
+    "fmt-heading-1": "center",
+    "fmt-heading-2": "cell-5",
+    "fmt-heading-3": "cell-7",
+    "fmt-heading-4": "cell-7",
+    "fmt-heading-5": "cell-7",
+    "fmt-heading-6": "cell-7",
+    "brl-rules-all-rules" : "true",
+    "brl-rules-alphabetic-wordsigns" : "true",
+    "brl-rules-strong-wordsigns" : "true",
+    "brl-rules-strong-contractions" : "true",
+    "brl-rules-strong-groupsigns" : "true",
+    "brl-rules-lower-wordsigns" : "true",
+    "brl-rules-lower-groupsigns" : "true",
+    "brl-rules-initial-letter" : "true",
+    "brl-rules-initial-letter-45" : "true",
+    "brl-rules-initial-letter-456" : "true",
+    "brl-rules-initial-letter-5" : "true",
+    "brl-rules-final-letter" : "true",
+    "brl-rules-final-letter-46" : "true",
+    "brl-rules-final-letter-56" : "true",
+    "brl-rules-shortforms" : "true"
   };
 
-  // Process document link key press events
-  const onKeyPress = onKeyUp;
-
-  // Process document link mouse down events
-  const onMouseDown = e => {
-    var target = e.target;
-    while ( !target.href && target.parentNode.nodeType === 1 )
-    {
-      target = target.parentNode;
-    }
-    const href = target.getAttribute( "href" ) || "";
-
-    if ( href && href === getCurrentLink() )
-    {
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      do_query_href( href );
-    }
-  };
-
-  if ( window.editor )
-  {
-    document.addEventListener( "keydown", onKeyDown, true );
-    document.addEventListener( "keyup", onKeyUp, true );
-    document.addEventListener( "keypress", onKeyPress, true );
-    document.addEventListener( "mousedown", onMouseDown, true );
-
-    // Process history links
-    window.addEventListener( "popstate", e => do_query_data( e.state ) );
-  }
-
-  // Process the query parameters
-  if ( window.editor && localStorage[ "ee-query-state" ] )
-  {
-    const href = localStorage[ "ee-query-state" ];
-    delete localStorage[ "ee-query-state" ];
-
-    do_query_href( href );
-    if ( isTutorial( href ) )
-    {
-      setPanelSize( false );
-    }
-    return;
-  }
-
-  // Show the welcome screen (ee)
-  if ( window.editor && getLocalSetting( "ee-show-welcome" ) )
-  {
-    do_welcome();
-  }
-
-  // Show the users guide (ee)
-  else if ( window.editor && getLocalSetting( "ee-show-users-guide" ) )
-  {
-    do_help_open( "ee-guide.html" );
-  }
-
-  // Show the tutorial screen (edt)
-  else if ( window.editor && getLocalSetting( "edt-show-tutorial" ) )
-  {
-    do_tutorial_edt();
-  }
-
-  // Show the tutorial screen (gtk)
-  else if ( window.editor && getLocalSetting( "gtk-show-tutorial" ) )
-  {
-    do_tutorial_gtk();
-  }
-};
+  return _ee;
+})();
 
 document.addEventListener( "keydown", e => {
   if ( e.key === "Enter" )
@@ -1829,6 +2328,7 @@ document.addEventListener( "keydown", e => {
       window.close();
     }
   }
+
   if ( e.key === "Escape" )
   {
     if ( window.editor )
