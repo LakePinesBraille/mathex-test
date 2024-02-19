@@ -167,8 +167,8 @@ const plts = function()
     active_keys.push( ak );
     open_keys.push( ok );
     rows.push( tr );
-    ee_settings[ ak ] = "true";
-    ee_settings[ ok ] = "false";
+    ee.settings[ ak ] = "true";
+    ee.settings[ ok ] = "false";
   };
 
   const tbody = document.querySelector( "table tbody" );
@@ -211,9 +211,9 @@ const init = function() {
 };
 
 const load = function() {
-  for ( var k in ee_settings )
+  for ( var k in ee.settings )
   {
-    var v = localStorage[ k ] || ee_settings[ k ] || "";
+    var v = localStorage[ k ] || ee.settings[ k ] || "";
     var elt = document.querySelector( "#" + k );
     if ( elt ) {
       if ( elt.type === "checkbox" || elt.type === "radio" )
@@ -230,7 +230,7 @@ const load = function() {
 
 const save = function() {
   localStorage.clear();
-  for ( var k in ee_settings )
+  for ( var k in ee.settings )
   {
     var elt = document.querySelector( "#" + k );
     if ( elt )
@@ -242,7 +242,7 @@ const save = function() {
 };
 
 const reset = function() {
-  ee_reset();
+  ee.reset();
 }
 
 const done = function() {
