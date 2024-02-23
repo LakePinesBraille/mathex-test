@@ -411,7 +411,7 @@ const ee_drive = () => {
 
       LOG( "Success opening file " + fileName );
       fn( result.body );
-      cb( fileName, data );
+      cb && cb( fileName, data );
     }
     else
     {
@@ -436,7 +436,7 @@ const ee_drive = () => {
             if ( xhr.readyState === 4 && xhr.status === 200 )
             {
               LOG( "Success saving file " + fileName );
-              cb( fileName );
+              cb && cb( fileName );
               resolve( OK );
             }
             else if ( xhr.readyState === 4 )
@@ -464,7 +464,8 @@ const ee_drive = () => {
       try {
         const ofileName = fileName;
         const ofileId = fileId;
-        const fname = ofileName || options.suggestedName + ".html";
+        // const fname = ofileName || options.suggestedName + ".html";
+        const fname = cb ? ofileName || options.suggestedName + ".html" : options.suggestedName;
 
         const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
 
@@ -501,10 +502,18 @@ const ee_drive = () => {
           if ( xhr.readyState === 4 && xhr.status === 200 )
           {
             LOG( "Success saving file " + nfileName );
-            cb( nfileName );
+            cb && cb( nfileName );
 
-            fileName = nfileName;
-            fileId = JSON.parse( xhr.response ).id;
+            if ( cb )
+            {
+              fileName = nfileName;
+              fileId = JSON.parse( xhr.response ).id;
+            }
+            else
+            {
+              fileName = ofileName;
+              fileId = ofileId;
+            }
 
             resolve( OK );
           }
@@ -550,7 +559,7 @@ const ee_drive = () => {
             if ( xhr.readyState === 4 && xhr.status === 200 )
             {
               LOG( "Success saving file " + fileName );
-              cb( fileName );
+              cb && cb( fileName );
               resolve( OK );
             }
             else if ( xhr.readyState === 4 )
@@ -640,7 +649,7 @@ const ee_drive = () => {
     }
 
     fn( result.body );
-    cb( fileName, data );
+    cb && cb( fileName, data );
 
     LOG( "Success opening file " + fileName );
   };
@@ -685,7 +694,7 @@ const ee_drive = () => {
           if ( xhr.readyState === 4 && xhr.status === 200 )
           {
             LOG( "Success creating file " + nfileName );
-            cb( nfileName );
+            cb && cb( nfileName );
 
             fileName = nfileName;
             fileId = JSON.parse( xhr.response ).id;

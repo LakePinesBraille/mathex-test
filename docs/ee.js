@@ -219,8 +219,8 @@ const ee = (() => {
    * BRL file save/export dialog user interface options.
    */
   const brl_types = { types : [ {
-    description : "Braille HTML File",
-    accept : { "application/html" : [ ".html" ] }
+    description : "Unicode Braille File",
+    accept : { "application/brl" : [ ".brl" ] }
   } ] };
 
   /**
@@ -254,13 +254,13 @@ const ee = (() => {
   /**
    * Set the suggested file name dialog option.
    */
-  const setFileOption = ( options, type ) => {
+  const setFileOption = ( options, ftype ) => {
     var fname = last_file_handle && last_file_handle.name ||
         open_file_name || "untitled";
 
     fname = fname.replace( /^.*\//, "" );
-    fname = fname.replace( /(-p)?(-brl)?\.[^.]*$/, "" );
-    fname = fname + ( type || "" );
+    fname = fname.replace( /(-p)?\.[^.]*$/, "" );
+    fname = fname + ( ftype || "" );
 
     options.suggestedName = fname;
   };
@@ -581,7 +581,7 @@ const ee = (() => {
 
     do_query_href( href );
 
-    if ( isTutorial( href ) )
+    if ( isTutorial( href ) || isTraining( href ) )
     {
       setPanelSize( false );
     }
@@ -595,6 +595,7 @@ const ee = (() => {
    * Document markup constants.
    */
 
+  const doc_type = '<!DOCTYPE html>\r\n';
   const html_otag = '<html>\r\n';
   const html_ctag = '</html>\r\n';
   const head_otag = '<head>\r\n';
@@ -607,10 +608,10 @@ const ee = (() => {
   const pre_otag = '<pre>\r\n';
   const pre_ctag = '\r\n</pre>\r\n';
 
-  const view_open = html_otag + body_otag + pre_otag;
+  const view_open = doc_type + html_otag + body_otag + pre_otag;
   const view_close = pre_ctag + body_ctag + html_ctag;
 
-  const html_open = html_otag + body_otag + p_otag;
+  const html_open = doc_type + html_otag + body_otag + p_otag;
   const html_close = p_ctag + body_ctag + html_ctag;
 
   const style_tag = '<link rel="stylesheet" type="text/css" href="eex.css"/>\r\n';
@@ -670,6 +671,8 @@ const ee = (() => {
     result = result.replace( body_otag, head_otag + style_tag + head_ctag + body_otag );
     result = addFontSize( result, "ee-brl-font-size" );
 
+    result = result.replace( "<body", "<body class=\"brl\"" );
+
     return result;
   };
 
@@ -702,20 +705,20 @@ const ee = (() => {
   /**
    * Output document markup for a save file operation.
    */
-  const saveFile = async ( options, markup, type ) => {
-    setFileOption( options, type );
+  const saveFile = async ( options, markup, update, ftype ) => {
+    setFileOption( options, ftype );
 
     if ( window.showSaveFilePicker )
     {
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
-      setOpenFileHandle( handle );
+      update && setOpenFileHandle( handle );
       await file.write( markup );
       await file.close();
     }
     else
     {
-      const name = options.suggestedName + ".html";
+      const name = options.suggestedName + ( ftype ? "" : ".html" );
       const type = "application/html";
       const blob = new Blob( [ markup ], { type: type } );
       const a = document.createElement( "a" );
@@ -926,7 +929,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getOpenOptions();
-      await saveFile( options, getContent() );
+      await saveFile( options, getContent(), true );
       ee_drive.clear();
     }
     catch ( e )
@@ -959,7 +962,7 @@ const ee = (() => {
       const options = getHTMLOptions();
       const mathjax = getLocalSetting( "ee-mathjax-on-save" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
-      await saveFile( options, markup, "-p" );
+      await saveFile( options, markup, false, "-p.html" );
     }
     catch ( e )
     {
@@ -974,8 +977,8 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRFOptions();
-      const markup = editor.getAsciiBraille();
-      await saveFile( options, markup );
+      const markup = editor.getAsciiBraille() + '\n';
+      await saveFile( options, markup, false, ".brf" );
     }
     catch ( e )
     {
@@ -990,8 +993,8 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRLOptions();
-      const markup = addBRLMarkup( editor.getContractedBraille() );
-      await saveFile( options, markup, "-brl" );
+      const markup = editor.getContractedBraille() + '\n';
+      await saveFile( options, markup, false, ".brl" );
     }
     catch ( e )
     {
@@ -999,9 +1002,9 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the file > export HTML operation.
+   * Handler method for the file > print preview operation.
    */
-  const do_export_HTML = async ( event ) => {
+  const do_preview = async ( event ) => {
     try {
       event && event.preventDefault();
 
@@ -1010,7 +1013,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
-      setFileOption( options, "-p" );
+      setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1020,28 +1023,6 @@ const ee = (() => {
       {
         setTimeout( () => nwindow.MathJax.Hub.Startup.onload(), 100 );
       }
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
-   * Handler method for the file > export BRL operation.
-   */
-  const do_export_BRL = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      const markup = addBRLMarkup( editor.getContractedBraille() );
-      const nwindow = window.open( "" );
-
-      const options = getHTMLOptions();
-      setFileOption( options, "-brl" );
-
-      nwindow.document.write( markup );
-      nwindow.document.title = options.suggestedName;
-      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
     }
     catch ( e )
     {
@@ -1060,7 +1041,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
-      setFileOption( options );
+      setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1094,7 +1075,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getBRFOptions();
-      setFileOption( options, "-brf" );
+      setFileOption( options, ".brf" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1118,7 +1099,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
-      setFileOption( options, "-brl" );
+      setFileOption( options, ".brl" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1142,7 +1123,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
-      setFileOption( options );
+      setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1164,7 +1145,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
-      setFileOption( options, "-p" );
+      setFileOption( options, "-p.html" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1186,7 +1167,29 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getBRFOptions();
-      setFileOption( options );
+      setFileOption( options, ".brf" );
+
+      nwindow.document.write( markup );
+      nwindow.document.title = options.suggestedName;
+      nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the file > view BRL operation.
+   */
+  const do_view_BRL = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const markup = addBRLMarkup( editor.getContractedBraille() );
+      const nwindow = window.open( "" );
+
+      const options = getHTMLOptions();
+      setFileOption( options, ".brl" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1251,6 +1254,61 @@ const ee = (() => {
     try {
       event && event.preventDefault();
       ee_drive.save_replace( getContent, setOpenFileData );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save HTML operation.
+   */
+  const do_drive_save_HTML = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getHTMLOptions();
+      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
+      const markup = addMathMarkup( editor.getPresent(), mathjax );
+
+      setFileOption( options, "-p.html" );
+      ee_drive.save_as( () => markup, null, options );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save BRF operation.
+   */
+  const do_drive_save_BRF = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getBRFOptions();
+      const markup = editor.getAsciiBraille() + '\n';
+
+      setFileOption( options, ".brf" );
+      ee_drive.save_as( () => markup, null, options );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the drive > save BRL operation.
+   */
+  const do_drive_save_BRL = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const options = getBRLOptions();
+      const markup = editor.getContractedBraille() + '\n';
+
+      setFileOption( options, ".brl" );
+      ee_drive.save_as( () => markup, null, options );
     }
     catch ( e )
     {
@@ -1684,7 +1742,7 @@ const ee = (() => {
    * Ignore alt key release events.
    */
   const onAltKey = ( event ) => {
-    if ( event.code === "AltLeft" || event.code === "AltRight" )
+    if ( event.altKey )
     {
       event.stopImmediatePropagation();
       event.preventDefault();
@@ -1696,9 +1754,15 @@ const ee = (() => {
    */
   const onMenuKey = ( event ) => {
     const alt = event.altKey && event.shiftKey && ! event.ctrlKey;
-    const key = event.key;
+    const key = event.code.replace( "Key", "" );
+
     var val = alt && menuKeys[ key ] || "";
     var elt = val && document.querySelector( val ) || null;
+
+    const lst = $(".dropdown.open" ).find( ".dropdown-menu" ).find( "a" );
+    const len = lst.length;
+    const idx = lst.index( event.target );
+    var nxt = null;
 
     if ( menu_bar_panel.contains( event.target ) )
     {
@@ -1713,6 +1777,18 @@ const ee = (() => {
         elt = $( ".dropdown.open" ).next( ".dropdown" ).find( "a" )[0];
         val = "#" + ( elt ? elt.id : "" );
       }
+
+      if ( key === "ArrowUp" || key === "Tab" && event.shiftKey )
+      {
+        nxt = lst[ idx < 1 ? len - 1 : idx - 1 ] || null;
+        val = "#" + ( nxt ? nxt.id : "" );
+      }
+
+      if ( key === "ArrowDown" || key === "Tab" && !event.shiftKey )
+      {
+        nxt = lst[ idx + 1 < len ? idx + 1 : 0 ] || null;
+        val = "#" + ( nxt ? nxt.id : "" );
+      }
     }
 
     if ( elt )
@@ -1724,15 +1800,26 @@ const ee = (() => {
       $( menu_bar_panel ).show();
       elt.click();
     }
+
+    if ( nxt )
+    {
+      LOG( "next " + val );
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      nxt.focus();
+    }
   };
 
   /**
    * Handler for menu item accelerators.
    */
   const onMenuItem = ( event ) => {
-    const mkey = event.target.innerText[ 0 ];
-    const key = event.key;
+    const melt = $( ".dropdown.open" ).find( "a" )[ 0 ]
+    const mkey = melt && melt.innerText[ 0 ] || "";
     const mval = menuItems[ mkey ] || {};
+
+    const key = event.code.replace( "Key", "" );
     var val = mval[ key ] || "";
     var elt = val && document.querySelector( val ) || null;
 
@@ -1760,13 +1847,17 @@ const ee = (() => {
   /**
    * Handler to close the open drop down menu.
    */
-  const onMenuClose = () => {
+  const onMenuClose = ( event ) => {
     const elt = $( ".dropdown.open" ).find( "a" )[0];
 
     if ( elt )
     {
+      event && event.stopImmediatePropagation();
+      event && event.preventDefault();
+
       LOG( "close #" + elt.id );
       elt.click();
+      editor.setFocus();
     }
   };
 
@@ -1793,7 +1884,7 @@ const ee = (() => {
    * Handler for the escape key in a child window.
    */
   const onEscapeChild = ( nwindow ) => ( event ) => {
-    if ( event.key === "Escape" )
+    if ( event.code === "Escape" )
     {
        nwindow.close();
     }
@@ -1878,7 +1969,7 @@ const ee = (() => {
    * Handler for editor user interface keys.
    */
   const onKeyDown = ( event ) => {
-    const key = event.key;
+    const key = event.code;
     const alt = event.altKey && ! event.ctrlKey;
 
     if ( key === "Escape" )
@@ -1953,21 +2044,21 @@ const ee = (() => {
 '            <li><a href="#" id="save" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
 '            <li><a href="#" id="view" aria-label="View Source">V&#x0332;iew Source</a></li>' +
-'            <li><a href="#" id="link" aria-label="Link">L&#x0332;ink</a></li>' +
+'            <li><a href="#" id="preview" aria-label="Print Preview">Print Pr&#x0332;eview</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
-'            <li><a href="#" id="exportHTML" aria-label="Export HTML">Ex&#x0332;port HTML</a></li>' +
-'            <li><a href="#" id="printHTML" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
 '            <li><a href="#" id="viewHTML">View HTML</a></li>' +
+'            <li><a href="#" id="printHTML" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="printBRF" aria-label="Emboss BRF">E&#x0332;mboss BRF</a></li>' +
 '            <li><a href="#" id="viewBRF">View BRF</a></li>' +
+'            <li><a href="#" id="printBRF" aria-label="Emboss BRF">E&#x0332;mboss BRF</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="saveBRL">Save BRL</a></li>' +
-'            <li><a href="#" id="exportBRL">Export BRL</a></li>' +
+'            <li><a href="#" id="viewBRL">View BRL</a></li>' +
 '            <li><a href="#" id="printBRL">Print BRL</a></li>' +
 '            <hr/>' +
+'            <li><a href="#" id="link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <li><a href="#" id="close" aria-label="Close">C&#x0332;lose</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -1979,8 +2070,12 @@ const ee = (() => {
 '            <li><a href="#" id="drive_save" aria-label="Save">S&#x0332;ave</a></li>' +
 '            <li><a href="#" id="drive_saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
 '            <li><a href="#" id="drive_saveReplace" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
-'            <li><a href="#" id="drive_link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <hr/>' +
+'            <li><a href="#" id="drive_saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
+'            <li><a href="#" id="drive_saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
+'            <li><a href="#" id="drive_saveBRL">Save BRL</a></li>' +
+'            <hr/>' +
+'            <li><a href="#" id="drive_link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <li><a href="#" id="drive_install" aria-label="Install">I&#x0332;nstall</a></li>' +
 '          </ul>' +
 '        </li>' +
@@ -2059,45 +2154,47 @@ const ee = (() => {
    */
   const menuItems = {
     F: {
-      n: "#new",
-      o: "#open",
-      s: "#save",
-      a: "#saveAs",
-      v: "#view",
-      l: "#link",
-      h: "#saveHTML",
-      x: "#exportHTML",
-      p: "#printHTML",
-      b: "#saveBRF",
-      e: "#printBRF",
-      c: "#close"
+      N: "#new",
+      O: "#open",
+      S: "#save",
+      A: "#saveAs",
+      V: "#view",
+      R: "#preview",
+      H: "#saveHTML",
+      P: "#printHTML",
+      B: "#saveBRF",
+      E: "#printBRF",
+      L: "#link",
+      C: "#close"
     },
     D: {
-      o: "#drive_open",
-      s: "#drive_save",
-      a: "#drive_saveAs",
-      r: "#drive_saveReplace",
-      l: "#drive_link",
-      i: "#drive_install"
+      O: "#drive_open",
+      S: "#drive_save",
+      A: "#drive_saveAs",
+      R: "#drive_saveReplace",
+      H: "#drive_saveHTML",
+      B: "#drive_saveBRF",
+      L: "#drive_link",
+      I: "#drive_install"
     },
     V: {
-      x: "#panel_maximize",
-      m: "#panel_menus",
-      f: "#panel_fname",
-      q: "#panel_quick",
-      s: "#panel_side",
-      b: "#panel_braille"
+      X: "#panel_maximize",
+      M: "#panel_menus",
+      F: "#panel_fname",
+      Q: "#panel_quick",
+      S: "#panel_side",
+      B: "#panel_braille"
     },
     H: {
-      w: "#welcome",
-      b: "#training",
-      t: "#tutorial",
-      i: "#index",
-      u: "#guide",
-      k: "#getting",
-      m: "#samples",
-      g: "#settings",
-      a: "#about"
+      W: "#welcome",
+      B: "#training",
+      T: "#tutorial",
+      I: "#index",
+      U: "#guide",
+      K: "#getting",
+      M: "#samples",
+      G: "#settings",
+      A: "#about"
     }
   };
 
@@ -2112,16 +2209,16 @@ const ee = (() => {
     addClick( "#save", do_file_save );
     addClick( "#saveAs", do_file_save_as );
     addClick( "#view", do_view_source );
+    addClick( "#preview", do_preview );
     addClick( "#link", do_file_link );
     addClick( "#saveHTML", do_save_HTML );
-    addClick( "#exportHTML", do_export_HTML );
-    addClick( "#printHTML", do_print_HTML );
     addClick( "#viewHTML", do_view_HTML );
+    addClick( "#printHTML", do_print_HTML );
     addClick( "#saveBRF", do_save_BRF );
-    addClick( "#printBRF", do_print_BRF );
     addClick( "#viewBRF", do_view_BRF );
+    addClick( "#printBRF", do_print_BRF );
     addClick( "#saveBRL", do_save_BRL );
-    addClick( "#exportBRL", do_export_BRL );
+    addClick( "#viewBRL", do_view_BRL );
     addClick( "#printBRL", do_print_BRL );
     addClick( "#close", do_file_close );
 
@@ -2129,6 +2226,9 @@ const ee = (() => {
     addClick( "#drive_save", do_drive_save );
     addClick( "#drive_saveAs", do_drive_save_as );
     addClick( "#drive_saveReplace", do_drive_save_replace );
+    addClick( "#drive_saveHTML", do_drive_save_HTML );
+    addClick( "#drive_saveBRF", do_drive_save_BRF );
+    addClick( "#drive_saveBRL", do_drive_save_BRL );
     addClick( "#drive_link", do_drive_link );
     addClick( "#drive_install", do_drive_install );
 
@@ -2287,7 +2387,7 @@ const ee = (() => {
     "ee-math-indent-first" : 3,
     "ee-math-indent-runover" : 5,
     "ee-html-font-size" : 18,
-    "ee-brl-font-size" : 24,
+    "ee-brl-font-size" : 18,
     "fmt-heading-1": "center",
     "fmt-heading-2": "cell-5",
     "fmt-heading-3": "cell-7",

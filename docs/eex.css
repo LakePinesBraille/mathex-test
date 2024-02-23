@@ -1,8 +1,11 @@
 /* Braille font */
 @font-face {
   font-family: eeUBraille;
-  src:url("css/fonts/eeUBraille.ttf");
+  src:url("mathex/css/fonts/eeUBraille.ttf");
 }
+
+/* Paragraph margin */
+.brl p { margin: 0em }
 
 /* Table font */
 table { font: 18pt sans-serif }
