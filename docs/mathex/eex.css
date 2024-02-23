@@ -4,6 +4,9 @@
   src:url("css/fonts/eeUBraille.ttf");
 }
 
+/* Paragraph margin */
+.brl p { margin: 0em }
+
 /* Table font */
 table { font: 18pt sans-serif }
 

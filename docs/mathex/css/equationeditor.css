@@ -1298,3 +1298,8 @@ apply, mphantom
 .ee-input-panel aside { display: inline; color: blue }
 .ee-input-panel aside::before { content: '[' }
 .ee-input-panel aside::after { content: ']' }
+
+/* Fix for bootstrap dropdown item focus outline */
+.dropdown-menu a:focus {
+  outline: 2px solid;
+}
