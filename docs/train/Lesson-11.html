@@ -1,156 +1,70 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <body>
-    <h1>Lesson 11:  Braille Keyboards</h1>
+    <h1>Lesson 11:  Screen Readers</h1>
     <hr />
-    <p>This lesson shows how to use Computer Braille input from an electronic braille keyboard.</p>
+    <p>This lesson shows how to set up your screen reader to expect Computer Braille input from an electronic braille keyboard.</p>
     <hr />
-    <p>So far we have used <i>Computer Braille Input</i> mode to simulate the braille symbols used by an electronic braille keyboard.</p>
-    <p>Now we will use <i>Computer Braille Input</i> to enter these braille symbols directly from an electronic braille keyboard.</p>
+    <p>Each screen reader allows you to choose the braille code used to translate input from an electronic braille keyboard.</p>
+    <p>The <i>Braille Input</i> code selection typically includes choosing an input language, choosing a braille standard, and choosing Computer Braille, Uncontracted Braille, or Contracted Braille as the braille encoding.</p>
+    <hr />
+    <p>Since the editor performs its own braille translation, it needs to receive braille symbols from the braille keyboard without having them translated by the screen reader. </p>
+    <p>The recommended screen reader setting is to use Computer Braille as the input translation table.  Doing so allows the editor to receive the raw braille symbols used to create text and math.</p>
     <hr />
     <p>
-    <b>Example 1:</b>  Switch to Computer Braille Input.</p>
-    <p>Just as before, you type <code>Ctrl&#x2011;r</code> to switch to Computer Braille Input mode, and <code>Ctrl&#x2011;q</code> to return to Qwerty Input mode.</p>
-    <hr />
-    <p>
-    <b>Example 2:</b>  Use your braille keyboard.</p>
-    <p>On your electronic braille keyboard, use the braille keys to enter the braille symbols directly.</p>
-    <p>If your screen reader is properly set up expect Computer Braille code from your braille keyboard, and the editor is properly in Computer Braille Input mode, you do not need to know the Computer Braille codes, just the braille symbols.</p>
-    <p>When entering text, type the proper English braille contracted symbols.  When typing math, enter the proper Nemeth braille math symbols.  In text mode:</p>
+    <b>Example 1:</b>  JAWS setup.</p>
+    <p>To select Computer Braille input when using JAWS, follow these steps.</p>
     <p>
       <input />
     </p>
-    <p>Type <code>&#x282c;</code> for <code>ing</code>.</p>
-    <p>Type <code>&#x2824;</code> for hyphen.</p>
-    <p>Type <code>&#x2821;</code> for <code>ch</code>.</p>
-    <p>Type <code>&#x280c;</code> for <code>st</code>.</p>
-    <p>Type <code>&#x2818;</code> for superscript.</p>
-    <p>Type <code>&#x2810;</code> for baseline.</p>
-    <p>Type <code>&#x2820;</code> for capital.</p>
+    <p>1.  Type <code>JAWS + 6</code> to open the JAWS Settings Center.</p>
+    <p>2.  Select <code>Braille</code> &gt; <code>General</code> &gt; <code>Translation</code> &gt; <code>Input</code>.</p>
+    <p>3.  Select <code>Computer Braille</code> from the combo box.</p>
     <p>
       <input />
     </p>
-    <p>There are many more.  The complete list is defined by The Rules of Unified English Braille and The Nemeth Braille Code for Math and Science Notation.</p>
+    <p>The editor provides a JAWS configuration file to use this setting for the editor, without changing the setting for other applications.</p>
+    <p>See the editor documentation for more details.</p>
     <hr />
     <p>
-    <b>Example 3:</b>  Enter braille contractions.</p>
-    <p>Any braille contractions entered by the user are expanded into literary text at the end of each word.</p>
-    <p>So typing the letters</p>
+    <b>Example 2:</b>  NVDA setup.</p>
+    <p>To select Computer Braille input when using NVDA, follow these steps.</p>
     <p>
-      <code>    b y c n q h x j z p w l</code>
+      <input />
     </p>
-    <p>in Computer Braille Input mode will produce the text:</p>
+    <p>1.  Type <code>NVDA + N</code> to open the NVDA menu.</p>
+    <p>2.  Select <code>Preferences</code> &gt; <code>Settings</code>.</p>
+    <p>3.  Select <code>Braille</code> &gt; <code>Input Table</code>.</p>
+    <p>4.  Select <code>Unicode Braille</code> from the combo box.</p>
+    <p>
+      <input />
+    </p>
+    <p>The editor provides a <code>gestures.ini</code> file to use this setting for the editor, without changing the setting for other applications.</p>
+    <p>See the editor documentation for more details.</p>
     <hr />
     <p>
-      <tt>but you can not quite have it just as people will like</tt>
-    </p>
-    <hr />
-    <p>All of the UEB contractions for literary text, as well as the Nemeth Braille symbols for math, may be used in from your braille keyboard.</p>
+    <b>Example 3:</b>  VoiceOver setup.</p>
     <hr />
     <p>
       <b>Exercises</b>
     </p>
-    <p>Create a copy of each of the following paragraphs using Computer Braille Input mode from your computer keyboard.</p>
+    <p>1.  Set up your screen reader to connect to your electronic braille keyboard.</p>
     <p>
       <input />
     </p>
-    <p>1.</p>
-    <p>Hello, World!</p>
+    <p>2.  Set up your screen reader to expect Computer Braille input from your electronic braille keyboard.</p>
     <p>
       <input />
     </p>
-    <p>2.</p>
-    <p>He asked, "Were you there?"</p>
+    <p>3.  Confirm that braille output produced by the editor is shown on your electronic braille display.</p>
     <p>
       <input />
     </p>
-    <p>3.</p>
-    <p><math xmlns="http://www.w3.org/1998/Math/MathML">
-        <apply>
-          <eq/>
-          <ci>y</ci>
-          <apply>
-            <plus/>
-            <apply>
-              <times/>
-              <ci>m</ci>
-              <ci>x</ci>
-            </apply>
-            <ci>b</ci>
-          </apply>
-        </apply>
-    </math></p>
-    <p>
-      <input />
-    </p>
-    <p>4.<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
-        <apply>
-          <eq/>
-          <apply>
-            <plus/>
-            <apply>
-              <times/>
-              <ci>a</ci>
-              <apply>
-                <power/>
-                <ci>x</ci>
-                <cn>2</cn>
-              </apply>
-            </apply>
-            <apply>
-              <times/>
-              <ci>b</ci>
-              <ci>x</ci>
-            </apply>
-            <ci>c</ci>
-          </apply>
-          <cn>0</cn>
-        </apply>
-    </math></p>
-    <hr />
-    <p>
-      <b>Homework</b>
-    </p>
-    <p>
-      <input />
-    </p>
-    <p>1.</p>
-    <p>She answered, "I was&#x2014;but were you?"</p>
-    <p>
-      <input />
-    </p>
-    <p>2.</p>
-    <p>The quantity <math xmlns="http://www.w3.org/1998/Math/MathML">
-        <apply>
-          <plus/>
-          <ci>x</ci>
-          <cn>1</cn>
-        </apply>
-      </math> squared is <math xmlns="http://www.w3.org/1998/Math/MathML">
-        <apply>
-          <plus/>
-          <apply>
-            <power/>
-            <ci>x</ci>
-            <cn>2</cn>
-          </apply>
-          <apply>
-            <times/>
-            <cn>2</cn>
-            <ci>x</ci>
-          </apply>
-          <cn>1</cn>
-        </apply>
-    </math>.</p>
-    <p>
-      <input />
-    </p>
-    <p>3.</p>
-    <p>The New Mexico version of ç (letter c with cedilla) is &#x137; (k&#x2011;cedilla).</p>
+    <p>4.  Confirm that braille input from your electronic braille keyboard produces input in the editor input area.</p>
     <p>
       <input />
     </p>
     <hr />
-    <p>Press <a href="?train/Reference.html">[Alt+Enter]</a> when you are ready to continue.</p>
+    <p>Press <a href="?train/Lesson-12.html">[Alt+Enter]</a> when you are ready to continue.</p>
     <hr />
     <p>
       <small>

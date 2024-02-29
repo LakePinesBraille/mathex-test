@@ -677,6 +677,15 @@ const ee = (() => {
   };
 
   /**
+   * Retrieve document markup for BRF output.
+   */
+  const getBRFMarkup = () => {
+    const markup = editor.getAsciiBraille() + '\n';
+    const result = markup.replaceAll( '\n', '\r\n' );
+    return result;
+  };
+
+  /**
    * Retrieve a file handle for an open file operation.
    */
   const openFile = async ( options ) => {
@@ -977,7 +986,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRFOptions();
-      const markup = editor.getAsciiBraille() + '\n';
+      const markup = getBRFMarkup();
       await saveFile( options, markup, false, ".brf" );
     }
     catch ( e )
@@ -1056,7 +1065,7 @@ const ee = (() => {
       }
       else
       {
-        nwindow.print();
+        setTimeout( () => nwindow.print(), 100 );
       }
     }
     catch ( e )
@@ -1071,7 +1080,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = editor.getAsciiBraille();
+      const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
       const options = getBRFOptions();
@@ -1081,7 +1090,7 @@ const ee = (() => {
       nwindow.document.title = options.suggestedName;
       nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
 
-      nwindow.print();
+      setTimeout( () => nwindow.print(), 100 );
     }
     catch ( e )
     {
@@ -1105,7 +1114,7 @@ const ee = (() => {
       nwindow.document.title = options.suggestedName;
       nwindow.document.addEventListener( "keydown", onEscapeChild( nwindow ) );
 
-      nwindow.print();
+      setTimeout( () => nwindow.print(), 100 );
     }
     catch ( e )
     {
@@ -1163,7 +1172,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = addViewMarkup( editor.getAsciiBraille() );
+      const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
       const options = getBRFOptions();
@@ -1287,7 +1296,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRFOptions();
-      const markup = editor.getAsciiBraille() + '\n';
+      const markup = getBRFMarkup();
 
       setFileOption( options, ".brf" );
       ee_drive.save_as( () => markup, null, options );
