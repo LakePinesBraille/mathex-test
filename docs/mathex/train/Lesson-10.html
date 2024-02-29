@@ -1,65 +1,181 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <body>
-    <h1>Lesson 10:  Screen Readers</h1>
+    <h1>Lesson 10:  Computer Braille</h1>
     <hr />
-    <p>This lesson shows how to set up your screen reader to expect Computer Braille input from an electronic braille keyboard.</p>
+    <p>This lesson shows how to use Computer Braille input.</p>
     <hr />
-    <p>Each screen reader allows you to choose the braille code used to translate input from an electronic braille keyboard.</p>
-    <p>The <i>Braille Input</i> code selection typically includes choosing an input language, choosing a braille standard, and choosing Computer Braille, Uncontracted Braille, or Contracted Braille as the braille encoding.</p>
+    <p>So far we have used <i>Qwerty Input mode</i> and <i>Home Row Input mode</i> to enter text and math.</p>
+    <p>Now we will use <i>Computer Braille Input mode</i> to enter braille symbols.  It is designed for braille users who are using an electronic braille keyboard.</p>
+    <p>It can also be used to enter computer braille on a computer keyboard to simulate input from an electronic braille keyboard if one is not available.</p>
     <hr />
-    <p>Since the editor performs its own braille translation, it needs to receive braille symbols from the braille keyboard without having them translated by the screen reader. </p>
-    <p>The recommended screen reader setting is to use Computer Braille as the input translation table.  Doing so allows the editor to receive the raw braille symbols used to create text and math.</p>
+    <p>This lesson shows how to use <i>Computer Braille Input mode</i> on a computer keyboard.  The next lesson shows how to set up your <a href="?Lesson-11.html">Screen Reader</a> to expect Computer Braille input, and the lesson after that shows how to use an electronic <a href="?Lesson-12.html">Braille Keyboard</a> if you have one available.</p>
     <hr />
     <p>
-    <b>Example 1:</b>  JAWS setup.</p>
-    <p>To select Computer Braille input when using JAWS, follow these steps.</p>
+    <b>Example 1:</b>  Switch to Computer Braille Input.</p>
+    <p>Type <code>Ctrl&#x2011;r</code> to switch to Computer Braille Input mode, and <code>Ctrl&#x2011;q</code> to return to Qwerty Input mode.</p>
     <p>
       <input />
     </p>
-    <p>1.  Type <code>JAWS + 6</code> to open the JAWS Settings Center.</p>
-    <p>2.  Select <code>Braille</code> &gt; <code>General</code> &gt; <code>Translation</code> &gt; <code>Input</code>.</p>
-    <p>3.  Select <code>Computer Braille</code> from the combo box.</p>
-    <p>
-      <input />
-    </p>
-    <p>The editor provides a JAWS configuration file to use this setting for the editor, without changing the setting for other applications.</p>
-    <p>See the editor documentation for more details.</p>
+    <p>The editor reports the new input mode using a visual popup dialog, also announced by the screen reader.</p>
     <hr />
     <p>
-    <b>Example 2:</b>  NVDA setup.</p>
-    <p>To select Computer Braille input when using NVDA, follow these steps.</p>
+    <b>Example 2:</b>  Type Computer Braille input.</p>
+    <p>In Computer Braille Input mode, you type letters as themselves, and use numbers and other special keys to enter braille symbols that do not represent letters.</p>
     <p>
       <input />
     </p>
-    <p>1.  Type <code>NVDA + N</code> to open the NVDA menu.</p>
-    <p>2.  Select <code>Preferences</code> &gt; <code>Settings</code>.</p>
-    <p>3.  Select <code>Braille</code> &gt; <code>Input Table</code>.</p>
-    <p>4.  Select <code>Unicode Braille</code> from the combo box.</p>
+    <p>These symbols are the same ones used by electronic braille keyboards to send braille to the screen reader, but they may also be typed directly on a computer keyboard.</p>
+    <hr />
+    <p>Some computer braille codes are the same as the Nemeth braille for the symbol, while others are not as easy to remember.</p>
     <p>
       <input />
     </p>
-    <p>The editor provides a <code>gestures.ini</code> file to use this setting for the editor, without changing the setting for other applications.</p>
-    <p>See the editor documentation for more details.</p>
+    <p>Type <code>+</code> for <code>&#x282c;</code> (ing).</p>
+    <p>Type <code>&#x2011;</code> for <code>&#x2824;</code> (hyphen).</p>
+    <p>Type <code>*</code> for <code>&#x2821;</code> (ch).</p>
+    <p>Type <code>/</code> for <code>&#x280c;</code> (st).</p>
+    <p>Type <code>_</code> for <code>&#x2838;</code> (modifier).</p>
+    <p>Type <code>%</code> for <code>&#x2829;</code> (sh).</p>
+    <p>Type <code>:</code> for <code>&#x2831;</code> (wh).</p>
+    <p>Type <code>~</code> for <code>&#x2818;</code> (superscript).</p>
+    <p>Type <code>;</code> for <code>&#x2830;</code> (english letter).</p>
+    <p>Type <code>"</code> for <code>&#x2810;</code> (baseline).</p>
+    <p>Type <code>,</code> for <code>&#x2820;</code> (capital).</p>
+    <p>
+      <input />
+    </p>
+    <p>There are many more.  The complete list is defined by the Computer Braille Code standard.</p>
     <hr />
     <p>
-    <b>Example 3:</b>  VoiceOver setup.</p>
+    <b>Example 3:</b>  Enter braille contractions.</p>
+    <p>Any braille contractions entered by the user are expanded into literary text at the end of each word.</p>
+    <p>So typing the letters</p>
+    <p>
+      <code>    b y c n q h x j z p w l</code>
+    </p>
+    <p>in Computer Braille Input mode will produce the text:</p>
+    <hr />
+    <p>
+      <tt>but you can not quite have it just as people will like</tt>
+    </p>
+    <hr />
+    <p>
+      <input />
+    </p>
+    <hr />
+    <p>All of the UEB contractions for literary text, as well as the Nemeth Braille symbols for math, may be used in Computer Braille Input mode.</p>
+    <hr />
+    <p>
+    <b>Example 4:</b>  Nemeth switch indicators.</p>
+    <p>When typing inline math formulas, you use the Nemeth open (<code>_%</code>) and close (<code>_:</code>) switch indicators to begin and end math mode.</p>
+    <p>
+      <input />
+    </p>
+    <p>To create display math formulas, use an extra dot&#x2011;456 (<code>__%</code> and <code>__:</code>) with these indicators to open and close a display math formula.</p>
     <hr />
     <p>
       <b>Exercises</b>
     </p>
-    <p>1.  Set up your screen reader to connect to your electronic braille keyboard.</p>
+    <p>Create a copy of each of the following paragraphs using Computer Braille Input mode.</p>
     <p>
       <input />
     </p>
-    <p>2.  Set up your screen reader to expect Computer Braille input from your electronic braille keyboard.</p>
+    <p>1.</p>
+    <p>Hello, World!</p>
     <p>
       <input />
     </p>
-    <p>3.  Confirm that braille output produced by the editor is shown on your electronic braille display.</p>
+    <p>2.</p>
+    <p>He asked, "Were you there?"</p>
     <p>
       <input />
     </p>
-    <p>4.  Confirm that braille input from your electronic braille keyboard produces input in the editor input area.</p>
+    <p>3.</p>
+    <p><math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <ci>y</ci>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci>m</ci>
+              <ci>x</ci>
+            </apply>
+            <ci>b</ci>
+          </apply>
+        </apply>
+    </math></p>
+    <p>
+      <input />
+    </p>
+    <p>4.<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <eq/>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci>a</ci>
+              <apply>
+                <power/>
+                <ci>x</ci>
+                <cn>2</cn>
+              </apply>
+            </apply>
+            <apply>
+              <times/>
+              <ci>b</ci>
+              <ci>x</ci>
+            </apply>
+            <ci>c</ci>
+          </apply>
+          <cn>0</cn>
+        </apply>
+    </math></p>
+    <p>
+      <input />
+    </p>
+    <hr />
+    <p>
+      <b>Homework</b>
+    </p>
+    <p>
+      <input />
+    </p>
+    <p>1.</p>
+    <p>She answered, "I was&#x2014;but were you?"</p>
+    <p>
+      <input />
+    </p>
+    <p>2.</p>
+    <p>The quantity <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <plus/>
+          <ci>x</ci>
+          <cn>1</cn>
+        </apply>
+      </math> squared is <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <plus/>
+          <apply>
+            <power/>
+            <ci>x</ci>
+            <cn>2</cn>
+          </apply>
+          <apply>
+            <times/>
+            <cn>2</cn>
+            <ci>x</ci>
+          </apply>
+          <cn>1</cn>
+        </apply>
+    </math>.</p>
+    <p>
+      <input />
+    </p>
+    <p>3.</p>
+    <p>The New Mexico version of ç (letter c with cedilla) is &#x137; (k&#x2011;cedilla).</p>
     <p>
       <input />
     </p>

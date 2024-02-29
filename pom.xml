@@ -5,7 +5,7 @@
   <name>Equalize Editor Testing</name>
   <groupId>com.LPB.math</groupId>
   <artifactId>mathex-test</artifactId>
-  <version>0.6.5-SNAPSHOT</version>
+  <version>0.6.5</version>
   <packaging>pom</packaging>
 
   <build>
@@ -115,7 +115,7 @@
   <scm>
     <connection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</connection>
     <developerConnection>scm:git:ssh://git@github.com/LakePinesBraille/mathex-test</developerConnection>
-    <tag>HEAD</tag>
+    <tag>mathex-test-0.6.5</tag>
   </scm>
 
 </project>
