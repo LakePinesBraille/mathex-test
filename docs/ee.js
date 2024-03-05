@@ -686,6 +686,15 @@ const ee = (() => {
   };
 
   /**
+   * Retrieve document markup for BRL output.
+   */
+  const getBRLMarkup = () => {
+    const markup = editor.getContractedBraille() + '\n';
+    const result = markup.replaceAll( '\n\f', '\u2800\n' );
+    return result;
+  };
+
+  /**
    * Retrieve a file handle for an open file operation.
    */
   const openFile = async ( options ) => {
@@ -1002,7 +1011,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRLOptions();
-      const markup = editor.getContractedBraille() + '\n';
+      const markup = getBRLMarkup();
       await saveFile( options, markup, false, ".brl" );
     }
     catch ( e )
@@ -1104,7 +1113,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = addBRLMarkup( editor.getContractedBraille() );
+      const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
@@ -1194,7 +1203,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = addBRLMarkup( editor.getContractedBraille() );
+      const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
 
       const options = getHTMLOptions();
@@ -1314,7 +1323,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getBRLOptions();
-      const markup = editor.getContractedBraille() + '\n';
+      const markup = getBRLMarkup();
 
       setFileOption( options, ".brl" );
       ee_drive.save_as( () => markup, null, options );

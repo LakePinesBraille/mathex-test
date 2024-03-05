@@ -2,7 +2,7 @@
   <body>
     <h1>Lesson 11:  Screen Readers</h1>
     <hr />
-    <p>This lesson shows how to set up your screen reader to expect Computer Braille input from an electronic braille keyboard.</p>
+    <p>This lesson shows how to set up your screen reader.</p>
     <hr />
     <p>Each screen reader allows you to choose the braille code used to translate input from an electronic braille keyboard.</p>
     <p>The <i>Braille Input</i> code selection typically includes choosing an input language, choosing a braille standard, and choosing Computer Braille, Uncontracted Braille, or Contracted Braille as the braille encoding.</p>
@@ -12,37 +12,74 @@
     <hr />
     <p>
     <b>Example 1:</b>  JAWS setup.</p>
-    <p>To select Computer Braille input when using JAWS, follow these steps.</p>
+    <p>To select Computer Braille input and other useful settings when using JAWS, follow these steps.</p>
     <p>
       <input />
     </p>
     <p>1.  Type <code>JAWS + 6</code> to open the JAWS Settings Center.</p>
-    <p>2.  Select <code>Braille</code> &gt; <code>General</code> &gt; <code>Translation</code> &gt; <code>Input</code>.</p>
-    <p>3.  Select <code>Computer Braille</code> from the combo box.</p>
+    <p>2.  Under <code>Braille</code> &gt; <code>General</code> &gt; <code>Translation</code>:</p>
+    <p>2.1  Set <code>Input</code> to <code>Computer Braille</code>.</p>
+    <p>2.2  Set <code>Output</code> to <code>UEB Grade 2</code>.</p>
+    <p>2.3  Set <code>Show current word in Computer Braille</code> to <code>Off</code>.</p>
+    <p>3.  Under <code>Forms Mode</code>:</p>
+    <p>3.1  Set <code>Select Forms Mode</code> to <code>Auto</code>.</p>
+    <p>4.  Under <code>Web/HTML/PDFs</code> &gt; <code>Miscellaneous</code>:</p>
+    <p>4.1  Set <code>Page Refresh Filter</code> to <code>Suppress All Refreshes</code>.</p>
+    <hr />
+    <p>Alternatively, you can download the file</p>
+    <p>
+    <code>ee/config/ee.jcf</code> and save it with the name <code>www.lakepinesbraille.com.jcf</code> in the JAWS Settings Folder.</p>
     <p>
       <input />
     </p>
-    <p>The editor provides a JAWS configuration file to use this setting for the editor, without changing the setting for other applications.</p>
+    <p>
+      <code>C:\Users\LPB\AppData\Roaming\Freedom Scientific\JAWS\2024\Settings\enu</code>
+    </p>
+    <p>
+      <input />
+    </p>
+    <p>[Replace <code>LPB</code> with your Windows username.]</p>
+    <p>
+      <input />
+    </p>
+    <p>The editor provides this JAWS configuration file to change these settings for the editor web page, without changing settings for other applications.</p>
     <p>See the editor documentation for more details.</p>
     <hr />
     <p>
     <b>Example 2:</b>  NVDA setup.</p>
-    <p>To select Computer Braille input when using NVDA, follow these steps.</p>
+    <p>To select Computer Braille input and other useful settings when using NVDA, follow these steps.</p>
     <p>
       <input />
     </p>
     <p>1.  Type <code>NVDA + N</code> to open the NVDA menu.</p>
-    <p>2.  Select <code>Preferences</code> &gt; <code>Settings</code>.</p>
-    <p>3.  Select <code>Braille</code> &gt; <code>Input Table</code>.</p>
-    <p>4.  Select <code>Unicode Braille</code> from the combo box.</p>
+    <p>2.  Under <code>Preferences</code> &gt; <code>Settings</code> &gt; <code>Braille</code>:</p>
+    <p>2.1  Set <code>Input Table</code> to <code>Unicode Braille</code>.</p>
+    <p>2.2  Set <code>Output Table</code> to <code>UEB Code Grade 2</code>.</p>
+    <p>2.3  Set <code>Expand to computer braille for the word at the cursor</code> to <code>Off</code>.</p>
+    <p>2.4  Set <code>Show Messages</code> to <code>Disabled</code>.</p>
+    <p>3.  Under <code>Browse Mode</code>:</p>
+    <p>3.1  Set <code>Automatic focus mode for focus changes</code> to <code>On</code>.</p>
+    <p>3.2  Set <code>Automatic focus mode for caret movement</code> to <code>On</code>.</p>
+    <p>3.3  Set <code>Automatically set system focus to focusable elements</code> to <code>On</code>.</p>
+    <hr />
+    <p>Alternatively, you can download the file</p>
+    <p>
+    <code>ee/config/ee.ini</code> and save it in the User Configuration Folder.</p>
     <p>
       <input />
     </p>
-    <p>The editor provides a <code>gestures.ini</code> file to use this setting for the editor, without changing the setting for other applications.</p>
-    <p>See the editor documentation for more details.</p>
-    <hr />
     <p>
-    <b>Example 3:</b>  VoiceOver setup.</p>
+      <code>C:\Users\LPB\AppData\Roaming\nvda</code>
+    </p>
+    <p>
+      <input />
+    </p>
+    <p>[Replace <code>LPB</code> with your Windows username.]</p>
+    <p>
+      <input />
+    </p>
+    <p>The editor provides the EE gestures file <code>ee/config/gestures.ini</code> that may be <i>added</i> to the NVDA gestures file <code>gestures.ini</code> to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile, to change these settings for the editor, without changing settings for other applications.</p>
+    <p>See the editor documentation for more details.</p>
     <hr />
     <p>
       <b>Exercises</b>
