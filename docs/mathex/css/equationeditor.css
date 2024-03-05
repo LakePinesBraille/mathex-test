@@ -1034,8 +1034,8 @@ apply, mphantom
     color: #000000;
 }
 .ee-braille-panel {
-    background-color: #FFFFFF;
-    border-color: #AAAAAA;
+    background-color: #DDDDDD;
+    border-color: #DDDDDD;
     color: #000000;
 }
 .ee-parent-panel .tooltip-inner {
