@@ -1,0 +1,155 @@
+@import url( "css/bootstrap-3.3.7.min.css" );
+@import url( "css/jquery-ui-1.12.1.min.css" );
+@import url( "css/equationeditor.css" );
+
+html
+{
+    height: 100%;
+    background-size: cover;
+    background-image: url( ee.jpg );
+}
+
+body
+{
+    font-size: 150%;
+    margin: 10px;
+    background-color: transparent;
+}
+
+.ee-parent-panel
+{
+    margin-bottom: 10px;
+}
+
+.navbar {
+    border: 0px;
+    margin-bottom: 0px;
+    background-color: transparent;
+}
+.navbar-collapse { padding: 0; }
+.navbar-default .navbar-nav > li > a { color: black; padding: 10px; }
+
+.navbar-nav li:first-of-type .dropdown-toggle { border-top-left-radius: 6px; }
+.navbar-nav li:last-of-type .dropdown-toggle { border-top-right-radius: 6px; }
+
+.dropdown hr
+{
+    border-color: black;
+    margin: 5px;
+}
+
+.dropdown-toggle
+{
+    color: #333333 !important;
+    background-color: #e6e6e6 !important;
+    border-color: #e6e6e6 #e6e6e6 #bfbfbf !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus
+{
+    border-color: #bfbfbf !important;
+}
+
+.ee-file-name {
+    background: #e6e6e6;
+    display: none;
+    margin-bottom: 6px;
+    padding: 2px 10px;
+    width: fit-content;
+}
+
+.ee-init-panel {
+    background: transparent;
+    color: transparent;
+
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+
+    display: block;
+    overflow: hidden;
+    outline: none;
+    height: 1px;
+    width: 1px;
+
+    position: relative;
+    left: -100px;
+}
+
+.ee-guide {
+    font-size: 15pt;
+    background: white;
+    border-radius: 6px;
+    padding: 0.25in;
+}
+
+.ee-guide h4, .ee-guide h5 {
+    font-weight: bold;
+}
+
+.ee-settings {
+    font-size: 15pt;
+    background: white;
+    border-radius: 6px;
+    padding: 0.25in;
+}
+
+.ee-settings label { width: 3.5in }
+.ee-settings td { width: 0.75in }
+.ee-settings .indent { padding-left: 0.5in }
+.ee-settings .ex-btn { padding: 0in 0.25in; margin-left: 0.25in }
+
+.ee-about {
+    font-size: 15pt;
+    background: white;
+    text-align: center;
+    border-radius: 6px;
+    margin: 1in 2in;
+}
+
+.ee-guide a, .ee-settings a, .ee-about a {
+	font-weight: bold;
+}
+
+.ee-guide code, .ee-settings code, .ee-about code {
+    font-weight: bold;
+}
+
+.ex-btn {
+    color: #333333;
+    background-color: #aaaaaa;
+    background-image: linear-gradient(to bottom, #cccccc, #aaaaaa);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+}
+
+.ex-btn:hover, .ex-btn:focus, .ex-btn:active {
+    background-color: #dddddd !important;
+    background-image: none !important;
+}
+
+.ex-btn:focus {
+    border-color: #049CDB !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    outline: 1px solid transparent !important;
+}
+
+li.skip {
+    margin-top: 20pt;
+}
+
+ul.check li a::before {
+    display: inline-block;
+    margin-left: -12px;
+    width: 18px;
+    content: '\A0';
+}
+
+ul.check li a.checked::before {
+    content: '\2713';
+}

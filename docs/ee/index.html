@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Equalize Editor</title>
+  <link rel="icon" type="image/x-icon" href="ee.png"/>
+  <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee.js"></script>
+  <script src="ee-drive.js"></script>
+  <script type="text/javascript">
+    EquationEditorOptions = {
+      "styleBase" : "deploy/equationeditor/styles",
+      "scriptBase" : "lib",
+      "models" : [{
+        "identifier" : "RESPONSE",
+        "styles" : "ee"
+      }],
+      callback : ee.init
+    };
+  </script>
+  <script src="deploy/equationeditor/equationeditor-lib.js"></script>
+</head>
+<body onload="ee.onload()">
+</body>
+</html>

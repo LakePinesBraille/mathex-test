@@ -1,0 +1,9 @@
+[Braille Profiles]
+enu=1|22|US_Unicode|US_Unicode|0|0
+[Braille]
+Grade2ExpandCurrentWord=0
+BrailleMessages=0
+[FormsMode]
+AutoFormsMode=1
+[HTML]
+PageRefreshFilter=-1
