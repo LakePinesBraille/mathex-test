@@ -1,7 +1,9 @@
-HTML=../public_html
+APP=../www/mathex
+DOC=../../mathex-doc
 VERSION=0.0.1
 
 all:
-	-rm -rf $(HTML)/mathex-old
-	-mv -f $(HTML)/mathex $(HTML)/mathex-old
-	unzip -q version/mathex-ee-$(VERSION).zip -d $(HTML)/mathex
+	-rm -rf $(APP)-old
+	-mv -f $(APP) $(APP)-old
+	unzip -q version/mathex-ee-$(VERSION).zip -d $(APP)
+	-ln -s $(DOC) $(APP)/doc

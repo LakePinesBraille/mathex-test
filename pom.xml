@@ -18,7 +18,7 @@
           <excludeDefaultDirectories>true</excludeDefaultDirectories>
           <filesets>
             <fileset>
-              <directory>docs/mathex</directory>
+              <directory>docs/ee</directory>
               <includes><include>**/*</include></includes>
             </fileset>
           </filesets>
@@ -41,6 +41,7 @@
               <resources>
                 <resource>
                   <directory>../mathex-ee/archive/version</directory>
+                  <includes><include>mathex-ee-${project.version}.zip</include></includes>
                 </resource>
               </resources>
             </configuration>
@@ -61,26 +62,29 @@
             </goals>
             <configuration>
               <target>
-                <unzip src="version/mathex-ee-${project.version}.zip" dest="docs/mathex" />
+                <unzip src="version/mathex-ee-${project.version}.zip" dest="docs/ee" />
               </target>
             </configuration>
           </execution>
-          <!--
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.coderplus.maven.plugins</groupId>
+        <artifactId>copy-rename-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
           <execution>
-            <id>deploy-web</id>
-            <phase>generate-sources</phase>
+            <id>copy-index</id>
+            <phase>process-resources</phase>
             <goals>
-              <goal>run</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
-              <target>
-                <delete quiet="true" failonerror="false" dir="../public_html/mathex-old"/>
-                <move quiet="true" failonerror="false" file="../public_html/mathex" tofile="../public_html/mathex-old"/>
-                <unzip src="version/mathex-ee-${project.version}.zip" dest="../public_html/mathex" />
-              </target>
+              <sourceFile>${basedir}/docs/ee/ee.html</sourceFile>
+              <destinationFile>${basedir}/docs/ee/index.html</destinationFile>
             </configuration>
           </execution>
-          -->
         </executions>
       </plugin>
 
@@ -90,8 +94,8 @@
         <version>1.13.0</version>
         <configuration>
           <basedir>${basedir}</basedir>
-          <includes>version/*,docs/**/*</includes>
-          <excludes>docs/mathex/lib/mathjax*/**/*</excludes>
+          <includes>version/mathex-ee-${project.version}.zip,docs/ee/**/*</includes>
+          <excludes>docs/ee/lib/mathjax*/**/*</excludes>
           <message>Deploy mathex-ee-${project.version}</message>
         </configuration>
       </plugin>
