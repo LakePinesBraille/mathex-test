@@ -146,11 +146,6 @@ const ee = (() => {
     const elt = document.querySelector( "script" );
     const att = elt && elt.getAttribute( "src" ) || "";
 
-    if ( /\.\.\/ee\/ee.js/.test( att ) )
-    {
-        return att.replace( "../ee/ee.js", "" );
-    }
-
     if ( /ee\.js$/.test( att ) )
     {
         return att.replace( "ee.js", "" );
@@ -173,6 +168,11 @@ const ee = (() => {
   };
 
   /**
+   * Return true if the editor is run from the local filesystem.
+   */
+  const isEditorFromFile = () => /file:/.test( window.location.href );
+
+  /**
    * Return true if the current url is an editor document.
    */
   const isDocument = url => /doc\//.test( url );
@@ -191,6 +191,7 @@ const ee = (() => {
    * File dialog user interface options.
    */
   const file_options = {
+    id : "equalize-editor",
     multiple : false,
     excludeAcceptAllOption : true,
     suggestedName : "untitled"
@@ -229,32 +230,12 @@ const ee = (() => {
   } ] };
 
   /**
-   * Retrieve the file open/save dialog options.
+   * Retrieve the default file dialog options.
    */
-  const getOpenOptions = () => {
-    return Object.assign( { startIn: last_file_handle }, file_options, open_types );
-  };
-
-  /**
-   * Retrieve the HTML export dialog options.
-   */
-  const getHTMLOptions = () => {
-    return Object.assign( { startIn: last_file_handle }, file_options, html_types );
-  };
-
-  /**
-   * Retrieve the BRF export dialog options.
-   */
-  const getBRFOptions = () => {
-    return Object.assign( { startIn: last_file_handle }, file_options, brf_types );
-  };
-
-  /**
-   * Retrieve the BRL export dialog options.
-   */
-  const getBRLOptions = () => {
-    return Object.assign( { startIn: last_file_handle }, file_options, brl_types );
-  };
+  const getFileOptions =
+    ( file_types ) => Object.assign( {},
+        { startIn: isEditorFromFile() ? last_file_handle : undefined },
+        file_options, file_types );
 
   /**
    * Set the suggested file name dialog option.
@@ -912,7 +893,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getOpenOptions();
+      const options = getFileOptions( open_types );
       const file = await openFile( options );
       const markup = await file.text();
 
@@ -952,7 +933,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getOpenOptions();
+      const options = getFileOptions( open_types );
       await saveFile( options, getContent(), true );
       ee_drive.clear();
     }
@@ -983,7 +964,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       const mathjax = getLocalSetting( "ee-mathjax-on-save" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       await saveFile( options, markup, false, "-p.html" );
@@ -1000,7 +981,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getBRFOptions();
+      const options = getFileOptions( brf_types );
       const markup = getBRFMarkup();
       await saveFile( options, markup, false, ".brf" );
     }
@@ -1016,7 +997,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getBRLOptions();
+      const options = getFileOptions( brl_types );
       const markup = getBRLMarkup();
       await saveFile( options, markup, false, ".brl" );
     }
@@ -1036,7 +1017,7 @@ const ee = (() => {
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
@@ -1064,7 +1045,7 @@ const ee = (() => {
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
@@ -1098,7 +1079,7 @@ const ee = (() => {
       const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
-      const options = getBRFOptions();
+      const options = getFileOptions( brf_types );
       setFileOption( options, ".brf" );
 
       nwindow.document.write( markup );
@@ -1122,7 +1103,7 @@ const ee = (() => {
       const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, ".brl" );
 
       nwindow.document.write( markup );
@@ -1146,7 +1127,7 @@ const ee = (() => {
       const markup = addViewMarkup( getContent() );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
@@ -1168,7 +1149,7 @@ const ee = (() => {
       const markup = addViewMarkup( editor.getPresent() );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, "-p.html" );
 
       nwindow.document.write( markup );
@@ -1190,7 +1171,7 @@ const ee = (() => {
       const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
-      const options = getBRFOptions();
+      const options = getFileOptions( brf_types );
       setFileOption( options, ".brf" );
 
       nwindow.document.write( markup );
@@ -1212,7 +1193,7 @@ const ee = (() => {
       const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       setFileOption( options, ".brl" );
 
       nwindow.document.write( markup );
@@ -1244,7 +1225,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getOpenOptions();
+      const options = getFileOptions( open_types );
       setFileOption( options );
 
       ee_drive.save( getContent, setOpenFileData, options );
@@ -1261,7 +1242,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getOpenOptions();
+      const options = getFileOptions( open_types );
       setFileOption( options );
 
       ee_drive.save_as( getContent, setOpenFileData, options );
@@ -1291,7 +1272,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getHTMLOptions();
+      const options = getFileOptions( html_types );
       const mathjax = getLocalSetting( "ee-mathjax-on-save" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
 
@@ -1310,7 +1291,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getBRFOptions();
+      const options = getFileOptions( brf_types );
       const markup = getBRFMarkup();
 
       setFileOption( options, ".brf" );
@@ -1328,7 +1309,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getBRLOptions();
+      const options = getFileOptions( brl_types );
       const markup = getBRLMarkup();
 
       setFileOption( options, ".brl" );
@@ -1997,7 +1978,14 @@ const ee = (() => {
       event.stopImmediatePropagation();
       event.preventDefault();
 
-      do_query_href( href );
+      if ( base_URL )
+      {
+        do_query_href( href );
+      }
+      else
+      {
+        do_file_open();
+      }
     }
   };
 
