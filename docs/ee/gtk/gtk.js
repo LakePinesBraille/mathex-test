@@ -1,20 +1,4 @@
 (() => {
-  const load = function( k ) {
-    const elt = document.querySelector( "#" + k );
-    if ( elt && elt.type === "checkbox" ) {
-      elt.checked = localStorage[ k ] !== "false";
-      elt.addEventListener( "change", () => save( k ) );
-      save( k );
-    }
-  };
-
-  const save = function( k ) {
-    const elt = document.querySelector( "#" + k );
-    if ( elt && elt.type === "checkbox" ) {
-      localStorage[ k ] = elt.checked ? "true" : "false";
-    }
-  };
-
   document.addEventListener( "keydown", ( e ) => {
     if ( e.key === "Enter" || e.key === "Escape" )
     {
@@ -44,8 +28,6 @@
 
   if ( localStorage )
   {
-    localStorage[ "gtk-last-page-href" ] = window.location.href;
-    load( "gtk-show-last-page" );
-    load( "gtk-show-tutorial" );
+    localStorage[ "ee-gtk-last-page-href" ] = window.location.href;
   }
 })();
