@@ -5,107 +5,9 @@
   <title>Equalize Editor Settings</title>
   <link rel="icon" type="image/x-icon" href="ee.png">
   <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee-settings.js"></script>
   <script src="ee.js"></script>
   <script>
-const palettes = {
-  "plt-palettes" : "All Palettes",
-  "plt-numbers" : "Numbers",
-  "plt-arithmetic" : "Arithmetic",
-  "plt-fractions" : "Fractions",
-  "plt-exponents" : "Exponents",
-  "plt-functions" : "Functions",
-  "plt-groups" : "Groups",
-  "plt-relations" : "Relations",
-  "plt-omissions" : "Omissions",
-  "plt-sets" : "Sets",
-  "plt-logic" : "Logic",
-  "plt-lines" : "Lines",
-  "plt-angles" : "Angles",
-  "plt-arrows" : "Arrows",
-  "plt-double-arrows" : "Double arrows",
-  "plt-trigonometry" : "Trigonometry",
-  "plt-hyperbolic" : "Hyperbolic",
-  "plt-scripts" : "Scripts",
-  "plt-shapes" : "Shapes",
-  "plt-circled" : "Circled",
-  "plt-squared" : "Squared",
-  "plt-headings" : "Headings",
-  "plt-style" : "Text styles",
-  "plt-unB" : "Units - Base",
-  "plt-unO" : "Units - Other",
-  "plt-unD" : "Units - Derived",
-  "plt-unC" : "Units - Composed",
-  "plt-unM" : "Units - Meter",
-  "plt-unG" : "Units - Gram",
-  "plt-unL" : "Units - Liter",
-  "plt-chH" : "Elements",
-  "plt-rmA" : "Latin (upper)",
-  "plt-rma" : "Latin (lower)",
-  "plt-rm0" : "Latin (digit)",
-  "plt-rmb" : "Latin (basic)",
-  "plt-rmx" : "Latin (extended)",
-  "plt-rmp" : "Latin (punctuation)",
-  "plt-rms" : "Latin (symbol)",
-  "plt-bfA" : "Bold (upper)",
-  "plt-bfa" : "Bold (lower)",
-  "plt-bf0" : "Bold (digit)",
-  "plt-itA" : "Italic (upper)",
-  "plt-ita" : "Italic (lower)",
-  "plt-biA" : "Bold Italic (upper)",
-  "plt-bia" : "Bold Italic (lower)",
-  "plt-scA" : "Script (upper)",
-  "plt-sca" : "Script (lower)",
-  "plt-scbfA" : "Bold Script (upper)",
-  "plt-scbfa" : "Bold Script (lower)",
-  "plt-frA" : "Fraktur (upper)",
-  "plt-fra" : "Fraktur (lower)",
-  "plt-frbfA" : "Bold Fraktur (upper)",
-  "plt-frbfa" : "Bold Fraktur (lower)",
-  "plt-bbA" : "Blackboard (upper)",
-  "plt-bba" : "Blackboard (lower)",
-  "plt-bb0" : "Blackboard (digit)",
-  "plt-ssA" : "Sans Serif (upper)",
-  "plt-ssa" : "Sans Serif (lower)",
-  "plt-ss0" : "Sans Serif (digit)",
-  "plt-ssbfA" : "Sans Serif Bold (upper)",
-  "plt-ssbfa" : "Sans Serif Bold (lower)",
-  "plt-ssbf0" : "Sans Serif Bold (digit)",
-  "plt-ssitA" : "Sans Serif Italic (upper)",
-  "plt-ssita" : "Sans Serif Italic (lower)",
-  "plt-ssbiA" : "Sans Bold Italic (upper)",
-  "plt-ssbia" : "Sans Bold Italic (lower)",
-  "plt-ttA" : "Monospace (upper)",
-  "plt-tta" : "Monospace (lower)",
-  "plt-tt0" : "Monospace (digit)",
-  "plt-calA" : "Caligraphic (upper)",
-  "plt-cala" : "Caligraphic (lower)",
-  "plt-hatA" : "Hat (upper)",
-  "plt-hata" : "Hat (lower)",
-  "plt-vecA" : "Vector (upper)",
-  "plt-veca" : "Vector (lower)",
-  "plt-cyCy" : "Cyrillic (upper)",
-  "plt-cycy" : "Cyrillic (lower)",
-  "plt-hbalef" : "Hebrew (letter)",
-  "plt-hbaleph" : "Hebrew (symbol)",
-  "plt-gkAlpha" : "Greek (upper)",
-  "plt-gkalpha" : "Greek (lower)",
-  "plt-gksymbol" : "Greek (symbol)",
-  "plt-bfAlpha" : "Greek Bold (upper)",
-  "plt-bfalpha" : "Greek Bold (lower)",
-  "plt-bfgreek" : "Greek Bold (symbol)",
-  "plt-itAlpha" : "Greek Italic (upper)",
-  "plt-italpha" : "Greek Italic (lower)",
-  "plt-itgreek" : "Greek Italic (symbol)",
-  "plt-biAlpha" : "Greek Bold Italic (upper)",
-  "plt-bialpha" : "Greek Bold Italic (lower)",
-  "plt-bigreek" : "Greek Bold Italic (symbol)",
-  "plt-ssbfAlpha" : "Greek Sans Bold (upper)",
-  "plt-ssbfalpha" : "Greek Sans Bold (lower)",
-  "plt-ssbfgreek" : "Greek Sans Bold (symbol)",
-  "plt-ssbiAlpha" : "Greek Sans BI (upper)",
-  "plt-ssbialpha" : "Greek Sans BI (lower)",
-  "plt-ssbigreek" : "Greek Sans BI (symbol)"
-};
 
 const click_grp = function( gelt, elts )
 {
@@ -153,11 +55,11 @@ const plts = function()
   var active_keys = [];
   var open_keys = [];
   var rows = [];
-  for ( var k in palettes )
+  for ( var k in ee_settings.palettes )
   {
     var ak = k + "-active";
     var ok = k + "-open";
-    var v = palettes[ k ];
+    var v = ee_settings.palettes[ k ];
     var tr = 
 "<tr>" +
 "<td><label for=\"" + ak + "\">" + v + "</label></td>" +
@@ -167,8 +69,6 @@ const plts = function()
     active_keys.push( ak );
     open_keys.push( ok );
     rows.push( tr );
-    ee.settings[ ak ] = "true";
-    ee.settings[ ok ] = "false";
   };
 
   const tbody = document.querySelector( "table tbody" );
@@ -184,36 +84,36 @@ const plts = function()
 
 const init = function() {
   plts();
-  rule( "brl-rules-initial-letter",
-    [ "brl-rules-initial-letter-45",
-      "brl-rules-initial-letter-456",
-      "brl-rules-initial-letter-5" ] );
-  rule( "brl-rules-final-letter",
-    [ "brl-rules-final-letter-46",
-      "brl-rules-final-letter-56" ] );
-  rule( "brl-rules-all-rules",
+  rule( "ee-brl-rules-initial-letter",
+    [ "ee-brl-rules-initial-letter-45",
+      "ee-brl-rules-initial-letter-456",
+      "ee-brl-rules-initial-letter-5" ] );
+  rule( "ee-brl-rules-final-letter",
+    [ "ee-brl-rules-final-letter-46",
+      "ee-brl-rules-final-letter-56" ] );
+  rule( "ee-brl-rules-all-rules",
     [
-      "brl-rules-alphabetic-wordsigns",
-      "brl-rules-strong-wordsigns",
-      "brl-rules-strong-contractions",
-      "brl-rules-strong-groupsigns",
-      "brl-rules-lower-wordsigns",
-      "brl-rules-lower-groupsigns",
-      "brl-rules-initial-letter",
-      "brl-rules-initial-letter-45",
-      "brl-rules-initial-letter-456",
-      "brl-rules-initial-letter-5",
-      "brl-rules-final-letter",
-      "brl-rules-final-letter-46",
-      "brl-rules-final-letter-56",
-      "brl-rules-shortforms",
+      "ee-brl-rules-alphabetic-wordsigns",
+      "ee-brl-rules-strong-wordsigns",
+      "ee-brl-rules-strong-contractions",
+      "ee-brl-rules-strong-groupsigns",
+      "ee-brl-rules-lower-wordsigns",
+      "ee-brl-rules-lower-groupsigns",
+      "ee-brl-rules-initial-letter",
+      "ee-brl-rules-initial-letter-45",
+      "ee-brl-rules-initial-letter-456",
+      "ee-brl-rules-initial-letter-5",
+      "ee-brl-rules-final-letter",
+      "ee-brl-rules-final-letter-46",
+      "ee-brl-rules-final-letter-56",
+      "ee-brl-rules-shortforms",
     ]);
 };
 
 const load = function() {
-  for ( var k in ee.settings )
+  for ( var k in ee_settings.settings )
   {
-    var v = localStorage[ k ] || ee.settings[ k ] || "";
+    var v = ee_settings.get( k );
     var elt = document.querySelector( "#" + k );
     if ( elt ) {
       if ( elt.type === "checkbox" || elt.type === "radio" )
@@ -229,20 +129,19 @@ const load = function() {
 };
 
 const save = function() {
-  localStorage.clear();
-  for ( var k in ee.settings )
+  for ( var k in ee_settings.settings )
   {
     var elt = document.querySelector( "#" + k );
     if ( elt )
     {
       var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
-      localStorage[ k ] = v;
+      ee_settings.set( k, v );
     }
   }
 };
 
 const reset = function() {
-  ee.reset();
+  ee_settings.reset();
 }
 
 const done = function() {
@@ -256,12 +155,10 @@ const done = function() {
 <div>
 <button type="button" class="ex-btn" id="ok" onclick="save(); done()"
     title="Save your changes and close the settings">OK</button>
-<button type="button" class="ex-btn" id="apply" onclick="save()"
-    title="Save your changes without closing the settings">Apply</button>
-<button type="button" class="ex-btn" id="reset" onclick="reset(); load()"
-    title="Discard your changes and load the default settings">Reset</button>
 <button type="button" class="ex-btn" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
+<button type="button" class="ex-btn" id="reset" onclick="reset(); load()"
+    title="Discard your changes and load the default settings">Reset</button>
 </div>
 
 <h2 id="table-of-contents">Table of Contents</h2>
@@ -363,78 +260,78 @@ const done = function() {
 <h3 id="set-braille-rules">Braille Rules</h3>
 
 <div>
-<label for="brl-rules-all-rules">Contracted Braille (all rules)</label>
-<input id="brl-rules-all-rules" type="checkbox"></input>
+<label for="ee-brl-rules-all-rules">Contracted Braille (all rules)</label>
+<input id="ee-brl-rules-all-rules" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-alphabetic-wordsigns">[10.1] Alphabetic wordsigns</label>
-<input id="brl-rules-alphabetic-wordsigns" type="checkbox"></input>
+<label for="ee-brl-rules-alphabetic-wordsigns">[10.1] Alphabetic wordsigns</label>
+<input id="ee-brl-rules-alphabetic-wordsigns" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-strong-wordsigns">[10.2] Strong wordsigns</label>
-<input id="brl-rules-strong-wordsigns" type="checkbox"></input>
+<label for="ee-brl-rules-strong-wordsigns">[10.2] Strong wordsigns</label>
+<input id="ee-brl-rules-strong-wordsigns" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-strong-contractions">[10.3] Strong contractions</label>
-<input id="brl-rules-strong-contractions" type="checkbox"></input>
+<label for="ee-brl-rules-strong-contractions">[10.3] Strong contractions</label>
+<input id="ee-brl-rules-strong-contractions" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-strong-groupsigns">[10.4] Strong groupsigns</label>
-<input id="brl-rules-strong-groupsigns" type="checkbox"></input>
+<label for="ee-brl-rules-strong-groupsigns">[10.4] Strong groupsigns</label>
+<input id="ee-brl-rules-strong-groupsigns" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-lower-wordsigns">[10.5] Lower wordsigns</label>
-<input id="brl-rules-lower-wordsigns" type="checkbox"></input>
+<label for="ee-brl-rules-lower-wordsigns">[10.5] Lower wordsigns</label>
+<input id="ee-brl-rules-lower-wordsigns" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-lower-groupsigns">[10.6] Lower groupsigns</label>
-<input id="brl-rules-lower-groupsigns" type="checkbox"></input>
+<label for="ee-brl-rules-lower-groupsigns">[10.6] Lower groupsigns</label>
+<input id="ee-brl-rules-lower-groupsigns" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-initial-letter" class="group">[10.7] Initial-letter contractions</label>
-<input id="brl-rules-initial-letter" type="checkbox"></input>
+<label for="ee-brl-rules-initial-letter" class="group">[10.7] Initial-letter contractions</label>
+<input id="ee-brl-rules-initial-letter" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-initial-letter-45" class="indent">Dots-45</label>
-<input id="brl-rules-initial-letter-45" type="checkbox"></input>
+<label for="ee-brl-rules-initial-letter-45" class="indent">Dots-45</label>
+<input id="ee-brl-rules-initial-letter-45" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-initial-letter-456" class="indent">Dots-456</label>
-<input id="brl-rules-initial-letter-456" type="checkbox"></input>
+<label for="ee-brl-rules-initial-letter-456" class="indent">Dots-456</label>
+<input id="ee-brl-rules-initial-letter-456" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-initial-letter-5" class="indent">Dots-5</label>
-<input id="brl-rules-initial-letter-5" type="checkbox"></input>
+<label for="ee-brl-rules-initial-letter-5" class="indent">Dots-5</label>
+<input id="ee-brl-rules-initial-letter-5" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-final-letter" class="group">[10.8] Final-letter groupsigns</label>
-<input id="brl-rules-final-letter" type="checkbox"></input>
+<label for="ee-brl-rules-final-letter" class="group">[10.8] Final-letter groupsigns</label>
+<input id="ee-brl-rules-final-letter" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-final-letter-46" class="indent">Dots-46</label>
-<input id="brl-rules-final-letter-46" type="checkbox"></input>
+<label for="ee-brl-rules-final-letter-46" class="indent">Dots-46</label>
+<input id="ee-brl-rules-final-letter-46" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-final-letter-56" class="indent">Dots-56</label>
-<input id="brl-rules-final-letter-56" type="checkbox"></input>
+<label for="ee-brl-rules-final-letter-56" class="indent">Dots-56</label>
+<input id="ee-brl-rules-final-letter-56" type="checkbox"></input>
 </div>
 
 <div>
-<label for="brl-rules-shortforms">[10.9] Shortforms</label>
-<input id="brl-rules-shortforms" type="checkbox"></input>
+<label for="ee-brl-rules-shortforms">[10.9] Shortforms</label>
+<input id="ee-brl-rules-shortforms" type="checkbox"></input>
 </div>
 
 <h2 id="set-formats">Braille Formats</h2>
@@ -443,22 +340,32 @@ const done = function() {
 
 <h4>Screen</h4>
 <div>
-<label for="ee-screen-page-width">Page width</label>
-<input id="ee-screen-page-width" type="number" min="1" max="99"></input>
+<label for="ee-panel-page-width">Page width</label>
+<input id=ee-panel-page-width type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="ee-screen-page-height">Page height</label>
-<input id="ee-screen-page-height" type="number" min="1" max="99"></input>
+<label for="ee-panel-page-height">Page height</label>
+<input id="ee-panel-page-height" type="number" min="1" max="99"></input>
 </div>
 
-<h4>Device</h4>
+<h4>Single-Line Device</h4>
 <div>
-<label for="ee-device-page-width">Page width</label>
-<input id="ee-device-page-width" type="number" min="1" max="99"></input>
+<label for="ee-linear-page-width">Page width</label>
+<input id="ee-linear-page-width" type="number" min="1" max="99"></input>
 </div>
 <div>
-<label for="ee-device-page-height">Page height</label>
-<input id="ee-device-page-height" type="number" min="1" max="99"></input>
+<label for="ee-linear-page-height">Page height</label>
+<input id="ee-linear-page-height" type="number" min="1" max="99"></input>
+</div>
+
+<h4>Multi-Line Device</h4>
+<div>
+<label for="ee-matrix-page-width">Page width</label>
+<input id="ee-matrix-page-width" type="number" min="1" max="99"></input>
+</div>
+<div>
+<label for="ee-matrix-page-height">Page height</label>
+<input id="ee-matrix-page-height" type="number" min="1" max="99"></input>
 </div>
 
 <h4>Files</h4>
@@ -478,8 +385,8 @@ const done = function() {
 <h3 id="set-formats-headings">Headings</h3>
 
 <div>
-<label for="fmt-heading-1">Level 1</label>
-<select id="fmt-heading-1">
+<label for="ee-fmt-heading-1">Level 1</label>
+<select id="ee-fmt-heading-1">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -487,8 +394,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="fmt-heading-2">Level 2</label>
-<select id="fmt-heading-2">
+<label for="ee-fmt-heading-2">Level 2</label>
+<select id="ee-fmt-heading-2">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -496,8 +403,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="fmt-heading-3">Level 3</label>
-<select id="fmt-heading-3">
+<label for="ee-fmt-heading-3">Level 3</label>
+<select id="ee-fmt-heading-3">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -505,8 +412,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="fmt-heading-4">Level 4</label>
-<select id="fmt-heading-4">
+<label for="ee-fmt-heading-4">Level 4</label>
+<select id="ee-fmt-heading-4">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -514,8 +421,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="fmt-heading-5">Level 5</label>
-<select id="fmt-heading-5">
+<label for="ee-fmt-heading-5">Level 5</label>
+<select id="ee-fmt-heading-5">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -523,8 +430,8 @@ const done = function() {
 </div>
 
 <div>
-<label for="fmt-heading-6">Level 6</label>
-<select id="fmt-heading-6">
+<label for="ee-fmt-heading-6">Level 6</label>
+<select id="ee-fmt-heading-6">
   <option value="center">Center</option>
   <option value="cell-5">Cell 5</option>
   <option value="cell-7">Cell 7</option>
@@ -535,22 +442,32 @@ const done = function() {
 
 <h4>Screen</h4>
 <div>
-<label for="ee-screen-indent-first">First line</label>
-<input id="ee-screen-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-panel-indent-first">First line</label>
+<input id="ee-panel-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="ee-screen-indent-runover">Run over</label>
-<input id="ee-screen-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-panel-indent-runover">Run over</label>
+<input id="ee-panel-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
-<h4>Device</h4>
+<h4>Single-Line Device</h4>
 <div>
-<label for="ee-device-indent-first">First line</label>
-<input id="ee-device-indent-first" type="number" min="1" max="9"></input>
+<label for="ee-linear-indent-first">First line</label>
+<input id="ee-linear-indent-first" type="number" min="1" max="9"></input>
 </div>
 <div>
-<label for="ee-device-indent-runover">Run over</label>
-<input id="ee-device-indent-runover" type="number" min="1" max="9"></input>
+<label for="ee-linear-indent-runover">Run over</label>
+<input id="ee-linear-indent-runover" type="number" min="1" max="9"></input>
+</div>
+
+<h4>Multi-Line Device</h4>
+<div>
+<label for="ee-matrix-indent-first">First line</label>
+<input id="ee-matrix-indent-first" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="ee-matrix-indent-runover">Run over</label>
+<input id="ee-matrix-indent-runover" type="number" min="1" max="9"></input>
 </div>
 
 <h4>Files</h4>
@@ -571,6 +488,10 @@ const done = function() {
 <div>
 <label for="ee-math-indent-runover">Run over</label>
 <input id="ee-math-indent-runover" type="number" min="1" max="9"></input>
+</div>
+<div>
+<label for="ee-math-display-short">Short form</label>
+<input id="ee-math-display-short" type="checkbox"></input>
 </div>
 
 <h2 id="set-output">Output Settings</h2>
@@ -607,37 +528,37 @@ const done = function() {
 </div>
 
 <div>
-<label for="edt-show-tutorial">Show the Tutorial</label>
-<input id="edt-show-tutorial" type="checkbox"></input>
+<label for="ee-edt-show-tutorial">Show the Tutorial</label>
+<input id="ee-edt-show-tutorial" type="checkbox"></input>
 </div>
 
 <ul>
 <li>
-<label for="edt-show-last-page">Show the last topic visited</label>
-<input id="edt-show-last-page" type="checkbox"></input>
+<label for="ee-edt-show-last-page">Show the last topic visited</label>
+<input id="ee-edt-show-last-page" type="checkbox"></input>
 </li>
 </ul>
 
 <div style="display: none">
-<label for="edt-last-page-href">The last topic visited</label>
-<input id="edt-last-page-href" cols="40"></input>
+<label for="ee-edt-last-page-href">The last topic visited</label>
+<input id="ee-edt-last-page-href" cols="40"></input>
 </div>
 
 <div>
-<label for="gtk-show-tutorial">Show Getting To Know</label>
-<input id="gtk-show-tutorial" type="checkbox"></input>
+<label for="ee-gtk-show-tutorial">Show Getting To Know</label>
+<input id="ee-gtk-show-tutorial" type="checkbox"></input>
 </div>
 
 <ul>
 <li>
-<label for="gtk-show-last-page">Show the last topic visited</label>
-<input id="gtk-show-last-page" type="checkbox"></input>
+<label for="ee-gtk-show-last-page">Show the last topic visited</label>
+<input id="ee-gtk-show-last-page" type="checkbox"></input>
 </li>
 </ul>
 
 <div style="display: none">
-<label for="gtk-last-page-href">The last topic visited</label>
-<input id="gtk-last-page-href" cols="40"></input>
+<label for="ee-gtk-last-page-href">The last topic visited</label>
+<input id="ee-gtk-last-page-href" cols="40"></input>
 </div>
 
 </body>

@@ -1,9 +1,9 @@
 (() => {
   // Collect the query parameters
-  if ( window.location.search && localStorage &&
-       window.location.search !== localStorage[ "ee-query-state" ] )
+  var value = window.location.search;
+  if ( value && value !== ee_settings.get( "ee-query-state" ) )
   {
-    localStorage[ "ee-query-state" ] = window.location.search;
+    ee_settings.set( "ee-query-state", value );
   }
 })();
 
@@ -44,31 +44,12 @@ const ee = (() => {
   };
 
   /**
-   * Reset the default equation editor user interface settings.
-   */
-  _ee.reset = () => {
-    localStorage = localStorage || {};
-    localStorage.clear = localStorage.clear || ( () => localStorage = {} );
-
-    const key = "ee-panel-all-panels";
-    const value = localStorage[ key ];
-
-    localStorage.clear();
-    for ( var k in ee.settings )
-    {
-      localStorage[ k ] = ee.settings[ k ];
-    }
-
-    localStorage[ key ] = value || localStorage[ key ];
-  };
-
-  /**
    * Initialize the equation editor user interface elements.
    */
   _ee.init = () => {
-    if ( !( localStorage && localStorage[ "ee-width" ] ) )
+    if ( ! ee_settings.getNumber( "ee-width" ) )
     {
-      ee.reset();
+      ee_settings.reset();
     }
 
     addMarkup( ".ee-version", getVersion() );
@@ -90,41 +71,6 @@ const ee = (() => {
   const ALERT = msg => alert( msg );
 
   /**
-   * Retrieve a boolean setting value.
-   */
-  const getLocalSetting = ( key ) => {
-    return ( localStorage[ key ] === "true" ) || false;
-  };
-
-  /**
-   * Set a boolean setting value.
-   */
-  const setLocalSetting = ( key, value ) => {
-    localStorage[ key ] = ( value ? "true" : "false" );
-  };
-
-  /**
-   * Toggle a boolean setting value.
-   */
-  const toggleLocalSetting = ( key ) => {
-    setLocalSetting( key, !getLocalSetting( key ) );
-  };
-
-  /**
-   * Get a numerical setting value.
-   */
-  const getLocalSettingNumber = ( key ) => {
-    return ( localStorage[ key ] ) || "";
-  };
-
-  /**
-   * Set a numerical setting value.
-   */
-  const setLocalSettingNumber = ( key, value ) => {
-    localStorage[ key ] = value;
-  };
-
-  /**
    * Retrieve the equation editor component version.
    */
   const getVersion = () => {
@@ -143,7 +89,7 @@ const ee = (() => {
    */
   const getDocBase = () => {
     // from the script tag
-    const elt = document.querySelector( "script" );
+    const elt = document.querySelector( "script[src*='ee.js']" );
     const att = elt && elt.getAttribute( "src" ) || "";
 
     if ( /ee\.js$/.test( att ) )
@@ -301,8 +247,8 @@ const ee = (() => {
    */
   const updateMenuBarPanel = () => {
     const panel = menu_bar_panel;
-    const value = getLocalSetting( "ee-panel-all-panels" )
-               && getLocalSetting( "ee-panel-app-menus" );
+    const value = ee_settings.getBool( "ee-panel-all-panels" )
+               && ee_settings.getBool( "ee-panel-app-menus" );
 
     if ( panel )
     {
@@ -316,8 +262,8 @@ const ee = (() => {
   const updateOpenFilePanel = () => {
     const panel = open_file_panel;
     const name = open_file_name;
-    const value = getLocalSetting( "ee-panel-all-panels" )
-               && getLocalSetting( "ee-panel-open-file" );
+    const value = ee_settings.getBool( "ee-panel-all-panels" )
+               && ee_settings.getBool( "ee-panel-open-file" );
 
     if ( panel )
     {
@@ -356,7 +302,7 @@ const ee = (() => {
     {
       if ( isTutorial( data.href ) && !isTutorialIndex( data.href ) )
       {
-        localStorage[ "edt-last-page-href" ] = data.href;
+        ee_settings.set( "ee-edt-last-page-href", data.href );
       }
 
       delete data.href;
@@ -370,7 +316,7 @@ const ee = (() => {
    * Update a view menu item check mark.
    */
   const updateCheckMark = ( key, s ) => {
-    const val = getLocalSetting( key );
+    const val = ee_settings.getBool( key );
     const elt = document.querySelector( s );
     if ( elt )
     {
@@ -405,7 +351,7 @@ const ee = (() => {
    * Update the equation editor input panel size.
    */
   const setPanelSize = ( value ) => {
-    setLocalSetting( "ee-panel-all-panels", value );
+    ee_settings.setBool( "ee-panel-all-panels", value );
 
     var firefox = /firefox/i.test( navigator.userAgent );
     const dh = 100;
@@ -414,8 +360,8 @@ const ee = (() => {
     const hh = window.innerHeight - dh;
     const ww = window.innerWidth - dw;
 
-    setLocalSettingNumber( "ee-height", hh );
-    setLocalSettingNumber( "ee-width", ww );
+    ee_settings.setNumber( "ee-height", hh );
+    ee_settings.setNumber( "ee-width", ww );
 
     updatePanels();
   };
@@ -424,6 +370,11 @@ const ee = (() => {
    * Combine a relative url with a document base value.
    */
   const combine_url = ( url, base ) => {
+    if ( url.startsWith( base ) )
+    {
+        return url;
+    }
+
     const suffix = base.replaceAll( /(\.\.\/)+/g, "/" );
     const prefix = base.substring( 0, base.length - suffix.length );
     return prefix + suffix + url;
@@ -563,8 +514,8 @@ const ee = (() => {
    * Process the query parameters from the document URL.
    */
   const do_query_state = () => {
-    const href = localStorage[ "ee-query-state" ];
-    delete localStorage[ "ee-query-state" ];
+    const href = ee_settings.get( "ee-query-state" );
+    ee_settings.set( "ee-query-state", "" );
 
     do_query_href( href );
 
@@ -611,7 +562,7 @@ const ee = (() => {
    * Insert document markup to set the font size.
    */
   const addFontSize = ( markup, key ) => {
-    const sz = getLocalSettingNumber( key );
+    const sz = ee_settings.getNumber( key );
     if ( sz )
     {
       markup = markup.replace( "<body>",
@@ -667,7 +618,7 @@ const ee = (() => {
    * Retrieve document markup for BRF output.
    */
   const getBRFMarkup = () => {
-    const markup = editor.getAsciiBraille() + '\n';
+    const markup = editor.formatAsciiBraille() + '\n';
     const result = markup.replaceAll( '\n', '\r\n' );
     return result;
   };
@@ -676,7 +627,7 @@ const ee = (() => {
    * Retrieve document markup for BRL output.
    */
   const getBRLMarkup = () => {
-    const markup = editor.getContractedBraille() + '\n';
+    const markup = editor.formatBraille() + '\n';
     const result = markup.replaceAll( '\n\f', '\u2800\n' );
     return result;
   };
@@ -965,7 +916,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getFileOptions( html_types );
-      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
+      const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       await saveFile( options, markup, false, "-p.html" );
     }
@@ -1013,7 +964,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const mathjax = getLocalSetting( "ee-mathjax-on-export" );
+      const mathjax = ee_settings.getBool( "ee-mathjax-on-export" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
@@ -1041,7 +992,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const mathjax = getLocalSetting( "ee-mathjax-on-print" );
+      const mathjax = ee_settings.getBool( "ee-mathjax-on-print" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
       const nwindow = window.open( "" );
 
@@ -1273,7 +1224,7 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getFileOptions( html_types );
-      const mathjax = getLocalSetting( "ee-mathjax-on-save" );
+      const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
       const markup = addMathMarkup( editor.getPresent(), mathjax );
 
       setFileOption( options, "-p.html" );
@@ -1450,7 +1401,7 @@ const ee = (() => {
   const do_panel_maximize = async ( event ) => {
     event && event.preventDefault();
 
-    const value = !getLocalSetting( "ee-panel-all-panels" );
+    const value = !ee_settings.getBool( "ee-panel-all-panels" );
     setPanelSize( value );
   };
 
@@ -1460,14 +1411,14 @@ const ee = (() => {
   const do_panel_menus = async ( event ) => {
     event && event.preventDefault();
 
-    if ( getLocalSetting( "ee-panel-all-panels" ) )
+    if ( ee_settings.getBool( "ee-panel-all-panels" ) )
     {
-      toggleLocalSetting( "ee-panel-app-menus" );
+      ee_settings.toggleBool( "ee-panel-app-menus" );
       updatePanels();
     }
     else
     {
-      setLocalSetting( "ee-panel-app-menus", true );
+      ee_settings.setBool( "ee-panel-app-menus", true );
       setPanelSize( true );
     }
   };
@@ -1477,7 +1428,7 @@ const ee = (() => {
    */
   const do_panel_fname = async ( event ) => {
     event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-open-file" );
+    ee_settings.toggleBool( "ee-panel-open-file" );
     updatePanels();
   };
 
@@ -1486,7 +1437,7 @@ const ee = (() => {
    */
   const do_panel_quick = async ( event ) => {
     event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-quick-bar" );
+    ee_settings.toggleBool( "ee-panel-quick-bar" );
     updatePanels();
   };
 
@@ -1495,7 +1446,7 @@ const ee = (() => {
    */
   const do_panel_side = async ( event ) => {
     event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-side-bar" );
+    ee_settings.toggleBool( "ee-panel-side-bar" );
     updatePanels();
   };
 
@@ -1504,7 +1455,7 @@ const ee = (() => {
    */
   const do_panel_braille = async ( event ) => {
     event && event.preventDefault();
-    toggleLocalSetting( "ee-panel-braille-bar" );
+    ee_settings.toggleBool( "ee-panel-braille-bar" );
     updatePanels();
   };
 
@@ -1512,7 +1463,6 @@ const ee = (() => {
   const edt_start = "doc/edt/0101.html";
   const basic_url = "doc/basic/Syllabus.html";
 
-  const guide_url = "ee-guide.html";
   const samples_url =
     'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
 
@@ -1525,10 +1475,9 @@ const ee = (() => {
 
       var href = edt_start;
 
-      if ( localStorage[ "edt-last-page-href" ] &&
-           localStorage[ "edt-show-last-page" ] !== "false" )
+      if ( ee_settings.getBool( "ee-edt-show-last-page" ) )
       {
-        href = localStorage[ "edt-last-page-href" ];
+        href = ee_settings.get( "ee-edt-last-page-href" ) || href;
       }
 
       if ( href )
@@ -1552,16 +1501,12 @@ const ee = (() => {
       var target = event && event.target || document.querySelector( "#getting" );
       var href = src_URL + target.getAttribute( "href" );
 
-      if ( localStorage[ "gtk-last-page-href" ] &&
-           localStorage[ "gtk-show-last-page" ] !== "false" )
+      if ( ee_settings.getBool( "ee-gtk-show-last-page" ) )
       {
-        href = localStorage[ "gtk-last-page-href" ];
+        href = ee_settings.get( "ee-gtk-last-page-href" ) || href;
       }
 
-      const nwindow = window.open( href );
-      nwindow.addEventListener( "unload", () => {
-        editor.setFocus();
-      } )
+      do_help_href( href );
     }
     catch ( e )
     {
@@ -1575,17 +1520,13 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const src = src_URL + event.target.getAttribute( "href" );
-      const nwindow = window.open( src );
+      const href = event.target.getAttribute( "href" );
+      const nwindow = do_help_href( href );
 
-      nwindow.addEventListener( "beforeunload", () => {
+      nwindow && nwindow.addEventListener( "beforeunload", () => {
         EquationEditorAPI.updateSettings();
         updateMenuBarPanel();
         updateOpenFilePanel();
-      } );
-
-      nwindow.addEventListener( "unload", () => {
-        editor.setFocus();
       } );
     }
     catch ( e )
@@ -1594,31 +1535,44 @@ const ee = (() => {
   };
 
   /**
-   * Helper method to open specific help resources.
+   * Handler method to open specific help resources.
    */
-  const do_help_open = async ( href ) => {
+  const do_help_href = ( href ) => {
     try {
       const src = href.startsWith( "http" ) ? href : src_URL + href;
       const nwindow = window.open( src );
 
       nwindow.addEventListener( "unload", () => {
         editor.setFocus();
-      } )
+      } );
+
+      return nwindow;
     }
     catch ( e )
     {
+      return null;
     }
   };
 
   /**
-   * Handler method for miscellaneous help menu operations.
+   * Handler method to open specific help resources.
+   */
+  const do_help_id = ( id ) => {
+    const target = document.querySelector( id );
+    const href = target.getAttribute( "href" );
+
+    return do_help_href( href );
+  };
+
+  /**
+   * Handler method for help menu operations.
    */
   const do_help = async ( event ) => {
     try {
       event && event.preventDefault();
 
       const href = event.target.getAttribute( "href" );
-      do_help_open( href );
+      do_help_href( href );
     }
     catch ( e )
     {
@@ -1973,7 +1927,7 @@ const ee = (() => {
     }
     const href = target.getAttribute( "href" ) || "";
 
-    if ( href && href === getLinkTarget() )
+    if ( href )
     {
       event.stopImmediatePropagation();
       event.preventDefault();
@@ -2082,14 +2036,14 @@ const ee = (() => {
 '            <li><a href="' + basic_url + '" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
 '            <li><a href="#" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
 '            <li><a href="' + edt_index + '" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
-'            <li><a href="' + guide_url + '" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
+'            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
 '            <hr/>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
 '            <li><a href="ee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
-'            <li><a href="ee-terms.pdf" target="_blank">Terms of Service</a></li>' +
-'            <li><a href="ee-privacy.pdf" target="_blank">Privacy Policy</a></li>' +
+'            <li><a href="ee-terms.pdf" id="terms">Terms of Service</a></li>' +
+'            <li><a href="ee-privacy.pdf" id="privacy">Privacy Policy</a></li>' +
 '            <hr/>' +
 '            <li><a href="ee-about.html" id="about" aria-label="About">A&#x0332;bout</a></li>' +
 '          </ul>' +
@@ -2220,6 +2174,9 @@ const ee = (() => {
     addClick( "#guide", do_help );
     addClick( "#about", do_help );
 
+    addClick( "#terms", do_help );
+    addClick( "#privacy", do_help );
+
     // Update equation editor user interface panels.
     updateMenuBarPanel();
     updateOpenFilePanel();
@@ -2244,7 +2201,7 @@ const ee = (() => {
     document.addEventListener( "keydown", onKeyDown, true );
 
     // Document link mouse down
-    document.addEventListener( "mousedown", onDocLink, true );
+    $( ".ee-input-panel" )[ 0 ].addEventListener( "mousedown", onDocLink, true );
 
     // Process window history links
     window.addEventListener( "popstate", onPopHistory );
@@ -2265,30 +2222,30 @@ const ee = (() => {
   const initContent = () => {
 
     // Process the query parameters
-    if ( localStorage[ "ee-query-state" ] )
+    if ( ee_settings.get( "ee-query-state" ) )
     {
       do_query_state();
     }
 
     // Show the users guide (ee)
-    else if ( getLocalSetting( "ee-show-users-guide" ) )
+    else if ( ee_settings.getBool( "ee-show-users-guide" ) )
     {
-      do_help_open( guide_url );
+      do_help_id( "#guide" );
     }
 
     // Show the tutorial screen (edt)
-    else if ( getLocalSetting( "edt-show-tutorial" ) )
+    else if ( ee_settings.getBool( "ee-edt-show-tutorial" ) )
     {
       do_help_tutorial_edt();
     }
 
     // Show the tutorial screen (gtk)
-    else if ( getLocalSetting( "gtk-show-tutorial" ) )
+    else if ( ee_settings.getBool( "ee-gtk-show-tutorial" ) )
     {
       do_help_tutorial_gtk();
     }
 
-    else if ( open_file_name || getLocalSetting( "ee-panel-all-panels" ) )
+    else if ( open_file_name || ee_settings.getBool( "ee-panel-all-panels" ) )
     {
       updatePanels();
     }
@@ -2297,72 +2254,6 @@ const ee = (() => {
     {
       setPanelSize( true );
     }
-
-  };
-
-  /**
-   * The default values for the equation editor user interface settings.
-   */
-  _ee.settings = {
-    "ee-show-users-guide" : "false",
-    "edt-show-tutorial" : "false",
-    "edt-show-last-page" : "false",
-    "edt-last-page-href" : "",
-    "gtk-show-tutorial" : "false",
-    "gtk-show-last-page" : "false",
-    "gtk-last-page-href" : "",
-    "ee-width" : 0,
-    "ee-height" : 0,
-    "ee-input-qwerty" : "true",
-    "ee-input-braille" : "false",
-    "ee-input-home" : "false",
-    "ee-panel-all-panels" : "true",
-    "ee-panel-app-menus" : "true",
-    "ee-panel-open-file" : "true",
-    "ee-panel-quick-bar" : "true",
-    "ee-panel-side-bar" : "true",
-    "ee-panel-braille-bar" : "true",
-    "ee-mathjax-on-save" : "false",
-    "ee-mathjax-on-export" : "true",
-    "ee-mathjax-on-print" : "true",
-    "ee-screen-page-width" : 30,
-    "ee-screen-page-height" : 4,
-    "ee-screen-indent-first" : 1,
-    "ee-screen-indent-runover" : 1,
-    "ee-device-page-width" : 40,
-    "ee-device-page-height" : 1,
-    "ee-device-indent-first" : 1,
-    "ee-device-indent-runover" : 1,
-    "ee-file-page-width" : 40,
-    "ee-file-page-height" : 25,
-    "ee-file-page-numbers" : "true",
-    "ee-file-indent-first" : 1,
-    "ee-file-indent-runover" : 1,
-    "ee-math-indent-first" : 3,
-    "ee-math-indent-runover" : 5,
-    "ee-html-font-size" : 18,
-    "ee-brl-font-size" : 18,
-    "fmt-heading-1": "center",
-    "fmt-heading-2": "cell-5",
-    "fmt-heading-3": "cell-7",
-    "fmt-heading-4": "cell-7",
-    "fmt-heading-5": "cell-7",
-    "fmt-heading-6": "cell-7",
-    "brl-rules-all-rules" : "true",
-    "brl-rules-alphabetic-wordsigns" : "true",
-    "brl-rules-strong-wordsigns" : "true",
-    "brl-rules-strong-contractions" : "true",
-    "brl-rules-strong-groupsigns" : "true",
-    "brl-rules-lower-wordsigns" : "true",
-    "brl-rules-lower-groupsigns" : "true",
-    "brl-rules-initial-letter" : "true",
-    "brl-rules-initial-letter-45" : "true",
-    "brl-rules-initial-letter-456" : "true",
-    "brl-rules-initial-letter-5" : "true",
-    "brl-rules-final-letter" : "true",
-    "brl-rules-final-letter-46" : "true",
-    "brl-rules-final-letter-56" : "true",
-    "brl-rules-shortforms" : "true"
   };
 
   return _ee;

@@ -5,6 +5,7 @@
   <title>Equalize Editor Users Guide</title>
   <link rel="icon" type="image/x-icon" href="ee.png">
   <link rel="stylesheet" type="text/css" href="ee.css"/>
+  <script src="ee-settings.js"></script>
   <script src="ee.js"></script>
   <script>const init = () =>
     document.querySelector('#host').download = ( window.location.host || "localhost" ) + ".JCF"
@@ -1552,42 +1553,97 @@ See the JAWS Help Topics for further details on how to use the JAWS Settings Cen
 <h4 id="sr-jaws-setup">JAWS Setup</h4>
 
 <p>
-The EE Configuration File <a href="config/ee.jcf" target="blank">ee.jcf</a> contains configuration directives for JAWS that can be used to apply recommended settings for the EE.  You can use the following steps to install these settings as a Domain Settings file in the JAWS Settings Folder, so they will be used for the EE web site without affecting configuration settings for other applications.
+The Equalize Editor provides a JAWS Script File called <code>ee.JCF</code> which
+needs to be saved into your JAWS Settings Folder with the name
+<code>www.lakepinesbraille.com.JCF</code></p>
+
+<p>
+Using this name instructs JAWS to use this configuration, but only when
+using a browser that is viewing the web site <code>www.lakepinesbraille.com</code>.
 </p>
 
 <p>
-First, use these steps to find the location of the JAWS Settings Folder on your machine using the JAWS Script Manager, and copy its location to the clipboard.
+This way the configuration needed for the Equalize Editor does not affect
+your using JAWS with other applications, or with other web sites.
+</p>
+
+<p>
+Use these steps to install the Equalize Editor Configuration File.
 </p>
 
 <ul>
-<li>Type <code>JAWS + 0</code> to open the JAWS Script Manager</li>
-<li>Type <code>Ctrl + O</code> to open the Open User File dialog</li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the JAWS Settings Folder location</li>
-<li>Press <code>Ctrl + C</code> to copy the location to the clipboard</li>
-<li>Use <code>Shift + Tab</code> to navigate to the <code>Cancel</code> button</li>
-<li>Press <code>Space</code> to dismiss the Open User File dialog</li>
-</ul>
+<li>Start JAWS.</li>
 
+<li>Open the JAWS Script Manager (<code>JAWS + 0</code>).
 <p>
-Next, use these steps to install the EE Configuration File in the JAWS Settings Folder.
+The Script Manager allows you to access JAWS Script Files (<code>*.jcf</code>)
+in your JAWS Settings Folder.
 </p>
 
-<ul>
-<li>Use <code>Tab</code> to navigate to <a id="host" href="config/ee.jcf">this link</a> to the EE Configuration File
-<li>Press <code>Shift + F10</code> to activate the link context menu</li>
-<li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the Download Folder path</li>
-<li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
-<li>Press <code>Enter</code> to open the JAWS Settings Folder</li>
-<li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the EE configuration file</li>
-</ul>
+<p>
+You can manage these files however you like, but the first step,
+and often the most confusing, is locating the JAWS Settings Folder.
+</p>
+</li>
+
+<li>Locate the JAWS Settings Folder.
 
 <p>
-These steps need to be done only once, for each web domain used to access the EE.
+One of the easier ways to locate the JAWS Settings Folder is to use
+the <code>File &gt; Open</code> menu item in the JAWS Script Manager,
+which opens the JAWS Settings Folder by default.<br/>
+<code>
+C:\Users\[username]\AppData\Roaming\Freedom Scientific\JAWS\2024\Settings\enu
+</code>
 </p>
+
+<p>
+In the Open User File dialog, you can tab navigate to the All Locations
+split button, press <code>Space</code> to select the entire folder path,
+and <code>Ctrl + C</code> to copy the path to the clipboard.
+</p>
+
+<p>
+You will be able to paste this value directly into the Save As dialog
+as the path used to save the configuration file.
+</p>
+</li>
+
+<li>Save the Equalize Editor JCF file.
+
+<p>
+You can persuade your browser to rename the file for you using the
+Save Link As menu item on the link context menu, which you can access
+by tabbing to <a id="host" href="config/ee.jcf">this link</a> and
+pressing <code>Shift + F10</code>.
+</p>
+
+<p>
+When the Save As dialog opens, paste the path that you copied in the
+previous step, that is, the path to your JAWS Settings Folder, into
+the All Locations split button.
+</p>
+
+<p>
+To do so, tab navigate to the All Locations split button, press <code>Space</code>
+to select the entire path, <code>Ctrl + V</code> to paste the path from the clipboard,
+and <code>Enter</code> to select the Settings Folder.
+</p>
+
+<p>
+After entering the correct folder, and with the File name set to
+<code>www.lakepinesbraille.com.JCF</code>, press <code>Enter</code> to save the file.
+</p>
+
+<p>
+The next time you visit the Equalize Editor web site, JAWS should use
+the new configuration.  You can check the JAWS Settings Center (<code>JAWS + 6</code>)
+for the application <code>www.lakepinesbraille.com (Domain)</code> which should
+include setting the Braille Input Translation to Computer Braille.
+</p>
+</li>
+
+</ul>
 
 <p>
 The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
