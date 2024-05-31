@@ -139,9 +139,35 @@ const ee_settings = (() => {
   _ee.reset = () => {
     for ( var key in _ee.settings )
     {
-      if ( key !== "ee-panel-all-panels" )
+      if ( !( key === "ee-app-home" || key === "ee-doc-home" ) )
+        {
+          _ee.set( key, _ee.def( key ) );
+        }
+    }
+  };
+
+  /**
+   * Validate current values of local setting values.
+   */
+  _ee.check = () =>
+  {
+    if ( _ee.getBool( "ee-panel-side-bar" ) )
+    {
+      var key;
+
+      // Unless any palette is active
+      for ( key in _ee.palettes )
       {
-        _ee.set( key, _ee.def( key ) );
+        if ( _ee.getBool( key + "-active" ) )
+        {
+          return;
+        }
+      }
+
+      // Mark all palettes as active
+      for ( key in _ee.palettes )
+      {
+        _ee.setBool( key + "-active", true );
       }
     }
   };
@@ -150,6 +176,8 @@ const ee_settings = (() => {
    * The default local setting values.
    */
   _ee.settings = {
+    "ee-app-home" : "",
+    "ee-doc-home" : "",
     "ee-show-users-guide" : "false",
     "ee-edt-show-tutorial" : "false",
     "ee-edt-show-last-page" : "false",
@@ -163,7 +191,6 @@ const ee_settings = (() => {
     "ee-input-qwerty" : "true",
     "ee-input-braille" : "false",
     "ee-input-home" : "false",
-    "ee-panel-all-panels" : "true",
     "ee-panel-app-menus" : "true",
     "ee-panel-open-file" : "true",
     "ee-panel-quick-bar" : "true",
@@ -324,6 +351,7 @@ const ee_settings = (() => {
   _ee.setup();
   _ee.clean();
   _ee.assign();
+  _ee.check();
 
   return _ee;
 })();

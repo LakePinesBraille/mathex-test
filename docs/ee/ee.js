@@ -55,6 +55,9 @@ const ee = (() => {
     addMarkup( ".ee-version", getVersion() );
     addMarkup( ".ee-timestamp", getTimestamp() );
 
+    setAppHome();
+    setDocHome();
+
     editor = EquationEditorAPI.getInstance( "RESPONSE" );
     if ( editor )
     {
@@ -85,38 +88,43 @@ const ee = (() => {
   };
 
   /**
-   * Retrieve the base URL of the equation editor user interface document.
+   * Retrieve the absolute URL path to the application home.
    */
-  const getDocBase = () => {
-    // from the script tag
-    const elt = document.querySelector( "script[src*='ee.js']" );
-    const att = elt && elt.getAttribute( "src" ) || "";
-
-    if ( /ee\.js$/.test( att ) )
-    {
-        return att.replace( "ee.js", "" );
-    }
-
-    // from the window location
-    const href = window.location.href;
-
-    if ( /ee\.html$/.test( href ) )
-    {
-        return href.replace( "ee.html", "" );
-    }
-
-    if ( /\/$/.test( href ) )
-    {
-        return href;
-    }
-
-    return "";
+  const getAppHome = () => {
+    return ee_settings.get( "ee-app-home" );
   };
 
   /**
-   * Return true if the editor is run from the local filesystem.
+   * Set the absolute URL path to the application home.
    */
-  const isEditorFromFile = () => /file:/.test( window.location.href );
+  const setAppHome = () => {
+    const elt = document.querySelector( "script[src*='ee.js']" );
+    const att = elt && elt.getAttribute( "src" ) || "";
+    const uri = document.baseURI;
+    const value = new URL( att.replace( "ee.js", "./" ), uri ).href;
+
+    ee_settings.set( "ee-app-home", value );
+  };
+
+  /**
+   * Retrieve the absolute URL path to the documentation home.
+   */
+  const getDocHome = () => {
+    return ee_settings.get( "ee-doc-home" );
+  };
+
+  /**
+   * Set the absolute URL path to the documentation home.
+   */
+  const setDocHome = () => {
+    const app = getAppHome();
+    const value =
+        app.includes( "file:" ) ? "http://localhost/mathex-ee/html/ee/" :
+        app.includes( "github.io" ) ? "https://www.lakepinesbraille.com/ee/" :
+        app;
+
+    ee_settings.set( "ee-doc-home", value + "doc/" );
+  };
 
   /**
    * Return true if the current url is an editor document.
@@ -179,15 +187,14 @@ const ee = (() => {
    * Retrieve the default file dialog options.
    */
   const getFileOptions =
-    ( file_types ) => Object.assign( {},
-        { startIn: isEditorFromFile() ? last_file_handle : undefined },
+    ( file_types ) => Object.assign( { startIn: open_file_handle },
         file_options, file_types );
 
   /**
    * Set the suggested file name dialog option.
    */
   const setFileOption = ( options, ftype ) => {
-    var fname = last_file_handle && last_file_handle.name ||
+    var fname = open_file_handle && open_file_handle.name ||
         open_file_name || "untitled";
 
     fname = fname.replace( /^.*\//, "" );
@@ -218,24 +225,9 @@ const ee = (() => {
   var open_file_handle = undefined;
 
   /**
-   * The last file handle.
-   */
-  var last_file_handle = undefined;
-
-  /**
-   * The URL of the equation editor user interface document.
-   */
-  var src_URL = getDocBase();
-
-  /**
-   * The URL of the user interface document base.
+   * The URL of the current document base.
    */
   var base_URL = "";
-
-  /**
-   * The URL of the user interface home document.
-   */
-  var home_URL = "";
 
   /**
    * The URL of the current open document.
@@ -247,8 +239,7 @@ const ee = (() => {
    */
   const updateMenuBarPanel = () => {
     const panel = menu_bar_panel;
-    const value = ee_settings.getBool( "ee-panel-all-panels" )
-               && ee_settings.getBool( "ee-panel-app-menus" );
+    const value = ee_settings.getBool( "ee-panel-app-menus" );
 
     if ( panel )
     {
@@ -262,8 +253,7 @@ const ee = (() => {
   const updateOpenFilePanel = () => {
     const panel = open_file_panel;
     const name = open_file_name;
-    const value = ee_settings.getBool( "ee-panel-all-panels" )
-               && ee_settings.getBool( "ee-panel-open-file" );
+    const value = ee_settings.getBool( "ee-panel-open-file" );
 
     if ( panel )
     {
@@ -278,7 +268,6 @@ const ee = (() => {
   const setOpenFileName = ( name ) => {
     open_file_name = name;
     open_file_handle = undefined;
-    last_file_handle = undefined;
 
     updateOpenFilePanel();
   };
@@ -289,7 +278,6 @@ const ee = (() => {
   const setOpenFileHandle = ( handle ) => {
     setOpenFileName( handle.name );
     open_file_handle = handle;
-    last_file_handle = handle;
   };
 
   /**
@@ -307,7 +295,6 @@ const ee = (() => {
 
       delete data.href;
       data.base = data.base || base_URL;
-      data.home = data.home || home_URL;
       window.history.pushState( data, "" );
     }
   };
@@ -350,9 +337,7 @@ const ee = (() => {
   /**
    * Update the equation editor input panel size.
    */
-  const setPanelSize = ( value ) => {
-    ee_settings.setBool( "ee-panel-all-panels", value );
-
+  const setPanelSize = () => {
     var firefox = /firefox/i.test( navigator.userAgent );
     const dh = 100;
     const dw = firefox ? 16 : 0;
@@ -360,24 +345,10 @@ const ee = (() => {
     const hh = window.innerHeight - dh;
     const ww = window.innerWidth - dw;
 
+    const xw = ww - ( ww % 44 );
+
     ee_settings.setNumber( "ee-height", hh );
-    ee_settings.setNumber( "ee-width", ww );
-
-    updatePanels();
-  };
-
-  /**
-   * Combine a relative url with a document base value.
-   */
-  const combine_url = ( url, base ) => {
-    if ( url.startsWith( base ) )
-    {
-        return url;
-    }
-
-    const suffix = base.replaceAll( /(\.\.\/)+/g, "/" );
-    const prefix = base.substring( 0, base.length - suffix.length );
-    return prefix + suffix + url;
+    ee_settings.setNumber( "ee-width", xw );
   };
 
   /**
@@ -385,12 +356,12 @@ const ee = (() => {
    */
   const open_url = async ( data, fn, cb ) => {
     var obaseURL = base_URL;
-    var ohomeURL = home_URL;
     var ofileURL = file_URL;
 
-    base_URL = data.base && combine_url( data.base, src_URL ) || base_URL;
-    home_URL = data.home || home_URL;
-    file_URL = data.url && combine_url( data.url, base_URL || file_URL || src_URL ) || "";
+    var app = getAppHome();
+
+    base_URL = data.base && new URL( data.base, base_URL || app ).href || base_URL;
+    file_URL = data.url && new URL( data.url, base_URL || file_URL || app ).href || "";
 
     if ( ! file_URL )
     {
@@ -410,7 +381,6 @@ const ee = (() => {
       {
         ALERT( "Error opening file " + file_URL );
         base_URL = obaseURL;
-        home_URL = ohomeURL;
         file_URL = ofileURL;
       }
     }
@@ -425,6 +395,7 @@ const ee = (() => {
    */
   const get_query_data = ( href ) => {
     href = href.substring( href.indexOf( "?" ) );
+
     const params = new URLSearchParams( href );
     const data = { "state" : { "action" : "open", "href" : href } };
 
@@ -452,14 +423,11 @@ const ee = (() => {
       }
       else
       {
-        data.state.base = combine_url( s.substring( 0, ix + 1 ), base_URL );
+        const app = getAppHome();
+
+        data.state.base = new URL( s.substring( 0, ix + 1 ), base_URL || app ).href;
         data.state.url = s.substring( ix + 1 );
         base_URL = data.state.base;
-      }
-
-      if ( isTutorial( href ) )
-      {
-        data.state.home = href;
       }
     }
 
@@ -521,7 +489,8 @@ const ee = (() => {
 
     if ( isTutorial( href ) || isDocument( href ) )
     {
-      setPanelSize( false );
+      setPanelSize();
+      do_panel_showOnly();
     }
     else
     {
@@ -826,10 +795,10 @@ const ee = (() => {
       moveToHome();
 
       setOpenFileName( "" );
-      home_URL = "";
       file_URL = "";
 
-      setPanelSize( true );
+      setPanelSize();
+      do_panel_showAll();
       ee_drive.clear();
     }
     catch ( e )
@@ -1396,13 +1365,69 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the panel > maximize menu operation.
+   * Handler method for the panel > show all panels menu operation.
    */
-  const do_panel_maximize = async ( event ) => {
+  const do_panel_showAll = async ( event ) => {
     event && event.preventDefault();
 
-    const value = !ee_settings.getBool( "ee-panel-all-panels" );
-    setPanelSize( value );
+    ee_settings.setBool( "ee-panel-app-menus", true );
+    ee_settings.setBool( "ee-panel-open-file", true );
+    ee_settings.setBool( "ee-panel-quick-bar", true );
+    ee_settings.setBool( "ee-panel-side-bar", true );
+    ee_settings.setBool( "ee-panel-braille-bar", true );
+
+    updatePanels();
+  };
+
+  /**
+   * Handler method for the panel > show menus only menu operation.
+   */
+  const do_panel_showOnly = async ( event ) => {
+    event && event.preventDefault();
+
+    ee_settings.setBool( "ee-panel-app-menus", true );
+    ee_settings.setBool( "ee-panel-open-file", false );
+    ee_settings.setBool( "ee-panel-quick-bar", false );
+    ee_settings.setBool( "ee-panel-side-bar", false );
+    ee_settings.setBool( "ee-panel-braille-bar", false );
+
+    updatePanels();
+  };
+
+  /**
+   * Handler method for the panel > toggle all panels menu operation.
+   */
+  const do_panel_toggleAll = async ( event ) => {
+    event && event.preventDefault();
+
+    const value = ee_settings.getBool( "ee-panel-open-file" )
+               || ee_settings.getBool( "ee-panel-quick-bar" )
+               || ee_settings.getBool( "ee-panel-side-bar" )
+               || ee_settings.getBool( "ee-panel-braille-bar" );
+
+    if ( value )
+    {
+      do_panel_showOnly();
+    }
+    else
+    {
+      do_panel_showAll();
+    }
+  };
+
+  /**
+   * Handler method for the panel > hide all panels menu operation.
+   */
+  const do_panel_hideAll = async ( event ) => {
+    event && event.preventDefault();
+
+    ee_settings.setBool( "ee-panel-app-menus", false );
+    ee_settings.setBool( "ee-panel-open-file", false );
+    ee_settings.setBool( "ee-panel-quick-bar", false );
+    ee_settings.setBool( "ee-panel-side-bar", false );
+    ee_settings.setBool( "ee-panel-braille-bar", false );
+
+    updatePanels();
   };
 
   /**
@@ -1410,17 +1435,8 @@ const ee = (() => {
    */
   const do_panel_menus = async ( event ) => {
     event && event.preventDefault();
-
-    if ( ee_settings.getBool( "ee-panel-all-panels" ) )
-    {
-      ee_settings.toggleBool( "ee-panel-app-menus" );
-      updatePanels();
-    }
-    else
-    {
-      ee_settings.setBool( "ee-panel-app-menus", true );
-      setPanelSize( true );
-    }
+    ee_settings.toggleBool( "ee-panel-app-menus" );
+    updatePanels();
   };
 
   /**
@@ -1447,6 +1463,7 @@ const ee = (() => {
   const do_panel_side = async ( event ) => {
     event && event.preventDefault();
     ee_settings.toggleBool( "ee-panel-side-bar" );
+    ee_settings.check();
     updatePanels();
   };
 
@@ -1459,13 +1476,6 @@ const ee = (() => {
     updatePanels();
   };
 
-  const edt_index = "doc/edt/0000.html";
-  const edt_start = "doc/edt/0101.html";
-  const basic_url = "doc/basic/Syllabus.html";
-
-  const samples_url =
-    'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
-
   /**
    * Handler method for the help > tutorial menu operation.
    */
@@ -1473,18 +1483,17 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      var href = edt_start;
+      var target = event && event.target || document.querySelector( "#tutorial" );
+
+      const att = target.getAttribute( "href" );
+      const href = new URL( att, getDocHome() ).href;
 
       if ( ee_settings.getBool( "ee-edt-show-last-page" ) )
       {
         href = ee_settings.get( "ee-edt-last-page-href" ) || href;
       }
 
-      if ( href )
-      {
-        do_query_href( href );
-        setPanelSize( false );
-      }
+      do_help_href( href );
     }
     catch ( e )
     {
@@ -1499,7 +1508,9 @@ const ee = (() => {
       event && event.preventDefault();
 
       var target = event && event.target || document.querySelector( "#getting" );
-      var href = src_URL + target.getAttribute( "href" );
+
+      const att = target.getAttribute( "href" );
+      const href = new URL( att, getAppHome() ).href;
 
       if ( ee_settings.getBool( "ee-gtk-show-last-page" ) )
       {
@@ -1520,14 +1531,65 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const href = event.target.getAttribute( "href" );
+      const att = event.target.getAttribute( "href" );
+      const href = new URL( att, getAppHome() ).href;
+
       const nwindow = do_help_href( href );
 
       nwindow && nwindow.addEventListener( "beforeunload", () => {
-        EquationEditorAPI.updateSettings();
-        updateMenuBarPanel();
-        updateOpenFilePanel();
+        updatePanels();
       } );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method to open specific help resources.
+   */
+  const do_help_id = ( id ) => {
+    try {
+      const target = document.querySelector( id );
+
+      const att = target.getAttribute( "href" );
+      const href = new URL( att, getAppHome() ).href;
+
+      do_help_href( href );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for help menu operations.
+   */
+  const do_help = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const att = event.target.getAttribute( "href" );
+      const href = new URL( att, getAppHome() ).href;
+
+      do_help_href( href );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for help document operations.
+   */
+  const do_help_doc = async ( event ) => {
+    try {
+      event && event.preventDefault();
+
+      const att = event.target.getAttribute( "href" );
+      const href = new URL( att, getDocHome() ).href;
+
+      do_help_href( href );
     }
     catch ( e )
     {
@@ -1539,8 +1601,7 @@ const ee = (() => {
    */
   const do_help_href = ( href ) => {
     try {
-      const src = href.startsWith( "http" ) ? href : src_URL + href;
-      const nwindow = window.open( src );
+      const nwindow = window.open( href );
 
       nwindow.addEventListener( "unload", () => {
         editor.setFocus();
@@ -1551,31 +1612,6 @@ const ee = (() => {
     catch ( e )
     {
       return null;
-    }
-  };
-
-  /**
-   * Handler method to open specific help resources.
-   */
-  const do_help_id = ( id ) => {
-    const target = document.querySelector( id );
-    const href = target.getAttribute( "href" );
-
-    return do_help_href( href );
-  };
-
-  /**
-   * Handler method for help menu operations.
-   */
-  const do_help = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      const href = event.target.getAttribute( "href" );
-      do_help_href( href );
-    }
-    catch ( e )
-    {
     }
   };
 
@@ -1655,7 +1691,7 @@ const ee = (() => {
    * Ignore alt key release events.
    */
   const onAltKey = ( event ) => {
-    if ( event.altKey )
+    if ( event.altKey || event.code.startsWith( "Alt" ) )
     {
       event.stopImmediatePropagation();
       event.preventDefault();
@@ -1789,7 +1825,10 @@ const ee = (() => {
       event.stopImmediatePropagation();
       event.preventDefault();
 
-      do_file_new();
+      setPanelSize();
+      do_panel_showAll();
+
+      window.close();
     }
   };
 
@@ -1817,7 +1856,7 @@ const ee = (() => {
       href = next || href;
       if ( !href )
       {
-        window.editor.selection().linkRight();
+        window.editor.selection().tabRight();
         href = getLinkTarget();
       }
     }
@@ -1838,8 +1877,10 @@ const ee = (() => {
     event.stopImmediatePropagation();
     event.preventDefault();
 
+    const app = getAppHome();
+
     const index = nextHomeIndex( file_URL );
-    const href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
+    const href = file_URL.replace( app, "?" ).replace( /[0-9]{4}/, index );
 
     do_query_href( href );
   };
@@ -1851,8 +1892,10 @@ const ee = (() => {
     event.stopImmediatePropagation();
     event.preventDefault();
 
+    const app = getAppHome();
+
     const index = nextEndIndex( file_URL );
-    const href = file_URL.replace( src_URL, "?" ).replace( /[0-9]{4}/, index );
+    const href = file_URL.replace( app, "?" ).replace( /[0-9]{4}/, index );
 
     do_query_href( href );
   };
@@ -1882,7 +1925,7 @@ const ee = (() => {
    * Handler for editor user interface keys.
    */
   const onKeyDown = ( event ) => {
-    const key = event.code;
+    const key = event.key;
     const alt = event.altKey && ! event.ctrlKey;
 
     if ( key === "Escape" )
@@ -1950,6 +1993,9 @@ const ee = (() => {
     event.preventDefault();
     do_query_data( event.state );
   };
+
+  const samples_url =
+    'https://drive.google.com/drive/folders/1FrhoeG8olkVnCgB-F3d-edxvqnK-guPu?usp=sharing';
 
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
@@ -2019,7 +2065,10 @@ const ee = (() => {
 '          <a href="#" id="panel_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
 '             aria-haspopup="true" aria-expanded="false" aria-label="View">V&#x0332;iew<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu check">' +
-'            <li><a href="#" id="panel_maximize" aria-label="Maximize">Max&#x0332;imize</a></li>' +
+'            <li><a href="#" id="panel_showAll" aria-label="Show All Panels">Show A&#x0332;ll Panels</a></li>' +
+'            <li><a href="#" id="panel_showOnly" aria-label="Show Menus Only">Show Menus O&#x0332;nly</a></li>' +
+'            <li><a href="#" id="panel_toggleAll" aria-label="Toggle All Panels">T&#x0332;oggle All Panels</a></li>' +
+'            <li><a href="#" id="panel_hideAll" aria-label="Hide All Panels">H&#x0332;ide All Panels</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="panel_menus" aria-label="Menus">M&#x0332;enus</a></li>' +
 '            <li><a href="#" id="panel_fname" aria-label="File Name">F&#x0332;ile Name</a></li>' +
@@ -2032,10 +2081,8 @@ const ee = (() => {
 '          <a href="#" id="help_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
 '             aria-haspopup="true" aria-expanded="false" aria-label="Help">H&#x0332;elp<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="' + edt_start + '" id="welcome" aria-label="Welcome">W&#x0332;elcome</a></li>' +
-'            <li><a href="' + basic_url + '" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
-'            <li><a href="#" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
-'            <li><a href="' + edt_index + '" id="index" aria-label="Index">I&#x0332;ndex</a></li>' +
+'            <li><a href="basic/Syllabus.html" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
+'            <li><a href="edt/0101.html" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
 '            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
 '            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
 '            <hr/>' +
@@ -2062,10 +2109,9 @@ const ee = (() => {
     V: "#panel_menu",
     H: "#help_menu",
 
-    X: "#panel_maximize",
+    X: "#panel_toggleAll",
     M: "#panel_menus",
     P: "#printHTML",
-    I: "#index",
     T: "#tutorial"
   };
 
@@ -2098,7 +2144,10 @@ const ee = (() => {
       I: "#drive_install"
     },
     V: {
-      X: "#panel_maximize",
+      A: "#panel_showAll",
+      O: "#panel_showOnly",
+      T: "#panel_toggleAll",
+      H: "#panel_hideAll",
       M: "#panel_menus",
       F: "#panel_fname",
       Q: "#panel_quick",
@@ -2106,10 +2155,8 @@ const ee = (() => {
       B: "#panel_braille"
     },
     H: {
-      W: "#welcome",
       B: "#training",
       T: "#tutorial",
-      I: "#index",
       U: "#guide",
       K: "#getting",
       M: "#samples",
@@ -2160,22 +2207,26 @@ const ee = (() => {
     addClick( "#copyAllHTML", do_edit_copy_all_HTML );
     addClick( "#copyAllMath", do_edit_copy_all_math );
 
-    addClick( "#panel_maximize", do_panel_maximize );
+    addClick( "#panel_showAll", do_panel_showAll );
+    addClick( "#panel_showOnly", do_panel_showOnly );
+    addClick( "#panel_toggleAll", do_panel_toggleAll );
+    addClick( "#panel_hideAll", do_panel_hideAll );
     addClick( "#panel_menus", do_panel_menus );
     addClick( "#panel_fname", do_panel_fname );
     addClick( "#panel_quick", do_panel_quick );
     addClick( "#panel_side", do_panel_side );
     addClick( "#panel_braille", do_panel_braille );
 
+    addClick( "#training", do_help_doc );
     addClick( "#tutorial", do_help_tutorial_edt );
     addClick( "#getting", do_help_tutorial_gtk );
     addClick( "#settings", do_help_settings );
     addClick( "#samples", do_help );
     addClick( "#guide", do_help );
-    addClick( "#about", do_help );
 
     addClick( "#terms", do_help );
     addClick( "#privacy", do_help );
+    addClick( "#about", do_help );
 
     // Update equation editor user interface panels.
     updateMenuBarPanel();
@@ -2245,14 +2296,10 @@ const ee = (() => {
       do_help_tutorial_gtk();
     }
 
-    else if ( open_file_name || ee_settings.getBool( "ee-panel-all-panels" ) )
-    {
-      updatePanels();
-    }
-
     else
     {
-      setPanelSize( true );
+      setPanelSize();
+      updatePanels();
     }
   };
 

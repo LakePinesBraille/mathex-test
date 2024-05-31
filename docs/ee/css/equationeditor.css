@@ -1161,7 +1161,7 @@ apply, mphantom
 @media ( max-width: 768px )
 {
     .ee-parent-panel {
-        width: 290px !important;
+        width: 100% !important;
     }
     .ee-quick-bar {
         width: 260px;
@@ -1205,7 +1205,7 @@ apply, mphantom
 @media ( max-width: 480px )
 {
     .ee-parent-panel {
-        width: 202px !important;
+        width: 100% !important;
     }
     .ee-quick-bar {
         width: 172px;
@@ -1231,7 +1231,7 @@ apply, mphantom
 @media ( max-width: 300px )
 {
     .ee-parent-panel {
-        width: 158px !important;
+        width: 100% !important;
     }
     .ee-quick-bar {
         width: 128px;
