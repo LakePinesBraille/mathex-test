@@ -178,13 +178,6 @@ const ee_settings = (() => {
   _ee.settings = {
     "ee-app-home" : "",
     "ee-doc-home" : "",
-    "ee-show-users-guide" : "false",
-    "ee-edt-show-tutorial" : "false",
-    "ee-edt-show-last-page" : "false",
-    "ee-edt-last-page-href" : "",
-    "ee-gtk-show-tutorial" : "false",
-    "ee-gtk-show-last-page" : "false",
-    "ee-gtk-last-page-href" : "",
     "ee-width" : 0,
     "ee-height" : 0,
     "ee-query-state" : "",

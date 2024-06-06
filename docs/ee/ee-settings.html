@@ -74,7 +74,7 @@ const plts = function()
   const tbody = document.querySelector( "table tbody" );
   tbody.innerHTML = rows.join( "" );
 
-  const side = active_keys.slice()
+  const side = active_keys.slice();
 
   rule( active_keys.shift(), active_keys );
   rule( open_keys.shift(), open_keys );
@@ -113,16 +113,15 @@ const init = function() {
 const load = function() {
   for ( var k in ee_settings.settings )
   {
-    var v = ee_settings.get( k );
     var elt = document.querySelector( "#" + k );
     if ( elt ) {
       if ( elt.type === "checkbox" || elt.type === "radio" )
       {
-        elt.checked = ( v === "true" );
+        elt.checked = ee_settings.getBool( k );
       }
       else
       {
-        elt.value = v;
+        elt.value = ee_settings.get( k );
       }
     }
   }
@@ -134,8 +133,14 @@ const save = function() {
     var elt = document.querySelector( "#" + k );
     if ( elt )
     {
-      var v = ( elt.type === "checkbox" || elt.type === "radio" ) ? elt.checked : elt.value;
-      ee_settings.set( k, v );
+      if ( elt.type === "checkbox" || elt.type === "radio" )
+      {
+        ee_settings.setBool( k, elt.checked );
+      }
+      else
+      {
+        ee_settings.set( k, elt.value );
+      }
     }
   }
 };
@@ -184,7 +189,6 @@ const done = function() {
 <li><a href="#set-font-size">Font Size</a></li>
 <li><a href="#set-mathjax">MathJax</a></li>
 </ul></li>
-<li><a href="#set-startup">Startup Settings</a></li>
 </ul>
 
 <h2 id="set-application">Application Settings</h2>
@@ -514,47 +518,6 @@ const done = function() {
 <div>
 <label for="ee-mathjax-on-print">Print HTML</label>
 <input id="ee-mathjax-on-print" type="checkbox"></input>
-</div>
-
-<h2 id="set-startup">Startup Settings</h2>
-
-<div>
-<label for="ee-show-users-guide">Show the Users Guide</label>
-<input id="ee-show-users-guide" type="checkbox"></input>
-</div>
-
-<div>
-<label for="ee-edt-show-tutorial">Show the Tutorial</label>
-<input id="ee-edt-show-tutorial" type="checkbox"></input>
-</div>
-
-<ul>
-<li>
-<label for="ee-edt-show-last-page">Show the last topic visited</label>
-<input id="ee-edt-show-last-page" type="checkbox"></input>
-</li>
-</ul>
-
-<div style="display: none">
-<label for="ee-edt-last-page-href">The last topic visited</label>
-<input id="ee-edt-last-page-href" cols="40"></input>
-</div>
-
-<div>
-<label for="ee-gtk-show-tutorial">Show Getting To Know</label>
-<input id="ee-gtk-show-tutorial" type="checkbox"></input>
-</div>
-
-<ul>
-<li>
-<label for="ee-gtk-show-last-page">Show the last topic visited</label>
-<input id="ee-gtk-show-last-page" type="checkbox"></input>
-</li>
-</ul>
-
-<div style="display: none">
-<label for="ee-gtk-last-page-href">The last topic visited</label>
-<input id="ee-gtk-last-page-href" cols="40"></input>
 </div>
 
 </body>

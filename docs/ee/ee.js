@@ -137,11 +137,6 @@ const ee = (() => {
   const isTutorial = url => /edt\//.test( url );
 
   /**
-   * Return true if the current url is a tutorial index page.
-   */
-  const isTutorialIndex = url => /edt\/.*0\.html/.test( url );
-
-  /**
    * File dialog user interface options.
    */
   const file_options = {
@@ -288,11 +283,6 @@ const ee = (() => {
 
     if ( data && data.href )
     {
-      if ( isTutorial( data.href ) && !isTutorialIndex( data.href ) )
-      {
-        ee_settings.set( "ee-edt-last-page-href", data.href );
-      }
-
       delete data.href;
       data.base = data.base || base_URL;
       window.history.pushState( data, "" );
@@ -434,6 +424,7 @@ const ee = (() => {
     else
     {
       // Short form - remote resource URL
+      data.state.base = base_URL || app;
       data.state.url = href;
     }
 
@@ -487,7 +478,7 @@ const ee = (() => {
 
     do_query_href( href );
 
-    if ( isTutorial( href ) || isDocument( href ) )
+    if ( isDocument( href ) )
     {
       setPanelSize();
       do_panel_showOnly();
@@ -718,6 +709,12 @@ const ee = (() => {
     {
       var elt = select.getHeadReference( i ).getContent();
       href = elt.getAttribute( "href" ) || "";
+    }
+    if ( href.includes( "?state" ) )
+    {
+      href = href.substring( href.indexOf( "?" ) );
+      href = href.replace( "?state=%7B%22action%22%3A%22open%22%2C%22ids%22%3A%5B%22", "?id=" );
+      href = href.replace( "%22%5D%7D", "" );
     }
     return href;
   };
@@ -1477,54 +1474,6 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the help > tutorial menu operation.
-   */
-  const do_help_tutorial_edt = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      var target = event && event.target || document.querySelector( "#tutorial" );
-
-      const att = target.getAttribute( "href" );
-      const href = new URL( att, getDocHome() ).href;
-
-      if ( ee_settings.getBool( "ee-edt-show-last-page" ) )
-      {
-        href = ee_settings.get( "ee-edt-last-page-href" ) || href;
-      }
-
-      do_help_href( href );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
-   * Handler method for the help > Getting To Know menu operation.
-   */
-  const do_help_tutorial_gtk = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      var target = event && event.target || document.querySelector( "#getting" );
-
-      const att = target.getAttribute( "href" );
-      const href = new URL( att, getAppHome() ).href;
-
-      if ( ee_settings.getBool( "ee-gtk-show-last-page" ) )
-      {
-        href = ee_settings.get( "ee-gtk-last-page-href" ) || href;
-      }
-
-      do_help_href( href );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
    * Handler method for the help > settings menu operation.
    */
   const do_help_settings = async ( event ) => {
@@ -1820,7 +1769,7 @@ const ee = (() => {
       updateMenuBarPanel();
     }
 
-    else if ( isTutorial( file_URL ) || isDocument( file_URL ) )
+    else if ( isDocument( file_URL ) )
     {
       event.stopImmediatePropagation();
       event.preventDefault();
@@ -1877,12 +1826,7 @@ const ee = (() => {
     event.stopImmediatePropagation();
     event.preventDefault();
 
-    const app = getAppHome();
-
-    const index = nextHomeIndex( file_URL );
-    const href = file_URL.replace( app, "?" ).replace( /[0-9]{4}/, index );
-
-    do_query_href( href );
+    do_query_href( "?" + nextHomeIndex( file_URL ) + ".html" );
   };
 
   /**
@@ -1892,12 +1836,7 @@ const ee = (() => {
     event.stopImmediatePropagation();
     event.preventDefault();
 
-    const app = getAppHome();
-
-    const index = nextEndIndex( file_URL );
-    const href = file_URL.replace( app, "?" ).replace( /[0-9]{4}/, index );
-
-    do_query_href( href );
+    do_query_href( "?" + nextEndIndex( file_URL ) + ".html" );
   };
 
 
@@ -1970,19 +1909,16 @@ const ee = (() => {
     }
     const href = target.getAttribute( "href" ) || "";
 
-    if ( href )
+    if ( href && href.startsWith( "?" ) )
     {
       event.stopImmediatePropagation();
       event.preventDefault();
 
-      if ( base_URL )
-      {
-        do_query_href( href );
-      }
-      else
-      {
-        do_file_open();
-      }
+      do_query_href( href );
+    }
+    else if ( href )
+    {
+      do_help_href( new URL( href, getAppHome() ).href );
     }
   };
 
@@ -2081,10 +2017,7 @@ const ee = (() => {
 '          <a href="#" id="help_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
 '             aria-haspopup="true" aria-expanded="false" aria-label="Help">H&#x0332;elp<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="basic/Syllabus.html" id="training" aria-label="Basic Training">B&#x0332;asic Training</a></li>' +
-'            <li><a href="edt/0101.html" id="tutorial" aria-label="Tutorial">T&#x0332;utorial</a></li>' +
-'            <li><a href="ee-guide.html" id="guide" aria-label="Users Guide">U&#x0332;sers Guide</a></li>' +
-'            <li><a href="gtk/intro.html" id="getting" aria-label="Getting To Know">Getting To K&#x0332;now</a></li>' +
+'            <li><a href="index.html" id="documentation" aria-label="Documentation">D&#x0332;ocumentation</a></li>' +
 '            <hr/>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
 '            <li><a href="ee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
@@ -2111,8 +2044,7 @@ const ee = (() => {
 
     X: "#panel_toggleAll",
     M: "#panel_menus",
-    P: "#printHTML",
-    T: "#tutorial"
+    P: "#printHTML"
   };
 
   /**
@@ -2155,10 +2087,7 @@ const ee = (() => {
       B: "#panel_braille"
     },
     H: {
-      B: "#training",
-      T: "#tutorial",
-      U: "#guide",
-      K: "#getting",
+      D: "#documentation",
       M: "#samples",
       G: "#settings",
       A: "#about"
@@ -2217,12 +2146,9 @@ const ee = (() => {
     addClick( "#panel_side", do_panel_side );
     addClick( "#panel_braille", do_panel_braille );
 
-    addClick( "#training", do_help_doc );
-    addClick( "#tutorial", do_help_tutorial_edt );
-    addClick( "#getting", do_help_tutorial_gtk );
+    addClick( "#documentation", do_help_doc );
     addClick( "#settings", do_help_settings );
     addClick( "#samples", do_help );
-    addClick( "#guide", do_help );
 
     addClick( "#terms", do_help );
     addClick( "#privacy", do_help );
@@ -2278,28 +2204,10 @@ const ee = (() => {
       do_query_state();
     }
 
-    // Show the users guide (ee)
-    else if ( ee_settings.getBool( "ee-show-users-guide" ) )
-    {
-      do_help_id( "#guide" );
-    }
-
-    // Show the tutorial screen (edt)
-    else if ( ee_settings.getBool( "ee-edt-show-tutorial" ) )
-    {
-      do_help_tutorial_edt();
-    }
-
-    // Show the tutorial screen (gtk)
-    else if ( ee_settings.getBool( "ee-gtk-show-tutorial" ) )
-    {
-      do_help_tutorial_gtk();
-    }
-
     else
     {
       setPanelSize();
-      updatePanels();
+      do_panel_showAll();
     }
   };
 

@@ -356,7 +356,7 @@ const ee_drive = () => {
             }
           };
 
-          const type = folders ? "application/vnd.google-apps.folder" : "";
+          const type = folders ? "application/vnd.google-apps.folder" : "text/html";
 
           const view = new google.picker.DocsView()
             .setMimeTypes( type )
@@ -728,13 +728,16 @@ const ee_drive = () => {
     fileId = undefined;
   };
 
+  const get_message = ( e ) => ( e && e.message ) ||
+    ( e && e.result && e.result.error && e.result.error.message );
+
   /**
    * Open a file from Google Drive.
    */
   const drive_open = ( fn, cb ) => request()
     .then( () => createPicker( false, "Select a file to Open" ) )
     .then( ( data ) => open_picked( data, fn, cb ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Save an existing file to Google Drive.
@@ -743,7 +746,7 @@ const ee_drive = () => {
     if ( fileName && fileId ) {
       request()
         .then( () => save_picked( fn, cb ) )
-        .catch( e => ALERT( e.message ) );
+        .catch( e => ALERT( get_message( e ) ) );
     }
     else {
       return drive_save_as( fn, cb, options );
@@ -756,7 +759,7 @@ const ee_drive = () => {
   const drive_save_as = ( fn, cb, options ) => request()
     .then( () => createPicker( true, "Select a folder to Save into" ) )
     .then( ( data ) => save_as_picked( data, fn, cb, options ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Save and replace an existing file on Google Drive.
@@ -764,7 +767,7 @@ const ee_drive = () => {
   const drive_save_replace = ( fn, cb ) => request()
     .then( () => createPicker( false, "Select a file to Replace" ) )
     .then( ( data ) => save_replace_picked( data, fn, cb ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Create a document link to an existing file on Google Drive.
@@ -772,7 +775,7 @@ const ee_drive = () => {
   const drive_link = ( fn ) => request()
     .then( () => createPicker( false, "Select a file to Link to" ) )
     .then( ( data ) => link_picked( data, fn ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Install into the Google Drive UI.
@@ -780,14 +783,14 @@ const ee_drive = () => {
   const drive_install = () => init()
     .then( () => requestInstall() )
     .then( () => ALERT( "Installed into Google Drive UI" ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Process a Google Drive open with request.
    */
   const drive_open_with = ( data, fn, cb ) => request()
     .then( () => open_with( data, fn, cb ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   /**
    * Process a Google Drive create new request.
@@ -795,7 +798,7 @@ const ee_drive = () => {
   const drive_create_new = ( data, fn, cb ) => request()
     .then( () => waitForFocus() )
     .then( () => create_new( data, fn, cb ) )
-    .catch( e => ALERT( e.message ) );
+    .catch( e => ALERT( get_message( e ) ) );
 
   ee_drive.clear = drive_clear;
   ee_drive.open = drive_open;

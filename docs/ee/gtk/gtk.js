@@ -25,9 +25,4 @@
   document.querySelectorAll( "code.host" ).forEach( ( elt ) => {
     elt.innerText = ( window.location.host || "localhost" ) + ".JCF";
   } );
-
-  if ( localStorage )
-  {
-    localStorage[ "ee-gtk-last-page-href" ] = window.location.href;
-  }
 })();
