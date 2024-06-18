@@ -31,8 +31,11 @@
 <style name="units" href="mxc/units.mxc"/>
 <style name="_units-3-5" href="mxc/units-3-5.mxc"/>
 <style name="_units-6-8" href="mxc/units-6-8.mxc"/>
-<style name="lang-en" href="mxc/lang-en.mxc"/>
-<style name="lang-es" href="mxc/lang-es.mxc"/>
+<style name="_lang-en" href="mxc/lang-en.mxc"/>
+<style name="_lang-es" href="mxc/lang-es.mxc"/>
+
+<style name="lang-en" refs="_lang-en"/>
+<style name="lang-es" refs="_lang-es ex-spanish"/>
 
 <!-- These entries define a style as a collection of other styles -->
 
