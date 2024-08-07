@@ -1108,6 +1108,9 @@ apply, mphantom
 
 .ee-parent-panel * + .soft { color: #CCCCCC; }
 
+.ee-parent-panel .ilist > .mjx-mo:first-child { color: #CCCCCC; }
+.ee-parent-panel .ilist > .mjx-mo:last-child { color: #CCCCCC; }
+
 /* Zoom factors */
 
 /* 100% - default */
