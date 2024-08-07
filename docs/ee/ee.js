@@ -516,7 +516,6 @@ const ee = (() => {
   const script_tag = '<script type="text/javascript" ' +
     'src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js' +
     '?config=MML_CHTML"></script>\r\n';
-  const head_tag = head_otag + script_tag + head_ctag;
 
   /**
    * Insert document markup to set the font size.
@@ -547,14 +546,24 @@ const ee = (() => {
   /**
    * Insert document markup to invoke the MathJax library.
    */
-  const addMathMarkup = ( markup, mathjax ) => {
+  const addMathMarkup = ( markup, styles, mathjax ) => {
     var result = markup;
-    if ( mathjax )
+
+    if ( styles || mathjax )
     {
-      result = result.replace( body_tag, head_tag + body_tag );
+      result = result.replace( body_tag, head_otag + head_ctag + body_tag );
     }
 
-    result = result.replace( head_ctag, style_tag + head_ctag );
+    if ( styles )
+    {
+      result = result.replace( head_ctag, style_tag + head_ctag );
+    }
+
+    if ( mathjax )
+    {
+      result = result.replace( head_ctag, script_tag + head_ctag );
+    }
+
     result = addFontSize( result, "ee-html-font-size" );
 
     return result;
@@ -686,6 +695,7 @@ const ee = (() => {
    * Retrieve the equation editor content markup.
    */
   const getContent = () => {
+    editor._brailleBar.hideFocusWord();
     return editor.getContent();
   };
 
@@ -696,6 +706,14 @@ const ee = (() => {
     editor.setContent( value );
     editor.setFocus();
     moveToHome();
+  };
+
+  /**
+   * Retrieve the equation editor presentation markup.
+   */
+  const getPresent = () => {
+    editor._brailleBar.hideFocusWord();
+    return editor.getPresent();
   };
 
   /**
@@ -882,8 +900,9 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getFileOptions( html_types );
+      const styles = ee_settings.getBool( "ee-css-styles-on-save" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
-      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const markup = addMathMarkup( getPresent(), styles, mathjax );
       await saveFile( options, markup, false, "-p.html" );
     }
     catch ( e )
@@ -930,8 +949,9 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
+      const styles = ee_settings.getBool( "ee-css-styles-on-export" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-export" );
-      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const markup = addMathMarkup( getPresent(), styles, mathjax );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
@@ -958,8 +978,9 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
+      const styles = ee_settings.getBool( "ee-css-styles-on-print" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-print" );
-      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const markup = addMathMarkup( getPresent(), styles, mathjax );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
@@ -1063,7 +1084,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = addViewMarkup( editor.getPresent() );
+      const markup = addViewMarkup( getPresent() );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
@@ -1190,8 +1211,9 @@ const ee = (() => {
       event && event.preventDefault();
 
       const options = getFileOptions( html_types );
+      const styles = ee_settings.getBool( "ee-css-styles-on-save" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
-      const markup = addMathMarkup( editor.getPresent(), mathjax );
+      const markup = addMathMarkup( getPresent(), styles, mathjax );
 
       setFileOption( options, "-p.html" );
       ee_drive.save_as( () => markup, null, options );
@@ -1338,7 +1360,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = editor.getPresent();
+      const markup = getPresent();
       navigator.clipboard.writeText( markup );
     }
     catch ( e )
@@ -1353,7 +1375,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const markup = getMathBits( editor.getPresent() );
+      const markup = getMathBits( getPresent() );
       navigator.clipboard.writeText( markup );
     }
     catch ( e )

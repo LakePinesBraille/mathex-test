@@ -48,4 +48,7 @@ hr { border: 1px solid black }
 aside { display: inline; color: blue }
 aside::before { content: '[' }
 aside::after { content: ']' }
-    
+
+/* Implicit lists */
+.ilist > *:first-child { display: none }
+.ilist > *:last-child { display: none }
