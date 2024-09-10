@@ -7,3 +7,5 @@ BrailleMessages=0
 AutoFormsMode=1
 [HTML]
 PageRefreshFilter=-1
+[Brailliant BI 40X]
+AutoPanMode=255

@@ -1517,23 +1517,6 @@ const ee = (() => {
   };
 
   /**
-   * Handler method to open specific help resources.
-   */
-  const do_help_id = ( id ) => {
-    try {
-      const target = document.querySelector( id );
-
-      const att = target.getAttribute( "href" );
-      const href = new URL( att, getAppHome() ).href;
-
-      do_help_href( href );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
    * Handler method for help menu operations.
    */
   const do_help = async ( event ) => {
@@ -2041,6 +2024,7 @@ const ee = (() => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="index.html" id="documentation" aria-label="Documentation">D&#x0332;ocumentation</a></li>' +
 '            <hr/>' +
+'            <li><a href="config/index.html" id="configuration" aria-label="Configuration">C&#x0332;onfiguration</a></li>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +
 '            <li><a href="ee-settings.html" id="settings" aria-label="Settings">Setting&#x0332;s</a></li>' +
 '            <hr/>' +
@@ -2110,6 +2094,7 @@ const ee = (() => {
     },
     H: {
       D: "#documentation",
+      C: "#configuration",
       M: "#samples",
       G: "#settings",
       A: "#about"
@@ -2169,6 +2154,7 @@ const ee = (() => {
     addClick( "#panel_braille", do_panel_braille );
 
     addClick( "#documentation", do_help_doc );
+    addClick( "#configuration", do_help );
     addClick( "#settings", do_help_settings );
     addClick( "#samples", do_help );
 
