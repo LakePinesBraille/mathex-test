@@ -17,12 +17,4 @@
   document.querySelector( "h1" ).addEventListener( "click", () => {
     window.open( "intro.html", "_self" );
   } );
-
-  document.querySelectorAll( "a.host" ).forEach( ( elt ) => {
-    elt.download = ( window.location.host || "localhost" ) + ".JCF";
-  } );
-
-  document.querySelectorAll( "code.host" ).forEach( ( elt ) => {
-    elt.innerText = ( window.location.host || "localhost" ) + ".JCF";
-  } );
 })();

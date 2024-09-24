@@ -7,9 +7,6 @@
   <link rel="stylesheet" type="text/css" href="ee.css"/>
   <script src="ee-settings.js"></script>
   <script src="ee.js"></script>
-  <script>const init = () =>
-    document.querySelector('#host').download = ( window.location.host || "localhost" ) + ".JCF"
-  </script>
 </head>
 <body class="ee-guide" onload="init()">
 <h1>The Equalize Editor Users Guide</h1>
@@ -1550,12 +1547,12 @@ The JAWS Script Manager may be used to create domain settings files in the JAWS 
 See the JAWS Help Topics for further details on how to use the JAWS Settings Center and the JAWS Script Manager.  Typing <code>JAWS + J, F1</code> opens the JAWS Help Topics.
 </p>
 
-<h4 id="sr-jaws-setup">JAWS Setup</h4>
+<h4 id="sr-jaws-setup">JAWS Basic Setup</h4>
 
 <p>
-The Equalize Editor provides a JAWS Script File called <code>ee.JCF</code> which
+The Equalize Editor provides a JAWS Script File called <code>ee.jcf</code> which
 needs to be saved into your JAWS Settings Folder with the name
-<code>www.lakepinesbraille.com.JCF</code></p>
+<code>www.lakepinesbraille.com.jcf</code></p>
 
 <p>
 Using this name instructs JAWS to use this configuration, but only when
@@ -1567,6 +1564,21 @@ This way the configuration needed for the Equalize Editor does not affect
 your using JAWS with other applications, or with other web sites.
 </p>
 
+<p>Use the link below to download the JAWS configuration file for the Equalize Editor.</p>
+
+<p>Save this file in your JAWS Settings Folder on your local machine:</p>
+
+<p>
+<code>C:\Users\[username]\AppData\Roaming\Freedom Scientific\JAWS\[year]\Settings\enu</code>
+</p>
+
+<p>where <code>[username]</code> is your Windows user name, and <code>[year]</code> is your JAWS version year.</p>
+
+<p><a href="config/ee.jcf" download="www.lakepinesbraille.com.jcf">www.lakepinesbraille.com.jcf</a></p>
+
+<p>When saving the file, make sure to put it in the JAWS Settings Folder, with the file name as shown above.</p>
+
+<!--
 <p>
 Use these steps to install the Equalize Editor Configuration File.
 </p>
@@ -1632,18 +1644,18 @@ and <code>Enter</code> to select the Settings Folder.
 
 <p>
 After entering the correct folder, and with the File name set to
-<code>www.lakepinesbraille.com.JCF</code>, press <code>Enter</code> to save the file.
+<code>www.lakepinesbraille.com.jcf</code>, press <code>Enter</code> to save the file.
 </p>
+</li>
 
+</ul>
+-->
 <p>
 The next time you visit the Equalize Editor web site, JAWS should use
 the new configuration.  You can check the JAWS Settings Center (<code>JAWS + 6</code>)
 for the application <code>www.lakepinesbraille.com (Domain)</code> which should
 include setting the Braille Input Translation to Computer Braille.
 </p>
-</li>
-
-</ul>
 
 <p>
 The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
