@@ -15,100 +15,112 @@
 <h3>Summary</h3>
 
 <p>
-<em>Download</em> the file <a href="../config/ee.ini">ee.ini</a> into your NVDA User Configuration Folder, and make sure the name of the file is <code>ee.ini</code>.
+<em>Download</em> the file <a href="../config/ee.ini" target="blank">ee.ini</a> into your NVDA User Configuration Folder, and make sure the name of the file is <code>ee.ini</code>.
 </p>
+
+<p>or</p>
+
+<p>
+<em>Manually</em> change the NVDA settings for the Equalize Editor.
+</p>
+
+<p>then</p>
 
 <p>
 <em>Add</em> the file <a href="../config/gestures.ini">gestures.ini</a> to your NVDA <code>gestures.ini</code> file.
 </p>
 
 <p>
-<em>Use</em> the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.
+<em>Use</em> the input gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.
 </p>
 
 <hr/>
 <h3>Step by Step - Install the EE Configuration File for NVDA</h3>
 
 <p>
-The EE Configuration File <a href="../config/ee.ini" target="blank">ee.ini</a> contains configuration directives for NVDA that can be used to apply recommended settings for the EE.  You can use the following steps to install these settings as a Configuration Profile in the NVDA Settings Folder, so they will be used for the <code>ee</code> configuration profile without affecting configuration settings for other configuration profiles.
+The Equalize Editor provides an NVDA configuration file called <code>ee.ini</code> which needs to be saved into your NVDA Configuration Folder.
 </p>
 
 <p>
-First, use these steps to find the location of the User Configuration Folder on your machine, and copy its location to the clipboard.
-</p>
-
-<ul>
-<li>Use the <code>Windows</code> key to open the Windows menu</li>
-<li>Use <code>Tab</code> to navigate to the All Apps button and press <code>Enter</code></li>
-<li>Press <code>N</code> and arrow down to select the NVDA folder and press <code>Enter</code></li>
-<li>Arrow down to select Explore NVDA user configuration directory and press <code>Enter</code></li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the NVDA User Configuration folder location</li>
-<li>Press <code>Ctrl + C</code> to copy the location to the clipboard</li>
-<li>Press <code>Alt + F4</code> to dismiss the explorer window</li>
-</ul>
-
-<p>
-Next, use these steps to install the EE Configuration File in the User Configuration Folder.
-</p>
-
-<ul>
-<li>Use <code>Tab</code> to navigate to <a href="../config/ee.ini">this link</a> to the EE Configuration File
-<li>Press <code>Shift + F10</code> to activate the link context menu</li>
-<li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the Download Folder path</li>
-<li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
-<li>Type <code>\profiles</code> to finish the path to the Configuration Profiles Folder</li>
-<li>Press <code>Enter</code> to open the Configuration Profiles Folder</li>
-<li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the EE configuration file</li>
-</ul>
-
-<p>
-These steps need to be done only once.
+This NVDA configuration file provides the Equalize Editor profile.  It is only active when you manually activate the <code>ee</code> profile, so no other applications or web pages are affected once you manually deactivate it.
 </p>
 
 <p>
-The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
+To activate the Equalize Editor configuration, type <code>NVDA + N</code>, <code>C</code> to open the Configuration Profiles dialog, and manually select the <code>ee</code> profile.
 </p>
+
+<p>Use the link below to download the NVDA configuration file for the Equalize Editor.</p>
+
+<p>Save this file in your NVDA Configuration Folder on your local machine:</p>
 
 <p>
-The EE Gestures File <a href="../config/gestures.ini" target="blank">gestures.ini</a> contains configuration directives that may be <em>added</em> to the NVDA <code>gestures.ini</code> file to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.  You can use the following steps to add the EE keyboard gesture.
+  <code>C:\Users\[username]\AppData\Roaming\nvda</code>
 </p>
+
+<p>where <code>[username]</code> is your Windows user name.</p>
+
+<p><b>Here is the link:</b> <a href="https://www.lakepinesbraille.com/ee/config/ee.ini">ee.ini</a></p>
+
+<p>When saving the file, make sure to put it in the NVDA Configuration Folder, with the file name as shown above.</p>
+
+<hr/>
+<h3>Step by Step - Manually change the NVDA settings for the Equalize Editor</h3>
+<p>The NVDA settings for the Equalize Editor can also be set manually.</p>
+<p>Type <code>NVDA + Ctrl + P</code> to open the NVDA Configuration Profiles dialog.</p>
+<p>&#x2022; Create a new profile named <code>ee</code> if one does not already exist.</p>
+<p>&#x2022; Select <code>ee</code> and press <code>Manual activate</code> to activate the <code>ee</code> profile.</p>
+<p>&#x2022; Close the the NVDA Configuration Profiles dialog.</p>
+<p>Type <code>NVDA + Ctrl + G</code> to open the NVDA Settings Center.</p>
+<p>Modify the following settings:</p>
+<p>[<code>Braille</code>]</p>
+<p>&#x2022; Set <code>Output Table</code> to <code>UEB Code Grade 2</code>
+</p>
+<p>&#x2022; Set <code>Input Table</code>  to <code>Unicode Braille</code>
+</p>
+<p>&#x2022; Set <code>Expand to computer braille for the word at the cursor</code> to <code>Off</code>
+</p>
+<p>&#x2022; Set <code>Show Messages</code> to <code>Disabled</code>
+</p>
+<p>[<code>Browse Mode</code>]</p>
+<p>&#x2022; Set <code>Automatic focus mode for focus changes</code> to <code>On</code>
+</p>
+<p>&#x2022; Set <code>Automatic focus mode for caret movement</code> to <code>On</code>
+</p>
+<p>&#x2022; Set <code>Automatically set system focus to focusable elements</code> to <code>On</code>
+</p>
+<p>Press <code>OK</code> to apply the changes.</p>
+
+<hr/>
+<h3>Step by Step - Add the NVDA Gestures File for the Equalize Editor</h3>
 
 <p>
-First, use these steps to copy the configuration directives to the clipboard.
+The Equalize Editor Gestures File <code>gestures.ini</code> contains configuration directives that may be <em>added</em> to the NVDA <code>gestures.ini</code> file to assign the input gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.  You can use the following steps to add the EE input gesture.
 </p>
 
-<ul>
-<li>Use <code>Tab</code> to navigate to <a href="../config/gestures.ini" target="blank">this link</a> to the EE Gestures File</li>
-<li>Press <code>Enter</code> to open the EE Gestures File in a new tab</li>
-<li>Press <code>NVDA + F2</code> and then <code>Ctrl + A</code> to select all text</li>
-<li>Press <code>NVDA + F2</code> and then <code>Ctrl + C</code> to copy all text</li>
-<li>Press <code>Ctrl + F4</code> to dismiss the EE Gestures File</li>
-</ul>
-
+<p>Use the link below to download the NVDA gestures file for the Equalize Editor.</p>
+<p>Remember to <b><i>add</i></b> it to any existing <code>gestures.ini</code> file you may already have.</p>
+<p>Save this file in your NVDA Configuration Folder on your local machine:</p>
 <p>
-Next, use these steps to add the EE Gestures File to the NVDA <code>gestures.ini</code>.
+  <code>C:\Users\[username]\AppData\Roaming\nvda</code>
 </p>
-
-<ul>
-<li>Use the <code>Windows</code> key to open the Windows menu</li>
-<li>Use <code>Tab</code> to navigate to the All Apps button and press <code>Enter</code></li>
-<li>Press <code>N</code> and arrow down to select the NVDA folder and press <code>Enter</code></li>
-<li>Arrow down to select Explore NVDA user configuration directory and press <code>Enter</code></li>
-<li>Press <code>G</code> to select the <code>gestures.ini</code> file</li>
-<li>Press <code>Enter</code> to open the file in Notepad</li>
-<li>Press <code>Ctrl + V</code> to paste the new EE gesture</li>
-<li>Combine any duplicate configuration sections</li>
-<li>Press <code>Ctrl + S</code> to save the updated <code>gestures.ini</code> file</li>
-<li>Press <code>Alt + F4</code> to close Notepad</li>
-</ul>
-
+<p>where <code>[username]</code> is your Windows user name.</p>
 <p>
-These steps need to be done only once.
+  <b>Here is the link:</b>
 </p>
+<p><a href="?https://www.lakepinesbraille.com/ee/config/gestures.ini">
+<code>gestures.ini</code>
+</a></p>
+<p>When saving the file, make sure to <b><i>add</i></b> it to any existing <code>gestures.ini</code> file you may already have.</p>
+
+<hr/>
+<h3>Step by Step - Use the Equalize Editor input gesture</h3>
+
+<p>The input gesture for the Equalize Editor can also be created manually.</p>
+<p>Type <code>NVDA + N, P, N</code> to activate the NVDA Input Gestures Dialog. </p>
+<p>Open the <code>Configuration Profiles</code> and then <code>Activates or deactivates the ee configuration profile</code>.</p>
+<p>Press the <code>Add</code> button to add a new gesture, then <code>NVDA + E</code> to assign the new input gesture.</p>
+<p>After these steps, typing <code>NVDA + E</code> activates and deactivates the Equalize Editor profile.</p>
+<p>You can choose any key combination you prefer as the input gesture for the Equalize Editor profile.</p>
 
 <hr/>
 </body>

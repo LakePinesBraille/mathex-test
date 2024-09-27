@@ -138,7 +138,8 @@
 </ul></li>
 <li><a href="#sr-jaws">JAWS Settings</a>
 <ul>
-<li><a href="#sr-jaws-setup">JAWS Setup</a></li>
+<li><a href="#sr-jaws-basic">JAWS Basic Setup</a></li>
+<li><a href="#sr-jaws-advanced">JAWS Advanced Setup</a></li>
 <li><a href="#sr-jaws-suggest">Suggested Settings</a></li>
 <li><a href="#sr-jaws-input">Braille Input</a></li>
 <li><a href="#sr-jaws-output">Braille Output</a></li>
@@ -150,7 +151,10 @@
 </ul></li>
 <li><a href="#sr-nvda">NVDA Settings</a>
 <ul>
-<li><a href="#sr-nvda-setup">NVDA Setup</a></li>
+<li><a href="#sr-nvda-basic">NVDA Basic Setup</a></li>
+<li><a href="#sr-nvda-advanced">NVDA Advanced Setup</a></li>
+<li><a href="#sr-nvda-gestures-basic">NVDA Gestures Setup (Basic)</a></li>
+<li><a href="#sr-nvda-gestures-advanced">NVDA Gestures Setup (Advanced)</a></li>
 <li><a href="#sr-nvda-suggest">Suggested Settings</a></li>
 <li><a href="#sr-nvda-input">Input Table</a></li>
 <li><a href="#sr-nvda-output">Output Table</a></li>
@@ -1547,12 +1551,13 @@ The JAWS Script Manager may be used to create domain settings files in the JAWS 
 See the JAWS Help Topics for further details on how to use the JAWS Settings Center and the JAWS Script Manager.  Typing <code>JAWS + J, F1</code> opens the JAWS Help Topics.
 </p>
 
-<h4 id="sr-jaws-setup">JAWS Basic Setup</h4>
+<h4 id="sr-jaws-basic">JAWS Basic Setup</h4>
 
 <p>
-The Equalize Editor provides a JAWS Script File called <code>ee.jcf</code> which
+The Equalize Editor provides a JAWS configuratiaon file called <code>ee.jcf</code> which
 needs to be saved into your JAWS Settings Folder with the name
-<code>www.lakepinesbraille.com.jcf</code></p>
+<code>www.lakepinesbraille.com.jcf</code>.
+</p>
 
 <p>
 Using this name instructs JAWS to use this configuration, but only when
@@ -1561,7 +1566,7 @@ using a browser that is viewing the web site <code>www.lakepinesbraille.com</cod
 
 <p>
 This way the configuration needed for the Equalize Editor does not affect
-your using JAWS with other applications, or with other web sites.
+using JAWS with other applications, or with other web sites.
 </p>
 
 <p>Use the link below to download the JAWS configuration file for the Equalize Editor.</p>
@@ -1574,82 +1579,10 @@ your using JAWS with other applications, or with other web sites.
 
 <p>where <code>[username]</code> is your Windows user name, and <code>[year]</code> is your JAWS version year.</p>
 
-<p><a href="config/ee.jcf" download="www.lakepinesbraille.com.jcf">www.lakepinesbraille.com.jcf</a></p>
+<p><b>Here is the link:</b> <a href="config/ee.jcf" download="www.lakepinesbraille.com.jcf">www.lakepinesbraille.com.jcf</a></p>
 
 <p>When saving the file, make sure to put it in the JAWS Settings Folder, with the file name as shown above.</p>
 
-<!--
-<p>
-Use these steps to install the Equalize Editor Configuration File.
-</p>
-
-<ul>
-<li>Start JAWS.</li>
-
-<li>Open the JAWS Script Manager (<code>JAWS + 0</code>).
-<p>
-The Script Manager allows you to access JAWS Script Files (<code>*.jcf</code>)
-in your JAWS Settings Folder.
-</p>
-
-<p>
-You can manage these files however you like, but the first step,
-and often the most confusing, is locating the JAWS Settings Folder.
-</p>
-</li>
-
-<li>Locate the JAWS Settings Folder.
-
-<p>
-One of the easier ways to locate the JAWS Settings Folder is to use
-the <code>File &gt; Open</code> menu item in the JAWS Script Manager,
-which opens the JAWS Settings Folder by default.<br/>
-<code>
-C:\Users\[username]\AppData\Roaming\Freedom Scientific\JAWS\2024\Settings\enu
-</code>
-</p>
-
-<p>
-In the Open User File dialog, you can tab navigate to the All Locations
-split button, press <code>Space</code> to select the entire folder path,
-and <code>Ctrl + C</code> to copy the path to the clipboard.
-</p>
-
-<p>
-You will be able to paste this value directly into the Save As dialog
-as the path used to save the configuration file.
-</p>
-</li>
-
-<li>Save the Equalize Editor JCF file.
-
-<p>
-You can persuade your browser to rename the file for you using the
-Save Link As menu item on the link context menu, which you can access
-by tabbing to <a id="host" href="config/ee.jcf">this link</a> and
-pressing <code>Shift + F10</code>.
-</p>
-
-<p>
-When the Save As dialog opens, paste the path that you copied in the
-previous step, that is, the path to your JAWS Settings Folder, into
-the All Locations split button.
-</p>
-
-<p>
-To do so, tab navigate to the All Locations split button, press <code>Space</code>
-to select the entire path, <code>Ctrl + V</code> to paste the path from the clipboard,
-and <code>Enter</code> to select the Settings Folder.
-</p>
-
-<p>
-After entering the correct folder, and with the File name set to
-<code>www.lakepinesbraille.com.jcf</code>, press <code>Enter</code> to save the file.
-</p>
-</li>
-
-</ul>
--->
 <p>
 The next time you visit the Equalize Editor web site, JAWS should use
 the new configuration.  You can check the JAWS Settings Center (<code>JAWS + 6</code>)
@@ -1661,6 +1594,31 @@ include setting the Braille Input Translation to Computer Braille.
 The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
 </p>
 
+<h4 id="sr-jaws-advanced">JAWS Advanced Setup</h4>
+
+<p>The JAWS settings for the Equalize Editor can also be set manually.</p>
+<p>&#x2022; Type <code>JAWS + 6</code> to open the JAWS Settings Center.</p>
+<p>&#x2022; Select <code>www.lakepinesbraille.com</code> as the Application.</p>
+<p>Modify the following settings:</p>
+<p>[<code>Braille -> General -> Translation</code>]</p>
+<p>&#x2022; Set <code>Output</code> to <code>UEB Grade 2</code>
+</p>
+<p>&#x2022; Set <code>Input</code> to <code>Computer Braille</code>
+</p>
+<p>&#x2022; Set <code>Show current word in Computer Braille</code> to <code>Off</code>
+</p>
+<p>
+[<code>Braille -> Flash Messages</code>]</p>
+<p>&#x2022; Set <code>Enable Flash Messages</code> to <code>Off</code>
+</p>
+<p>[<code>Forms Mode</code>]</p>
+<p>&#x2022; Set <code>Select Forms Mode</code> to <code>Auto</code>
+</p>
+<p>[<code>Web/HTML/PDFs -> Miscellaneous</code>]</p>
+<p>&#x2022; Set <code>Page Refresh Filter</code> to <code>Suppress All Refreshes</code>
+</p>
+<p>Press <code>OK</code> to apply the changes.</p>
+
 <h4 id="sr-jaws-suggest">Suggested Settings</h4>
 
 <p>
@@ -1668,8 +1626,8 @@ The following JAWS settings are recommended for web pages that contain the EE.
 </p>
 
 <ul>
-<li><code>Braille -> General -> Translation -> Input -> Computer Braille</code></li>
 <li><code>Braille -> General -> Translation -> Output -> Unified English Braille Grade 2</code></li>
+<li><code>Braille -> General -> Translation -> Input -> Computer Braille</code></li>
 <li><code>Braille -> General -> Translation -> Show current word in Computer Braille -> Off</code></li>
 <li><code>Braille -> Flash Messages -> Enable Flash Messages -> Off</code></li>
 <li><code>Forms Mode -> Select Forms Mode -> Auto</code></li>
@@ -1679,18 +1637,6 @@ The following JAWS settings are recommended for web pages that contain the EE.
 
 <p>
 The effects of these settings are explained in more detail below.
-</p>
-
-<h4 id="sr-jaws-input">Braille Input</h4>
-
-<code>Braille -> General -> Translation -> Input -> Computer Braille</code>
-
-<p>
-This setting controls the Braille code used to input information from an attached Braille device.
-</p>
-
-<p>
-Setting this option to <code>Computer Braille</code> instructs JAWS not to translate Braille input sent to the EE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
 </p>
 
 <h4 id="sr-jaws-output">Braille Output</h4>
@@ -1703,6 +1649,18 @@ This setting controls the Braille code used to output information to an attached
 
 <p>
 Setting this option to <code>Unified English Braille Grade 2</code> instructs JAWS to translate user interface text output from the EE.  See the general comments in the <a href="#sr-general-output">Braille Output</a> section for more information.
+</p>
+
+<h4 id="sr-jaws-input">Braille Input</h4>
+
+<code>Braille -> General -> Translation -> Input -> Computer Braille</code>
+
+<p>
+This setting controls the Braille code used to input information from an attached Braille device.
+</p>
+
+<p>
+Setting this option to <code>Computer Braille</code> instructs JAWS not to translate Braille input sent to the EE.  See the general comments in the <a href="#sr-general-input">Braille Input</a> section for more information.
 </p>
 
 <h4 id="sr-jaws-current">Current Word</h4>
@@ -1814,88 +1772,93 @@ Once a configuration profile is created, an input gesture may be defined to acti
 See the <a href="https://www.nvaccess.org/files/nvda/documentation/userGuide.html" target="_blank">NVDA User Guide</a> for further details on how to use the NVDA Configuration Profiles Dialog and the NVDA Input Gestures Dialog.  Typing <code>NVDA + N, H, U</code> opens the NVDA User Guide.
 </p>
 
-<h4 id="sr-nvda-setup">NVDA Setup</h4>
+<h4 id="sr-nvda-basic">NVDA Basic Setup</h4>
 
 <p>
-The EE Configuration File <a href="config/ee.ini" target="blank">ee.ini</a> contains configuration directives for NVDA that can be used to apply recommended settings for the EE.  You can use the following steps to install these settings as a Configuration Profile in the NVDA Settings Folder, so they will be used for the <code>ee</code> configuration profile without affecting configuration settings for other configuration profiles.
+The Equalize Editor provides an NVDA Configuration File called <code>ee.ini</code> which needs to be saved into your NVDA Configuration Folder.
 </p>
 
 <p>
-First, use these steps to find the location of the User Configuration Folder on your machine, and copy its location to the clipboard.
+The <code>ee.ini</code> file provides the Equalize Editor profile.  It is only active when you manually activate the <code>ee</code> profile, so no other applications or web pages are affected once you manually deactivate it.
 </p>
-
-<ul>
-<li>Use the <code>Windows</code> key to open the Windows menu</li>
-<li>Use <code>Tab</code> to navigate to the All Apps button and press <code>Enter</code></li>
-<li>Press <code>N</code> and arrow down to select the NVDA folder and press <code>Enter</code></li>
-<li>Arrow down to select Explore NVDA user configuration directory and press <code>Enter</code></li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the NVDA User Configuration folder location</li>
-<li>Press <code>Ctrl + C</code> to copy the location to the clipboard</li>
-<li>Press <code>Alt + F4</code> to dismiss the explorer window</li>
-</ul>
 
 <p>
-Next, use these steps to install the EE Configuration File in the User Configuration Folder.
+To activate the Equalize Editor configuration, type <code>NVDA + N</code>, <code>C</code> to open the Configuration Profiles dialog, and manually select the <code>ee</code> profile.
 </p>
 
-<ul>
-<li>Use <code>Tab</code> to navigate to <a href="config/ee.ini">this link</a> to the EE Configuration File
-<li>Press <code>Shift + F10</code> to activate the link context menu</li>
-<li>Arrow down to select <code>Save Link As</code> and press <code>Enter</code></li>
-<li>Use <code>Tab</code> to navigate to the All Locations split button</li>
-<li>Press <code>Space</code> to select the Download Folder path</li>
-<li>Press <code>Ctrl + V</code> to paste the path from the clipboard</li>
-<li>Type <code>\profiles</code> to finish the path to the Configuration Profiles Folder</li>
-<li>Press <code>Enter</code> to open the Configuration Profiles Folder</li>
-<li>Use <code>Shift + Tab</code> to navigate to the <code>Save</code> button</li>
-<li>Press <code>Enter</code> to save the EE configuration file</li>
-</ul>
+<p>Use the link below to download the NVDA configuration file for the Equalize Editor.</p>
+
+<p>Save this file in your NVDA Configuration Folder on your local machine:</p>
 
 <p>
-These steps need to be done only once.
+  <code>C:\Users\[username]\AppData\Roaming\nvda</code>
 </p>
+
+<p>where <code>[username]</code> is your Windows user name.</p>
+
+<p><b>Here is the link:</b> <a href="https://www.lakepinesbraille.com/ee/config/ee.ini">ee.ini</a></p>
+
+<p>When saving the file, make sure to put it in the NVDA Configuration Folder, with the file name as shown above.</p>
 
 <p>
 The configuration settings included in this file are explained in the following sections, so you can choose those settings that will be most helpful for your accessibility needs.
 </p>
 
-<p>
-The EE Gestures File <a href="config/gestures.ini" target="blank">gestures.ini</a> contains configuration directives that may be <em>added</em> to the NVDA <code>gestures.ini</code> file to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.  You can use the following steps to add the EE keyboard gesture.
+<h4 id="sr-nvda-advanced">NVDA Advanced Setup</h4>
+
+<p>The NVDA settings for the Equalize Editor can also be set manually.</p>
+<p>Type <code>NVDA + Ctrl + P</code> to open the NVDA Configuration Profiles dialog.</p>
+<p>&#x2022; Create a new profile named <code>ee</code> if one does not already exist.</p>
+<p>&#x2022; Select <code>ee</code> and press <code>Manual activate</code> to activate the <code>ee</code> profile.</p>
+<p>&#x2022; Close the the NVDA Configuration Profiles dialog.</p>
+<p>Type <code>NVDA + Ctrl + G</code> to open the NVDA Settings Center.</p>
+<p>Modify the following settings:</p>
+<p>[<code>Braille</code>]</p>
+<p>&#x2022; Set <code>Output Table</code> to <code>UEB Code Grade 2</code>
 </p>
-
-<p>
-First, use these steps to copy the configuration directives to the clipboard.
+<p>&#x2022; Set <code>Input Table</code>  to <code>Unicode Braille</code>
 </p>
-
-<ul>
-<li>Use <code>Tab</code> to navigate to <a href="config/gestures.ini" target="blank">this link</a> to the EE Gestures File</li>
-<li>Press <code>Enter</code> to open the EE Gestures File in a new tab</li>
-<li>Press <code>NVDA + F2</code> and then <code>Ctrl + A</code> to select all text</li>
-<li>Press <code>NVDA + F2</code> and then <code>Ctrl + C</code> to copy all text</li>
-<li>Press <code>Ctrl + F4</code> to dismiss the EE Gestures File</li>
-</ul>
-
-<p>
-Next, use these steps to add the EE Gestures File to the NVDA <code>gestures.ini</code>.
+<p>&#x2022; Set <code>Expand to computer braille for the word at the cursor</code> to <code>Off</code>
 </p>
-
-<ul>
-<li>Use the <code>Windows</code> key to open the Windows menu</li>
-<li>Use <code>Tab</code> to navigate to the All Apps button and press <code>Enter</code></li>
-<li>Press <code>N</code> and arrow down to select the NVDA folder and press <code>Enter</code></li>
-<li>Arrow down to select Explore NVDA user configuration directory and press <code>Enter</code></li>
-<li>Press <code>G</code> to select the <code>gestures.ini</code> file</li>
-<li>Press <code>Enter</code> to open the file in Notepad</li>
-<li>Press <code>Ctrl + V</code> to paste the new EE gesture</li>
-<li>Combine any duplicate configuration sections</li>
-<li>Press <code>Ctrl + S</code> to save the updated <code>gestures.ini</code> file</li>
-<li>Press <code>Alt + F4</code> to close Notepad</li>
-</ul>
-
-<p>
-These steps need to be done only once.
+<p>&#x2022; Set <code>Show Messages</code> to <code>Disabled</code>
 </p>
+<p>[<code>Browse Mode</code>]</p>
+<p>&#x2022; Set <code>Automatic focus mode for focus changes</code> to <code>On</code>
+</p>
+<p>&#x2022; Set <code>Automatic focus mode for caret movement</code> to <code>On</code>
+</p>
+<p>&#x2022; Set <code>Automatically set system focus to focusable elements</code> to <code>On</code>
+</p>
+<p>Press <code>OK</code> to apply the changes.</p>
+
+<h4 id="sr-nvda-gestures-basic">NVDA Gestures Setup (Basic)</h4>
+
+<p>NVDA gestures provide a convenient way to activate and deactivate the <code>ee</code> configuration profile, so the custom settings it needs are not used for other applications or other web pages.</p>
+<p>The Equalize Editor provides an NVDA Gestures File called <code>gestures.ini</code> that may be <b><em>added</em></b> to your NVDA <code>gestures.ini</code> file to assign the keyboard gesture <code>NVDA + E</code> to activate and deactivate the <code>ee</code> configuration profile.  Alternatively you can create your own custom gesture to perform the same functions.</p>
+
+<p>Use the link below to download the NVDA gestures file for the Equalize Editor.</p>
+<p>Remember to <b><i>add</i></b> it to any existing <code>gestures.ini</code> file you may already have.</p>
+<p>Save this file in your NVDA Configuration Folder on your local machine:</p>
+<p>
+  <code>C:\Users\[username]\AppData\Roaming\nvda</code>
+</p>
+<p>where <code>[username]</code> is your Windows user name.</p>
+<p>
+  <b>Here is the link:</b>
+</p>
+<p><a href="?https://www.lakepinesbraille.com/ee/config/gestures.ini">
+<code>gestures.ini</code>
+</a></p>
+<p>When saving the file, make sure to <b><i>add</i></b> it to any existing <code>gestures.ini</code> file you may already have.</p>
+
+<h4 id="sr-nvda-gestures-advanced">NVDA Gestures Setup (Advanced)</h4>
+<p>The input gesture for the Equalize Editor can also be created manually.</p>
+<p>After the <code>ee</code> configuration profile is created, an input gesture may be defined to activate and deactivate it. The Input Gestures Dialog, activated by typing <code>NVDA + N, P, N</code>, contains a <code>Configuration Profiles</code> section that includes an option for each configuration profile to define the input gesture for the profile.</p>
+<p>Type <code>NVDA + N, P, N</code> to activate the NVDA Input Gestures Dialog. </p>
+<p>Open the <code>Configuration Profiles</code> and then <code>Activates or deactivates the ee configuration profile</code>.</p>
+<p>Press the <code>Add</code> button to add a new gesture, then <code>NVDA + E</code> to assign the new input gesture.</p>
+<p>After these steps, typing <code>NVDA + E</code> activates and deactivates the Equalize Editor profile.</p>
+<p>You can choose any key combination you prefer as the input gesture for the Equalize Editor profile.</p>
 
 <h4 id="sr-nvda-suggest">Suggested Settings</h4>
 
