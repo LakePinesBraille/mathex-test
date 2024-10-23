@@ -735,11 +735,7 @@ apply, mphantom
 @font-face
 {
     font-family: mathex;
-    src:url('fonts/mathex.eot');
-    src:url('fonts/mathex.eot?#iefix') format('embedded-opentype'),
-        url('fonts/mathex.ttf') format('truetype'),
-        url('fonts/mathex.woff') format('woff'),
-        url('fonts/mathex.svg#mathex') format('svg');
+    src:url('fonts/mathex.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -827,6 +823,12 @@ apply, mphantom
 }
 .ee-icon-mxf:before {
     content: "\e006";
+}
+.ee-icon-mxf-sign:before {
+    content: "\e007";
+}
+.ee-icon-mxf-slash:before {
+    content: "\e008";
 }
 
 .ee-parent-panel .ee-icon-exponent {

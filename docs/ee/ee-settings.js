@@ -247,7 +247,6 @@ const ee_settings = (() => {
     "ee-plt-palettes" : "All Palettes",
     "ee-plt-numbers" : "Numbers",
     "ee-plt-arithmetic" : "Arithmetic",
-    "ee-plt-fractions" : "Fractions",
     "ee-plt-exponents" : "Exponents",
     "ee-plt-functions" : "Functions",
     "ee-plt-groups" : "Groups",
