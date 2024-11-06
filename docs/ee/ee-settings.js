@@ -249,7 +249,7 @@ const ee_settings = (() => {
     "ee-plt-arithmetic" : "Arithmetic",
     "ee-plt-exponents" : "Exponents",
     "ee-plt-functions" : "Functions",
-    "ee-plt-groups" : "Groups",
+    "ee-plt-grouping" : "Grouping",
     "ee-plt-relations" : "Relations",
     "ee-plt-omissions" : "Omissions",
     "ee-plt-sets" : "Sets",

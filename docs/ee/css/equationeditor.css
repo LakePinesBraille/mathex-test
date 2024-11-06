@@ -270,12 +270,15 @@
     resize: none;
     width: 100%;
     height: 100%;
+    padding: 2px;
 
     cursor: pointer !important;
     font-family: eeUBraille, Segoe UI Symbol;
     font-size: 36px;
     line-height: 48px;
     white-space: pre;
+    overflow: auto;
+    overflow-y: scroll;
 }
 
 .ee-quick-bar > div
