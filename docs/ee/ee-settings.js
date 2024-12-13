@@ -260,6 +260,7 @@ const ee_settings = (() => {
     "ee-plt-double-arrows" : "Double arrows",
     "ee-plt-trigonometry" : "Trigonometry",
     "ee-plt-hyperbolic" : "Hyperbolic",
+    "ee-plt-series" : "Series",
     "ee-plt-scripts" : "Scripts",
     "ee-plt-shapes" : "Shapes",
     "ee-plt-circled" : "Circled",
