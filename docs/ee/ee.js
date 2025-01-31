@@ -150,7 +150,27 @@ const ee = (() => {
    * File open/save file type options.
    */
   const open_types = { types : [ {
-    description : "HTML + MathML Content",
+    description : "Equalize (HTML + MathML Content)",
+    accept : { "application/html" : [ ".ee" ] }
+  }, {
+    description : "HTML (HTML + MathML Content)",
+    accept : { "application/html" : [ ".html" ] }
+  }, {
+    description : "Markdown (ASCII math, LaTeX math)",
+    accept : { "text/markdown" : [ ".md" ] }
+  }, {
+    description : "Text (ASCII math, LaTeX math)",
+    accept : { "text/plain" : [ ".txt" ] }
+  } ] };
+
+  /**
+   * File save file type options.
+   */
+  const save_types = { types : [ {
+    description : "Equalize (HTML + MathML Content)",
+    accept : { "application/html" : [ ".ee" ] }
+  }, {
+    description : "HTML (HTML + MathML Content)",
     accept : { "application/html" : [ ".html" ] }
   } ] };
 
@@ -186,14 +206,21 @@ const ee = (() => {
         file_options, file_types );
 
   /**
+   * Get the suggested file name.
+   */
+  const getOpenFileName = () => {
+    return open_file_handle && open_file_handle.name ||
+        open_file_name || "untitled";
+  };
+
+  /**
    * Set the suggested file name dialog option.
    */
   const setFileOption = ( options, ftype ) => {
-    var fname = open_file_handle && open_file_handle.name ||
-        open_file_name || "untitled";
+    var fname = getOpenFileName();
 
     fname = fname.replace( /^.*\//, "" );
-    fname = fname.replace( /(-p)?\.[^.]*$/, "" );
+    fname = fname.replace( /\.[^.]*$/, "" );
     fname = fname + ( ftype || "" );
 
     options.suggestedName = fname;
@@ -643,7 +670,7 @@ const ee = (() => {
     }
     else
     {
-      const name = options.suggestedName + ( ftype ? "" : ".html" );
+      const name = options.suggestedName + ( ftype ? "" : ".ee" );
       const type = "application/html";
       const blob = new Blob( [ markup ], { type: type } );
       const a = document.createElement( "a" );
@@ -850,6 +877,14 @@ const ee = (() => {
         return;
     }
 
+    const fname = getOpenFileName();
+    if ( !( fname.endsWith( ".ee" ) ||
+            fname.endsWith( ".html" ) ) )
+    {
+        do_file_save_as( event );
+        return;
+    }
+
     try {
       event && event.preventDefault();
 
@@ -868,7 +903,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getFileOptions( open_types );
+      const options = getFileOptions( save_types );
       await saveFile( options, getContent(), true );
       ee_drive.clear();
     }
@@ -903,7 +938,7 @@ const ee = (() => {
       const styles = ee_settings.getBool( "ee-css-styles-on-save" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
       const markup = addMathMarkup( getPresent(), styles, mathjax );
-      await saveFile( options, markup, false, "-p.html" );
+      await saveFile( options, markup, false, ".html" );
     }
     catch ( e )
     {
@@ -1066,7 +1101,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
-      setFileOption( options, ".html" );
+      setFileOption( options, ".ee" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1088,7 +1123,7 @@ const ee = (() => {
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
-      setFileOption( options, "-p.html" );
+      setFileOption( options, ".html" );
 
       nwindow.document.write( markup );
       nwindow.document.title = options.suggestedName;
@@ -1180,7 +1215,7 @@ const ee = (() => {
     try {
       event && event.preventDefault();
 
-      const options = getFileOptions( open_types );
+      const options = getFileOptions( save_types );
       setFileOption( options );
 
       ee_drive.save_as( getContent, setOpenFileData, options );
@@ -1215,7 +1250,7 @@ const ee = (() => {
       const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
       const markup = addMathMarkup( getPresent(), styles, mathjax );
 
-      setFileOption( options, "-p.html" );
+      setFileOption( options, ".html" );
       ee_drive.save_as( () => markup, null, options );
     }
     catch ( e )
@@ -2022,7 +2057,7 @@ const ee = (() => {
 '          <a href="#" id="help_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
 '             aria-haspopup="true" aria-expanded="false" aria-label="Help">H&#x0332;elp<span class="caret"></span></a>' +
 '          <ul class="dropdown-menu">' +
-'            <li><a href="index.html" id="documentation" aria-label="Documentation">D&#x0332;ocumentation</a></li>' +
+'            <li><a href="index.ee" id="documentation" aria-label="Documentation">D&#x0332;ocumentation</a></li>' +
 '            <hr/>' +
 '            <li><a href="config/index.html" id="configuration" aria-label="Configuration">C&#x0332;onfiguration</a></li>' +
 '            <li><a href="' + samples_url + '" id="samples" aria-label="Samples">Sam&#x0332;ples</a></li>' +

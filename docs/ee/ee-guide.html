@@ -592,10 +592,10 @@ The EE creates text and math compound documents using four user-facing file form
 </p>
 
 <ul>
-<li><i>EE Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
-<li><i>HTML Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
-<li><i>BRF Format</i> - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
-<li><i>BRL Format</i> - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
+<li><i>EE Format</i> (<code>.ee</code>) - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlc">Content MathML</a></li>
+<li><i>HTML Format</i> (<code>.html</code>) - <a href="#ff-html">HTML</a> file format with included <a href="#ff-mmlp">Presentation MathML</a></li>
+<li><i>BRF Format</i> (<code>.brf</code>) - <a href="#ff-brf">Braille Ready File</a> in computer braille format</li>
+<li><i>BRL Format</i> (<code>.brl</code>) - <a href="#ff-html">HTML</a> file format with included <a href="#ff-ubrl">Unicode Braille</a></li>
 </ul>
 
 <p>
@@ -613,7 +613,7 @@ These user-facing file formats employ several standard file formats to represent
 <li><i>MathJax</i> - a JavaScript library to support Presentation MathML</li>
 </ul>
 
-<h3 id="file-ee">EE Format</h3>
+<h3 id="file-ee">EE Format (<code>.ee</code>)</h3>
 
 <p>
 The <i>EE format</i> for a document is the internal form used to encode text plus math documents in the EE.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlc">Content MathML</a> elements that encode the text and math portions of the document.
@@ -623,7 +623,7 @@ The <i>EE format</i> for a document is the internal form used to encode text plu
 The EE format is used to load and save documents to the file system to support document authoring.  It may not be loaded directly into a web browser, or other applications that only support <a href="#ff-mmlp">Presentation MathML</a>.
 </p>
 
-<h3 id="file-html">HTML Format</h3>
+<h3 id="file-html">HTML Format (<code>.html</code>)</h3>
 
 <p>
 The <i>HTML format</i> for a document is the external form used to encode text plus math documents by the EE for display within a web browser.  It consists of <a href="#ff-html">HTML</a> and <a href="#ff-mmlp">Presentation MathML</a> elements that encode the text and math portions of the document.
@@ -633,7 +633,7 @@ The <i>HTML format</i> for a document is the external form used to encode text p
 The HTML format is used to export and print documents for display within a web browser.  It may not be loaded directly into the EE, or other applications that only support <a href="#ff-mmlc">Content MathML</a>.
 </p>
 
-<h3 id="file-brf">BRF Format</h3>
+<h3 id="file-brf">BRF Format (<code>.brf</code>)</h3>
 
 <p>
 The <i>BRF format</i> for a document is the Braille Ready Format for a document, encoded using the computer braille encoding, for import into tools that can use it.
@@ -643,7 +643,7 @@ The <i>BRF format</i> for a document is the Braille Ready Format for a document,
 The BRF format may be imported by software commonly available on electronic braille notetakers, and may be printed by braille embossers to produce hard-copy braille.  It may not be loaded directly into the EE.
 </p>
 
-<h3 id="file-brl">BRL Format</h3>
+<h3 id="file-brl">BRL Format (<code>.brl</code>)</h3>
 
 <p>
 The <i>BRL format</i> for a document an external form used to display the <a href="#ff-ubrl">Unicode Braille</a> encoding of a document.  It consists of <a href="#ff-html">HTML</a> elements that contain <a href="#ff-ubrl">Unicode Braille</a> characters to be viewed by a suitable Braille font.

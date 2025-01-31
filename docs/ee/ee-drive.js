@@ -464,8 +464,7 @@ const ee_drive = () => {
       try {
         const ofileName = fileName;
         const ofileId = fileId;
-        // const fname = ofileName || options.suggestedName + ".html";
-        const fname = cb ? ofileName || options.suggestedName + ".html" : options.suggestedName;
+        const fname = cb ? ofileName || options.suggestedName + ".ee" : options.suggestedName;
 
         const fileDoc = data[ google.picker.Response.DOCUMENTS ][ 0 ];
 
@@ -666,7 +665,7 @@ const ee_drive = () => {
         fileId = data.folderId;
         const uri = "https://www.googleapis.com/upload/drive/v3/files/";
 
-        const nfileName = prompt( "Save file as", ofileName || "untitled.html" );
+        const nfileName = prompt( "Save file as", ofileName || "untitled.ee" );
         if ( !nfileName )
         {
           fileName = ofileName;
