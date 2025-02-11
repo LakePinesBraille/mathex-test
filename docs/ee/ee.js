@@ -4,6 +4,11 @@
   if ( value && value !== ee_settings.get( "ee-query-state" ) )
   {
     ee_settings.set( "ee-query-state", value );
+
+    href = window.location.href;
+    href = href.substring( 0, href.indexOf( "?" ) );
+
+    window.history.replaceState( null, "", href );
   }
 })();
 
