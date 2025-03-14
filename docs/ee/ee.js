@@ -360,9 +360,8 @@ const ee = (() => {
    * Update the equation editor input panel size.
    */
   const setPanelSize = () => {
-    var firefox = /firefox/i.test( navigator.userAgent );
     const dh = 100;
-    const dw = firefox ? 16 : 0;
+    const dw = 20;
 
     const hh = window.innerHeight - dh;
     const ww = window.innerWidth - dw;
