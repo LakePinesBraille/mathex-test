@@ -1,0 +1,178 @@
+.ee-cream {
+    background-color: #FFFACD !important;
+    color: #000000;
+}
+.ee-cream select {
+    background-color: #FFFACD;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-cream input {
+    background-color: #FFFACD;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-cream.ee-menu .dropdown-toggle,
+.ee-cream.ee-menu .dropdown-menu,
+.ee-cream.ee-menu .dropdown-menu a {
+    background-color: #FFFACD !important;
+    border-color: #FFFACD !important;
+    color: #000000 !important;
+}
+.ee-cream.ee-menu .dropdown-toggle:hover,
+.ee-cream.ee-menu .dropdown-toggle:focus,
+.ee-cream.ee-menu .dropdown-menu a:hover,
+.ee-cream.ee-menu .dropdown-menu a:focus {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #FFFACD !important;
+}
+.ee-cream.ee-menu .dropdown-menu hr {
+    border-color: #000000 !important;
+}
+.ee-cream.ee-file-name {
+    background-color: #FFFACD !important;
+    color: #000000 !important;
+}
+.ee-cream .ee-child-panel {
+    background-color: #FFFACD;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-cream .ee-input-panel {
+    color: #000000;
+}
+.ee-cream .ee-braille-panel {
+    background-color: #FFFACD;
+    border-color: #000000;
+    color: #000000;
+}
+.ee-cream .ee-braille-panel textarea {
+    background-color: #FFFACD;
+}
+.ee-cream .tooltip-inner {
+    background-color: #000000;
+    color: #FFFACD;
+}
+.ee-cream .top .tooltip-arrow {
+    border-top-color: #000000;
+}
+.ee-cream .bottom .tooltip-arrow {
+    border-bottom-color: #000000;
+}
+.ee-cream .ee-error.tooltip .tooltip-arrow {
+    border-top-color: #000000;
+}
+.ee-cream .ee-error.tooltip .tooltip-inner {
+    background-color: #000000;
+    color: #FFFACD;
+}
+.ee-cream .ee-markup.tooltip .tooltip-inner {
+    background-color: #000000;
+    color: #FFFACD;
+}
+.ee-cream .accordion-group {
+    background-color: #FFFACD;
+    border-color: #000000;
+}
+.ee-cream .accordion-toggle {
+    color: #000000;
+}
+.ee-cream .accordion-toggle:focus {
+    border-color: #000000;
+}
+.ee-cream .ee-input-panel .cursor {
+    border-color: #000000;
+    border-bottom-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-cream .ee-input-panel .cursor.blur {
+    border-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-cream .ee-input-panel .cursor.select {
+    background-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-cream .ee-box {
+    border-color: #000000;
+}
+.ee-cream .ee-button {
+    background-color: #FFFACD !important;
+    background-image: none !important;
+    border-color: #000000 !important;
+    color: #000000 !important;
+}
+.ee-cream.no-touch .ee-button:hover {
+    background-color: #FFFACD !important;
+    border: 2px solid !important;
+    color: #000000 !important;
+}
+.ee-cream .ee-button:active {
+    background-color: #000000 !important;
+    color: #FFFACD !important;
+}
+.ee-cream .ee-button:focus {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFFACD !important;
+}
+.ee-cream .ee-button.btn-medium {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFFACD !important;
+}
+.ee-cream.no-touch .ee-button.btn-medium:hover {
+    background-color: #000000 !important;
+    color: #FFFACD !important;
+}
+.ee-cream .ee-button.btn-medium:active {
+    background-color: #FFFACD !important;
+    color: #000000 !important;
+}
+.ee-cream .ee-button.btn-medium:focus {
+    background-color: #FFFACD !important;
+    border-color: #000000;
+    color: #000000 !important;
+}
+.ee-cream .ee-button.btn-primary {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFFACD !important;
+}
+.ee-cream.no-touch .ee-button.btn-primary:hover {
+    background-color: #000000 !important;
+    color: #FFFACD !important;
+}
+.ee-cream .ee-button.btn-primary:active {
+    background-color: #FFFACD !important;
+    color: #000000 !important;
+}
+.ee-cream .ee-button.btn-primary:focus {
+    background-color: #FFFACD !important;
+    border-color: #000000;
+    color: #000000 !important;
+}
+.ee-cream .ee-button-bar-panel > * {
+    background-color: #FFFACD;
+    background-image: none !important;
+    border-color: #000000;
+}
+.ee-cream .ee-carousel > * {
+    background-color: #FFFACD;
+    background-image: none;
+    border-color: #000000;
+}
+
+.ee-cream ::-webkit-scrollbar-track { background: #FFFACD; }
+.ee-cream ::-webkit-scrollbar-thumb { background: #000000; }
+.ee-cream ::-webkit-scrollbar-corner { background: #FFFACD; }
+
+.ee-cream *
+{
+    scrollbar-face-color: #000000;
+    scrollbar-shadow-color: #000000;
+    scrollbar-highlight-color: #000000;
+    scrollbar-arrow-color: #FFFACD;
+    scrollbar-track-color: #FFFACD;
+    scrollbar-darkshadow-color: #FFFACD;
+}
+
+.ee-cream * + .soft { color: #000000; }

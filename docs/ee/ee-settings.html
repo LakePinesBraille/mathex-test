@@ -110,6 +110,14 @@ const init = function() {
     ]);
 };
 
+const color = function() {
+  var elt = document.querySelector( "#ee-color-contrast" );
+  if ( elt )
+  {
+    document.body.className = "ee-settings ee-" + elt.value;
+  }
+};
+
 const load = function() {
   for ( var k in ee_settings.settings )
   {
@@ -154,7 +162,7 @@ const done = function() {
 };
   </script>
 </head>
-<body class="ee-settings" onload="init(); load()">
+<body class="ee-settings" onload="init(); load(); color()">
 <h1>Equalize Editor Settings</h1>
 
 <div>
@@ -162,7 +170,7 @@ const done = function() {
     title="Save your changes and close the settings">OK</button>
 <button type="button" class="ex-btn" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
-<button type="button" class="ex-btn" id="reset" onclick="reset(); load()"
+<button type="button" class="ex-btn" id="reset" onclick="reset(); load(); color()"
     title="Discard your changes and load the default settings">Reset</button>
 </div>
 
@@ -170,6 +178,7 @@ const done = function() {
 <ul>
 <li><a href="#set-application">Application Settings</a>
 <ul>
+<li><a href="#set-color-contrast">Color Contrast</a></li>
 <li><a href="#set-input">Keyboard Input</a></li>
 <li><a href="#set-panels">Editor Panels</a></li>
 <li><a href="#set-palettes">Symbol Palettes</a></li>
@@ -202,6 +211,22 @@ const done = function() {
 <div style="display: none">
 <label for="ee-height">Panel height</label>
 <input id="ee-height"></input>
+</div>
+
+<h3 id="set-color-contrast">Color Contrast</h3>
+
+<div>
+<label for="ee-color-contrast">Color contrast scheme</label>
+<select id="ee-color-contrast" name="ee-color-contrast" onchange="color()">
+<option value="default">black on white</option>
+<option value="black">white on black</option>
+<option value="blue">yellow on blue</option>
+<option value="cream">black on cream</option>
+<option value="lblue">black on blue</option>
+<option value="lmagenta">black on magenta</option>
+<option value="pgreen">grey on green</option>
+<option value="rose">black on rose</option>
+</select>
 </div>
 
 <h3 id="set-input">Keyboard Input</h3>

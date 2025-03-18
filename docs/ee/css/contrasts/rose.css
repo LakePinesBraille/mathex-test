@@ -1,0 +1,178 @@
+.ee-rose {
+    background-color: #FFD0FF !important;
+    color: #000000;
+}
+.ee-rose select {
+    background-color: #FFD0FF;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-rose input {
+    background-color: #FFD0FF;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-rose.ee-menu .dropdown-toggle,
+.ee-rose.ee-menu .dropdown-menu,
+.ee-rose.ee-menu .dropdown-menu a {
+    background-color: #FFD0FF !important;
+    border-color: #FFD0FF !important;
+    color: #000000 !important;
+}
+.ee-rose.ee-menu .dropdown-toggle:hover,
+.ee-rose.ee-menu .dropdown-toggle:focus,
+.ee-rose.ee-menu .dropdown-menu a:hover,
+.ee-rose.ee-menu .dropdown-menu a:focus {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #FFD0FF !important;
+}
+.ee-rose.ee-menu .dropdown-menu hr {
+    border-color: #000000 !important;
+}
+.ee-rose.ee-file-name {
+    background-color: #FFD0FF !important;
+    color: #000000 !important;
+}
+.ee-rose .ee-child-panel {
+    background-color: #FFD0FF;
+    border-color: #000000 !important;
+    color: #000000;
+}
+.ee-rose .ee-input-panel {
+    color: #000000;
+}
+.ee-rose .ee-braille-panel {
+    background-color: #FFD0FF;
+    border-color: #000000;
+    color: #000000;
+}
+.ee-rose .ee-braille-panel textarea {
+    background-color: #FFD0FF;
+}
+.ee-rose .tooltip-inner {
+    background-color: #000000;
+    color: #FFD0FF;
+}
+.ee-rose .top .tooltip-arrow {
+    border-top-color: #000000;
+}
+.ee-rose .bottom .tooltip-arrow {
+    border-bottom-color: #000000;
+}
+.ee-rose .ee-error.tooltip .tooltip-arrow {
+    border-top-color: #000000;
+}
+.ee-rose .ee-error.tooltip .tooltip-inner {
+    background-color: #000000;
+    color: #FFD0FF;
+}
+.ee-rose .ee-markup.tooltip .tooltip-inner {
+    background-color: #000000;
+    color: #FFD0FF;
+}
+.ee-rose .accordion-group {
+    background-color: #FFD0FF;
+    border-color: #000000;
+}
+.ee-rose .accordion-toggle {
+    color: #000000;
+}
+.ee-rose .accordion-toggle:focus {
+    border-color: #000000;
+}
+.ee-rose .ee-input-panel .cursor {
+    border-color: #000000;
+    border-bottom-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-rose .ee-input-panel .cursor.blur {
+    border-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-rose .ee-input-panel .cursor.select {
+    background-color: rgba( 0, 0, 0, 0.35 );
+}
+.ee-rose .ee-box {
+    border-color: #000000;
+}
+.ee-rose .ee-button {
+    background-color: #FFD0FF !important;
+    background-image: none !important;
+    border-color: #000000 !important;
+    color: #000000 !important;
+}
+.ee-rose.no-touch .ee-button:hover {
+    background-color: #FFD0FF !important;
+    border: 2px solid !important;
+    color: #000000 !important;
+}
+.ee-rose .ee-button:active {
+    background-color: #000000 !important;
+    color: #FFD0FF !important;
+}
+.ee-rose .ee-button:focus {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFD0FF !important;
+}
+.ee-rose .ee-button.btn-medium {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFD0FF !important;
+}
+.ee-rose.no-touch .ee-button.btn-medium:hover {
+    background-color: #000000 !important;
+    color: #FFD0FF !important;
+}
+.ee-rose .ee-button.btn-medium:active {
+    background-color: #FFD0FF !important;
+    color: #000000 !important;
+}
+.ee-rose .ee-button.btn-medium:focus {
+    background-color: #FFD0FF !important;
+    border-color: #000000;
+    color: #000000 !important;
+}
+.ee-rose .ee-button.btn-primary {
+    background-color: #000000 !important;
+    border-color: #000000;
+    color: #FFD0FF !important;
+}
+.ee-rose.no-touch .ee-button.btn-primary:hover {
+    background-color: #000000 !important;
+    color: #FFD0FF !important;
+}
+.ee-rose .ee-button.btn-primary:active {
+    background-color: #FFD0FF !important;
+    color: #000000 !important;
+}
+.ee-rose .ee-button.btn-primary:focus {
+    background-color: #FFD0FF !important;
+    border-color: #000000;
+    color: #000000 !important;
+}
+.ee-rose .ee-button-bar-panel > * {
+    background-color: #FFD0FF;
+    background-image: none !important;
+    border-color: #000000;
+}
+.ee-rose .ee-carousel > * {
+    background-color: #FFD0FF;
+    background-image: none;
+    border-color: #000000;
+}
+
+.ee-rose ::-webkit-scrollbar-track { background: #FFD0FF; }
+.ee-rose ::-webkit-scrollbar-thumb { background: #000000; }
+.ee-rose ::-webkit-scrollbar-corner { background: #FFD0FF; }
+
+.ee-rose *
+{
+    scrollbar-face-color: #000000;
+    scrollbar-shadow-color: #000000;
+    scrollbar-highlight-color: #000000;
+    scrollbar-arrow-color: #FFD0FF;
+    scrollbar-track-color: #FFD0FF;
+    scrollbar-darkshadow-color: #FFD0FF;
+}
+
+.ee-rose * + .soft { color: #000000; }

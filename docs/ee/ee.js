@@ -267,10 +267,12 @@ const ee = (() => {
   const updateMenuBarPanel = () => {
     const panel = menu_bar_panel;
     const value = ee_settings.getBool( "ee-panel-app-menus" );
+    const color = ee_settings.get( "ee-color-contrast" );
 
     if ( panel )
     {
       panel.style.display = value ? "block" : "none";
+      panel.className = "ee-menu ee-" + color;
     }
   };
 
@@ -281,11 +283,13 @@ const ee = (() => {
     const panel = open_file_panel;
     const name = open_file_name;
     const value = ee_settings.getBool( "ee-panel-open-file" );
+    const color = ee_settings.get( "ee-color-contrast" );
 
     if ( panel )
     {
       panel.innerText = name;
       panel.style.display = name && value ? "block" : "none";
+      panel.className = "ee-file-name ee-" + color;
     }
   };
 

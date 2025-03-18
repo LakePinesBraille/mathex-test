@@ -8,11 +8,22 @@
   <script src="ee-settings.js"></script>
   <script src="ee.js"></script>
   <script type="text/javascript">
+    const init = function() {
+      ee.init();
+
+      var elt = document.querySelector( ".ee-about" );
+      var value = ee_settings.get( "ee-color-contrast" );
+      if ( elt && value )
+      {
+        elt.className = "ee-about ee-" + value;
+      }
+    };
+
     EquationEditorOptions = {
       "styleBase" : "deploy/equationeditor/styles",
       "scriptBase" : "lib",
       "models" : [],
-      callback : ee.init
+      callback : init
     };
   </script>
   <script src="deploy/equationeditor/equationeditor-lib.js"></script>

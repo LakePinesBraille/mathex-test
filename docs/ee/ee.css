@@ -2,6 +2,14 @@
 @import url( "css/jquery-ui-1.12.1.min.css" );
 @import url( "css/equationeditor.css" );
 
+@import url( "css/contrasts/black.css" );
+@import url( "css/contrasts/blue.css" );
+@import url( "css/contrasts/cream.css" );
+@import url( "css/contrasts/lblue.css" );
+@import url( "css/contrasts/lmagenta.css" );
+@import url( "css/contrasts/pgreen.css" );
+@import url( "css/contrasts/rose.css" );
+
 html
 {
     height: 100%;
@@ -19,6 +27,10 @@ body
 .ee-parent-panel
 {
     margin-bottom: 10px;
+}
+
+.ee-menu {
+    background-color: transparent !important;
 }
 
 .navbar {
@@ -71,8 +83,11 @@ body
 }
 
 .dropdown-toggle:hover,
-.dropdown-toggle:focus
+.dropdown-toggle:focus,
+.dropdown-menu a:hover,
+.dropdown-menu a:focus
 {
+    background-color: #bfbfbf !important;
     border-color: #bfbfbf !important;
 }
 
