@@ -133,6 +133,8 @@ const load = function() {
       }
     }
   }
+
+  color();
 };
 
 const save = function() {
@@ -160,9 +162,9 @@ const reset = function() {
 const done = function() {
   window.close();
 };
-  </script>
+</script>
 </head>
-<body class="ee-settings" onload="init(); load(); color()">
+<body class="ee-settings" onload="init(); load()">
 <h1>Equalize Editor Settings</h1>
 
 <div>
@@ -170,8 +172,12 @@ const done = function() {
     title="Save your changes and close the settings">OK</button>
 <button type="button" class="ex-btn" id="cancel" onclick="done()"
     title="Discard your changes and close the settings">Cancel</button>
-<button type="button" class="ex-btn" id="reset" onclick="reset(); load(); color()"
+<button type="button" class="ex-btn" id="reset" onclick="reset(); load()"
     title="Discard your changes and load the default settings">Reset</button>
+<button type="button" class="ex-btn" id="save" onclick="ee.saveSettings( save )"
+    title="Save your settings to a local file">Save</button>
+<button type="button" class="ex-btn" id="load" onclick="ee.loadSettings( load )"
+    title="Load your settings from a local file">Load</button>
 </div>
 
 <h2 id="table-of-contents">Table of Contents</h2>

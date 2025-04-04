@@ -42,6 +42,9 @@
 .ee-rose .ee-input-panel {
     color: #000000;
 }
+.ee-rose .ee-input-panel hr {
+    border-color: #000000 !important;
+}
 .ee-rose .ee-braille-panel {
     background-color: #FFD0FF;
     border-color: #000000;

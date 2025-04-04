@@ -42,6 +42,9 @@
 .ee-pgreen .ee-input-panel {
     color: #6E6E6E;
 }
+.ee-pgreen .ee-input-panel hr {
+    border-color: #6E6E6E !important;
+}
 .ee-pgreen .ee-braille-panel {
     background-color: #A3AD9E;
     border-color: #6E6E6E;

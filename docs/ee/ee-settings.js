@@ -139,10 +139,11 @@ const ee_settings = (() => {
   _ee.reset = () => {
     for ( var key in _ee.settings )
     {
-      if ( !( key === "ee-app-home" || key === "ee-doc-home" ) )
-        {
-          _ee.set( key, _ee.def( key ) );
-        }
+      var val = _ee.def( key ); 
+      if ( val )
+      {
+        _ee.set( key, val );
+      }
     }
   };
 
@@ -170,6 +171,50 @@ const ee_settings = (() => {
         _ee.setBool( key + "-active", true );
       }
     }
+  };
+
+  /**
+   * Retrieve the values of changed local settings.
+   */
+  _ee.save = () =>
+  {
+    var value = [];
+    var key;
+    var def;
+    var val;
+
+    for ( key in ee_settings.settings )
+    {
+      def = ee_settings.def( key );
+      if ( def )
+      {
+        val = ee_settings.get( key );
+        if ( val !== "" + def )
+        {
+          value.push( key + "=" + val );
+        }
+      }
+    }
+
+    return value.join( "\n" );
+  };
+
+  /**
+   * Load the values of changed local settings.
+   */
+  _ee.load = ( s ) =>
+  {
+    var value = s.split( "\n" );
+    var key;
+    var val;
+
+    value.forEach( s => {
+      [ key, val ] = s.split( "=" );
+      if ( ee_settings.isKey( key ) )
+      {
+        ee_settings.set( key, val );
+      }
+    } );
   };
 
   /**

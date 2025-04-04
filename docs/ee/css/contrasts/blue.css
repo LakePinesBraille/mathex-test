@@ -42,6 +42,9 @@
 .ee-blue .ee-input-panel {
     color: #F5E727;
 }
+.ee-blue .ee-input-panel hr {
+    border-color: #F5E727 !important;
+}
 .ee-blue .ee-braille-panel {
     background-color: #0000CC;
     border-color: #F5E727;

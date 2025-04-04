@@ -42,6 +42,9 @@
 .ee-black .ee-input-panel {
     color: #FFFFFF;
 }
+.ee-black .ee-input-panel hr {
+    border-color: #FFFFFF !important;
+}
 .ee-black .ee-braille-panel {
     background-color: #000000;
     border-color: #FFFFFF;

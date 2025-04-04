@@ -204,6 +204,14 @@ const ee = (() => {
   } ] };
 
   /**
+   * Settings file save/export file type options.
+   */
+  const settings_types = { types : [ {
+    description : "Equalize Editor Settings",
+    accept : { "application/html" : [ ".cfg" ] }
+  } ], suggestedName : "ee" };
+
+  /**
    * Retrieve the default file dialog options.
    */
   const getFileOptions =
@@ -213,16 +221,16 @@ const ee = (() => {
   /**
    * Get the suggested file name.
    */
-  const getOpenFileName = () => {
+  const getOpenFileName = ( options ) => {
     return open_file_handle && open_file_handle.name ||
-        open_file_name || "untitled";
+        open_file_name || options && options.suggestedName || "untitled";
   };
 
   /**
    * Set the suggested file name dialog option.
    */
   const setFileOption = ( options, ftype ) => {
-    var fname = getOpenFileName();
+    var fname = getOpenFileName( options );
 
     fname = fname.replace( /^.*\//, "" );
     fname = fname.replace( /\.[^.]*$/, "" );
@@ -934,6 +942,38 @@ const ee = (() => {
   };
 
   const do_file_close = do_file_new;
+
+  /**
+   * Handler method for the settings > save operation.
+   */
+  const do_save_settings = async ( cb ) => {
+    try {
+      cb && cb();
+
+      const options = getFileOptions( settings_types );
+      await saveFile( options, ee_settings.save(), true );
+    }
+    catch ( e )
+    {
+    }
+  };
+
+  /**
+   * Handler method for the settings > load operation.
+   */
+  const do_load_settings = async ( cb ) => {
+    try {
+      const options = getFileOptions( settings_types );
+      const file = await openFile( options );
+      const markup = await file.text();
+
+      ee_settings.load( markup );
+      cb && cb();
+    }
+    catch ( e )
+    {
+    }
+  };
 
   /**
    * Handler method for the file > save HTML operation.
@@ -2262,6 +2302,8 @@ const ee = (() => {
     }
   };
 
+  _ee.saveSettings = do_save_settings;
+  _ee.loadSettings = do_load_settings;
   return _ee;
 })();
 
