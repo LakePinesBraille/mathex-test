@@ -313,6 +313,7 @@ const ee_settings = (() => {
     "ee-plt-squared" : "Squared",
     "ee-plt-headings" : "Headings",
     "ee-plt-style" : "Text styles",
+    "ee-plt-bullets" : "Text bullets",
     "ee-plt-unB" : "Units - Base",
     "ee-plt-unO" : "Units - Other",
     "ee-plt-unD" : "Units - Derived",
