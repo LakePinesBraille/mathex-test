@@ -102,6 +102,8 @@
     padding: 4px;
     border: 0px;
 
+    font-family: sans-serif, eeUBraille, Cambria Math, Segoe UI Symbol;
+
     overflow: auto;
     overflow-y: scroll;
     width: auto;
@@ -193,7 +195,7 @@
 
 .ee-parent-panel .tooltip
 {
-    font-family: sans-serif, eeUBraille, Segoe UI Symbol;
+    font-family: sans-serif, eeUBraille, Cambria Math, Segoe UI Symbol;
 }
 
 .ee-parent-panel .tooltip.ee-markup
@@ -273,7 +275,7 @@
     padding: 2px;
 
     cursor: pointer !important;
-    font-family: eeUBraille, Segoe UI Symbol;
+    font-family: eeUBraille, Cambria Math, Segoe UI Symbol;
     font-size: 36px;
     line-height: 48px;
     white-space: pre;
@@ -1298,7 +1300,7 @@ apply, mphantom
 /* Verbatim */
 .ee-input-panel code {
     background: transparent;
-    font-family: eeUBraille, Courier New, Segoe UI Symbol;
+    font-family: eeUBraille, Courier New, Cambria Math, Segoe UI Symbol;
     font-weight: 600;
 }
 
