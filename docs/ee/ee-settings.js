@@ -385,9 +385,9 @@ const ee_settings = (() => {
     "ee-plt-sfbfAlpha" : "Greek Sans Bold (upper)",
     "ee-plt-sfbfalpha" : "Greek Sans Bold (lower)",
     "ee-plt-sfbfgreek" : "Greek Sans Bold (symbol)",
-    "ee-plt-sfbiAlpha" : "Greek Sans BI (upper)",
-    "ee-plt-sfbialpha" : "Greek Sans BI (lower)",
-    "ee-plt-sfbigreek" : "Greek Sans BI (symbol)"
+    "ee-plt-sfbiAlpha" : "Greek Sans Bold Italic (upper)",
+    "ee-plt-sfbialpha" : "Greek Sans Bold Italic (lower)",
+    "ee-plt-sfbigreek" : "Greek Sans Bold Italic (symbol)"
   };
 
   _ee.init();

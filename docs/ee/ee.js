@@ -41,6 +41,7 @@ const ee = (() => {
     elt.setAttribute( "class", "ee-init-panel" );
     elt.setAttribute( "aria-label", "equation" );
     elt.setAttribute( "tabindex", "-1" );
+    elt.setAttribute( "id", "ee-init-textarea" );
     elt.addEventListener( "blur", () => body.removeChild( elt ) );
     body.insertBefore( elt, body.firstChild );
 
@@ -180,6 +181,33 @@ const ee = (() => {
   } ] };
 
   /**
+   * File save as file type options.
+   */
+  const save_as_types = {
+    ".ee" : {
+      description : "Equalize (HTML + MathML Content)",
+      accept : { "application/html" : [ ".ee" ] }
+    },
+    ".html" : {
+      description : "HTML + MathML Presentation",
+      accept : { "application/html" : [ ".html" ] }
+    },
+    ".brf" : {
+      description : "Braille Ready File",
+      accept : { "application/brf" : [ ".brf" ] }
+    },
+    ".brl" : {
+      description : "Unicode Braille File",
+      accept : { "application/brl" : [ ".brl" ] }
+    }
+  };
+
+  /**
+   * File save as get markup methods.
+   */
+  const save_as_markup = {};
+
+  /**
    * HTML file save/export file type options.
    */
   const html_types = { types : [ {
@@ -217,6 +245,13 @@ const ee = (() => {
   const getFileOptions =
     ( file_types ) => Object.assign( { startIn: open_file_handle },
         file_options, file_types );
+
+  /**
+   * Retrieve the file save dialog options.
+   */
+  const getSaveOptions = ( ftype ) => Object.assign( {},
+    { startIn: open_file_handle }, file_options,
+    { types : [ save_as_types[ ftype ] || save_as_types[ ".ee" ] ] } );
 
   /**
    * Get the suggested file name.
@@ -627,6 +662,17 @@ const ee = (() => {
   };
 
   /**
+   * Retrieve document markup for HTML output.
+   */
+  const getHTMLMarkup = () => {
+    const styles = ee_settings.getBool( "ee-css-styles-on-save" );
+    const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
+    const markup = addMathMarkup( getPresent(), styles, mathjax );
+    return markup;
+  };
+  save_as_markup[ ".html" ] = getHTMLMarkup;
+
+  /**
    * Retrieve document markup for BRF output.
    */
   const getBRFMarkup = () => {
@@ -634,6 +680,7 @@ const ee = (() => {
     const result = markup.replaceAll( '\n', '\r\n' );
     return result;
   };
+  save_as_markup[ ".brf" ] = getBRFMarkup;
 
   /**
    * Retrieve document markup for BRL output.
@@ -643,6 +690,7 @@ const ee = (() => {
     const result = markup.replaceAll( '\n\f', '\u2800\n' );
     return result;
   };
+  save_as_markup[ ".brl" ] = getBRLMarkup;
 
   /**
    * Retrieve a file handle for an open file operation.
@@ -673,14 +721,14 @@ const ee = (() => {
   /**
    * Output document markup for a save file operation.
    */
-  const saveFile = async ( options, markup, update, ftype ) => {
-    setFileOption( options, ftype );
-
+  const saveFile = async ( options, markup, ftype ) => {
     if ( window.showSaveFilePicker )
     {
       const handle = await window.showSaveFilePicker( options );
       const file = await handle.createWritable();
-      update && setOpenFileHandle( handle );
+
+      ( ftype === "ee" ) && setOpenFileHandle( handle );
+
       await file.write( markup );
       await file.close();
     }
@@ -741,6 +789,7 @@ const ee = (() => {
     editor._brailleBar.hideFocusWord();
     return editor.getContent();
   };
+  save_as_markup[ ".ee" ] = getContent;
 
   /**
    * Set the equation editor content markup.
@@ -847,6 +896,7 @@ const ee = (() => {
   const do_file_new = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_file_new" );
 
       editor.processTemplate( "clear" );
       editor.setFocus();
@@ -870,6 +920,7 @@ const ee = (() => {
   const do_file_open = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_file_open" );
 
       const options = getFileOptions( open_types );
       const file = await openFile( options );
@@ -889,7 +940,7 @@ const ee = (() => {
   const do_file_save = async ( event ) => {
     if ( ! open_file_handle )
     {
-        do_file_save_as( event );
+        do_save_Source( event );
         return;
     }
 
@@ -897,30 +948,15 @@ const ee = (() => {
     if ( !( fname.endsWith( ".ee" ) ||
             fname.endsWith( ".html" ) ) )
     {
-        do_file_save_as( event );
+        do_save_Source( event );
         return;
     }
 
     try {
       event && event.preventDefault();
+      LOG( "#do_file_save" );
 
       await saveThis( getContent() );
-      ee_drive.clear();
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
-   * Handler method for the file > save as operation.
-   */
-  const do_file_save_as = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      const options = getFileOptions( save_types );
-      await saveFile( options, getContent(), true );
       ee_drive.clear();
     }
     catch ( e )
@@ -934,14 +970,14 @@ const ee = (() => {
   const do_file_link = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_file_link" );
+
       createLink( prompt( "Link to file name", getLinkTarget() ) );
     }
     catch ( e )
     {
     }
   };
-
-  const do_file_close = do_file_new;
 
   /**
    * Handler method for the settings > save operation.
@@ -951,7 +987,7 @@ const ee = (() => {
       cb && cb();
 
       const options = getFileOptions( settings_types );
-      await saveFile( options, ee_settings.save(), true );
+      await saveFile( options, ee_settings.save() );
     }
     catch ( e )
     {
@@ -976,61 +1012,38 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the file > save HTML operation.
+   * Handler method for the file > save as operations.
    */
-  const do_save_HTML = async ( event ) => {
+  const do_save_as = async ( event, ftype ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_save_" + ftype );
 
-      const options = getFileOptions( html_types );
-      const styles = ee_settings.getBool( "ee-css-styles-on-save" );
-      const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
-      const markup = addMathMarkup( getPresent(), styles, mathjax );
-      await saveFile( options, markup, false, ".html" );
+      const options = getSaveOptions( ftype );
+      setFileOption( options, ftype );
+
+      const fn = save_as_markup[ ftype ] || save_as_markup[ ".ee" ];
+      const markup = fn && fn() || "";
+
+      saveFile( options, markup, ftype );
     }
     catch ( e )
     {
     }
   };
 
-  /**
-   * Handler method for the file > save BRF operation.
-   */
-  const do_save_BRF = async ( event ) => {
-    try {
-      event && event.preventDefault();
-
-      const options = getFileOptions( brf_types );
-      const markup = getBRFMarkup();
-      await saveFile( options, markup, false, ".brf" );
-    }
-    catch ( e )
-    {
-    }
-  };
+  const do_save_Source = ( event ) => do_save_as( event, ".ee" );
+  const do_save_HTML = ( event ) => do_save_as( event, ".html" );
+  const do_save_BRF = ( event ) => do_save_as( event, ".brf" );
+  const do_save_BRL = ( event ) => do_save_as( event, ".brl" );
 
   /**
-   * Handler method for the file > save BRL operation.
+   * Handler method for the file > print Preview operation.
    */
-  const do_save_BRL = async ( event ) => {
+  const do_print_Preview = async ( event ) => {
     try {
       event && event.preventDefault();
-
-      const options = getFileOptions( brl_types );
-      const markup = getBRLMarkup();
-      await saveFile( options, markup, false, ".brl" );
-    }
-    catch ( e )
-    {
-    }
-  };
-
-  /**
-   * Handler method for the file > print preview operation.
-   */
-  const do_preview = async ( event ) => {
-    try {
-      event && event.preventDefault();
+      LOG( "#do_print_Preview" );
 
       const styles = ee_settings.getBool( "ee-css-styles-on-export" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-export" );
@@ -1060,6 +1073,7 @@ const ee = (() => {
   const do_print_HTML = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_print_HTML" );
 
       const styles = ee_settings.getBool( "ee-css-styles-on-print" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-print" );
@@ -1096,6 +1110,7 @@ const ee = (() => {
   const do_print_BRF = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_print_BRF" );
 
       const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
@@ -1120,6 +1135,7 @@ const ee = (() => {
   const do_print_BRL = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_print_BRL" );
 
       const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
@@ -1139,11 +1155,12 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the file > view source operation.
+   * Handler method for the file > view Source operation.
    */
-  const do_view_source = async ( event ) => {
+  const do_view_Source = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_view_Source" );
 
       const markup = addViewMarkup( getContent() );
       const nwindow = window.open( "" );
@@ -1166,6 +1183,7 @@ const ee = (() => {
   const do_view_HTML = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_view_HTML" );
 
       const markup = addViewMarkup( getPresent() );
       const nwindow = window.open( "" );
@@ -1188,6 +1206,7 @@ const ee = (() => {
   const do_view_BRF = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_view_BRF" );
 
       const markup = addViewMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
@@ -1210,6 +1229,7 @@ const ee = (() => {
   const do_view_BRL = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_view_BRL" );
 
       const markup = addBRLMarkup( getBRLMarkup() );
       const nwindow = window.open( "" );
@@ -1232,6 +1252,8 @@ const ee = (() => {
   const do_drive_open = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_open" );
+
       ee_drive.open( setContent, setOpenFileData );
     }
     catch ( e )
@@ -1245,6 +1267,7 @@ const ee = (() => {
   const do_drive_save = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save" );
 
       const options = getFileOptions( open_types );
       setFileOption( options );
@@ -1257,11 +1280,12 @@ const ee = (() => {
   };
 
   /**
-   * Handler method for the drive > save as operation.
+   * Handler method for the drive > save Source operation.
    */
-  const do_drive_save_as = async ( event ) => {
+  const do_drive_save_Source = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save_Source" );
 
       const options = getFileOptions( save_types );
       setFileOption( options );
@@ -1279,6 +1303,8 @@ const ee = (() => {
   const do_drive_save_replace = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save_replace" );
+
       ee_drive.save_replace( getContent, setOpenFileData );
     }
     catch ( e )
@@ -1292,6 +1318,7 @@ const ee = (() => {
   const do_drive_save_HTML = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save_HTML" );
 
       const options = getFileOptions( html_types );
       const styles = ee_settings.getBool( "ee-css-styles-on-save" );
@@ -1312,6 +1339,7 @@ const ee = (() => {
   const do_drive_save_BRF = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save_BRF" );
 
       const options = getFileOptions( brf_types );
       const markup = getBRFMarkup();
@@ -1330,6 +1358,7 @@ const ee = (() => {
   const do_drive_save_BRL = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_save_BRL" );
 
       const options = getFileOptions( brl_types );
       const markup = getBRLMarkup();
@@ -1348,6 +1377,8 @@ const ee = (() => {
   const do_drive_link = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_link" );
+
       ee_drive.link( createLink );
     }
     catch ( e )
@@ -1361,6 +1392,8 @@ const ee = (() => {
   const do_drive_install = async ( event ) => {
     try {
       event && event.preventDefault();
+      LOG( "#do_drive_install" );
+
       ee_drive.install();
     }
     catch ( e )
@@ -1679,7 +1712,7 @@ const ee = (() => {
   /**
    * Return the next index for the tutorial home key.
    */
-  const nextHomeIndex = function ( url ) {
+  const nextHomeIndex = ( url ) => {
     var index = getIndex( url );
     index = index > indexStart ? nextHome( index ) : index;
     while ( skipIndex[ index - 1 ] )
@@ -1692,7 +1725,7 @@ const ee = (() => {
   /**
    * Return the next index for the tutorial end key.
    */
-  const nextEndIndex = function ( url ) {
+  const nextEndIndex = ( url ) => {
     var index = getIndex( url );
     index = index < indexLimit ? nextEnd( index ) : index;
     while ( index === 109 || skipIndex[ index - 9 ] )
@@ -1739,61 +1772,117 @@ const ee = (() => {
    * Handler for menu key accelerators.
    */
   const onMenuKey = ( event ) => {
-    const alt = event.altKey && event.shiftKey && ! event.ctrlKey;
-    const key = event.code.replace( "Key", "" );
+    var alt = event.altKey && event.shiftKey && ! event.ctrlKey;
+    var key = event.code.replace( "Key", "" );
 
     var val = alt && menuKeys[ key ] || "";
     var elt = val && document.querySelector( val ) || null;
 
-    const lst = $(".dropdown.open" ).find( ".dropdown-menu" ).find( "a" );
-    const len = lst.length;
-    const idx = lst.index( event.target );
-    var nxt = null;
-
-    if ( menu_bar_panel.contains( event.target ) )
-    {
-      if ( key === "ArrowLeft" )
-      {
-        elt = $( ".dropdown.open" ).prev( ".dropdown" ).find( "a" )[0];
-        val = "#" + ( elt ? elt.id : "" );
-      }
-
-      if ( key === "ArrowRight" )
-      {
-        elt = $( ".dropdown.open" ).next( ".dropdown" ).find( "a" )[0];
-        val = "#" + ( elt ? elt.id : "" );
-      }
-
-      if ( key === "ArrowUp" || key === "Tab" && event.shiftKey )
-      {
-        nxt = lst[ idx < 1 ? len - 1 : idx - 1 ] || null;
-        val = "#" + ( nxt ? nxt.id : "" );
-      }
-
-      if ( key === "ArrowDown" || key === "Tab" && !event.shiftKey )
-      {
-        nxt = lst[ idx + 1 < len ? idx + 1 : 0 ] || null;
-        val = "#" + ( nxt ? nxt.id : "" );
-      }
-    }
-
     if ( elt )
     {
-      LOG( "menu " + val );
+      LOG( "menu item " + val );
       event.stopImmediatePropagation();
       event.preventDefault();
 
       $( menu_bar_panel ).show();
       elt.click();
+      return;
     }
 
-    if ( nxt )
+    if ( key === "Tab" )
     {
-      LOG( "next " + val );
+      key = event.shiftKey ? "ArrowLeft" : "ArrowRight";
+    }
+
+
+    const menubar_items = $( ".navbar-nav > li > a" );
+    const dropdown_items = $( ".dropdown.open > ul > li > a" );
+    const submenu_items = $( ".dropdown-submenu.open > ul > li > a" );
+
+    const olst = menubar_items;
+    const olen = olst.length;
+    const oidx = olst.index( $( ".dropdown.open > a" ) );
+
+    const lst = submenu_items.length ? submenu_items :
+      dropdown_items.length ? dropdown_items : menubar_items;
+
+    const old = event.target;
+    const len = lst.length;
+    const idx = lst.index( old );
+    const top = olst.index( old );
+    const mnu = old.id.endsWith( "_menu" );
+
+    if ( menu_bar_panel.contains( old ) )
+    {
+      if ( key === "ArrowLeft" )
+      {
+        if ( submenu_items.length )
+        {
+          // Collapse the open submenu into its parent menu
+          elt = $( ".dropdown-submenu.open > a" )[ 0 ];
+        }
+        else
+        {
+          // Move to the previous menu bar item
+          elt = olst[ oidx < 1 ? olen - 1 : oidx - 1 ] || null;
+        }
+      }
+
+      if ( key === "ArrowRight" )
+      {
+        if ( top === -1 && mnu && submenu_items.length === 0 )
+        {
+            // Expand the closed submenu out from its parent menu
+            old.click();
+            elt = $( old ).parent().find( "ul > li > a" )[0];
+        }
+        else
+        {
+          // Move to the next menu bar item
+          elt = olst[ oidx + 1 < olen ? oidx + 1 : 0 ] || null;
+        }
+      }
+
+      if ( key === "ArrowUp" )
+      {
+        // Move to the previous sibling
+        elt = lst[ idx < 1 ? len - 1 : idx - 1 ] || null;
+      }
+
+      if ( key === "ArrowDown" )
+      {
+        // Move to the next sibling
+        elt = lst[ idx + 1 < len ? idx + 1 : 0 ] || null;
+      }
+
+      if ( ( key === "Space" || key === "Enter" ) && mnu )
+      {
+        old.click();
+        elt = $( old ).parent().find( "ul > li > a" )[0];
+      }
+    }
+
+    if ( elt )
+    {
+      val = "#" + elt.id;
+
+      LOG( "menu item " + val );
       event.stopImmediatePropagation();
       event.preventDefault();
 
-      nxt.focus();
+      if ( olst.index( elt ) !== -1 )
+      {
+        // Open the next menu bar item
+        elt.click();
+      }
+
+      else if ( elt.id.endsWith( "_menu" ) && submenu_items.length  )
+      {
+        // Close the open submenu
+        onSubmenuClear();
+      }
+
+      elt.focus();
     }
   };
 
@@ -1801,8 +1890,8 @@ const ee = (() => {
    * Handler for menu item accelerators.
    */
   const onMenuItem = ( event ) => {
-    const melt = $( ".dropdown.open" ).find( "a" )[ 0 ]
-    const mkey = melt && melt.innerText[ 0 ] || "";
+    const mkey = $( ".dropdown-submenu.open" ).find( "a" ).attr( "id" ) ||
+        $( ".dropdown.open" ).find( "a" ).attr( "id" ) || "";
     const mval = menuItems[ mkey ] || {};
 
     const key = event.code.replace( "Key", "" );
@@ -1835,15 +1924,20 @@ const ee = (() => {
    */
   const onMenuClose = ( event ) => {
     const elt = $( ".dropdown.open" ).find( "a" )[0];
+    const target = event && event.target || null;
 
-    if ( elt )
+    if ( elt && target )
     {
-      event && event.stopImmediatePropagation();
-      event && event.preventDefault();
+      if ( target === window || ! menu_bar_panel.contains( target ) ||
+           elt.parentNode.contains( target ) )
+      {
+        event && event.stopImmediatePropagation();
+        event && event.preventDefault();
 
-      LOG( "close #" + elt.id );
-      elt.click();
-      editor.setFocus();
+        LOG( "close #" + elt.id );
+        elt.click();
+        editor.setFocus();
+      }
     }
   };
 
@@ -1853,7 +1947,7 @@ const ee = (() => {
   const onEscapeKey = ( event ) => {
     if ( menu_bar_panel.contains( event.target ) )
     {
-      onMenuClose();
+      onMenuClose( event );
       updateMenuBarPanel();
     }
 
@@ -2023,7 +2117,7 @@ const ee = (() => {
 
   const menu_markup =
 '  <div class="navbar navbar-default" role="navigation">' +
-'    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
+'    <div class="collapse navbar-collapse" id="navbar-collapse-1">' +
 '      <ul class="nav navbar-nav">' +
 '        <li class="dropdown">' +
 '          <a href="#" id="file_menu" class="dropdown-toggle" data-toggle="dropdown" role="button"' +
@@ -2032,21 +2126,40 @@ const ee = (() => {
 '            <li><a href="#" id="new" aria-label="New">N&#x0332;ew</a></li>' +
 '            <li><a href="#" id="open" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="save" aria-label="Save">S&#x0332;ave</a></li>' +
-'            <li><a href="#" id="saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
-'            <li><a href="#" id="view" aria-label="View Source">V&#x0332;iew Source</a></li>' +
-'            <li><a href="#" id="preview" aria-label="Print Preview">Print Pr&#x0332;eview</a></li>' +
 '            <hr/>' +
-'            <li><a href="#" id="saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
-'            <li><a href="#" id="viewHTML">View HTML</a></li>' +
-'            <li><a href="#" id="printHTML" aria-label="Print HTML">P&#x0332;rint HTML</a></li>' +
-'            <hr/>' +
-'            <li><a href="#" id="saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="viewBRF">View BRF</a></li>' +
-'            <li><a href="#" id="printBRF" aria-label="Emboss BRF">E&#x0332;mboss BRF</a></li>' +
-'            <hr/>' +
-'            <li><a href="#" id="saveBRL">Save BRL</a></li>' +
-'            <li><a href="#" id="viewBRL">View BRL</a></li>' +
-'            <li><a href="#" id="printBRL">Print BRL</a></li>' +
+'            <li class="dropdown-submenu">' +
+'              <a href="#" id="file_save_menu" tabindex="-1"' +
+'                 class="dropdown-submenu-toggle" data-toggle="dropdown" role="button"' +
+'                 aria-haspopup="true" aria-expanded="false" aria-label="Save As">Save A&#x0332;s<span class="caret"></span></a>' +
+'              <ul class="dropdown-menu">' +
+'                <li><a href="#" id="saveSource" aria-label="Source">S&#x0332;ource</a></li>' +
+'                <li><a href="#" id="saveHTML" aria-label="HTML">H&#x0332;TML</a></li>' +
+'                <li><a href="#" id="saveBRF" aria-label="BRF">BRF&#x0332;</a></li>' +
+'                <li><a href="#" id="saveBRL" aria-label="BRL">BRL&#x0332;</a></li>' +
+'              </ul>' +
+'            </li>' +
+'            <li class="dropdown-submenu">' +
+'              <a href="#" id="file_view_menu" tabindex="-1"' +
+'                 class="dropdown-submenu-toggle" data-toggle="dropdown" role="button"' +
+'                 aria-haspopup="true" aria-expanded="false" aria-label="View">V&#x0332;iew<span class="caret"></span></a>' +
+'              <ul class="dropdown-menu">' +
+'                <li><a href="#" id="viewSource" aria-label="Source">S&#x0332;ource</a></li>' +
+'                <li><a href="#" id="viewHTML" aria-label="HTML">H&#x0332;TML</a></li>' +
+'                <li><a href="#" id="viewBRF" aria-label="BRF">BRF&#x0332;</a></li>' +
+'                <li><a href="#" id="viewBRL" aria-label="BRL">BRL&#x0332;</a></li>' +
+'              </ul>' +
+'            </li>' +
+'            <li class="dropdown-submenu">' +
+'              <a href="#" id="file_print_menu" tabindex="-1"' +
+'                 class="dropdown-submenu-toggle" data-toggle="dropdown" role="button"' +
+'                 aria-haspopup="true" aria-expanded="false" aria-label="Print">P&#x0332;rint<span class="caret"></span></a>' +
+'              <ul class="dropdown-menu">' +
+'                <li><a href="#" id="printPreview" aria-label="Preview">P&#x0332;review</a></li>' +
+'                <li><a href="#" id="printHTML" aria-label="HTML">H&#x0332;TML</a></li>' +
+'                <li><a href="#" id="printBRF" aria-label="BRF">BRF&#x0332;</a></li>' +
+'                <li><a href="#" id="printBRL" aria-label="BRL">BRL&#x0332;</a></li>' +
+'              </ul>' +
+'            </li>' +
 '            <hr/>' +
 '            <li><a href="#" id="link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <li><a href="#" id="close" aria-label="Close">C&#x0332;lose</a></li>' +
@@ -2058,12 +2171,18 @@ const ee = (() => {
 '          <ul class="dropdown-menu">' +
 '            <li><a href="#" id="drive_open" aria-label="Open">O&#x0332;pen</a></li>' +
 '            <li><a href="#" id="drive_save" aria-label="Save">S&#x0332;ave</a></li>' +
-'            <li><a href="#" id="drive_saveAs" aria-label="Save As">Save A&#x0332;s</a></li>' +
+'            <li class="dropdown-submenu">' +
+'              <a href="#" id="drive_save_menu" tabindex="-1"' +
+'                 class="dropdown-submenu-toggle" data-toggle="dropdown" role="button"' +
+'                 aria-haspopup="true" aria-expanded="false" aria-label="Save As">Save A&#x0332;s<span class="caret"></span></a>' +
+'              <ul class="dropdown-menu">' +
+'                <li><a href="#" id="drive_saveSource" aria-label="Source">S&#x0332;ource</a></li>' +
+'                <li><a href="#" id="drive_saveHTML" aria-label="HTML">H&#x0332;TML</a></li>' +
+'                <li><a href="#" id="drive_saveBRF" aria-label="BRF">BRF&#x0332;</a></li>' +
+'                <li><a href="#" id="drive_saveBRL" aria-label="BRL">BRL&#x0332;</a></li>' +
+'              </ul>' +
+'            </li>' +
 '            <li><a href="#" id="drive_saveReplace" aria-label="Save Replace">Save R&#x0332;eplace</a></li>' +
-'            <hr/>' +
-'            <li><a href="#" id="drive_saveHTML" aria-label="Save HTML">Save H&#x0332;TML</a></li>' +
-'            <li><a href="#" id="drive_saveBRF" aria-label="Save BRF">Save B&#x0332;RF</a></li>' +
-'            <li><a href="#" id="drive_saveBRL">Save BRL</a></li>' +
 '            <hr/>' +
 '            <li><a href="#" id="drive_link" aria-label="Link">L&#x0332;ink</a></li>' +
 '            <li><a href="#" id="drive_install" aria-label="Install">I&#x0332;nstall</a></li>' +
@@ -2131,40 +2250,39 @@ const ee = (() => {
     V: "#panel_menu",
     H: "#help_menu",
 
-    X: "#panel_toggleAll",
+    N: "#new",
+    O: "#open",
+    S: "#save",
+    A: "#saveSource",
+    P: "#printHTML",
+
     M: "#panel_menus",
-    P: "#printHTML"
+    X: "#panel_toggleAll"
   };
 
   /**
    * The menu item accelerator keys.
    */
   const menuItems = {
-    F: {
+    file_menu: {
       N: "#new",
       O: "#open",
       S: "#save",
-      A: "#saveAs",
-      V: "#view",
-      R: "#preview",
-      H: "#saveHTML",
-      P: "#printHTML",
-      B: "#saveBRF",
-      E: "#printBRF",
+      A: "#file_save_menu",
+      V: "#file_view_menu",
+      P: "#file_print_menu",
       L: "#link",
       C: "#close"
     },
-    D: {
+    drive_menu: {
       O: "#drive_open",
       S: "#drive_save",
-      A: "#drive_saveAs",
+      A: "#drive_save_menu",
       R: "#drive_saveReplace",
-      H: "#drive_saveHTML",
-      B: "#drive_saveBRF",
       L: "#drive_link",
       I: "#drive_install"
     },
-    V: {
+    view_menu: {
       A: "#panel_showAll",
       O: "#panel_showOnly",
       T: "#panel_toggleAll",
@@ -2175,12 +2293,36 @@ const ee = (() => {
       S: "#panel_side",
       B: "#panel_braille"
     },
-    H: {
+    help_menu: {
       D: "#documentation",
       C: "#configuration",
       M: "#samples",
       G: "#settings",
       A: "#about"
+    },
+    file_save_menu: {
+      S: "#saveSource",
+      H: "#saveHTML",
+      F: "#saveBRF",
+      L: "#saveBRL"
+    },
+    file_view_menu: {
+      S: "#viewSource",
+      H: "#viewHTML",
+      F: "#viewBRF",
+      L: "#viewBRL"
+    },
+    file_print_menu: {
+      P: "#printPreview",
+      H: "#printHTML",
+      F: "#printBRF",
+      L: "#printBRL"
+    },
+    drive_save_menu: {
+      S: "#drive_saveSource",
+      H: "#drive_saveHTML",
+      F: "#drive_saveBRF",
+      L: "#drive_saveBRL"
     }
   };
 
@@ -2193,30 +2335,34 @@ const ee = (() => {
     addClick( "#new", do_file_new );
     addClick( "#open", do_file_open );
     addClick( "#save", do_file_save );
-    addClick( "#saveAs", do_file_save_as );
-    addClick( "#view", do_view_source );
-    addClick( "#preview", do_preview );
     addClick( "#link", do_file_link );
+    addClick( "#close", do_file_new );
+
+    addClick( "#saveSource", do_save_Source );
     addClick( "#saveHTML", do_save_HTML );
-    addClick( "#viewHTML", do_view_HTML );
-    addClick( "#printHTML", do_print_HTML );
     addClick( "#saveBRF", do_save_BRF );
-    addClick( "#viewBRF", do_view_BRF );
-    addClick( "#printBRF", do_print_BRF );
     addClick( "#saveBRL", do_save_BRL );
+
+    addClick( "#viewSource", do_view_Source );
+    addClick( "#viewHTML", do_view_HTML );
+    addClick( "#viewBRF", do_view_BRF );
     addClick( "#viewBRL", do_view_BRL );
+
+    addClick( "#printPreview", do_print_Preview );
+    addClick( "#printHTML", do_print_HTML );
+    addClick( "#printBRF", do_print_BRF );
     addClick( "#printBRL", do_print_BRL );
-    addClick( "#close", do_file_close );
 
     addClick( "#drive_open", do_drive_open );
     addClick( "#drive_save", do_drive_save );
-    addClick( "#drive_saveAs", do_drive_save_as );
     addClick( "#drive_saveReplace", do_drive_save_replace );
+    addClick( "#drive_link", do_drive_link );
+    addClick( "#drive_install", do_drive_install );
+
+    addClick( "#drive_saveSource", do_drive_save_Source );
     addClick( "#drive_saveHTML", do_drive_save_HTML );
     addClick( "#drive_saveBRF", do_drive_save_BRF );
     addClick( "#drive_saveBRL", do_drive_save_BRL );
-    addClick( "#drive_link", do_drive_link );
-    addClick( "#drive_install", do_drive_install );
 
     addClick( "#copy", do_edit_copy );
     addClick( "#paste", do_edit_paste );
@@ -2251,6 +2397,38 @@ const ee = (() => {
   };
 
   /**
+   * Clear the submenus.
+   */
+  const onSubmenuClear = () => {
+    $( ".dropdown-submenu ul" ).removeAttr( "style" );
+    $( ".dropdown-submenu" ).removeClass( "open" );
+  };
+
+  /**
+   * Toggle the submenu on click on the toggle link.
+   */
+  const onSubmenuClick = ( event ) => {
+    onSubmenuClear();
+
+    $( event.target ).next( "ul" ).toggle();
+    $( event.target ).parent().addClass( "open" );
+
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  /**
+   * Remove focus after click on open drop down menu.
+   */
+  const onMenuClick = ( event ) => {
+    const elt = $( ".dropdown.open" ).find( "a" )[0];
+    if ( elt )
+    {
+      event.target.blur();
+    }
+  };
+
+  /**
    * Install the user interface event handlers.
    */
   const initEvents = () => {
@@ -2282,6 +2460,15 @@ const ee = (() => {
 
     // Close open menus on mouse leave
     $( ".dropdown-menu" ).on( "mouseleave", onMenuClose );
+
+    // Close open menus on mouse leave
+    $( "a.dropdown-toggle" ).on( "click", onMenuClick );
+
+    // Toggle the submenu on click on the toggle link
+    $( "a.dropdown-submenu-toggle" ).on( "click", onSubmenuClick );
+
+    // Clear the submenus on hiding the menus
+    $( ".navbar-nav" ).on( "hidden.bs.dropdown", onSubmenuClear );
   };
 
   /**

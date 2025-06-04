@@ -324,7 +324,6 @@
     cursor: pointer;
     display: inline-block;
     text-decoration: none;
-    text-wrap: nowrap;
     height: 24px;
     width: 100%;
 }
@@ -748,7 +747,6 @@ apply, mphantom
 .ee-parent-panel [class*="ee-icon-"]:before
 {
     font-family: mathex;
-    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -1312,4 +1310,29 @@ apply, mphantom
 /* Fix for bootstrap dropdown item focus outline */
 .dropdown-menu a:focus {
   outline: 2px solid;
+}
+
+/* Styles for bootstrap dropdown submenu items */
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu.open > .dropdown-menu {
+  display: block;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: 1px;
+  border-radius: 0 4px 4px 0;
+}
+
+.dropdown-submenu .caret {
+  transform: rotate(-90deg);
+  float: right;
+  margin-top: 6px;
+  margin-right: -10px;
 }
