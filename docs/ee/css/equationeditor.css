@@ -495,7 +495,7 @@
     margin: 2px;
     padding: 0px;
 
-    font-family: mathex, 'Times New Roman', Times, serif;
+    font-family: mathex, 'Times New Roman', Times, serif, Cambria Math, Segoe UI Symbol;
 
     font-size: 20px;
     text-align: center;
