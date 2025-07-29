@@ -162,6 +162,9 @@ const ee = (() => {
     description : "HTML (HTML + MathML Content)",
     accept : { "application/html" : [ ".html" ] }
   }, {
+    description : "HTML (HTML + MathML Presentation)",
+    accept : { "application/html" : [ ".html" ] }
+  }, {
     description : "Markdown (ASCII math, LaTeX math)",
     accept : { "text/markdown" : [ ".md" ] }
   }, {
@@ -600,7 +603,7 @@ const ee = (() => {
    */
   const addFontSize = ( markup, key ) => {
     const sz = ee_settings.getNumber( key );
-    if ( sz )
+    if ( sz && sz !== "0" )
     {
       markup = markup.replace( "<body>",
         "<body style=\"font-size: " + sz + "pt\">" );
@@ -609,22 +612,9 @@ const ee = (() => {
   };
 
   /**
-   * Insert document markup to view an HTML document.
+   * Insert document markup to save an HTML document.
    */
-  const addViewMarkup = ( markup ) => {
-    markup = markup.replaceAll( "&", "&amp;" );
-    markup = markup.replaceAll( "<", "&lt;" );
-
-    var result = view_open + markup + view_close;
-    result = addFontSize( result, "ee-html-font-size" );
-
-    return result;
-  };
-
-  /**
-   * Insert document markup to invoke the MathJax library.
-   */
-  const addMathMarkup = ( markup, styles, mathjax ) => {
+  const addSaveMarkup = ( markup, styles, mathjax ) => {
     var result = markup;
 
     if ( styles || mathjax )
@@ -642,7 +632,59 @@ const ee = (() => {
       result = result.replace( head_ctag, script_tag + head_ctag );
     }
 
-    result = addFontSize( result, "ee-html-font-size" );
+    result = addFontSize( result, "ee-save-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Insert document markup to view an HTML document.
+   */
+  const addViewMarkup = ( markup ) => {
+    markup = markup.replaceAll( "&", "&amp;" );
+    markup = markup.replaceAll( "<", "&lt;" );
+
+    var result = view_open + markup + view_close;
+    result = addFontSize( result, "ee-view-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Insert document markup to print an HTML document.
+   */
+  const addPrintMarkup = ( markup, styles, mathjax ) => {
+    var result = markup;
+
+    if ( styles || mathjax )
+    {
+      result = result.replace( body_tag, head_otag + head_ctag + body_tag );
+    }
+
+    if ( styles )
+    {
+      result = result.replace( head_ctag, style_tag + head_ctag );
+    }
+
+    if ( mathjax )
+    {
+      result = result.replace( head_ctag, script_tag + head_ctag );
+    }
+
+    result = addFontSize( result, "ee-print-font-size" );
+
+    return result;
+  };
+
+  /**
+   * Insert document markup to view a BRF document.
+   */
+  const addBRFMarkup = ( markup ) => {
+    markup = markup.replaceAll( "&", "&amp;" );
+    markup = markup.replaceAll( "<", "&lt;" );
+
+    var result = view_open + markup + view_close;
+    result = addFontSize( result, "ee-brf-font-size" );
 
     return result;
   };
@@ -667,7 +709,7 @@ const ee = (() => {
   const getHTMLMarkup = () => {
     const styles = ee_settings.getBool( "ee-css-styles-on-save" );
     const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
-    const markup = addMathMarkup( getPresent(), styles, mathjax );
+    const markup = addSaveMarkup( getPresent(), styles, mathjax );
     return markup;
   };
   save_as_markup[ ".html" ] = getHTMLMarkup;
@@ -1047,7 +1089,7 @@ const ee = (() => {
 
       const styles = ee_settings.getBool( "ee-css-styles-on-export" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-export" );
-      const markup = addMathMarkup( getPresent(), styles, mathjax );
+      const markup = addPrintMarkup( getPresent(), styles, mathjax );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
@@ -1077,7 +1119,7 @@ const ee = (() => {
 
       const styles = ee_settings.getBool( "ee-css-styles-on-print" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-print" );
-      const markup = addMathMarkup( getPresent(), styles, mathjax );
+      const markup = addPrintMarkup( getPresent(), styles, mathjax );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( html_types );
@@ -1112,7 +1154,7 @@ const ee = (() => {
       event && event.preventDefault();
       LOG( "#do_print_BRF" );
 
-      const markup = addViewMarkup( getBRFMarkup() );
+      const markup = addBRFMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( brf_types );
@@ -1208,7 +1250,7 @@ const ee = (() => {
       event && event.preventDefault();
       LOG( "#do_view_BRF" );
 
-      const markup = addViewMarkup( getBRFMarkup() );
+      const markup = addBRFMarkup( getBRFMarkup() );
       const nwindow = window.open( "" );
 
       const options = getFileOptions( brf_types );
@@ -1323,7 +1365,7 @@ const ee = (() => {
       const options = getFileOptions( html_types );
       const styles = ee_settings.getBool( "ee-css-styles-on-save" );
       const mathjax = ee_settings.getBool( "ee-mathjax-on-save" );
-      const markup = addMathMarkup( getPresent(), styles, mathjax );
+      const markup = addSaveMarkup( getPresent(), styles, mathjax );
 
       setFileOption( options, ".html" );
       ee_drive.save_as( () => markup, null, options );
