@@ -514,6 +514,27 @@
     vertical-align: -0.25em;
 }
 
+.ee-button .subsup
+{
+    font-size: 60%;
+    vertical-align: 0.8em;
+    position: relative; left: -.5em
+}
+
+.ee-button .presub
+{
+    font-size: 60%;
+    vertical-align: -0.25em;
+    position: relative; left: .5em
+}
+
+.ee-button .presup
+{
+    font-size: 60%;
+    vertical-align: 0.8em;
+    position: relative; left: 0em
+}
+
 .ee-button .script
 {
     font-family: 'Brush Script MT';
